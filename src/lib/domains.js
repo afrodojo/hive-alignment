@@ -1,7 +1,8 @@
-import { Compass, Crown, Cpu, Users, TrendingUp } from 'lucide-react';
+import { Compass, Crown, Cpu, ShieldCheck, Users, TrendingUp } from 'lucide-react';
 
 export const DOMAIN_ORDER = [
   'SPIRITUAL_PILLARS',
+  'CYBER_DEFENSE',
   'OMEGA_HISTORY',
   'CS_RESEARCH',
   'COMMUNITY_UPLIFT',
@@ -20,6 +21,18 @@ export const DOMAINS = {
     line: 'from-emerald-400/70 via-emerald-400/20',
     bar: 'bg-emerald-400',
     text: 'text-emerald-400',
+  },
+  CYBER_DEFENSE: {
+    label: 'Cyber Defense',
+    shortLabel: 'Cyber',
+    focus: 'Zero-trust · Adversary · Assurance',
+    icon: ShieldCheck,
+    badge: 'text-rose-400 bg-rose-950/40 border-rose-500/40',
+    dot: 'bg-rose-400',
+    rule: 'border-rose-500/40',
+    line: 'from-rose-400/70 via-rose-400/20',
+    bar: 'bg-rose-400',
+    text: 'text-rose-400',
   },
   OMEGA_HISTORY: {
     label: 'Omega History',

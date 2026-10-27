@@ -1,5 +1,6 @@
 import os
 import re
+from datetime import datetime, timedelta
 from typing import List, Optional
 from pydantic import BaseModel, Field
 import httpx
@@ -72,6 +73,71 @@ async def synthesize_card_from_diff(diff_text: str, commit_msg: str) -> dict:
         import json
         return json.loads(content)
 
+async def post_entity(entity_name: str, payload: dict) -> dict:
+    """Create one record through the Base44 Data API."""
+    if not BASE44_APP_ID or not BASE44_PAT:
+        raise RuntimeError("BASE44_APP_ID and BASE44_PAT must be set.")
+
+    async with httpx.AsyncClient(timeout=30.0) as client:
+        res = await client.post(
+            f"{BASE44_API_BASE}/{BASE44_APP_ID}/entities/{entity_name}",
+            headers={
+                "Authorization": f"Bearer {BASE44_PAT}",
+                "Content-Type": "application/json",
+            },
+            json=payload,
+        )
+        res.raise_for_status()
+        return res.json()
+
+
+class CalendarEvent(BaseModel):
+    title: str = Field(description="Meeting or event title.")
+    description: Optional[str] = Field(default=None, description="Event description, agenda, or notes.")
+    starts_at: str = Field(description="ISO 8601 start time of the event.")
+    attendees: Optional[List[str]] = Field(default=None, description="Attendee emails or names.")
+
+
+async def persist_calendar_signal(event: CalendarEvent) -> dict:
+    """Store an upcoming meeting as a FocusSignal the deck can prime against."""
+    try:
+        start = datetime.fromisoformat(event.starts_at.replace("Z", "+00:00"))
+    except ValueError:
+        raise HTTPException(status_code=422, detail="starts_at must be an ISO 8601 timestamp.")
+
+    detail = " · ".join(filter(None, [event.description, ", ".join(event.attendees or [])]))
+
+    return await post_entity(
+        "FocusSignal",
+        {
+            "source": "CALENDAR",
+            "title": event.title,
+            "domain": "CS_RESEARCH",
+            "detail": detail[:1000] or None,
+            "starts_at": start.isoformat(),
+            "expires_at": (start + timedelta(hours=1)).isoformat(),
+            "status": "ACTIVE",
+        },
+    )
+
+
+@router.post("/calendar")
+async def handle_calendar_event(event: CalendarEvent):
+    """
+    Accepts an upcoming Google Calendar event so the app can prime the feed
+    before the meeting. The client classifies it into a domain on arrival.
+    """
+    try:
+        signal = await persist_calendar_signal(event)
+    except httpx.HTTPStatusError as exc:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Base44 rejected the calendar signal: {exc.response.text}",
+        )
+
+    return {"status": "success", "action": "Calendar signal stored", "signal": signal}
+
+
 def extract_touched_files(diff_text: str) -> List[str]:
     """Pull post-image paths out of a unified diff, preserving order."""
     paths: List[str] = []
@@ -102,17 +168,7 @@ async def persist_card_to_base44(card_data: dict, commit_hash: str, touched_file
         "external_reference": touched_files[0] if touched_files else None,
     }
 
-    async with httpx.AsyncClient(timeout=30.0) as client:
-        res = await client.post(
-            f"{BASE44_API_BASE}/{BASE44_APP_ID}/entities/Card",
-            headers={
-                "Authorization": f"Bearer {BASE44_PAT}",
-                "Content-Type": "application/json",
-            },
-            json=payload,
-        )
-        res.raise_for_status()
-        return res.json()
+    return await post_entity("Card", payload)
 
 
 @router.post("/github-commit")

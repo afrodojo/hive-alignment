@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import DeckHeader from '@/components/DeckHeader';
@@ -6,9 +6,11 @@ import InsightCard from '@/components/InsightCard';
 import ActionBar from '@/components/ActionBar';
 import SessionComplete from '@/components/SessionComplete';
 import SignalBanner from '@/components/SignalBanner';
+import ContextPrimingBanner from '@/components/ContextPrimingBanner';
 import DeckSkeleton from '@/components/DeckSkeleton';
 import SyncGitHubButton from '@/components/SyncGitHubButton';
 import { syncLatestGitHubCommits } from '@/lib/github';
+import { pinPrimedCard, primingEvent, resolvePrimingDomain } from '@/lib/calendar';
 import {
   activeSignalDomains,
   buildSession,
@@ -32,6 +34,8 @@ export default function Deck() {
   const [savedIds, setSavedIds] = useState([]);
   const [masteredIds, setMasteredIds] = useState([]);
   const [phase, setPhase] = useState('loading');
+  const [priming, setPriming] = useState(null);
+  const primedRef = useRef(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -161,7 +165,7 @@ export default function Deck() {
       signalDomains: activeSignalDomains(signals),
       size: SESSION_SIZE,
     });
-    setSession(built);
+    setSession(priming?.domain ? pinPrimedCard(built, priming.domain, cards) : built);
     setIndex(0);
     setPhase(built.length ? 'session' : 'empty');
   };
@@ -199,6 +203,33 @@ export default function Deck() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
+  // Context priming: classify the next meeting, then pin a card of its domain to the front.
+  useEffect(() => {
+    const event = primingEvent(signals);
+    if (!event || primedRef.current === event.signal.id) return;
+
+    let cancelled = false;
+    (async () => {
+      let domain = event.signal.domain;
+      try {
+        domain = await resolvePrimingDomain(event.signal);
+      } catch (err) {
+        console.debug('Context priming classification skipped:', err);
+      }
+      if (cancelled) return;
+
+      primedRef.current = event.signal.id;
+      setPriming({ name: event.signal.title, domain });
+      setSession((current) => pinPrimedCard(current, domain, cards));
+      setIndex(0);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [signals]);
+
   return (
     <div className="relative flex min-h-[100dvh] w-full flex-col bg-slate-950">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.10),transparent_65%)]" />
@@ -210,6 +241,8 @@ export default function Deck() {
         />
 
         {signal && <SignalBanner signal={signal} />}
+
+        {priming && <ContextPrimingBanner name={priming.name} domain={priming.domain} />}
 
         {phase === 'loading' && <DeckSkeleton />}
 

@@ -6,6 +6,7 @@
       "type": "string",
       "enum": [
         "SPIRITUAL_PILLARS",
+        "CYBER_DEFENSE",
         "OMEGA_HISTORY",
         "CS_RESEARCH",
         "COMMUNITY_UPLIFT",
@@ -35,7 +36,7 @@
     },
     "proof_or_code": {
       "type": "string",
-      "description": "Optional math invariant, formula, or CLI/code snippet."
+      "description": "Optional LaTeX invariant, formula, or CLI/code snippet."
     },
     "read_time_seconds": {
       "type": "integer",

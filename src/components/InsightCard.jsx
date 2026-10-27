@@ -1,5 +1,6 @@
 import { Clock3, Code2 } from 'lucide-react';
 import DomainBadge from '@/components/DomainBadge';
+import ProofBlock from '@/components/ProofBlock';
 import { GITHUB_REPO_URL, LIVE_SITE_URL, commitUrl, fileUrl, liveSiteHost } from '@/lib/github';
 import { domainMeta } from '@/lib/domains';
 import { cn } from '@/lib/utils';
@@ -80,19 +81,7 @@ export default function InsightCard({ card, position, total, className }) {
           </div>
         )}
 
-        {card.proof_or_code && (
-          <div className="mt-6 overflow-hidden rounded-xl border border-slate-800 bg-black/60">
-            <div className="flex items-center justify-between border-b border-slate-800/80 px-3 py-1.5">
-              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-slate-600">
-                Proof / Invariant
-              </span>
-              <span className="font-mono text-[9px] text-slate-700">mono</span>
-            </div>
-            <pre className="no-scrollbar overflow-x-auto px-3 py-3 font-mono text-[11px] leading-[1.7] text-slate-400">
-              {card.proof_or_code}
-            </pre>
-          </div>
-        )}
+        {card.proof_or_code && <ProofBlock value={card.proof_or_code} />}
       </div>
 
       {isResearch && (

@@ -110,6 +110,15 @@
     text-wrap: balance;
   }
 
+  .proof-math .katex-display {
+    margin: 0;
+  }
+
+  .proof-math .katex {
+    font-size: 1.05em;
+    color: inherit;
+  }
+
   .animate-card-in {
     animation: card-in 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
