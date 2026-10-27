@@ -1,7 +1,8 @@
 import { GITHUB_REPO_URL, LIVE_SITE_URL } from '@/lib/github';
+import { DOMAIN_ORDER } from '@/lib/domains';
 import { SEED_CARDS } from '@/data/seedCards';
 
-export const GH_CARDS_CACHE_KEY = 'hive_cached_gh_cards';
+export const GH_CARDS_CACHE_KEY = 'hive_cached_gh_cards_v2';
 export const GH_CARDS_TTL_MS = 30 * 60 * 1000;
 
 const CONTENTS_URL = 'https://api.github.com/repos/afrodojo/hive-alignment/contents/data/cards';
@@ -17,7 +18,7 @@ function normalizeCard(raw, name) {
   if (!raw || typeof raw !== 'object' || !raw.title || !raw.core_insight) return null;
   return {
     id: `gh:${name}`,
-    domain: 'CS_RESEARCH',
+    domain: DOMAIN_ORDER.includes(raw.domain) ? raw.domain : 'CS_RESEARCH',
     title: String(raw.title),
     hook: raw.hook ?? '',
     core_insight: String(raw.core_insight),

@@ -1,7 +1,8 @@
-import { Compass, Crown, Cpu, ShieldCheck, Users, TrendingUp } from 'lucide-react';
+import { Compass, Crown, Cpu, ShieldCheck, Swords, Users, TrendingUp } from 'lucide-react';
 
 export const DOMAIN_ORDER = [
   'SPIRITUAL_PILLARS',
+  'WARRIOR_ETHOS',
   'CYBER_DEFENSE',
   'OMEGA_HISTORY',
   'CS_RESEARCH',
@@ -21,6 +22,18 @@ export const DOMAINS = {
     line: 'from-emerald-400/70 via-emerald-400/20',
     bar: 'bg-emerald-400',
     text: 'text-emerald-400',
+  },
+  WARRIOR_ETHOS: {
+    label: 'Warrior Ethos',
+    shortLabel: 'Ethos',
+    focus: 'Perception · Discipline · Decisiveness',
+    icon: Swords,
+    badge: 'text-amber-300 bg-slate-900/70 border-rose-700/70',
+    dot: 'bg-rose-600',
+    rule: 'border-rose-700/70',
+    line: 'from-rose-700/80 via-amber-500/30',
+    bar: 'bg-rose-600',
+    text: 'text-amber-300',
   },
   CYBER_DEFENSE: {
     label: 'Cyber Defense',

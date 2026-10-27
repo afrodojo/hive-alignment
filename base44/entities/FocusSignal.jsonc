@@ -18,6 +18,7 @@
       "type": "string",
       "enum": [
         "SPIRITUAL_PILLARS",
+        "WARRIOR_ETHOS",
         "CYBER_DEFENSE",
         "OMEGA_HISTORY",
         "CS_RESEARCH",
