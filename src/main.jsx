@@ -7,6 +7,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
 )
 
+// /sw.js is a reserved platform path, so the worker lives at /service-worker.js.
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'))
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js').catch(() => {});
+  });
 }
