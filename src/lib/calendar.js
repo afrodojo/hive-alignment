@@ -1,7 +1,8 @@
-import { base44 } from '@/api/base44Client';
+/** A meeting counts as imminent once it starts inside this window (next 20 minutes). */
+export const PRIMING_WINDOW_MS = 20 * 60 * 1000;
 
-/** A meeting counts as imminent once it starts inside this window. */
-export const PRIMING_WINDOW_MS = 15 * 60 * 1000;
+/** A meeting that just started still primes the feed for the first 5 minutes. */
+export const PRIMING_GRACE_MS = 5 * 60 * 1000;
 
 export const PRIMING_DOMAINS = [
   'CYBER_DEFENSE',
@@ -11,73 +12,66 @@ export const PRIMING_DOMAINS = [
   'SPIRITUAL_PILLARS',
 ];
 
-const DOMAIN_BRIEF = `
-- CYBER_DEFENSE: security operations, threat intelligence, zero-trust architecture, incident response, adversary TTPs, controls and compliance, red/blue teaming.
-- CS_RESEARCH: computer science research, algorithms, distributed systems, consensus, formal methods, ML or data engineering, academic and lab work.
-- BIZ_ACUMEN: business execution, GovCon captures, proposals, pricing and margins, contracts, hiring, leadership, client relationships.
-- BIZ_ACUMEN also covers revenue, partnerships, and operational scaling.
-- COMMUNITY_UPLIFT: mentorship, education, nonprofits, workforce pipelines, equity, community programs.
-- SPIRITUAL_PILLARS: faith, prayer, character, ethics, service, family, spiritual study.
-`.trim();
-
-const CLASSIFIER_SCHEMA = {
-  type: 'object',
-  properties: {
-    domain: { type: 'string', enum: PRIMING_DOMAINS },
-    rationale: { type: 'string', description: 'One short clause naming the signal that decided it.' },
+/**
+ * Keyword rules, checked in order — the first domain with a matching term wins.
+ * Anything unmatched is treated as general focus (SPIRITUAL_PILLARS).
+ */
+export const DOMAIN_TERMS = [
+  {
+    domain: 'CYBER_DEFENSE',
+    terms: ['cmmc', 'dod', 'defense', 'stig', 'zero trust', 'nist', 'fedramp'],
   },
-  required: ['domain', 'rationale'],
-};
+  {
+    domain: 'CS_RESEARCH',
+    terms: ['dissertation', 'advisor', 'tla+', 'bft', 'swarm', 'agent', 'consensus', 'doctoral'],
+  },
+  {
+    domain: 'BIZ_ACUMEN',
+    terms: ['investor', 'client', 'contract', 'margin', 'pricing', 'capture', 'proposal'],
+  },
+  {
+    domain: 'COMMUNITY_UPLIFT',
+    terms: ['mentorship', 'stem', 'pipeline', 'fraternity', 'omega', 'uplift'],
+  },
+];
 
-const domainCache = new Map();
+/**
+ * Classify a meeting's title and description into one of the five focus domains.
+ * The domain matching the most terms wins; ties fall back to rule order.
+ */
+export function classifyMeetingDomain({ title, description } = {}) {
+  const text = `${title ?? ''} ${description ?? ''}`.toLowerCase();
 
-/** Classify a meeting's title and description into one of the five focus domains. */
-export async function classifyMeetingDomain({ title, description } = {}) {
-  const body = [title, description].filter(Boolean).join('\n\n').slice(0, 1600);
-  if (!body.trim()) return 'CS_RESEARCH';
-
-  const result = await base44.integrations.Core.InvokeLLM({
-    prompt: `You classify an upcoming calendar meeting so a micro-learning feed can prime the reader before it starts.
-
-Pick exactly one domain from these five:
-${DOMAIN_BRIEF}
-
-Rules:
-- Judge from the title, description, agenda, attendees, and project codenames present in the text.
-- Prefer the domain the participant must be sharpest in during the meeting, not the department hosting it.
-- Use CS_RESEARCH only when nothing else genuinely fits.
-- Return the domain and a rationale of at most 12 words.
-
-MEETING
-Title: ${title || '(none)'}
-Description: ${description || '(none)'}`,
-    response_json_schema: CLASSIFIER_SCHEMA,
-  });
-
-  const domain = result?.domain;
-  return PRIMING_DOMAINS.includes(domain) ? domain : 'CS_RESEARCH';
+  let best = 'SPIRITUAL_PILLARS';
+  let bestHits = 0;
+  for (const { domain, terms } of DOMAIN_TERMS) {
+    const hits = terms.filter((term) => text.includes(term)).length;
+    if (hits > bestHits) {
+      best = domain;
+      bestHits = hits;
+    }
+  }
+  return best;
 }
 
-/** Classify once per signal; repeat renders reuse the verdict. */
-export async function resolvePrimingDomain(signal) {
+export function resolvePrimingDomain(signal) {
   if (!signal) return null;
-  if (domainCache.has(signal.id)) return domainCache.get(signal.id);
-  const domain = await classifyMeetingDomain({ title: signal.title, description: signal.detail });
-  domainCache.set(signal.id, domain);
-  return domain;
+  return classifyMeetingDomain({ title: signal.title, description: signal.detail });
 }
 
-/** The calendar event starting inside the priming window, earliest first. */
+/** The soonest calendar event inside the window — starting soon, or just started. */
 export function primingEvent(signals = [], now = new Date()) {
   const candidates = signals
     .filter((s) => s.source === 'CALENDAR' && s.status !== 'DONE' && s.starts_at)
     .map((s) => ({ signal: s, startsAt: new Date(s.starts_at) }))
     .filter(({ startsAt }) => !Number.isNaN(startsAt.getTime()))
-    .filter(({ startsAt }) => startsAt.getTime() - now.getTime() <= PRIMING_WINDOW_MS)
+    .filter(({ startsAt }) => {
+      const delta = startsAt.getTime() - now.getTime();
+      return delta <= PRIMING_WINDOW_MS && delta >= -PRIMING_GRACE_MS;
+    })
     .sort((a, b) => a.startsAt - b.startsAt);
 
-  const next = candidates.find(({ startsAt }) => startsAt.getTime() - now.getTime() >= 0);
-  return next || null;
+  return candidates[0] || null;
 }
 
 /**

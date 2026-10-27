@@ -209,25 +209,11 @@ export default function Deck() {
     const event = primingEvent(signals);
     if (!event || primedRef.current === event.signal.id) return;
 
-    let cancelled = false;
-    (async () => {
-      let domain = event.signal.domain;
-      try {
-        domain = await resolvePrimingDomain(event.signal);
-      } catch (err) {
-        console.debug('Context priming classification skipped:', err);
-      }
-      if (cancelled) return;
-
-      primedRef.current = event.signal.id;
-      setPriming({ name: event.signal.title, domain });
-      setSession((current) => pinPrimedCard(current, domain, cards));
-      setIndex(0);
-    })();
-
-    return () => {
-      cancelled = true;
-    };
+    const domain = resolvePrimingDomain(event.signal);
+    primedRef.current = event.signal.id;
+    setPriming({ name: event.signal.title, domain });
+    setSession((current) => pinPrimedCard(current, domain, cards));
+    setIndex(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signals]);
 
