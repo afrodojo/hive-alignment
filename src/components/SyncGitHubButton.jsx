@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Github, Loader2 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
-import { syncLatestCards } from '@/lib/github';
+import { syncLatestGitHubCommits } from '@/lib/github';
 import { cn } from '@/lib/utils';
 
 export default function SyncGitHubButton({ onSynced, className }) {
@@ -12,7 +12,7 @@ export default function SyncGitHubButton({ onSynced, className }) {
     if (busy) return;
     setBusy(true);
     try {
-      const created = await syncLatestCards(3);
+      const created = await syncLatestGitHubCommits(3);
       onSynced?.(created);
       toast(
         created.length

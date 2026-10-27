@@ -8,6 +8,7 @@ import SessionComplete from '@/components/SessionComplete';
 import SignalBanner from '@/components/SignalBanner';
 import DeckSkeleton from '@/components/DeckSkeleton';
 import SyncGitHubButton from '@/components/SyncGitHubButton';
+import { syncLatestGitHubCommits } from '@/lib/github';
 import {
   activeSignalDomains,
   buildSession,
@@ -18,6 +19,8 @@ import {
 } from '@/lib/feed';
 
 const SESSION_SIZE = 5;
+const SYNC_KEY = 'hive_last_gh_sync';
+const SYNC_THROTTLE_MS = 30 * 60 * 1000;
 
 export default function Deck() {
   const [user, setUser] = useState(null);
@@ -178,6 +181,23 @@ export default function Deck() {
       setPhase(built.length ? 'session' : 'empty');
     }
   };
+
+  // Background ingestion on load. Throttled to 30 minutes to stay inside GitHub's
+  // unauthenticated limit (60 requests/hour per IP); failures are silent by design.
+  useEffect(() => {
+    if (user?.role !== 'admin') return;
+    const now = Date.now();
+    const lastSync = Number(localStorage.getItem(SYNC_KEY));
+    if (lastSync && now - lastSync <= SYNC_THROTTLE_MS) return;
+
+    syncLatestGitHubCommits(3)
+      .then((created) => {
+        localStorage.setItem(SYNC_KEY, String(now));
+        onSynced(created);
+      })
+      .catch((err) => console.debug('Background commit sync skipped:', err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   return (
     <div className="relative flex min-h-[100dvh] w-full flex-col bg-slate-950">

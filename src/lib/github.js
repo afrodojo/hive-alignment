@@ -81,8 +81,7 @@ Compress the key architectural, mathematical, security, or algorithmic change in
   };
 }
 
-/** Synthesize cards for recent commits that have not been ingested yet. */
-export async function syncLatestCards(limit = 3) {
+async function runSync(limit) {
   const commits = await fetchLatestCommits(limit);
   const known = await base44.entities.Card.filter({ commit_hash: { $in: commits.map((c) => c.sha) } });
   const seen = new Set((known?.items ?? known ?? []).map((card) => card.commit_hash));
@@ -93,4 +92,16 @@ export async function syncLatestCards(limit = 3) {
     created.push(await base44.entities.Card.create(await synthesizeCard(commit)));
   }
   return created;
+}
+
+let inFlight = null;
+
+/** Synthesize cards for recent commits that have not been ingested yet (one run at a time). */
+export function syncLatestGitHubCommits(limit = 3) {
+  if (!inFlight) {
+    inFlight = runSync(limit).finally(() => {
+      inFlight = null;
+    });
+  }
+  return inFlight;
 }
