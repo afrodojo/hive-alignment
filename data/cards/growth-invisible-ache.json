@@ -1,0 +1,16 @@
+{
+  "domain": "COMMUNITY_UPLIFT",
+  "title": "The Invisible Ache: Deconstructing Hyper-Resilience",
+  "hook": "Unacknowledged exhaustion is systemic friction disguised as strength.",
+  "core_insight": "In 'The Invisible Ache', Vance and Smith isolate how high-achieving Black men are conditioned to absorb institutional trauma silently under the mask of invulnerability. For an ADHD mind under acute executive stress, masking pain drains working memory and triggers chronic autonomic anxiety. True sovereignty requires naming the fatigue, shedding performative stoicism, and treating psychological restoration as a non-negotiable operational boundary.",
+  "takeaways": [
+    "Distinguish functional strength from trauma masking: endurance without restoration leads to cognitive collapse.",
+    "Schedule deliberate decompression windows; unaddressed emotional load degrades strategic acuity."
+  ],
+  "proof_or_code": "\\text{Sustainable Output} = \\frac{\\text{Execution Capacity}}{\\text{Unprocessed Friction} + 1} \\implies \\lim_{\\text{Masking} \\to 0} \\text{Acuity}",
+  "read_time_seconds": 45,
+  "commit_hash": "ache01",
+  "repo_url": "https://github.com/afrodojo/hive-alignment",
+  "live_site_url": "https://hive-align.eds-360.com",
+  "external_reference": "Courtney B. Vance & Dr. Robin L. Smith, The Invisible Ache"
+}
