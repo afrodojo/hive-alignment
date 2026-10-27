@@ -1,0 +1,16 @@
+{
+  "domain": "BIZ_ACUMEN",
+  "title": "Grove's Limiting Step: Eliminating Task-Switching Thrash",
+  "hook": "Every system has exactly one constraint that dictates throughput. Everything else is waiting.",
+  "core_insight": "In 'High Output Management', Andy Grove demonstrates that production must be constructed around the 'limiting step'—the operation with the longest lead time or lowest capacity. For neurodivergent deep work, task-switching incurs catastrophic re-orientation penalties. Identify today's single limiting step, isolate it from all interrupt channels, and clear it before touching ancillary queues.",
+  "takeaways": [
+    "Find the single critical-path constraint before opening client/advisory queues.",
+    "Batch interruptions into scheduled buffers; refuse ad-hoc context switches."
+  ],
+  "proof_or_code": "\\text{Throughput} = \\min_{i} \\left( \\frac{\\text{Capacity}_i}{\\text{Demand}_i} \\right)",
+  "read_time_seconds": 45,
+  "commit_hash": "biz01",
+  "repo_url": "https://github.com/afrodojo/hive-alignment",
+  "live_site_url": "https://hive-align.eds-360.com",
+  "external_reference": "Andy Grove, High Output Management, Ch. 2"
+}
