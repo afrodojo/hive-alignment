@@ -7,6 +7,7 @@ import ActionBar from '@/components/ActionBar';
 import SessionComplete from '@/components/SessionComplete';
 import SignalBanner from '@/components/SignalBanner';
 import DeckSkeleton from '@/components/DeckSkeleton';
+import SyncGitHubButton from '@/components/SyncGitHubButton';
 import {
   activeSignalDomains,
   buildSession,
@@ -162,11 +163,31 @@ export default function Deck() {
     setPhase(built.length ? 'session' : 'empty');
   };
 
+  const onSynced = (created) => {
+    if (!created?.length) return;
+    const merged = [...created, ...cards];
+    setCards(merged);
+    if (phase === 'empty') {
+      const built = buildSession(merged, interactions, {
+        preferences: user?.domain_preferences,
+        signalDomains: activeSignalDomains(signals),
+        size: SESSION_SIZE,
+      });
+      setSession(built);
+      setIndex(0);
+      setPhase(built.length ? 'session' : 'empty');
+    }
+  };
+
   return (
     <div className="relative flex min-h-[100dvh] w-full flex-col bg-slate-950">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.10),transparent_65%)]" />
       <div className="relative mx-auto flex h-[100dvh] w-full max-w-md flex-col justify-between gap-3 p-4">
-        <DeckHeader sessionSeconds={sessionSeconds} streak={user?.current_streak ?? 0} />
+        <DeckHeader
+          sessionSeconds={sessionSeconds}
+          streak={user?.current_streak ?? 0}
+          syncSlot={user?.role === 'admin' ? <SyncGitHubButton onSynced={onSynced} /> : null}
+        />
 
         {signal && <SignalBanner signal={signal} />}
 

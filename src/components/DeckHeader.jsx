@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { BookMarked, Flame, Timer } from 'lucide-react';
 import { formatSeconds } from '@/lib/format';
 
-export default function DeckHeader({ sessionSeconds, streak, archiveLink = true }) {
+export default function DeckHeader({ sessionSeconds, streak, archiveLink = true, syncSlot }) {
   return (
     <header className="flex shrink-0 items-center justify-between gap-2">
       <div className="flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-950/30 px-2.5 py-1">
@@ -20,6 +20,7 @@ export default function DeckHeader({ sessionSeconds, streak, archiveLink = true 
         <span className="flex items-center gap-1 rounded-full border border-amber-500/25 bg-amber-950/30 px-2 py-1 font-mono text-[10px] tracking-[0.06em] text-amber-400">
           <Flame className="h-3 w-3" /> {streak ?? 0}
         </span>
+        {syncSlot}
         {archiveLink && (
           <Link
             to="/archive"

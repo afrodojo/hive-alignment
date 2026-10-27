@@ -41,6 +41,24 @@
       "type": "integer",
       "default": 45,
       "description": "Estimated read time in seconds."
+    },
+    "repo_url": {
+      "type": "string",
+      "default": "https://github.com/afrodojo/hive-alignment",
+      "description": "Public repository this insight was synthesized from."
+    },
+    "commit_hash": {
+      "type": "string",
+      "description": "7-character short SHA of the commit that generated this card."
+    },
+    "live_site_url": {
+      "type": "string",
+      "default": "https://hive-align.eds-360.com",
+      "description": "Live research platform for deeper inspection."
+    },
+    "external_reference": {
+      "type": "string",
+      "description": "Path to the relevant file in the repository, e.g. specs/HiveSwarmConsensus.tla."
     }
   },
   "required": [
