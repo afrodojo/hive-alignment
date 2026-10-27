@@ -1,0 +1,102 @@
+name: Synthesize Book Focus Card
+
+on:
+  workflow_dispatch:
+    inputs:
+      book_title:
+        description: 'Book Title and Author'
+        required: true
+      core_concept:
+        description: 'Core chapter, concept, or raw quote'
+        required: true
+      domain:
+        description: 'Card Domain'
+        required: true
+        default: 'WARRIOR_ETHOS'
+        type: choice
+        options:
+          - WARRIOR_ETHOS
+          - BIZ_ACUMEN
+          - CS_RESEARCH
+          - SPIRITUAL_PILLARS
+
+permissions:
+  contents: write
+
+jobs:
+  generate-card:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install httpx pydantic
+
+      - name: Synthesize Card
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          BOOK_TITLE: ${{ inputs.book_title }}
+          CONCEPT: ${{ inputs.core_concept }}
+          DOMAIN: ${{ inputs.domain }}
+        run: |
+          python -c '
+          import os, json, httpx, hashlib
+          from pydantic import BaseModel, Field
+
+          class CardSchema(BaseModel):
+              domain: str
+              title: str = Field(max_length=120)
+              hook: str = Field(max_length=255)
+              core_insight: str
+              takeaways: list[str] = Field(min_length=2, max_length=2)
+              proof_or_code: str = Field(description="LaTeX invariant or mathematical formulation of the strategic principle")
+              read_time_seconds: int = 45
+
+          prompt = (
+              f"Convert this strategic/warrior text into a high-density, grounding micro-card for an AI Solutions Architect / CS PhD managing ADHD and focus.\n"
+              f"Domain: {os.environ[\"DOMAIN\"]}\n"
+              f"Book: {os.environ[\"BOOK_TITLE\"]}\n"
+              f"Concept/Passage: {os.environ[\"CONCEPT\"]}\n\n"
+              f"Requirements:\n"
+              f"- No platitudes. Tone: Grounded, stoic, rigorous, warrior-monk clarity.\n"
+              f"- The proof_or_code MUST be a rigorous LaTeX formula or mathematical relation modeling the focus/strategy concept.\n"
+              f"- Emphasize cognitive steadiness, task triage, and overcoming analysis paralysis."
+          )
+
+          res = httpx.post(
+              "https://api.openai.com/v1/chat/completions",
+              headers={"Authorization": f"Bearer {os.environ[\"OPENAI_API_KEY\"]}"},
+              json={
+                  "model": "gpt-4o-mini",
+                  "messages": [{"role": "user", "content": prompt}],
+                  "response_format": {"type": "json_schema", "json_schema": {"name": "CardSchema", "schema": CardSchema.model_json_schema()}}
+              },
+              timeout=30.0
+          )
+
+          card_data = json.loads(res.json()["choices"][0]["message"]["content"])
+          card_hash = hashlib.sha256((os.environ["BOOK_TITLE"] + os.environ["CONCEPT"]).encode()).hexdigest()[:7]
+          card_data["commit_hash"] = card_hash
+          card_data["repo_url"] = "https://github.com/afrodojo/hive-alignment"
+          card_data["live_site_url"] = "https://hive-align.eds-360.com"
+          card_data["external_reference"] = os.environ["BOOK_TITLE"]
+
+          os.makedirs("data/cards", exist_ok=True)
+          out_file = f"data/cards/{card_hash}.json"
+          with open(out_file, "w") as f:
+              json.dump(card_data, f, indent=2)
+          print(f"Generated {out_file}")
+          '
+
+      - name: Commit Card
+        run: |
+          git config user.name "Cyber Dojo Sensei"
+          git config user.email "cyberdojosensei@gmail.com"
+          git add data/cards/
+          git diff-index --quiet HEAD || (git commit -m "feat(cards): ingest warrior/strategy wisdom [skip ci]" && git push)
