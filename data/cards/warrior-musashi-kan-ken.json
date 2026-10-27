@@ -1,0 +1,16 @@
+{
+  "domain": "WARRIOR_ETHOS",
+  "title": "Perception vs Sight: Quelling Anxiety Thrash",
+  "hook": "Anxiety is the eye over-indexing on noise. Perception penetrates the invariant.",
+  "core_insight": "In 'The Book of Five Rings', Musashi distinguishes Ken (the physical gaze tracking superficial motion) from Kan (intuitive perception discerning intent and structural balance). ADHD anxiety spikes when the brain treats every ambient stimulus as critical. Treat peripheral alerts as noise; anchor only to the structural objective.",
+  "takeaways": [
+    "Dichotomy of Gaze: Expand Kan (strategic intent), narrow Ken (transient twitch).",
+    "Under cognitive overwhelm: Halt input consumption, name the singular load-bearing invariant, execute only that."
+  ],
+  "proof_or_code": "\\text{Signal-to-Noise} \\equiv \\frac{\\text{Kan}(\\text{Objective})}{\\sum \\text{Ken}(\\text{Interrupts})} \\gg 1",
+  "read_time_seconds": 40,
+  "commit_hash": "ethos01",
+  "repo_url": "https://github.com/afrodojo/hive-alignment",
+  "live_site_url": "https://hive-align.eds-360.com",
+  "external_reference": "Miyamoto Musashi, The Water Book"
+}
