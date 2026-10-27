@@ -8,6 +8,7 @@ import InsightCard from '@/components/InsightCard';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { DOMAIN_ORDER, domainMeta } from '@/lib/domains';
 import { latestActions } from '@/lib/feed';
+import { loadGitHubCards, mergeFeedCards, readCachedGitHubCards } from '@/lib/ghCards';
 import { cn } from '@/lib/utils';
 
 const TABS = [
@@ -28,16 +29,18 @@ export default function Archive() {
     let cancelled = false;
     (async () => {
       const me = await base44.auth.me();
-      const [cardPage, interactionPage] = await Promise.all([
-        base44.entities.Card.list({ sort: 'created_date', limit: 200 }),
+      const [interactionPage, researchCards] = await Promise.all([
         base44.entities.UserCardInteraction.filter(
           { user_id: me.id },
           { sort: '-created_date', limit: 200 }
         ),
+        loadGitHubCards()
+          .then(({ cards: fetched }) => fetched)
+          .catch(() => readCachedGitHubCards()),
       ]);
       if (cancelled) return;
       setUser(me);
-      setCards(cardPage?.items ?? cardPage ?? []);
+      setCards(mergeFeedCards(researchCards));
       setInteractions(interactionPage?.items ?? interactionPage ?? []);
       setLoading(false);
     })();

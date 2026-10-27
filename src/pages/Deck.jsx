@@ -8,8 +8,8 @@ import SessionComplete from '@/components/SessionComplete';
 import SignalBanner from '@/components/SignalBanner';
 import ContextPrimingBanner from '@/components/ContextPrimingBanner';
 import DeckSkeleton from '@/components/DeckSkeleton';
-import SyncGitHubButton from '@/components/SyncGitHubButton';
-import { syncLatestGitHubCommits } from '@/lib/github';
+import SyncFeedButton from '@/components/SyncFeedButton';
+import { isGitHubCacheFresh, loadGitHubCards, mergeFeedCards, readCachedGitHubCards } from '@/lib/ghCards';
 import { pinPrimedCard, primingEvent, resolvePrimingDomain } from '@/lib/calendar';
 import {
   activeSignalDomains,
@@ -21,8 +21,6 @@ import {
 } from '@/lib/feed';
 
 const SESSION_SIZE = 5;
-const SYNC_KEY = 'hive_last_gh_sync';
-const SYNC_THROTTLE_MS = 30 * 60 * 1000;
 
 export default function Deck() {
   const [user, setUser] = useState(null);
@@ -41,8 +39,7 @@ export default function Deck() {
     let cancelled = false;
     (async () => {
       const me = await base44.auth.me();
-      const [cardPage, interactionPage, signalList] = await Promise.all([
-        base44.entities.Card.list({ sort: 'created_date', limit: 200 }),
+      const [interactionPage, signalList] = await Promise.all([
         base44.entities.UserCardInteraction.filter(
           { user_id: me.id },
           { sort: '-created_date', limit: 200 }
@@ -51,7 +48,7 @@ export default function Deck() {
       ]);
       if (cancelled) return;
 
-      const allCards = cardPage?.items ?? cardPage ?? [];
+      const allCards = mergeFeedCards(readCachedGitHubCards());
       const history = interactionPage?.items ?? interactionPage ?? [];
       const live = signalList ?? [];
       const built = buildSession(allCards, history, {
@@ -68,6 +65,28 @@ export default function Deck() {
       setSavedIds(history.filter((i) => i.action === 'SAVED').map((i) => i.card_id));
       setMasteredIds(history.filter((i) => i.action === 'MASTERED').map((i) => i.card_id));
       setPhase(built.length ? 'session' : 'empty');
+
+      if (isGitHubCacheFresh()) return;
+
+      // Research cards are published in the public repo; the 30-minute cache keeps this off the hot path.
+      try {
+        const { cards: researchCards } = await loadGitHubCards();
+        if (cancelled) return;
+
+        const merged = mergeFeedCards(researchCards);
+        setCards(merged);
+        if (!built.length) {
+          const refreshed = buildSession(merged, history, {
+            preferences: me.domain_preferences,
+            signalDomains: activeSignalDomains(live),
+            size: SESSION_SIZE,
+          });
+          setSession(refreshed);
+          setPhase(refreshed.length ? 'session' : 'empty');
+        }
+      } catch (error) {
+        console.debug('Research feed refresh skipped:', error);
+      }
     })();
     return () => {
       cancelled = true;
@@ -170,38 +189,20 @@ export default function Deck() {
     setPhase(built.length ? 'session' : 'empty');
   };
 
-  const onSynced = (created) => {
-    if (!created?.length) return;
-    const merged = [...created, ...cards];
+  const onFeedSynced = (researchCards) => {
+    const merged = mergeFeedCards(researchCards);
     setCards(merged);
-    if (phase === 'empty') {
-      const built = buildSession(merged, interactions, {
-        preferences: user?.domain_preferences,
-        signalDomains: activeSignalDomains(signals),
-        size: SESSION_SIZE,
-      });
-      setSession(built);
-      setIndex(0);
-      setPhase(built.length ? 'session' : 'empty');
-    }
+    if (phase !== 'empty') return;
+
+    const built = buildSession(merged, interactions, {
+      preferences: user?.domain_preferences,
+      signalDomains: activeSignalDomains(signals),
+      size: SESSION_SIZE,
+    });
+    setSession(priming?.domain ? pinPrimedCard(built, priming.domain, merged) : built);
+    setIndex(0);
+    setPhase(built.length ? 'session' : 'empty');
   };
-
-  // Background ingestion on load. Throttled to 30 minutes to stay inside GitHub's
-  // unauthenticated limit (60 requests/hour per IP); failures are silent by design.
-  useEffect(() => {
-    if (user?.role !== 'admin') return;
-    const now = Date.now();
-    const lastSync = Number(localStorage.getItem(SYNC_KEY));
-    if (lastSync && now - lastSync <= SYNC_THROTTLE_MS) return;
-
-    syncLatestGitHubCommits(3)
-      .then((created) => {
-        localStorage.setItem(SYNC_KEY, String(now));
-        onSynced(created);
-      })
-      .catch((err) => console.debug('Background commit sync skipped:', err));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
 
   // Context priming: classify the next meeting, then pin a card of its domain to the front.
   useEffect(() => {
@@ -237,7 +238,7 @@ export default function Deck() {
         <DeckHeader
           sessionSeconds={sessionSeconds}
           streak={user?.current_streak ?? 0}
-          syncSlot={user?.role === 'admin' ? <SyncGitHubButton onSynced={onSynced} /> : null}
+          syncSlot={<SyncFeedButton onSynced={onFeedSynced} />}
         />
 
         {signal && <SignalBanner signal={signal} />}
