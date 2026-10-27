@@ -1,0 +1,16 @@
+{
+  "domain": "CS_RESEARCH",
+  "title": "HIVE Zero-Trust Swarm Invariants",
+  "hook": "Preventing monotonic entropy degradation in autonomous agent loops.",
+  "core_insight": "Agent ensembles processing untrusted external tool outputs experience state drift. Gating transitions with deterministic policy contracts ensures system state remains inside verifiable bounds.",
+  "takeaways": [
+    "Enforce N >= 3f + 1 consensus bounds on privileged commands.",
+    "Decouple the reasoning plane from deterministic policy execution."
+  ],
+  "proof_or_code": "\\square (\\text{Action}(a_i) \\implies \\text{Attested}(a_i) \\land \\Sigma[a_i] \\ge \\theta_{\\text{trust}})",
+  "read_time_seconds": 45,
+  "commit_hash": "seed01",
+  "repo_url": "https://github.com/afrodojo/hive-alignment",
+  "live_site_url": "https://hive-align.eds-360.com",
+  "external_reference": "specs/HiveSwarmConsensus.tla"
+}
