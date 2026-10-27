@@ -1,0 +1,67 @@
+{
+  "name": "UpcomingMeeting",
+  "type": "object",
+  "properties": {
+    "summary": {
+      "type": "string",
+      "description": "Meeting title used in the context priming banner."
+    },
+    "description": {
+      "type": "string",
+      "description": "Optional meeting body or agenda, used for domain classification."
+    },
+    "startTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO timestamp the meeting starts."
+    },
+    "endTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO timestamp the meeting ends."
+    },
+    "domain": {
+      "type": "string",
+      "enum": [
+        "SPIRITUAL_PILLARS",
+        "CYBER_DEFENSE",
+        "OMEGA_HISTORY",
+        "CS_RESEARCH",
+        "COMMUNITY_UPLIFT",
+        "BIZ_ACUMEN"
+      ],
+      "description": "Focus domain this meeting maps to, auto-classified from summary and description when omitted."
+    },
+    "active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the meeting can prime the feed."
+    }
+  },
+  "required": [
+    "summary",
+    "startTime"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "user"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

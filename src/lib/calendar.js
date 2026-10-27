@@ -54,16 +54,27 @@ export function classifyMeetingDomain({ title, description } = {}) {
   return best;
 }
 
-export function resolvePrimingDomain(signal) {
-  if (!signal) return null;
-  return classifyMeetingDomain({ title: signal.title, description: signal.detail });
+/** ISO bounds for the 20-minute priming window around now — feed straight into a query. */
+export function upcomingMeetingWindow(now = new Date()) {
+  return {
+    from: new Date(now.getTime() - PRIMING_GRACE_MS).toISOString(),
+    to: new Date(now.getTime() + PRIMING_WINDOW_MS).toISOString(),
+  };
 }
 
-/** The soonest calendar event inside the window — starting soon, or just started. */
-export function primingEvent(signals = [], now = new Date()) {
-  const candidates = signals
-    .filter((s) => s.source === 'CALENDAR' && s.status !== 'DONE' && s.starts_at)
-    .map((s) => ({ signal: s, startsAt: new Date(s.starts_at) }))
+/** The domain a meeting primes — stored value first, otherwise classified from its text. */
+export function meetingPrimingDomain(meeting) {
+  if (!meeting) return null;
+  return (
+    meeting.domain || classifyMeetingDomain({ title: meeting.summary, description: meeting.description })
+  );
+}
+
+/** The soonest active meeting inside the window — starting soon, or just started. */
+export function soonestMeeting(meetings = [], now = new Date()) {
+  const candidates = meetings
+    .filter((m) => m.active !== false && m.startTime)
+    .map((m) => ({ meeting: m, startsAt: new Date(m.startTime) }))
     .filter(({ startsAt }) => !Number.isNaN(startsAt.getTime()))
     .filter(({ startsAt }) => {
       const delta = startsAt.getTime() - now.getTime();
@@ -71,7 +82,7 @@ export function primingEvent(signals = [], now = new Date()) {
     })
     .sort((a, b) => a.startsAt - b.startsAt);
 
-  return candidates[0] || null;
+  return candidates[0]?.meeting || null;
 }
 
 /**

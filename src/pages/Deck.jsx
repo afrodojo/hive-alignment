@@ -10,7 +10,7 @@ import ContextPrimingBanner from '@/components/ContextPrimingBanner';
 import DeckSkeleton from '@/components/DeckSkeleton';
 import SyncFeedButton from '@/components/SyncFeedButton';
 import { isGitHubCacheFresh, loadGitHubCards, mergeFeedCards, readCachedGitHubCards } from '@/lib/ghCards';
-import { pinPrimedCard, primingEvent, resolvePrimingDomain } from '@/lib/calendar';
+import { meetingPrimingDomain, pinPrimedCard, soonestMeeting, upcomingMeetingWindow } from '@/lib/calendar';
 import {
   activeSignalDomains,
   buildSession,
@@ -27,6 +27,7 @@ export default function Deck() {
   const [cards, setCards] = useState([]);
   const [interactions, setInteractions] = useState([]);
   const [signals, setSignals] = useState([]);
+  const [meetings, setMeetings] = useState([]);
   const [session, setSession] = useState([]);
   const [index, setIndex] = useState(0);
   const [savedIds, setSavedIds] = useState([]);
@@ -39,12 +40,17 @@ export default function Deck() {
     let cancelled = false;
     (async () => {
       const me = await base44.auth.me();
-      const [interactionPage, signalList] = await Promise.all([
+      const { from, to } = upcomingMeetingWindow();
+      const [interactionPage, signalList, meetingList] = await Promise.all([
         base44.entities.UserCardInteraction.filter(
           { user_id: me.id },
           { sort: '-created_date', limit: 200 }
         ),
         base44.entities.FocusSignal.filter({ status: 'ACTIVE' }).catch(() => []),
+        base44.entities.UpcomingMeeting.filter({
+          active: true,
+          startTime: { $gte: from, $lte: to },
+        }).catch(() => []),
       ]);
       if (cancelled) return;
 
@@ -61,6 +67,7 @@ export default function Deck() {
       setCards(allCards);
       setInteractions(history);
       setSignals(live);
+      setMeetings(meetingList ?? []);
       setSession(built);
       setSavedIds(history.filter((i) => i.action === 'SAVED').map((i) => i.card_id));
       setMasteredIds(history.filter((i) => i.action === 'MASTERED').map((i) => i.card_id));
@@ -204,18 +211,18 @@ export default function Deck() {
     setPhase(built.length ? 'session' : 'empty');
   };
 
-  // Context priming: classify the next meeting, then pin a card of its domain to the front.
+  // Context priming: the soonest active meeting inside the window pins a card of its domain to the front.
   useEffect(() => {
-    const event = primingEvent(signals);
-    if (!event || primedRef.current === event.signal.id) return;
+    const meeting = soonestMeeting(meetings);
+    if (!meeting || primedRef.current === meeting.id) return;
 
-    const domain = resolvePrimingDomain(event.signal);
-    primedRef.current = event.signal.id;
-    setPriming({ name: event.signal.title, domain });
+    const domain = meetingPrimingDomain(meeting);
+    primedRef.current = meeting.id;
+    setPriming({ name: meeting.summary, domain });
     setSession((current) => pinPrimedCard(current, domain, cards));
     setIndex(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [signals]);
+  }, [meetings]);
 
   return (
     <div className="relative flex min-h-[100dvh] w-full flex-col bg-slate-950">
