@@ -1,0 +1,42 @@
+name: Synthesize Focus Cards
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'data/**'
+      - '**.md'
+      - '.gitignore'
+
+permissions:
+  contents: write
+
+jobs:
+  synthesize-card:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: pip install httpx pydantic
+
+      - name: Execute Synthesis
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: python scripts/synthesize_card.py
+
+      - name: Commit and Push Card to Repo
+        run: |
+          git config user.name "hive-alignment-bot"
+          git config user.email "bot@eds-360.com"
+          git add data/cards/
+          git diff-index --quiet HEAD || (git commit -m "chore(feed): auto-synthesize card for ${{ github.sha }} [skip ci]" && git push)
