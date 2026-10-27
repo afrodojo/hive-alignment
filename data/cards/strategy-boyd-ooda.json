@@ -1,0 +1,16 @@
+{
+  "domain": "WARRIOR_ETHOS",
+  "title": "Boyd's OODA: Resetting the Executive Freeze",
+  "hook": "Task paralysis occurs when the Orientation phase gets trapped in analytical entropy.",
+  "core_insight": "Col. John Boyd identified 'Orientation' as the core genetic code of decision loops. When ADHD induces freeze, the loop stalls because the brain seeks total certainty before acting. Speed outpaces precision: take the smallest irreversible step to shatter orientation paralysis and force the environment to reveal new data.",
+  "takeaways": [
+    "Collapse loop latency: A 70% complete decision executed in 3 minutes beats a 100% decision delayed by an hour.",
+    "Small decisive actions dissolve internal friction faster than rumination."
+  ],
+  "proof_or_code": "\\Delta t_{\\text{cycle}} = t_{\\text{Observe}} + t_{\\text{Orient}} + t_{\\text{Decide}} + t_{\\text{Act}} \\implies \\min(t_{\\text{Orient}})",
+  "read_time_seconds": 45,
+  "commit_hash": "ethos02",
+  "repo_url": "https://github.com/afrodojo/hive-alignment",
+  "live_site_url": "https://hive-align.eds-360.com",
+  "external_reference": "John Boyd, Patterns of Conflict"
+}
