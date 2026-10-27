@@ -1,0 +1,86 @@
+{
+  "name": "FocusSignal",
+  "type": "object",
+  "properties": {
+    "source": {
+      "type": "string",
+      "enum": [
+        "CALENDAR",
+        "GITHUB"
+      ],
+      "description": "Which webhook produced this signal."
+    },
+    "title": {
+      "type": "string",
+      "description": "Event or commit summary used for the context chip."
+    },
+    "domain": {
+      "type": "string",
+      "enum": [
+        "SPIRITUAL_PILLARS",
+        "OMEGA_HISTORY",
+        "CS_RESEARCH",
+        "COMMUNITY_UPLIFT",
+        "BIZ_ACUMEN"
+      ],
+      "description": "Domain this signal should boost in the feed."
+    },
+    "detail": {
+      "type": "string",
+      "description": "Supporting detail such as attendees, repo, or commit message."
+    },
+    "starts_at": {
+      "type": "string",
+      "description": "ISO timestamp the event starts (or the commit was received)."
+    },
+    "expires_at": {
+      "type": "string",
+      "description": "ISO timestamp after which the signal no longer boosts the feed."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "DONE"
+      ],
+      "default": "ACTIVE",
+      "description": "Signal lifecycle state."
+    }
+  },
+  "required": [
+    "source",
+    "title",
+    "domain"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

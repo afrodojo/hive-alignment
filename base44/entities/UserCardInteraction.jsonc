@@ -1,0 +1,79 @@
+{
+  "name": "UserCardInteraction",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "The app user who performed the action."
+    },
+    "card_id": {
+      "type": "string",
+      "description": "The card acted on."
+    },
+    "domain": {
+      "type": "string",
+      "enum": [
+        "SPIRITUAL_PILLARS",
+        "OMEGA_HISTORY",
+        "CS_RESEARCH",
+        "COMMUNITY_UPLIFT",
+        "BIZ_ACUMEN"
+      ],
+      "description": "Domain of the card, denormalized for weighting."
+    },
+    "action": {
+      "type": "string",
+      "enum": [
+        "SAVED",
+        "MASTERED",
+        "DISMISSED"
+      ],
+      "description": "The recorded interaction."
+    }
+  },
+  "required": [
+    "card_id",
+    "action"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

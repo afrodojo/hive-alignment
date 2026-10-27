@@ -1,0 +1,70 @@
+{
+  "name": "Card",
+  "type": "object",
+  "properties": {
+    "domain": {
+      "type": "string",
+      "enum": [
+        "SPIRITUAL_PILLARS",
+        "OMEGA_HISTORY",
+        "CS_RESEARCH",
+        "COMMUNITY_UPLIFT",
+        "BIZ_ACUMEN"
+      ],
+      "description": "The domain taxonomy bucket this insight belongs to."
+    },
+    "title": {
+      "type": "string",
+      "maxLength": 120,
+      "description": "The insight headline."
+    },
+    "hook": {
+      "type": "string",
+      "description": "A concise italicized quote or premise."
+    },
+    "core_insight": {
+      "type": "string",
+      "description": "High-density, jargon-precise explanatory paragraph."
+    },
+    "takeaways": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Two to three concrete actionable principles."
+    },
+    "proof_or_code": {
+      "type": "string",
+      "description": "Optional math invariant, formula, or CLI/code snippet."
+    },
+    "read_time_seconds": {
+      "type": "integer",
+      "default": 45,
+      "description": "Estimated read time in seconds."
+    }
+  },
+  "required": [
+    "domain",
+    "title",
+    "hook",
+    "core_insight"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

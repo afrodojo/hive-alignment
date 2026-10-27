@@ -1,0 +1,19 @@
+{
+  "name": "User",
+  "type": "object",
+  "properties": {
+    "current_streak": {
+      "type": "integer",
+      "default": 0,
+      "description": "Consecutive days with at least one internalized insight."
+    },
+    "last_active_at": {
+      "type": "string",
+      "description": "ISO timestamp of the last internalization, used to advance the streak."
+    },
+    "domain_preferences": {
+      "type": "object",
+      "description": "Recommendation weighting across the five domains, bumped by interactions."
+    }
+  }
+}
