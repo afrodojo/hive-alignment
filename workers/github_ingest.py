@@ -7,6 +7,13 @@ from fastapi import APIRouter, Header, HTTPException, Request
 
 router = APIRouter(prefix="/api/webhooks", tags=["Webhooks"])
 
+BASE44_APP_ID = os.getenv("BASE44_APP_ID")
+# Personal access token (Workspace settings > Secrets > Personal access tokens)
+BASE44_PAT = os.getenv("BASE44_PAT")
+BASE44_API_BASE = "https://app.base44.com/api/apps"
+GITHUB_REPO_URL = "https://github.com/afrodojo/hive-alignment"
+LIVE_SITE_URL = "https://hive-align.eds-360.com"
+
 # Pydantic schema enforcing the exact Base44 database card structure
 class CardExtractionSchema(BaseModel):
     domain: str = Field(
@@ -65,6 +72,49 @@ async def synthesize_card_from_diff(diff_text: str, commit_msg: str) -> dict:
         import json
         return json.loads(content)
 
+def extract_touched_files(diff_text: str) -> List[str]:
+    """Pull post-image paths out of a unified diff, preserving order."""
+    paths: List[str] = []
+    for line in diff_text.splitlines():
+        if line.startswith("+++ b/"):
+            path = line[6:].strip()
+            if path and path != "dev/null" and path not in paths:
+                paths.append(path)
+    return paths
+
+
+async def persist_card_to_base44(card_data: dict, commit_hash: str, touched_files: List[str]) -> dict:
+    """Inserts the synthesized card into Base44 via the public Data API."""
+    if not BASE44_APP_ID or not BASE44_PAT:
+        raise RuntimeError("BASE44_APP_ID and BASE44_PAT must be set.")
+
+    payload = {
+        "domain": card_data.get("domain", "CS_RESEARCH"),
+        "title": card_data.get("title"),
+        "hook": card_data.get("hook"),
+        "core_insight": card_data.get("core_insight"),
+        "takeaways": card_data.get("takeaways", []),
+        "proof_or_code": card_data.get("proof_or_code"),
+        "read_time_seconds": card_data.get("read_time_seconds", 45),
+        "commit_hash": (commit_hash or "")[:7],
+        "repo_url": GITHUB_REPO_URL,
+        "live_site_url": LIVE_SITE_URL,
+        "external_reference": touched_files[0] if touched_files else None,
+    }
+
+    async with httpx.AsyncClient(timeout=30.0) as client:
+        res = await client.post(
+            f"{BASE44_API_BASE}/{BASE44_APP_ID}/entities/Card",
+            headers={
+                "Authorization": f"Bearer {BASE44_PAT}",
+                "Content-Type": "application/json",
+            },
+            json=payload,
+        )
+        res.raise_for_status()
+        return res.json()
+
+
 @router.post("/github-commit")
 async def handle_github_webhook(
     request: Request,
@@ -108,12 +158,21 @@ async def handle_github_webhook(
     # Generate synthesized card
     card_data = await synthesize_card_from_diff(diff_text, commit_msg)
 
-    # In production, persist directly to PostgreSQL / Base44 DB:
-    # db.execute("INSERT INTO cards ... VALUES ...")
-    
+    commit_hash = latest_commit.get("id") or payload.get("after") or ""
+    touched_files = extract_touched_files(diff_text)
+
+    try:
+        persisted = await persist_card_to_base44(card_data, commit_hash, touched_files)
+    except httpx.HTTPStatusError as exc:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Base44 rejected the card: {exc.response.text}",
+        )
+
     return {
         "status": "success",
-        "action": "Card synthesized",
+        "action": "Card synthesized and persisted",
         "repo": "afrodojo/hive-alignment",
-        "card": card_data
+        "commit": commit_hash[:7],
+        "card": persisted
     }
