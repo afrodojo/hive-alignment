@@ -609,45 +609,63 @@
       </div>
     </div>
 
-    <!-- TAB 4: Biometrics & Telemetry -->
+        <!-- TAB 4: Biometrics & Telemetry -->
     <div id="tab-telemetry" class="tab-content space-y-6">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
           <span class="text-xs text-slate-400 uppercase font-medium">Recovery Score</span>
           <div class="text-2xl font-bold text-emerald-400 mt-1 flex items-center gap-2">
-            78% <span class="text-xs px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-300">GREEN</span>
+            <span id="telemetry-recovery">66%</span> <span id="telemetry-recovery-badge" class="text-xs px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-300">GREEN</span>
           </div>
           <p class="text-xs text-slate-500 mt-2">Optimal Parasympathetic Reserve</p>
         </div>
 
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-          <span class="text-xs text-slate-400 uppercase font-medium">Autonomic HRV</span>
-          <div class="text-2xl font-bold text-sky-400 mt-1">92.9 ms</div>
-          <p class="text-xs text-slate-500 mt-2">rMSSD Autonomic Baseline</p>
+          <span class="text-xs text-slate-400 uppercase font-medium">Sleep Performance</span>
+          <div class="text-2xl font-bold text-sky-400 mt-1 flex items-center gap-2">
+            <span id="telemetry-sleep">61%</span> <span class="text-xs px-2 py-0.5 rounded bg-sky-950 border border-sky-800 text-sky-300">WHOOP</span>
+          </div>
+          <p class="text-xs text-slate-500 mt-2">Restorative Sleep Efficiency</p>
         </div>
 
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
           <span class="text-xs text-slate-400 uppercase font-medium">Day Strain</span>
-          <div class="text-2xl font-bold text-amber-400 mt-1">6.8 / 21</div>
+          <div class="text-2xl font-bold text-amber-400 mt-1">
+            <span id="telemetry-strain">5.3</span> / 21
+          </div>
           <p class="text-xs text-slate-500 mt-2">Target Budget: 14.0 – 17.5</p>
         </div>
 
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <span class="text-xs text-slate-400 uppercase font-medium">Autonomic HRV</span>
+          <div class="text-2xl font-bold text-purple-400 mt-1">
+            <span id="telemetry-hrv">92.9</span> ms
+          </div>
+          <p class="text-xs text-slate-500 mt-2">rMSSD Autonomic Baseline</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
           <span class="text-xs text-slate-400 uppercase font-medium">Micronutrients</span>
-          <div class="text-lg font-semibold text-purple-300 mt-1">Men of Mars</div>
+          <div class="text-lg font-semibold text-emerald-300 mt-1">Men of Mars</div>
           <p class="text-xs text-slate-500 mt-2">Daily Multivitamin Protocol</p>
         </div>
       </div>
 
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-6">
-        <h3 class="text-lg font-bold text-white mb-2">Athlete Vitals Profile</h3>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mt-4">
-          <div><span class="text-slate-500">Height:</span> <span class="font-medium text-slate-200">5'10" (70 in)</span></div>
-          <div><span class="text-slate-500">Target Weight:</span> <span class="font-medium text-slate-200">175 lbs</span></div>
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-bold text-white">Athlete Vitals Profile</h3>
+          <button onclick="editVitalsModal()" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs font-semibold transition flex items-center gap-1.5">
+            <i data-lucide="edit-2" class="w-3.5 h-3.5"></i> Update Biometrics
+          </button>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          <div><span class="text-slate-500">Height:</span> <span id="vitals-height" class="font-medium text-slate-200">6'0" (72 in)</span></div>
+          <div><span class="text-slate-500">Weight:</span> <span id="vitals-weight" class="font-medium text-slate-200">235 lbs</span></div>
           <div><span class="text-slate-500">Schedule:</span> <span class="font-medium text-slate-200">Monday – Friday</span></div>
           <div><span class="text-slate-500">Academic Target:</span> <span class="font-medium text-slate-200">Spring 2027</span></div>
         </div>
       </div>
+    </div>
     </div>
 
     <!-- TAB 5: Crunch Fitness M-F -->
@@ -881,6 +899,66 @@
 
   <script>
     lucide.createIcons();
+    /* Dynamic Telemetry & Vitals Sync */
+    async function loadTelemetryData() {
+      // 1. Check local storage overrides
+      const localVitals = JSON.parse(localStorage.getItem('hive_user_vitals') || '{}');
+      if (localVitals.weight) document.getElementById('vitals-weight').innerText = `${localVitals.weight} lbs`;
+      if (localVitals.height) document.getElementById('vitals-height').innerText = localVitals.height;
+
+      // 2. Load latest telemetry JSON if generated by workflow or API
+      try {
+        const res = await fetch('data/telemetry.json');
+        if (res.ok) {
+          const t = await res.json();
+          if (t.recovery !== undefined) {
+            document.getElementById('telemetry-recovery').innerText = `${t.recovery}%`;
+            const badge = document.getElementById('telemetry-recovery-badge');
+            if (badge) {
+              if (t.recovery >= 67) {
+                badge.innerText = 'GREEN'; badge.className = 'text-xs px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-300';
+              } else if (t.recovery >= 34) {
+                badge.innerText = 'YELLOW'; badge.className = 'text-xs px-2 py-0.5 rounded bg-amber-950 border border-amber-800 text-amber-300';
+              } else {
+                badge.innerText = 'RED'; badge.className = 'text-xs px-2 py-0.5 rounded bg-rose-950 border border-rose-800 text-rose-300';
+              }
+            }
+          }
+          if (t.sleep !== undefined) document.getElementById('telemetry-sleep').innerText = `${t.sleep}%`;
+          if (t.strain !== undefined) document.getElementById('telemetry-strain').innerText = t.strain;
+          if (t.hrv !== undefined) document.getElementById('telemetry-hrv').innerText = t.hrv;
+        }
+      } catch (err) {
+        console.warn('Telemetry JSON note:', err);
+      }
+    }
+    document.addEventListener('DOMContentLoaded', loadTelemetryData);
+
+    function editVitalsModal() {
+      const currentWeight = document.getElementById('vitals-weight').innerText.replace(' lbs', '').trim();
+      const newWeight = prompt("Enter current weight in lbs:", currentWeight || "235");
+      if (newWeight && !isNaN(newWeight)) {
+        const currentVitals = JSON.parse(localStorage.getItem('hive_user_vitals') || '{}');
+        currentVitals.weight = newWeight;
+        localStorage.setItem('hive_user_vitals', JSON.stringify(currentVitals));
+        document.getElementById('vitals-weight').innerText = `${newWeight} lbs`;
+      }
+
+      const newRecovery = prompt("Update Recovery Score % (WHOOP):", "66");
+      if (newRecovery && !isNaN(newRecovery)) {
+        document.getElementById('telemetry-recovery').innerText = `${newRecovery}%`;
+      }
+
+      const newSleep = prompt("Update Sleep Performance % (WHOOP):", "61");
+      if (newSleep && !isNaN(newSleep)) {
+        document.getElementById('telemetry-sleep').innerText = `${newSleep}%`;
+      }
+
+      const newStrain = prompt("Update Day Strain (0-21):", "5.3");
+      if (newStrain && !isNaN(newStrain)) {
+        document.getElementById('telemetry-strain').innerText = newStrain;
+      }
+    }
     /* Fetch and render the nightly reflection synthesis card */
     async function loadDailyReflectionCard() {
       try {
@@ -898,6 +976,66 @@
             list.innerHTML = data.highlights.map(h => `<li>${h}</li>`).join('');
           }
           lucide.createIcons();
+    /* Dynamic Telemetry & Vitals Sync */
+    async function loadTelemetryData() {
+      // 1. Check local storage overrides
+      const localVitals = JSON.parse(localStorage.getItem('hive_user_vitals') || '{}');
+      if (localVitals.weight) document.getElementById('vitals-weight').innerText = `${localVitals.weight} lbs`;
+      if (localVitals.height) document.getElementById('vitals-height').innerText = localVitals.height;
+
+      // 2. Load latest telemetry JSON if generated by workflow or API
+      try {
+        const res = await fetch('data/telemetry.json');
+        if (res.ok) {
+          const t = await res.json();
+          if (t.recovery !== undefined) {
+            document.getElementById('telemetry-recovery').innerText = `${t.recovery}%`;
+            const badge = document.getElementById('telemetry-recovery-badge');
+            if (badge) {
+              if (t.recovery >= 67) {
+                badge.innerText = 'GREEN'; badge.className = 'text-xs px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-300';
+              } else if (t.recovery >= 34) {
+                badge.innerText = 'YELLOW'; badge.className = 'text-xs px-2 py-0.5 rounded bg-amber-950 border border-amber-800 text-amber-300';
+              } else {
+                badge.innerText = 'RED'; badge.className = 'text-xs px-2 py-0.5 rounded bg-rose-950 border border-rose-800 text-rose-300';
+              }
+            }
+          }
+          if (t.sleep !== undefined) document.getElementById('telemetry-sleep').innerText = `${t.sleep}%`;
+          if (t.strain !== undefined) document.getElementById('telemetry-strain').innerText = t.strain;
+          if (t.hrv !== undefined) document.getElementById('telemetry-hrv').innerText = t.hrv;
+        }
+      } catch (err) {
+        console.warn('Telemetry JSON note:', err);
+      }
+    }
+    document.addEventListener('DOMContentLoaded', loadTelemetryData);
+
+    function editVitalsModal() {
+      const currentWeight = document.getElementById('vitals-weight').innerText.replace(' lbs', '').trim();
+      const newWeight = prompt("Enter current weight in lbs:", currentWeight || "235");
+      if (newWeight && !isNaN(newWeight)) {
+        const currentVitals = JSON.parse(localStorage.getItem('hive_user_vitals') || '{}');
+        currentVitals.weight = newWeight;
+        localStorage.setItem('hive_user_vitals', JSON.stringify(currentVitals));
+        document.getElementById('vitals-weight').innerText = `${newWeight} lbs`;
+      }
+
+      const newRecovery = prompt("Update Recovery Score % (WHOOP):", "66");
+      if (newRecovery && !isNaN(newRecovery)) {
+        document.getElementById('telemetry-recovery').innerText = `${newRecovery}%`;
+      }
+
+      const newSleep = prompt("Update Sleep Performance % (WHOOP):", "61");
+      if (newSleep && !isNaN(newSleep)) {
+        document.getElementById('telemetry-sleep').innerText = `${newSleep}%`;
+      }
+
+      const newStrain = prompt("Update Day Strain (0-21):", "5.3");
+      if (newStrain && !isNaN(newStrain)) {
+        document.getElementById('telemetry-strain').innerText = newStrain;
+      }
+    }
         }
       } catch (err) {
         console.warn('Daily reflection fetch notice:', err);
@@ -1061,6 +1199,66 @@
         </div>
       `).join('');
       lucide.createIcons();
+    /* Dynamic Telemetry & Vitals Sync */
+    async function loadTelemetryData() {
+      // 1. Check local storage overrides
+      const localVitals = JSON.parse(localStorage.getItem('hive_user_vitals') || '{}');
+      if (localVitals.weight) document.getElementById('vitals-weight').innerText = `${localVitals.weight} lbs`;
+      if (localVitals.height) document.getElementById('vitals-height').innerText = localVitals.height;
+
+      // 2. Load latest telemetry JSON if generated by workflow or API
+      try {
+        const res = await fetch('data/telemetry.json');
+        if (res.ok) {
+          const t = await res.json();
+          if (t.recovery !== undefined) {
+            document.getElementById('telemetry-recovery').innerText = `${t.recovery}%`;
+            const badge = document.getElementById('telemetry-recovery-badge');
+            if (badge) {
+              if (t.recovery >= 67) {
+                badge.innerText = 'GREEN'; badge.className = 'text-xs px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-300';
+              } else if (t.recovery >= 34) {
+                badge.innerText = 'YELLOW'; badge.className = 'text-xs px-2 py-0.5 rounded bg-amber-950 border border-amber-800 text-amber-300';
+              } else {
+                badge.innerText = 'RED'; badge.className = 'text-xs px-2 py-0.5 rounded bg-rose-950 border border-rose-800 text-rose-300';
+              }
+            }
+          }
+          if (t.sleep !== undefined) document.getElementById('telemetry-sleep').innerText = `${t.sleep}%`;
+          if (t.strain !== undefined) document.getElementById('telemetry-strain').innerText = t.strain;
+          if (t.hrv !== undefined) document.getElementById('telemetry-hrv').innerText = t.hrv;
+        }
+      } catch (err) {
+        console.warn('Telemetry JSON note:', err);
+      }
+    }
+    document.addEventListener('DOMContentLoaded', loadTelemetryData);
+
+    function editVitalsModal() {
+      const currentWeight = document.getElementById('vitals-weight').innerText.replace(' lbs', '').trim();
+      const newWeight = prompt("Enter current weight in lbs:", currentWeight || "235");
+      if (newWeight && !isNaN(newWeight)) {
+        const currentVitals = JSON.parse(localStorage.getItem('hive_user_vitals') || '{}');
+        currentVitals.weight = newWeight;
+        localStorage.setItem('hive_user_vitals', JSON.stringify(currentVitals));
+        document.getElementById('vitals-weight').innerText = `${newWeight} lbs`;
+      }
+
+      const newRecovery = prompt("Update Recovery Score % (WHOOP):", "66");
+      if (newRecovery && !isNaN(newRecovery)) {
+        document.getElementById('telemetry-recovery').innerText = `${newRecovery}%`;
+      }
+
+      const newSleep = prompt("Update Sleep Performance % (WHOOP):", "61");
+      if (newSleep && !isNaN(newSleep)) {
+        document.getElementById('telemetry-sleep').innerText = `${newSleep}%`;
+      }
+
+      const newStrain = prompt("Update Day Strain (0-21):", "5.3");
+      if (newStrain && !isNaN(newStrain)) {
+        document.getElementById('telemetry-strain').innerText = newStrain;
+      }
+    }
     /* Fetch and render the nightly reflection synthesis card */
     async function loadDailyReflectionCard() {
       try {
@@ -1078,6 +1276,66 @@
             list.innerHTML = data.highlights.map(h => `<li>${h}</li>`).join('');
           }
           lucide.createIcons();
+    /* Dynamic Telemetry & Vitals Sync */
+    async function loadTelemetryData() {
+      // 1. Check local storage overrides
+      const localVitals = JSON.parse(localStorage.getItem('hive_user_vitals') || '{}');
+      if (localVitals.weight) document.getElementById('vitals-weight').innerText = `${localVitals.weight} lbs`;
+      if (localVitals.height) document.getElementById('vitals-height').innerText = localVitals.height;
+
+      // 2. Load latest telemetry JSON if generated by workflow or API
+      try {
+        const res = await fetch('data/telemetry.json');
+        if (res.ok) {
+          const t = await res.json();
+          if (t.recovery !== undefined) {
+            document.getElementById('telemetry-recovery').innerText = `${t.recovery}%`;
+            const badge = document.getElementById('telemetry-recovery-badge');
+            if (badge) {
+              if (t.recovery >= 67) {
+                badge.innerText = 'GREEN'; badge.className = 'text-xs px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-300';
+              } else if (t.recovery >= 34) {
+                badge.innerText = 'YELLOW'; badge.className = 'text-xs px-2 py-0.5 rounded bg-amber-950 border border-amber-800 text-amber-300';
+              } else {
+                badge.innerText = 'RED'; badge.className = 'text-xs px-2 py-0.5 rounded bg-rose-950 border border-rose-800 text-rose-300';
+              }
+            }
+          }
+          if (t.sleep !== undefined) document.getElementById('telemetry-sleep').innerText = `${t.sleep}%`;
+          if (t.strain !== undefined) document.getElementById('telemetry-strain').innerText = t.strain;
+          if (t.hrv !== undefined) document.getElementById('telemetry-hrv').innerText = t.hrv;
+        }
+      } catch (err) {
+        console.warn('Telemetry JSON note:', err);
+      }
+    }
+    document.addEventListener('DOMContentLoaded', loadTelemetryData);
+
+    function editVitalsModal() {
+      const currentWeight = document.getElementById('vitals-weight').innerText.replace(' lbs', '').trim();
+      const newWeight = prompt("Enter current weight in lbs:", currentWeight || "235");
+      if (newWeight && !isNaN(newWeight)) {
+        const currentVitals = JSON.parse(localStorage.getItem('hive_user_vitals') || '{}');
+        currentVitals.weight = newWeight;
+        localStorage.setItem('hive_user_vitals', JSON.stringify(currentVitals));
+        document.getElementById('vitals-weight').innerText = `${newWeight} lbs`;
+      }
+
+      const newRecovery = prompt("Update Recovery Score % (WHOOP):", "66");
+      if (newRecovery && !isNaN(newRecovery)) {
+        document.getElementById('telemetry-recovery').innerText = `${newRecovery}%`;
+      }
+
+      const newSleep = prompt("Update Sleep Performance % (WHOOP):", "61");
+      if (newSleep && !isNaN(newSleep)) {
+        document.getElementById('telemetry-sleep').innerText = `${newSleep}%`;
+      }
+
+      const newStrain = prompt("Update Day Strain (0-21):", "5.3");
+      if (newStrain && !isNaN(newStrain)) {
+        document.getElementById('telemetry-strain').innerText = newStrain;
+      }
+    }
         }
       } catch (err) {
         console.warn('Daily reflection fetch notice:', err);
@@ -1211,6 +1469,66 @@
     function openScanModal() {
       document.getElementById('scan-modal').classList.remove('hidden');
       lucide.createIcons();
+    /* Dynamic Telemetry & Vitals Sync */
+    async function loadTelemetryData() {
+      // 1. Check local storage overrides
+      const localVitals = JSON.parse(localStorage.getItem('hive_user_vitals') || '{}');
+      if (localVitals.weight) document.getElementById('vitals-weight').innerText = `${localVitals.weight} lbs`;
+      if (localVitals.height) document.getElementById('vitals-height').innerText = localVitals.height;
+
+      // 2. Load latest telemetry JSON if generated by workflow or API
+      try {
+        const res = await fetch('data/telemetry.json');
+        if (res.ok) {
+          const t = await res.json();
+          if (t.recovery !== undefined) {
+            document.getElementById('telemetry-recovery').innerText = `${t.recovery}%`;
+            const badge = document.getElementById('telemetry-recovery-badge');
+            if (badge) {
+              if (t.recovery >= 67) {
+                badge.innerText = 'GREEN'; badge.className = 'text-xs px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-300';
+              } else if (t.recovery >= 34) {
+                badge.innerText = 'YELLOW'; badge.className = 'text-xs px-2 py-0.5 rounded bg-amber-950 border border-amber-800 text-amber-300';
+              } else {
+                badge.innerText = 'RED'; badge.className = 'text-xs px-2 py-0.5 rounded bg-rose-950 border border-rose-800 text-rose-300';
+              }
+            }
+          }
+          if (t.sleep !== undefined) document.getElementById('telemetry-sleep').innerText = `${t.sleep}%`;
+          if (t.strain !== undefined) document.getElementById('telemetry-strain').innerText = t.strain;
+          if (t.hrv !== undefined) document.getElementById('telemetry-hrv').innerText = t.hrv;
+        }
+      } catch (err) {
+        console.warn('Telemetry JSON note:', err);
+      }
+    }
+    document.addEventListener('DOMContentLoaded', loadTelemetryData);
+
+    function editVitalsModal() {
+      const currentWeight = document.getElementById('vitals-weight').innerText.replace(' lbs', '').trim();
+      const newWeight = prompt("Enter current weight in lbs:", currentWeight || "235");
+      if (newWeight && !isNaN(newWeight)) {
+        const currentVitals = JSON.parse(localStorage.getItem('hive_user_vitals') || '{}');
+        currentVitals.weight = newWeight;
+        localStorage.setItem('hive_user_vitals', JSON.stringify(currentVitals));
+        document.getElementById('vitals-weight').innerText = `${newWeight} lbs`;
+      }
+
+      const newRecovery = prompt("Update Recovery Score % (WHOOP):", "66");
+      if (newRecovery && !isNaN(newRecovery)) {
+        document.getElementById('telemetry-recovery').innerText = `${newRecovery}%`;
+      }
+
+      const newSleep = prompt("Update Sleep Performance % (WHOOP):", "61");
+      if (newSleep && !isNaN(newSleep)) {
+        document.getElementById('telemetry-sleep').innerText = `${newSleep}%`;
+      }
+
+      const newStrain = prompt("Update Day Strain (0-21):", "5.3");
+      if (newStrain && !isNaN(newStrain)) {
+        document.getElementById('telemetry-strain').innerText = newStrain;
+      }
+    }
     }
 
     function closeScanModal() {
@@ -1322,3 +1640,4 @@
   </script>
 </body>
 </html>
+

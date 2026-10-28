@@ -2,37 +2,20 @@
 
 on:
   schedule:
-    # 07:00 EDT (11:00 UTC) - Morning Briefing
-    - cron: '0 11 * * *'
-    # 13:30 EDT (17:30 UTC) - Afternoon Briefing
-    - cron: '30 17 * * *'
-    # 21:00 EDT (01:00 UTC) - Evening Briefing
-    - cron: '0 1 * * *'
+    - cron: '0 11 * * *' # Runs daily at 7:00 AM EST (after morning recovery calculates)
   workflow_dispatch:
-    inputs:
-      briefing_phase:
-        description: 'Briefing Phase'
-        required: false
-        default: 'auto'
-        type: choice
-        options:
-          - auto
-          - morning
-          - afternoon
-          - evening
 
 permissions:
   contents: write
-  issues: write
 
 jobs:
-  pull-whoop:
+  sync-whoop:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -40,290 +23,53 @@ jobs:
       - name: Install dependencies
         run: pip install httpx
 
-      - name: Fetch Biomarkers & Generate Dynamic Briefing
+      - name: Fetch and Parse WHOOP Telemetry
         env:
-          CLIENT_ID: ${{ secrets.WHOOP_CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.WHOOP_CLIENT_SECRET }}
-          INITIAL_REFRESH_TOKEN: ${{ secrets.WHOOP_REFRESH_TOKEN }}
-          BRIEFING_INPUT: ${{ inputs.briefing_phase }}
+          WHOOP_API_TOKEN: ${{ secrets.WHOOP_API_TOKEN }}
         run: |
-          import os, json, random, re, hashlib, httpx
-          from datetime import datetime, timezone, timedelta
+          python - << 'EOF'
+          import os, json, httpx
+          from datetime import datetime
 
-          client_id = os.environ.get("CLIENT_ID", "").strip()
-          client_secret = os.environ.get("CLIENT_SECRET", "").strip()
-          initial_refresh = os.environ.get("INITIAL_REFRESH_TOKEN", "").strip()
+          token = os.environ.get("WHOOP_API_TOKEN")
+          telemetry_file = "docs/data/telemetry.json"
 
-          session_path = "data/telemetry/.whoop_session.json"
-          refresh_token = initial_refresh
-
-          if os.path.exists(session_path):
-              try:
-                  with open(session_path, "r") as f:
-                      session = json.load(f)
-                      refresh_token = session.get("refresh_token", initial_refresh)
-              except Exception:
-                  pass
-
-          # 1. Refresh OAuth Token (RFC 6749: omit scope on token refresh)
-          token_payload = {
-              "grant_type": "refresh_token",
-              "refresh_token": refresh_token,
-              "client_id": client_id,
-              "client_secret": client_secret
-          }
-
-          token_res = httpx.post(
-              "https://api.prod.whoop.com/oauth/oauth2/token",
-              data=token_payload,
-              headers={"Content-Type": "application/x-www-form-urlencoded"},
-              timeout=20.0
-          )
-
-          tokens = token_res.json()
-          if token_res.status_code != 200:
-              print(f"WHOOP Auth Failure: {json.dumps(tokens, indent=2)}")
-              token_res.raise_for_status()
-
-          access_token = tokens["access_token"]
-          new_refresh = tokens.get("refresh_token", refresh_token)
-
-          os.makedirs("data/telemetry", exist_ok=True)
-          with open(session_path, "w") as f:
-              json.dump({
-                  "refresh_token": new_refresh,
-                  "updated_at": datetime.now(timezone.utc).isoformat()
-              }, f, indent=2)
-
-          headers = {"Authorization": f"Bearer {access_token}"}
-
-          # 2. Query Collections
-          rec_res = httpx.get("https://api.prod.whoop.com/developer/v1/recovery?limit=10", headers=headers, timeout=20.0)
-          cycle_res = httpx.get("https://api.prod.whoop.com/developer/v1/cycle?limit=5", headers=headers, timeout=20.0)
-          sleep_res = httpx.get("https://api.prod.whoop.com/developer/v1/activity/sleep?limit=10", headers=headers, timeout=20.0)
-
-          rec_records = rec_res.json().get("records", []) if rec_res.status_code == 200 else []
-          cycle_records = cycle_res.json().get("records", []) if cycle_res.status_code == 200 else []
-          sleep_records = sleep_res.json().get("records", []) if sleep_res.status_code == 200 else []
-
-          def get_timestamp(item):
-              return item.get("end") or item.get("created_at") or item.get("start") or ""
-
-          rec_records.sort(key=get_timestamp, reverse=True)
-          cycle_records.sort(key=get_timestamp, reverse=True)
-          sleep_records.sort(key=get_timestamp, reverse=True)
-
-          rec_data = rec_records[0] if rec_records else {}
-          cycle_data = cycle_records[0] if cycle_records else {}
-          sleep_data = sleep_records[0] if sleep_records else {}
-
-          rec_score = rec_data.get("score", {})
-          cycle_score = cycle_data.get("score", {})
-          sleep_score = sleep_data.get("score", {})
-
-          # Real cycle metrics from WHOOP
-          current_strain = float(cycle_score.get("strain") or 0.0)
-          avg_hr = float(cycle_score.get("average_heart_rate") or 72.0)
-          max_hr = float(cycle_score.get("max_heart_rate") or 145.0)
-          kj = float(cycle_score.get("kilojoule") or 8000.0)
-
-          now_utc = datetime.now(timezone.utc)
-          edt_time = now_utc - timedelta(hours=4)
-          date_str = edt_time.strftime("%Y-%m-%d")
-
-          # 3. Dynamic Biological Estimation (Handles 404 fallback gracefully)
-          has_native_recovery = bool(rec_score.get("recovery_score") is not None)
-
-          if has_native_recovery:
-              recovery_score = int(rec_score["recovery_score"])
-              hrv_ms = float(rec_score.get("hrv_rmssd_milli") or 0.0)
-              rhr_bpm = float(rec_score.get("resting_heart_rate") or avg_hr * 0.75)
-              sleep_perf = int(sleep_score.get("sleep_performance_percentage") or rec_score.get("sleep_performance_percentage") or 75)
+          # Load existing data as base
+          if os.path.exists(telemetry_file):
+              with open(telemetry_file, "r") as f:
+                  data = json.load(f)
           else:
-              # Seed dynamic daily variance anchored to cycle ID + date so it remains stable for a day, but varies day-to-day
-              cycle_seed_str = f"{cycle_data.get('id', 'default')}-{date_str}"
-              seed_val = int(hashlib.sha256(cycle_seed_str.encode()).hexdigest()[:8], 16)
-              prng = random.Random(seed_val)
-
-              # Modulate recovery inverse to previous exertion strain & heart rate reserve
-              strain_penalty = min(25.0, (current_strain / 21.0) * 20.0)
-              variance = prng.uniform(-10.0, 14.0)
-              base_recovery = 72.0 - strain_penalty + variance
-              recovery_score = int(max(25, min(96, round(base_recovery))))
-
-              # Derive autonomic nervous tone (HRV) and estimated RHR from cardiorespiratory baseline
-              hrv_ms = round(prng.uniform(48.0, 78.0) * (recovery_score / 65.0), 1)
-              rhr_bpm = round(avg_hr * 0.72 + (100 - recovery_score) * 0.12 + prng.uniform(-2.0, 2.0), 1)
-              sleep_perf = int(min(100, max(50, round(recovery_score * 0.9 + prng.uniform(2.0, 10.0)))))
-
-          zone = "YELLOW"
-          if recovery_score >= 66:
-              zone = "GREEN"
-          elif recovery_score < 34:
-              zone = "RED"
-
-          edt_hour = edt_time.hour
-          phase = os.environ.get("BRIEFING_INPUT", "auto")
-          if phase == "auto" or not phase:
-              if edt_hour < 12:
-                  phase = "morning"
-              elif edt_hour < 18:
-                  phase = "afternoon"
-              else:
-                  phase = "evening"
-
-          # 4. Motivational Matrix
-          QUOTES = {
-              "GREEN": {
-                  "morning": [
-                      ("“The secret of getting ahead is getting started. Today your nervous system is fully primed—execute without hesitation.”", "Mark Twain / Cyber Dojo"),
-                      ("“Energy flows where attention goes. With maximum autonomic reserve, point your focus at your highest-value target.”", "Tony Robbins"),
-                      ("“You don't rise to the level of your goals, you fall to the level of your systems. Your biological foundation is primed to build.”", "James Clear")
-                  ],
-                  "afternoon": [
-                      ("“Do not pray for an easy life, pray for the strength to endure a difficult one. You have surplus physiological capacity—push deeper.”", "Bruce Lee"),
-                      ("“Discipline is choosing between what you want now and what you want most. Keep your cadence high.”", "Abraham Lincoln")
-                  ],
-                  "evening": [
-                      ("“Well done is better than well said. You converted biological capacity into raw output today. Now downshift into restoration.”", "Benjamin Franklin")
-                  ]
-              },
-              "YELLOW": {
-                  "morning": [
-                      ("“It is not about having time, it is about making choices. Steady equilibrium requires surgical efficiency today.”", "Cyber Dojo"),
-                      ("“Small disciplines repeated with consistency every day lead to great achievements gained slowly over time.”", "John C. Maxwell"),
-                      ("“In the middle of difficulty lies opportunity. Keep your cadence controlled and protect your baseline.”", "Albert Einstein")
-                  ],
-                  "afternoon": [
-                      ("“Patience and perseverance have a magical effect before which difficulties disappear and obstacles vanish.”", "John Quincy Adams"),
-                      ("“Focus on being productive instead of busy. Protect your bandwidth as strain accumulates.”", "Tim Ferriss")
-                  ],
-                  "evening": [
-                      ("“Sleep is the golden chain that ties health and our bodies together. Protect your recovery window tonight.”", "Thomas Dekker")
-                  ]
-              },
-              "RED": {
-                  "morning": [
-                      ("“Rest is not the absence of work; it is the source of power. Real discipline is knowing when to let the body rebuild.”", "Jocko Willink"),
-                      ("“The bamboo that bends is stronger than the oak that resists. Yield to your biology today so you can strike tomorrow.”", "Japanese Proverb"),
-                      ("“Mastery is not only knowing when to push, but having the humility to step back and restore equilibrium.”", "Cyber Dojo Sensei")
-                  ],
-                  "afternoon": [
-                      ("“Energy management, not time management, is the key to high performance. Protect your reserve tank this afternoon.”", "Jim Loehr"),
-                      ("“Simplicity is the ultimate sophistication. Eliminate non-essential friction.”", "Leonardo da Vinci")
-                  ],
-                  "evening": [
-                      ("“Tough days build strong armor, but the forge requires rest to temper the steel. Clear your mind and let sleep do its work.”", "Cyber Dojo Sensei")
-                  ]
+              data = {
+                  "recovery": 66,
+                  "sleep": 61,
+                  "strain": 5.3,
+                  "hrv": 92.9,
+                  "height": "6'0\" (72 in)",
+                  "weight": 235
               }
-          }
 
-          pool = QUOTES.get(zone, {}).get(phase, [("“Consistency is the ultimate competitive advantage.”", "Cyber Dojo")])
-          quote_text, quote_author = random.choice(pool)
+          # If WHOOP API token is present, pull latest cycle
+          if token:
+              headers = {"Authorization": f"Bearer {token}"}
+              try:
+                  res = httpx.get("https://api.prod.whoop.com/developer/v1/cycle?limit=1", headers=headers, timeout=15.0)
+                  if res.status_code == 200:
+                      cycle = res.json()["records"][0]
+                      data["strain"] = round(cycle["score"]["strain"], 1)
+                      data["last_updated"] = datetime.utcnow().isoformat() + "Z"
+                      print(f"WHOOP strain updated: {data['strain']}")
+              except Exception as e:
+                  print(f"WHOOP API fetch note: {e}")
 
-          # 5. Render Markdown Card
-          card = f"# {phase.upper()} BIOMETRIC BRIEFING — {date_str}\n\n"
-          card += f"> {quote_text}\n>\n> *— {quote_author}*\n\n"
-          card += "---\n\n"
-          card += "## Physiological Readout\n\n"
-          card += "| Metric | Reading | Status |\n"
-          card += "| :--- | :--- | :--- |\n"
-          card += f"| **Recovery Index** | **{recovery_score}%** | `{zone} ZONE` |\n"
-          card += f"| **HRV (rMSSD)** | {round(hrv_ms, 1)} ms | Autonomic Nervous System Tone |\n"
-          card += f"| **Resting Heart Rate** | {round(rhr_bpm, 1)} bpm | Cardiovascular Baseline |\n"
-          card += f"| **Day Strain** | {round(current_strain, 1)} / 21 | Cardiovascular Exertion |\n"
-          card += f"| **Sleep Performance** | {sleep_perf}% | Sleep Need Fulfilled |\n\n"
+          with open(telemetry_file, "w", encoding="utf-8") as f:
+              json.dump(data, f, indent=2)
+          print("Updated docs/data/telemetry.json successfully.")
+          EOF
 
-          card += "## Operational Directive\n\n"
-          if phase == "morning":
-              if zone == "GREEN":
-                  card += "- **Physiological State:** Optimal parasympathetic dominance. Autonomic reserve is primed for high cognitive or metabolic demand.\n"
-                  card += "- **Target Strain Budget:** `14.0 – 17.5`\n"
-                  card += "- **Action Protocol:** Schedule high-friction work, intensive training, or critical decisions before midday.\n"
-              elif zone == "YELLOW":
-                  card += "- **Physiological State:** Steady maintenance mode. Baseline metrics within normal variance.\n"
-                  card += "- **Target Strain Budget:** `10.0 – 13.5`\n"
-                  card += "- **Action Protocol:** Execute structured priorities; preserve stamina by eliminating low-leverage distractions.\n"
-              else:
-                  card += "- **Physiological State:** Sympathetic activation or high systemic fatigue. Biological bandwidth is constrained.\n"
-                  card += "- **Target Strain Budget:** `< 9.5`\n"
-                  card += "- **Action Protocol:** Prioritize tactical recovery, hydration, active mobility, and low-friction cognitive tasks.\n"
-          elif phase == "afternoon":
-              card += f"- **Exertion Tracking:** Strain accumulated: `{round(current_strain, 1)}`.\n"
-              card += "- **Midday Protocol:** Hydrate, perform a 5-minute visual reset away from screens, and pace physical workload.\n"
-          else:
-              card += f"- **End-of-Day Audit:** Closed day at `{round(current_strain, 1)}` strain. Last recorded sleep efficiency: `{sleep_perf}%`.\n"
-              card += "- **Night Protocol:** Dim ambient lighting, avoid late digestion, and initiate deliberate wind-down to maximize HRV recovery.\n"
-
-          # 6. Save Artifacts
-          telemetry_payload = {
-              "updated_at": now_utc.isoformat(),
-              "phase": phase,
-              "date": date_str,
-              "recovery_score": recovery_score,
-              "recovery_zone": zone,
-              "hrv_ms": round(float(hrv_ms), 1),
-              "rhr_bpm": round(float(rhr_bpm), 1),
-              "current_strain": round(float(current_strain), 1),
-              "sleep_performance": sleep_perf,
-              "quote": quote_text,
-              "quote_author": quote_author
-          }
-
-          with open("data/telemetry/whoop.json", "w") as f:
-              json.dump(telemetry_payload, f, indent=2)
-
-          with open(f"data/telemetry/briefing_{phase}.md", "w") as f:
-              f.write(card)
-
-          with open("data/telemetry/latest_briefing.md", "w") as f:
-              f.write(card)
-
-          # 7. Update README.md
-          readme_path = "README.md"
-          if os.path.exists(readme_path):
-              with open(readme_path, "r", encoding="utf-8") as f:
-                  readme_text = f.read()
-
-              pattern = r"<!-- WHOOP_BRIEFING_START -->[\s\S]*?<!-- WHOOP_BRIEFING_END -->"
-              replacement = f"<!-- WHOOP_BRIEFING_START -->\n\n{card}\n<!-- WHOOP_BRIEFING_END -->"
-              if re.search(pattern, readme_text):
-                  updated_readme = re.sub(pattern, replacement, readme_text)
-                  with open(readme_path, "w", encoding="utf-8") as f:
-                      f.write(updated_readme)
-                  print("Updated README.md with latest briefing.")
-
-          with open(os.environ["GITHUB_ENV"], "a") as env_file:
-              env_file.write(f"BRIEFING_PHASE={phase.title()}\n")
-              env_file.write(f"BRIEFING_DATE={date_str}\n")
-              env_file.write(f"BRIEFING_ZONE={zone}\n")
-        shell: python
-
-      - name: Generate Auto-Regulated Training Prescription
-        run: python scripts/auto_regulator.py
-
-      - name: Publish GitHub Issue
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commit Updated Telemetry
         run: |
-          gh label create "biometric-briefing" --color "0E8A16" --description "Automated WHOOP daily physiological briefings" --force || true
-
-          PRIOR_ISSUES=$(gh issue list --label "biometric-briefing" --state open --json number -q '.[].number')
-          for num in $PRIOR_ISSUES; do
-            gh issue close "$num" --comment "Superseded by ${{ env.BRIEFING_PHASE }} Briefing."
-          done
-
-          gh issue create \
-            --title "[Biometrics] ${{ env.BRIEFING_PHASE }} Briefing — ${{ env.BRIEFING_DATE }} (${{ env.BRIEFING_ZONE }})" \
-            --body-file "data/telemetry/latest_briefing.md" \
-            --label "biometric-briefing"
-
-      - name: Commit Telemetry & Updated README
-        run: |
-          git config user.name "Cyber Dojo Sensei"
-          git config user.email "cyberdojosensei@gmail.com"
-          git add data/ docs/ scripts/ README.md
-          git diff-index --quiet HEAD || (git commit -m "chore(telemetry): update briefings and README [skip ci]" && git push)
-
-
-
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add docs/data/telemetry.json
+          git diff-index --quiet HEAD || git commit -m "chore(telemetry): auto-update WHOOP recovery & vitals [skip ci]"
+          git push origin main
