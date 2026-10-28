@@ -23,6 +23,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   pull-whoop:
@@ -46,7 +47,7 @@ jobs:
           INITIAL_REFRESH_TOKEN: ${{ secrets.WHOOP_REFRESH_TOKEN }}
           BRIEFING_INPUT: ${{ inputs.briefing_phase }}
         run: |
-          import os, json, random, httpx
+          import os, json, random, re, httpx
           from datetime import datetime, timezone, timedelta
 
           client_id = os.environ.get("CLIENT_ID", "").strip()
@@ -186,7 +187,7 @@ jobs:
           quote_text, quote_author = random.choice(pool)
 
           date_str = (now_utc - timedelta(hours=4)).strftime("%Y-%m-%d")
-          
+
           # 4. Render Markdown Card
           card = f"# {phase.upper()} BIOMETRIC BRIEFING — {date_str}\n\n"
           card += f"> {quote_text}\n>\n> *— {quote_author}*\n\n"
@@ -221,10 +222,11 @@ jobs:
               card += f"- **End-of-Day Audit:** Closed day at `{round(current_strain, 1)}` strain. Last recorded sleep efficiency: `{sleep_perf}%`.\n"
               card += "- **Night Protocol:** Dim ambient lighting, avoid late digestion, and initiate deliberate wind-down to maximize HRV recovery.\n"
 
-          # 5. Save Outputs
+          # 5. Save Artifacts
           telemetry_payload = {
               "updated_at": now_utc.isoformat(),
               "phase": phase,
+              "date": date_str,
               "recovery_score": recovery_score,
               "recovery_zone": zone,
               "hrv_ms": round(float(hrv_ms), 1),
@@ -244,12 +246,46 @@ jobs:
           with open("data/telemetry/latest_briefing.md", "w") as f:
               f.write(card)
 
-          print(f"[{phase.upper()}] Briefing generated for {zone} Zone ({recovery_score}%).")
+          # 6. Update README.md between comment tags
+          readme_path = "README.md"
+          if os.path.exists(readme_path):
+              with open(readme_path, "r", encoding="utf-8") as f:
+                  readme_text = f.read()
+
+              pattern = r"<!-- WHOOP_BRIEFING_START -->[\s\S]*?<!-- WHOOP_BRIEFING_END -->"
+              replacement = f"<!-- WHOOP_BRIEFING_START -->\n\n{card}\n<!-- WHOOP_BRIEFING_END -->"
+              if re.search(pattern, readme_text):
+                  updated_readme = re.sub(pattern, replacement, readme_text)
+                  with open(readme_path, "w", encoding="utf-8") as f:
+                      f.write(updated_readme)
+                  print("Updated README.md with latest briefing.")
+
+          # Export metadata for next workflow steps
+          with open(os.environ["GITHUB_ENV"], "a") as env_file:
+              env_file.write(f"BRIEFING_PHASE={phase.title()}\n")
+              env_file.write(f"BRIEFING_DATE={date_str}\n")
+              env_file.write(f"BRIEFING_ZONE={zone}\n")
         shell: python
 
-      - name: Commit Telemetry & Briefing Cards
+      - name: Publish GitHub Issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Close prior briefing issues to keep tracker clean
+          PRIOR_ISSUES=$(gh issue list --label "biometric-briefing" --state open --json number -q '.[].number')
+          for num in $PRIOR_ISSUES; do
+            gh issue close "$num" --comment "Superseded by ${{ env.BRIEFING_PHASE }} Briefing."
+          done
+
+          # Create new issue with latest card
+          gh issue create \
+            --title "[Biometrics] ${{ env.BRIEFING_PHASE }} Briefing — ${{ env.BRIEFING_DATE }} (${{ env.BRIEFING_ZONE }})" \
+            --body-file "data/telemetry/latest_briefing.md" \
+            --label "biometric-briefing"
+
+      - name: Commit Telemetry & Updated README
         run: |
           git config user.name "Cyber Dojo Sensei"
           git config user.email "cyberdojosensei@gmail.com"
-          git add data/telemetry/
-          git diff-index --quiet HEAD || (git commit -m "chore(telemetry): update $GITHUB_WORKFLOW briefings [skip ci]" && git push)
+          git add data/telemetry/ README.md
+          git diff-index --quiet HEAD || (git commit -m "chore(telemetry): update briefings and README [skip ci]" && git push)
