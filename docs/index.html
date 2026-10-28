@@ -799,6 +799,59 @@
         </div>
       </div>
 
+            <!-- Feynman 3-Line Synthesis Scratchpad -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+          <h4 class="text-sm font-bold text-white flex items-center gap-2">
+            <i data-lucide="edit-3" class="text-emerald-400 w-4 h-4"></i> Feynman Active-Recall Micro-Synthesis
+          </h4>
+          <span class="text-[10px] bg-emerald-950 border border-emerald-800 text-emerald-300 px-2 py-0.5 rounded uppercase font-semibold">Active Distillation</span>
+        </div>
+        <p class="text-xs text-slate-400">Read a passage or chapter? Synthesize the author's core thesis in 3 plain sentences without jargon.</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+          <input type="text" id="feynman-1" placeholder="1. Core Principle (What is the irreducible truth?)" class="bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+          <input type="text" id="feynman-2" placeholder="2. Real-World Metaphor (Explain it to a 12-year-old)" class="bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+          <input type="text" id="feynman-3" placeholder="3. Operational Application (How do I execute this today?)" class="bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+        </div>
+        <div class="flex justify-between items-center pt-1">
+          <span id="feynman-status" class="text-[11px] text-slate-500">Tested recall builds permanent synaptic retention.</span>
+          <button onclick="saveFeynmanSynthesis()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition">Save to Daily Notes</button>
+        </div>
+      </div>
+
+      <!-- FUTURE STATE: Spring 2027 Academic Pre-Quarter Launch Ramp -->
+      <div class="bg-gradient-to-r from-slate-950 via-sky-950/20 to-slate-950 border border-sky-900/40 rounded-2xl p-6 space-y-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800/80 pb-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-sky-950 border border-sky-800 flex items-center justify-center text-sky-400">
+              <i data-lucide="lock" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                Spring 2027 Academic Deep Ramp <span class="text-[10px] bg-sky-950 text-sky-300 border border-sky-800 px-2 py-0.5 rounded uppercase font-semibold">Future State</span>
+              </h4>
+              <p class="text-xs text-slate-400">Automated activation: Scheduled for T-minus 30 days prior to Spring Quarter matriculation.</p>
+            </div>
+          </div>
+          <span class="text-xs font-mono text-sky-400 bg-slate-950 px-2.5 py-1 rounded border border-slate-800">Target: Spring 2027</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-slate-400">
+          <div class="p-3 bg-slate-950/70 rounded-xl border border-slate-800 space-y-1">
+            <span class="text-sky-300 font-semibold text-[11px]">Phase 1: Syllabus & Text Dry-Run</span>
+            <p class="text-slate-400">Pre-reading 40% of assigned readings and compiling foundational bibliographies before Day 1.</p>
+          </div>
+          <div class="p-3 bg-slate-950/70 rounded-xl border border-slate-800 space-y-1">
+            <span class="text-sky-300 font-semibold text-[11px]">Phase 2: Academic Calendar Shield</span>
+            <p class="text-slate-400">Locking 90-minute study blocks into executive calendar buffers to prevent corporate bleed.</p>
+          </div>
+          <div class="p-3 bg-slate-950/70 rounded-xl border border-slate-800 space-y-1">
+            <span class="text-sky-300 font-semibold text-[11px]">Phase 3: Quantitative Drill Sets</span>
+            <p class="text-slate-400">Transitioning micro-sprints from philosophical survey to targeted problem sets and research methods.</p>
+          </div>
+        </div>
+      </div>
+
       <!-- Ingested Knowledge Vault Dynamic Cards -->
       <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-4">
@@ -899,6 +952,95 @@
 
   <script>
     lucide.createIcons();
+    /* Hydration Tracking Engine */
+    let dailyWater = parseInt(localStorage.getItem('hive_daily_water') || '0', 10);
+    function updateWaterDisplay() {
+      const el = document.getElementById('hydration-count');
+      if (el) el.innerText = dailyWater;
+      localStorage.setItem('hive_daily_water', dailyWater);
+    }
+    function addWater(oz) {
+      dailyWater += oz;
+      updateWaterDisplay();
+    }
+    function resetWater() {
+      dailyWater = 0;
+      updateWaterDisplay();
+    }
+    document.addEventListener('DOMContentLoaded', updateWaterDisplay);
+
+    /* Feynman Synthesis Engine */
+    function saveFeynmanSynthesis() {
+      const p1 = document.getElementById('feynman-1').value.trim();
+      const p2 = document.getElementById('feynman-2').value.trim();
+      const p3 = document.getElementById('feynman-3').value.trim();
+
+      if (!p1 && !p2 && !p3) {
+        alert("Please complete at least one line of your synthesis.");
+        return;
+      }
+
+      const entry = {
+        date: new Date().toISOString(),
+        core: p1,
+        metaphor: p2,
+        application: p3
+      };
+
+      const history = JSON.parse(localStorage.getItem('hive_feynman_history') || '[]');
+      history.unshift(entry);
+      localStorage.setItem('hive_feynman_history', JSON.stringify(history));
+
+      document.getElementById('feynman-1').value = '';
+      document.getElementById('feynman-2').value = '';
+      document.getElementById('feynman-3').value = '';
+
+      const status = document.getElementById('feynman-status');
+      status.innerText = "Synthesis logged to memory bank!";
+      status.classList.add('text-emerald-400');
+      setTimeout(() => {
+        status.classList.remove('text-emerald-400');
+        status.innerText = "Tested recall builds permanent synaptic retention.";
+      }, 3500);
+    }
+
+    /* Weekly Executive Markdown Exporter */
+    function exportWeeklyAlignmentSummary() {
+      const vitals = JSON.parse(localStorage.getItem('hive_user_vitals') || '{}');
+      const muhasabah = localStorage.getItem('hive_muhasabah_notes') || 'No muhasabah logs recorded yet.';
+      const water = localStorage.getItem('hive_daily_water') || '0';
+      const recovery = document.getElementById('telemetry-recovery')?.innerText || '66%';
+      const strain = document.getElementById('telemetry-strain')?.innerText || '5.3';
+
+      const markdown = `## Hive Alignment Weekly Synthesis
+**Date:** ${new Date().toLocaleDateString()}
+**Autonomic Recovery:** ${recovery} | **Day Strain:** ${strain}
+**Hydration Status:** ${water} oz cumulative logged
+**Physical Baseline:** 6'0" (72 in) • ${vitals.weight || '235'} lbs
+
+### Executive Muhasabah & Self-Accounting
+${muhasabah}
+
+### Weekly Protocol Adherence
+- [x] Fajr, Dhuhr, and Isha prayer windows maintained
+- [x] M-F Crunch Tactical training sessions executed
+- [x] Seeker line profile drills completed
+- [x] 30-min evening restoration & family decompression
+
+### Sunday Family Alignment Questions
+1. What went exceptionally well this week?
+2. Where did we feel stretched or fatigued?
+3. How can I best support you this upcoming week?
+4. Family schedule, office bandwidth, and academic check-in.
+`;
+
+      navigator.clipboard.writeText(markdown).then(() => {
+        alert("Weekly Alignment Summary copied to clipboard in clean Markdown! Ready to paste into your notes.");
+      }).catch(err => {
+        console.error("Clipboard copy failed:", err);
+        prompt("Copy your summary below:", markdown);
+      });
+    }
     /* Dynamic Telemetry & Vitals Sync */
     async function loadTelemetryData() {
       // 1. Check local storage overrides
@@ -976,6 +1118,95 @@
             list.innerHTML = data.highlights.map(h => `<li>${h}</li>`).join('');
           }
           lucide.createIcons();
+    /* Hydration Tracking Engine */
+    let dailyWater = parseInt(localStorage.getItem('hive_daily_water') || '0', 10);
+    function updateWaterDisplay() {
+      const el = document.getElementById('hydration-count');
+      if (el) el.innerText = dailyWater;
+      localStorage.setItem('hive_daily_water', dailyWater);
+    }
+    function addWater(oz) {
+      dailyWater += oz;
+      updateWaterDisplay();
+    }
+    function resetWater() {
+      dailyWater = 0;
+      updateWaterDisplay();
+    }
+    document.addEventListener('DOMContentLoaded', updateWaterDisplay);
+
+    /* Feynman Synthesis Engine */
+    function saveFeynmanSynthesis() {
+      const p1 = document.getElementById('feynman-1').value.trim();
+      const p2 = document.getElementById('feynman-2').value.trim();
+      const p3 = document.getElementById('feynman-3').value.trim();
+
+      if (!p1 && !p2 && !p3) {
+        alert("Please complete at least one line of your synthesis.");
+        return;
+      }
+
+      const entry = {
+        date: new Date().toISOString(),
+        core: p1,
+        metaphor: p2,
+        application: p3
+      };
+
+      const history = JSON.parse(localStorage.getItem('hive_feynman_history') || '[]');
+      history.unshift(entry);
+      localStorage.setItem('hive_feynman_history', JSON.stringify(history));
+
+      document.getElementById('feynman-1').value = '';
+      document.getElementById('feynman-2').value = '';
+      document.getElementById('feynman-3').value = '';
+
+      const status = document.getElementById('feynman-status');
+      status.innerText = "Synthesis logged to memory bank!";
+      status.classList.add('text-emerald-400');
+      setTimeout(() => {
+        status.classList.remove('text-emerald-400');
+        status.innerText = "Tested recall builds permanent synaptic retention.";
+      }, 3500);
+    }
+
+    /* Weekly Executive Markdown Exporter */
+    function exportWeeklyAlignmentSummary() {
+      const vitals = JSON.parse(localStorage.getItem('hive_user_vitals') || '{}');
+      const muhasabah = localStorage.getItem('hive_muhasabah_notes') || 'No muhasabah logs recorded yet.';
+      const water = localStorage.getItem('hive_daily_water') || '0';
+      const recovery = document.getElementById('telemetry-recovery')?.innerText || '66%';
+      const strain = document.getElementById('telemetry-strain')?.innerText || '5.3';
+
+      const markdown = `## Hive Alignment Weekly Synthesis
+**Date:** ${new Date().toLocaleDateString()}
+**Autonomic Recovery:** ${recovery} | **Day Strain:** ${strain}
+**Hydration Status:** ${water} oz cumulative logged
+**Physical Baseline:** 6'0" (72 in) • ${vitals.weight || '235'} lbs
+
+### Executive Muhasabah & Self-Accounting
+${muhasabah}
+
+### Weekly Protocol Adherence
+- [x] Fajr, Dhuhr, and Isha prayer windows maintained
+- [x] M-F Crunch Tactical training sessions executed
+- [x] Seeker line profile drills completed
+- [x] 30-min evening restoration & family decompression
+
+### Sunday Family Alignment Questions
+1. What went exceptionally well this week?
+2. Where did we feel stretched or fatigued?
+3. How can I best support you this upcoming week?
+4. Family schedule, office bandwidth, and academic check-in.
+`;
+
+      navigator.clipboard.writeText(markdown).then(() => {
+        alert("Weekly Alignment Summary copied to clipboard in clean Markdown! Ready to paste into your notes.");
+      }).catch(err => {
+        console.error("Clipboard copy failed:", err);
+        prompt("Copy your summary below:", markdown);
+      });
+    }
     /* Dynamic Telemetry & Vitals Sync */
     async function loadTelemetryData() {
       // 1. Check local storage overrides
@@ -1199,6 +1430,95 @@
         </div>
       `).join('');
       lucide.createIcons();
+    /* Hydration Tracking Engine */
+    let dailyWater = parseInt(localStorage.getItem('hive_daily_water') || '0', 10);
+    function updateWaterDisplay() {
+      const el = document.getElementById('hydration-count');
+      if (el) el.innerText = dailyWater;
+      localStorage.setItem('hive_daily_water', dailyWater);
+    }
+    function addWater(oz) {
+      dailyWater += oz;
+      updateWaterDisplay();
+    }
+    function resetWater() {
+      dailyWater = 0;
+      updateWaterDisplay();
+    }
+    document.addEventListener('DOMContentLoaded', updateWaterDisplay);
+
+    /* Feynman Synthesis Engine */
+    function saveFeynmanSynthesis() {
+      const p1 = document.getElementById('feynman-1').value.trim();
+      const p2 = document.getElementById('feynman-2').value.trim();
+      const p3 = document.getElementById('feynman-3').value.trim();
+
+      if (!p1 && !p2 && !p3) {
+        alert("Please complete at least one line of your synthesis.");
+        return;
+      }
+
+      const entry = {
+        date: new Date().toISOString(),
+        core: p1,
+        metaphor: p2,
+        application: p3
+      };
+
+      const history = JSON.parse(localStorage.getItem('hive_feynman_history') || '[]');
+      history.unshift(entry);
+      localStorage.setItem('hive_feynman_history', JSON.stringify(history));
+
+      document.getElementById('feynman-1').value = '';
+      document.getElementById('feynman-2').value = '';
+      document.getElementById('feynman-3').value = '';
+
+      const status = document.getElementById('feynman-status');
+      status.innerText = "Synthesis logged to memory bank!";
+      status.classList.add('text-emerald-400');
+      setTimeout(() => {
+        status.classList.remove('text-emerald-400');
+        status.innerText = "Tested recall builds permanent synaptic retention.";
+      }, 3500);
+    }
+
+    /* Weekly Executive Markdown Exporter */
+    function exportWeeklyAlignmentSummary() {
+      const vitals = JSON.parse(localStorage.getItem('hive_user_vitals') || '{}');
+      const muhasabah = localStorage.getItem('hive_muhasabah_notes') || 'No muhasabah logs recorded yet.';
+      const water = localStorage.getItem('hive_daily_water') || '0';
+      const recovery = document.getElementById('telemetry-recovery')?.innerText || '66%';
+      const strain = document.getElementById('telemetry-strain')?.innerText || '5.3';
+
+      const markdown = `## Hive Alignment Weekly Synthesis
+**Date:** ${new Date().toLocaleDateString()}
+**Autonomic Recovery:** ${recovery} | **Day Strain:** ${strain}
+**Hydration Status:** ${water} oz cumulative logged
+**Physical Baseline:** 6'0" (72 in) • ${vitals.weight || '235'} lbs
+
+### Executive Muhasabah & Self-Accounting
+${muhasabah}
+
+### Weekly Protocol Adherence
+- [x] Fajr, Dhuhr, and Isha prayer windows maintained
+- [x] M-F Crunch Tactical training sessions executed
+- [x] Seeker line profile drills completed
+- [x] 30-min evening restoration & family decompression
+
+### Sunday Family Alignment Questions
+1. What went exceptionally well this week?
+2. Where did we feel stretched or fatigued?
+3. How can I best support you this upcoming week?
+4. Family schedule, office bandwidth, and academic check-in.
+`;
+
+      navigator.clipboard.writeText(markdown).then(() => {
+        alert("Weekly Alignment Summary copied to clipboard in clean Markdown! Ready to paste into your notes.");
+      }).catch(err => {
+        console.error("Clipboard copy failed:", err);
+        prompt("Copy your summary below:", markdown);
+      });
+    }
     /* Dynamic Telemetry & Vitals Sync */
     async function loadTelemetryData() {
       // 1. Check local storage overrides
@@ -1276,6 +1596,95 @@
             list.innerHTML = data.highlights.map(h => `<li>${h}</li>`).join('');
           }
           lucide.createIcons();
+    /* Hydration Tracking Engine */
+    let dailyWater = parseInt(localStorage.getItem('hive_daily_water') || '0', 10);
+    function updateWaterDisplay() {
+      const el = document.getElementById('hydration-count');
+      if (el) el.innerText = dailyWater;
+      localStorage.setItem('hive_daily_water', dailyWater);
+    }
+    function addWater(oz) {
+      dailyWater += oz;
+      updateWaterDisplay();
+    }
+    function resetWater() {
+      dailyWater = 0;
+      updateWaterDisplay();
+    }
+    document.addEventListener('DOMContentLoaded', updateWaterDisplay);
+
+    /* Feynman Synthesis Engine */
+    function saveFeynmanSynthesis() {
+      const p1 = document.getElementById('feynman-1').value.trim();
+      const p2 = document.getElementById('feynman-2').value.trim();
+      const p3 = document.getElementById('feynman-3').value.trim();
+
+      if (!p1 && !p2 && !p3) {
+        alert("Please complete at least one line of your synthesis.");
+        return;
+      }
+
+      const entry = {
+        date: new Date().toISOString(),
+        core: p1,
+        metaphor: p2,
+        application: p3
+      };
+
+      const history = JSON.parse(localStorage.getItem('hive_feynman_history') || '[]');
+      history.unshift(entry);
+      localStorage.setItem('hive_feynman_history', JSON.stringify(history));
+
+      document.getElementById('feynman-1').value = '';
+      document.getElementById('feynman-2').value = '';
+      document.getElementById('feynman-3').value = '';
+
+      const status = document.getElementById('feynman-status');
+      status.innerText = "Synthesis logged to memory bank!";
+      status.classList.add('text-emerald-400');
+      setTimeout(() => {
+        status.classList.remove('text-emerald-400');
+        status.innerText = "Tested recall builds permanent synaptic retention.";
+      }, 3500);
+    }
+
+    /* Weekly Executive Markdown Exporter */
+    function exportWeeklyAlignmentSummary() {
+      const vitals = JSON.parse(localStorage.getItem('hive_user_vitals') || '{}');
+      const muhasabah = localStorage.getItem('hive_muhasabah_notes') || 'No muhasabah logs recorded yet.';
+      const water = localStorage.getItem('hive_daily_water') || '0';
+      const recovery = document.getElementById('telemetry-recovery')?.innerText || '66%';
+      const strain = document.getElementById('telemetry-strain')?.innerText || '5.3';
+
+      const markdown = `## Hive Alignment Weekly Synthesis
+**Date:** ${new Date().toLocaleDateString()}
+**Autonomic Recovery:** ${recovery} | **Day Strain:** ${strain}
+**Hydration Status:** ${water} oz cumulative logged
+**Physical Baseline:** 6'0" (72 in) • ${vitals.weight || '235'} lbs
+
+### Executive Muhasabah & Self-Accounting
+${muhasabah}
+
+### Weekly Protocol Adherence
+- [x] Fajr, Dhuhr, and Isha prayer windows maintained
+- [x] M-F Crunch Tactical training sessions executed
+- [x] Seeker line profile drills completed
+- [x] 30-min evening restoration & family decompression
+
+### Sunday Family Alignment Questions
+1. What went exceptionally well this week?
+2. Where did we feel stretched or fatigued?
+3. How can I best support you this upcoming week?
+4. Family schedule, office bandwidth, and academic check-in.
+`;
+
+      navigator.clipboard.writeText(markdown).then(() => {
+        alert("Weekly Alignment Summary copied to clipboard in clean Markdown! Ready to paste into your notes.");
+      }).catch(err => {
+        console.error("Clipboard copy failed:", err);
+        prompt("Copy your summary below:", markdown);
+      });
+    }
     /* Dynamic Telemetry & Vitals Sync */
     async function loadTelemetryData() {
       // 1. Check local storage overrides
@@ -1469,6 +1878,95 @@
     function openScanModal() {
       document.getElementById('scan-modal').classList.remove('hidden');
       lucide.createIcons();
+    /* Hydration Tracking Engine */
+    let dailyWater = parseInt(localStorage.getItem('hive_daily_water') || '0', 10);
+    function updateWaterDisplay() {
+      const el = document.getElementById('hydration-count');
+      if (el) el.innerText = dailyWater;
+      localStorage.setItem('hive_daily_water', dailyWater);
+    }
+    function addWater(oz) {
+      dailyWater += oz;
+      updateWaterDisplay();
+    }
+    function resetWater() {
+      dailyWater = 0;
+      updateWaterDisplay();
+    }
+    document.addEventListener('DOMContentLoaded', updateWaterDisplay);
+
+    /* Feynman Synthesis Engine */
+    function saveFeynmanSynthesis() {
+      const p1 = document.getElementById('feynman-1').value.trim();
+      const p2 = document.getElementById('feynman-2').value.trim();
+      const p3 = document.getElementById('feynman-3').value.trim();
+
+      if (!p1 && !p2 && !p3) {
+        alert("Please complete at least one line of your synthesis.");
+        return;
+      }
+
+      const entry = {
+        date: new Date().toISOString(),
+        core: p1,
+        metaphor: p2,
+        application: p3
+      };
+
+      const history = JSON.parse(localStorage.getItem('hive_feynman_history') || '[]');
+      history.unshift(entry);
+      localStorage.setItem('hive_feynman_history', JSON.stringify(history));
+
+      document.getElementById('feynman-1').value = '';
+      document.getElementById('feynman-2').value = '';
+      document.getElementById('feynman-3').value = '';
+
+      const status = document.getElementById('feynman-status');
+      status.innerText = "Synthesis logged to memory bank!";
+      status.classList.add('text-emerald-400');
+      setTimeout(() => {
+        status.classList.remove('text-emerald-400');
+        status.innerText = "Tested recall builds permanent synaptic retention.";
+      }, 3500);
+    }
+
+    /* Weekly Executive Markdown Exporter */
+    function exportWeeklyAlignmentSummary() {
+      const vitals = JSON.parse(localStorage.getItem('hive_user_vitals') || '{}');
+      const muhasabah = localStorage.getItem('hive_muhasabah_notes') || 'No muhasabah logs recorded yet.';
+      const water = localStorage.getItem('hive_daily_water') || '0';
+      const recovery = document.getElementById('telemetry-recovery')?.innerText || '66%';
+      const strain = document.getElementById('telemetry-strain')?.innerText || '5.3';
+
+      const markdown = `## Hive Alignment Weekly Synthesis
+**Date:** ${new Date().toLocaleDateString()}
+**Autonomic Recovery:** ${recovery} | **Day Strain:** ${strain}
+**Hydration Status:** ${water} oz cumulative logged
+**Physical Baseline:** 6'0" (72 in) • ${vitals.weight || '235'} lbs
+
+### Executive Muhasabah & Self-Accounting
+${muhasabah}
+
+### Weekly Protocol Adherence
+- [x] Fajr, Dhuhr, and Isha prayer windows maintained
+- [x] M-F Crunch Tactical training sessions executed
+- [x] Seeker line profile drills completed
+- [x] 30-min evening restoration & family decompression
+
+### Sunday Family Alignment Questions
+1. What went exceptionally well this week?
+2. Where did we feel stretched or fatigued?
+3. How can I best support you this upcoming week?
+4. Family schedule, office bandwidth, and academic check-in.
+`;
+
+      navigator.clipboard.writeText(markdown).then(() => {
+        alert("Weekly Alignment Summary copied to clipboard in clean Markdown! Ready to paste into your notes.");
+      }).catch(err => {
+        console.error("Clipboard copy failed:", err);
+        prompt("Copy your summary below:", markdown);
+      });
+    }
     /* Dynamic Telemetry & Vitals Sync */
     async function loadTelemetryData() {
       // 1. Check local storage overrides
@@ -1640,4 +2138,5 @@
   </script>
 </body>
 </html>
+
 
