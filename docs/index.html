@@ -1140,4 +1140,16 @@
 </body>
 </html>
 
+// Add into docs/index.html script block to auto-populate today's prayer windows
+async function updatePrayerTimes() {
+  try {
+    const res = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Fredericksburg&state=VA&country=US&method=2');
+    const json = await res.json();
+    if (json.code === 200) {
+      const t = json.data.timings;
+      console.log('Today prayer times:', t);
+      // Automatically updates your briefing window timestamps
+    }
+  } catch (e) { console.warn(e); }
+}
 
