@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-28T02:35:20.224556+00:00",
+  "updated_at": "2026-10-28T02:37:39.132982+00:00",
   "phase": "evening",
   "recovery_score": 50,
   "recovery_zone": "YELLOW",
@@ -7,6 +7,6 @@
   "rhr_bpm": 0.0,
   "current_strain": 6.8,
   "sleep_performance": 0,
-  "spo2_percentage": null,
-  "skin_temp_celsius": null
+  "quote": "\u201cSleep is the golden chain that ties health and our bodies together. Protect your recovery window tonight.\u201d",
+  "quote_author": "Thomas Dekker"
 }
