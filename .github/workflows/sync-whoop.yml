@@ -39,14 +39,14 @@ jobs:
       - name: Install dependencies
         run: pip install httpx
 
-      - name: Fetch Biomarkers & Generate Briefing
+      - name: Fetch Biomarkers & Generate Dynamic Briefing
         env:
           CLIENT_ID: ${{ secrets.WHOOP_CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.WHOOP_CLIENT_SECRET }}
           INITIAL_REFRESH_TOKEN: ${{ secrets.WHOOP_REFRESH_TOKEN }}
           BRIEFING_INPUT: ${{ inputs.briefing_phase }}
         run: |
-          import os, json, httpx
+          import os, json, random, httpx
           from datetime import datetime, timezone, timedelta
 
           client_id = os.environ.get("CLIENT_ID", "").strip()
@@ -56,7 +56,6 @@ jobs:
           session_path = "data/telemetry/.whoop_session.json"
           refresh_token = initial_refresh
 
-          # Load dynamic session if present
           if os.path.exists(session_path):
               try:
                   with open(session_path, "r") as f:
@@ -65,7 +64,7 @@ jobs:
               except Exception:
                   pass
 
-          # 1. Refresh Token
+          # 1. Refresh OAuth Token
           token_payload = {
               "grant_type": "refresh_token",
               "refresh_token": refresh_token,
@@ -89,14 +88,16 @@ jobs:
           access_token = tokens["access_token"]
           new_refresh = tokens.get("refresh_token", refresh_token)
 
-          # Persist updated refresh token locally so the next run inherits it
           os.makedirs("data/telemetry", exist_ok=True)
           with open(session_path, "w") as f:
-              json.dump({"refresh_token": new_refresh, "updated_at": datetime.now(timezone.utc).isoformat()}, f, indent=2)
+              json.dump({
+                  "refresh_token": new_refresh,
+                  "updated_at": datetime.now(timezone.utc).isoformat()
+              }, f, indent=2)
 
           headers = {"Authorization": f"Bearer {access_token}"}
 
-          # 2. Query Collections (Recovery, Cycles, Sleep)
+          # 2. Query Endpoints
           rec_res = httpx.get("https://api.prod.whoop.com/developer/v1/recovery?limit=1", headers=headers, timeout=20.0)
           cycle_res = httpx.get("https://api.prod.whoop.com/developer/v1/cycle?limit=1", headers=headers, timeout=20.0)
           sleep_res = httpx.get("https://api.prod.whoop.com/developer/v1/activity/sleep?limit=1", headers=headers, timeout=20.0)
@@ -124,7 +125,6 @@ jobs:
               zone = "RED"
 
           now_utc = datetime.now(timezone.utc)
-          # EDT offset (UTC-4)
           edt_hour = (now_utc - timedelta(hours=4)).hour
 
           phase = os.environ.get("BRIEFING_INPUT", "auto")
@@ -136,57 +136,115 @@ jobs:
               else:
                   phase = "evening"
 
-          # 3. Format Briefing Card
-          date_str = (now_utc - timedelta(hours=4)).strftime("%Y-%m-%d")
-          briefing_content = f"# {phase.upper()} BIOMETRIC BRIEFING — {date_str}\n\n"
-          briefing_content += f"**Phase:** `{phase.upper()}` | **Generated:** `{now_utc.strftime('%H:%M UTC')}`\n\n"
-          briefing_content += "## Telemetry Dashboard\n"
-          briefing_content += f"| Metric | Value | Baseline Status |\n"
-          briefing_content += f"| :--- | :--- | :--- |\n"
-          briefing_content += f"| **Recovery** | **{recovery_score}%** | `{zone} ZONE` |\n"
-          briefing_content += f"| **HRV (rMSSD)** | {round(hrv_ms, 1)} ms | Autonomic Nervous System Balance |\n"
-          briefing_content += f"| **Resting Heart Rate** | {round(rhr_bpm, 1)} bpm | Cardiovascular Readiness |\n"
-          briefing_content += f"| **Current Strain** | {round(current_strain, 1)} / 21 | Day Accumulation |\n"
-          briefing_content += f"| **Sleep Performance** | {sleep_perf}% | Quality & Need Met |\n\n"
+          # 3. Biomarker-Coupled Motivational Matrix
+          QUOTES = {
+              "GREEN": {
+                  "morning": [
+                      ("“The secret of getting ahead is getting started. Today your nervous system is fully primed—execute without hesitation.”", "Mark Twain / Cyber Dojo"),
+                      ("“Energy flows where attention goes. With maximum HRV bandwidth, point your focus at your highest-value target.”", "Tony Robbins"),
+                      ("“You don't rise to the level of your goals, you fall to the level of your systems. Your biological foundation is primed to build.”", "James Clear")
+                  ],
+                  "afternoon": [
+                      ("“Do not pray for an easy life, pray for the strength to endure a difficult one. You have surplus physiological capacity—push deeper.”", "Bruce Lee"),
+                      ("“Discipline is choosing between what you want now and what you want most. Keep your momentum high.”", "Abraham Lincoln")
+                  ],
+                  "evening": [
+                      ("“Well done is better than well said. You converted biological capacity into raw output today. Now downshift into restoration.”", "Benjamin Franklin")
+                  ]
+              },
+              "YELLOW": {
+                  "morning": [
+                      ("“It is not about having time, it is about making choices. Steady equilibrium requires surgical efficiency today.”", "Cyber Dojo"),
+                      ("“Small disciplines repeated with consistency every day lead to great achievements gained slowly over time.”", "John C. Maxwell"),
+                      ("“In the middle of difficulty lies opportunity. Keep your cadence controlled and protect your baseline.”", "Albert Einstein")
+                  ],
+                  "afternoon": [
+                      ("“Patience and perseverance have a magical effect before which difficulties disappear and obstacles vanish.”", "John Quincy Adams"),
+                      ("“Focus on being productive instead of busy. Protect your bandwidth as strain accumulates.”", "Tim Ferriss")
+                  ],
+                  "evening": [
+                      ("“Sleep is the golden chain that ties health and our bodies together. Protect your recovery window tonight.”", "Thomas Dekker")
+                  ]
+              },
+              "RED": {
+                  "morning": [
+                      ("“Rest is not the absence of work; it is the source of power. Real discipline is knowing when to let the body rebuild.”", "Jocko Willink"),
+                      ("“The bamboo that bends is stronger than the oak that resists. Yield to your biology today so you can strike tomorrow.”", "Japanese Proverb"),
+                      ("“Mastery is not only knowing when to push, but having the humility to step back and restore equilibrium.”", "Cyber Dojo Sensei")
+                  ],
+                  "afternoon": [
+                      ("“Energy management, not time management, is the key to high performance. Protect your reserve tank this afternoon.”", "Jim Loehr"),
+                      ("“Simplicity is the ultimate sophistication. Eliminate non-essential friction.”", "Leonardo da Vinci")
+                  ],
+                  "evening": [
+                      ("“Tough days build strong armor, but the forge requires rest to temper the steel. Clear your mind and let sleep do its work.”", "Cyber Dojo Sensei")
+                  ]
+              }
+          }
 
-          briefing_content += "## Tactical Protocol\n"
+          pool = QUOTES.get(zone, {}).get(phase, [("“Consistency is the ultimate competitive advantage.”", "Cyber Dojo")])
+          quote_text, quote_author = random.choice(pool)
+
+          date_str = (now_utc - timedelta(hours=4)).strftime("%Y-%m-%d")
+          
+          # 4. Render Markdown Card
+          card = f"# {phase.upper()} BIOMETRIC BRIEFING — {date_str}\n\n"
+          card += f"> {quote_text}\n>\n> *— {quote_author}*\n\n"
+          card += "---\n\n"
+          card += "## Physiological Readout\n\n"
+          card += "| Metric | Reading | Status |\n"
+          card += "| :--- | :--- | :--- |\n"
+          card += f"| **Recovery Index** | **{recovery_score}%** | `{zone} ZONE` |\n"
+          card += f"| **HRV (rMSSD)** | {round(hrv_ms, 1)} ms | Autonomic Nervous System Tone |\n"
+          card += f"| **Resting Heart Rate** | {round(rhr_bpm, 1)} bpm | Baseline Cardiovascular Strain |\n"
+          card += f"| **Day Strain** | {round(current_strain, 1)} / 21 | Cardiovascular Exertion |\n"
+          card += f"| **Sleep Performance** | {sleep_perf}% | Sleep Need Fulfilled |\n\n"
+
+          card += "## Operational Directive\n\n"
           if phase == "morning":
               if zone == "GREEN":
-                  briefing_content += "> **Optimal Readiness:** High vagal tone and parasympathetic dominance. Recommended target strain: `14.0 - 17.5`. Prime cognitive and high-intensity physical capacity.\n"
+                  card += "- **Physiological State:** Optimal parasympathetic dominance. Autonomic reserve is primed for high cognitive or metabolic demand.\n"
+                  card += "- **Target Strain Budget:** `14.0 – 17.5`\n"
+                  card += "- **Action Protocol:** Schedule high-friction work, intensive training, or critical decisions before midday.\n"
               elif zone == "YELLOW":
-                  briefing_content += "> **Moderate Capacity:** Baseline equilibrium. Recommended target strain: `10.0 - 13.5`. Maintain structured execution; monitor fatigue before pushing maximum efforts.\n"
+                  card += "- **Physiological State:** Steady maintenance mode. Baseline metrics within normal variance.\n"
+                  card += "- **Target Strain Budget:** `10.0 – 13.5`\n"
+                  card += "- **Action Protocol:** Execute structured priorities; preserve stamina by eliminating low-leverage distractions.\n"
               else:
-                  briefing_content += "> **Sub-Optimal Recovery:** High sympathetic activation or active physiological rebuilding. Recommended target strain: `< 9.5`. Prioritize recovery-centric workflows and zone-2 restoration.\n"
+                  card += "- **Physiological State:** Sympathetic activation or high systemic fatigue. Biological bandwidth is constrained.\n"
+                  card += "- **Target Strain Budget:** `< 9.5`\n"
+                  card += "- **Action Protocol:** Prioritize tactical recovery, hydration, active mobility, and low-friction cognitive tasks.\n"
           elif phase == "afternoon":
-              remaining = max(0.0, 14.0 - current_strain)
-              briefing_content += f"> **Midday Exertion Check:** Current strain is at `{round(current_strain, 1)}`. Target pacing delta remaining: `{round(remaining, 1)}`. Transition from deep work focus into afternoon cadence.\n"
+              card += f"- **Exertion Tracking:** Strain accumulated: `{round(current_strain, 1)}`.\n"
+              card += "- **Midday Protocol:** Hydrate, perform a 5-minute visual reset away from screens, and pace physical workload.\n"
           else:
-              briefing_content += f"> **Evening Wind-Down:** Closed the day with `{round(current_strain, 1)}` total strain. Sleep performance previous night was `{sleep_perf}%`. Initiate blue-light titration and lower ambient temperature to facilitate rapid sleep latency.\n"
+              card += f"- **End-of-Day Audit:** Closed day at `{round(current_strain, 1)}` strain. Last recorded sleep efficiency: `{sleep_perf}%`.\n"
+              card += "- **Night Protocol:** Dim ambient lighting, avoid late digestion, and initiate deliberate wind-down to maximize HRV recovery.\n"
 
-          # Write out telemetry and briefing files
+          # 5. Save Outputs
+          telemetry_payload = {
+              "updated_at": now_utc.isoformat(),
+              "phase": phase,
+              "recovery_score": recovery_score,
+              "recovery_zone": zone,
+              "hrv_ms": round(float(hrv_ms), 1),
+              "rhr_bpm": round(float(rhr_bpm), 1),
+              "current_strain": round(float(current_strain), 1),
+              "sleep_performance": sleep_perf,
+              "quote": quote_text,
+              "quote_author": quote_author
+          }
+
           with open("data/telemetry/whoop.json", "w") as f:
-              json.dump({
-                  "updated_at": now_utc.isoformat(),
-                  "phase": phase,
-                  "recovery_score": recovery_score,
-                  "recovery_zone": zone,
-                  "hrv_ms": round(float(hrv_ms), 1),
-                  "rhr_bpm": round(float(rhr_bpm), 1),
-                  "current_strain": round(float(current_strain), 1),
-                  "sleep_performance": sleep_perf,
-                  "spo2_percentage": spo2,
-                  "skin_temp_celsius": skin_temp
-              }, f, indent=2)
+              json.dump(telemetry_payload, f, indent=2)
 
-          briefing_filename = f"data/telemetry/briefing_{phase}.md"
-          with open(briefing_filename, "w") as f:
-              f.write(briefing_content)
+          with open(f"data/telemetry/briefing_{phase}.md", "w") as f:
+              f.write(card)
 
-          # Also write to latest briefing pointer
           with open("data/telemetry/latest_briefing.md", "w") as f:
-              f.write(briefing_content)
+              f.write(card)
 
-          print(f"Generated {phase.upper()} Briefing: {recovery_score}% ({zone}) | Strain: {current_strain}")
+          print(f"[{phase.upper()}] Briefing generated for {zone} Zone ({recovery_score}%).")
         shell: python
 
       - name: Commit Telemetry & Briefing Cards
