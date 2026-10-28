@@ -284,5 +284,27 @@
         "summary":  "1981 Rust College Endowed Chair; 1984 Moses C. Norman Sr. elected Grand Basileus (served 6 yrs); 1986 75th Conclave in DC; Brother Ronald McNair (Challenger); 1990 L. Douglas Wilder (VA Governor, 1st elected African American governor); C. Tyrone Gilmore Sr. (34th GB); 1994 Dorsey C. Miller Jr. (35th GB); 3951 Snapfinger Pkwy World Center.",
         "takeaway":  "Connect historical legacy from 1911 through the modern era, notable political breakthroughs, and national centers.",
         "tag":  "Omega-Modern"
+    },
+    {
+        "id":  "tau-rho-chapter-heritage-",
+        "title":  "Tau Rho Chapter Heritage \u0026 Third District",
+        "type":  "Local History",
+        "author":  "Tau Rho Chapter Archives",
+        "category":  "Fraternity Heritage",
+        "date_added":  "2026-10-28",
+        "summary":  "Tau Rho Chapter chartered December 7, 1964. Located in Fredericksburg, VA, serving the Fredericksburg, Spotsylvania, Stafford, Caroline, and King George regions in the Third District.",
+        "takeaway":  "Master local chapter chartering date (Dec 7, 1964) and geographic footprint alongside national history.",
+        "tag":  "Tau-Rho-Local"
+    },
+    {
+        "id":  "tau-rho-chapter-heritage-",
+        "title":  "Tau Rho Chapter Heritage \u0026 Third District History",
+        "type":  "Local History",
+        "author":  "Tau Rho Chapter Archives",
+        "category":  "Fraternity Heritage",
+        "date_added":  "2026-10-28",
+        "summary":  "Tau Rho Chapter chartered on December 7, 1964 in Fredericksburg, VA (Third District). Serves Fredericksburg, Spotsylvania, Stafford, Caroline, and King George counties. Named Third District Overall Small Chapter of the Year.",
+        "takeaway":  "Master local chapter charter date (Dec 7, 1964) and geographic coverage alongside national history.",
+        "tag":  "Tau-Rho-Local"
     }
 ]
