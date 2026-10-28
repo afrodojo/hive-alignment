@@ -142,6 +142,9 @@
       <button onclick="switchTab('tab-briefings')" id="btn-tab-briefings" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold bg-emerald-500 text-slate-950 transition flex items-center gap-2">
         <i data-lucide="check-square" class="w-4 h-4"></i> Daily Briefings
       </button>
+            <button onclick="switchTab('tab-prayer-learning')" id="btn-tab-prayer-learning" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition flex items-center gap-2">
+        <i data-lucide="volume-2" class="w-4 h-4 text-emerald-400"></i> Prayer Recitation & Arabic
+      </button>
       <button onclick="switchTab('tab-spiritual')" id="btn-tab-spiritual" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition flex items-center gap-2">
         <i data-lucide="compass" class="w-4 h-4 text-emerald-400"></i> EQ & Spiritual Anchors
       </button>
@@ -257,6 +260,173 @@
         <span class="text-slate-400">Briefing checklist state is saved automatically to local browser storage.</span>
         <button onclick="resetBriefings()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded font-medium transition">Reset Daily Checklist</button>
       </div>
+    </div>
+
+        <!-- TAB: PRAYER RECITATION & ARABIC LEARNING -->
+    <div id="tab-prayer-learning" class="tab-content space-y-6">
+      
+      <!-- Top Overview Banner -->
+      <div class="bg-gradient-to-r from-emerald-950/40 via-sky-950/30 to-emerald-950/40 border border-emerald-800/40 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-400">Quranic Arabic & Salah Mastery</span>
+          <h3 class="text-2xl font-extrabold text-white mt-1">Prayer Recitation, Phonetics & Vocabulary</h3>
+          <p class="text-xs text-slate-300 mt-1">Hear the correct pronunciation, read word-by-word roots, and recite with full cognitive presence.</p>
+        </div>
+        <div class="flex items-center gap-2 bg-slate-950/80 border border-emerald-500/30 px-3.5 py-2 rounded-xl text-xs text-emerald-300">
+          <i data-lucide="headphones" class="w-4 h-4 text-emerald-400"></i>
+          <span>Audio: <strong>Mahmoud Khalil Al-Husary (Mu'allim)</strong></span>
+        </div>
+      </div>
+
+      <!-- Verse-by-Verse Recitation Player: Surah Al-Fatihah -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+          <div>
+            <h4 class="text-lg font-bold text-white flex items-center gap-2">
+              <i data-lucide="book-open" class="text-emerald-400 w-5 h-5"></i> Surah Al-Fatihah (The Opening)
+            </h4>
+            <p class="text-xs text-slate-400">Recited in every unit (Rak'ah) of prayer. Click the audio icon to listen and repeat.</p>
+          </div>
+          <span class="text-xs bg-emerald-950 border border-emerald-800 text-emerald-300 px-2.5 py-1 rounded-full font-medium">Pillar of Salah</span>
+        </div>
+
+        <div class="space-y-3 pt-2 text-sm">
+          
+          <!-- Verse 1 -->
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-lg font-serif text-right text-emerald-400 tracking-wide font-medium">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+              <div class="text-xs text-slate-300 font-mono">Bismi-llāhi r-Raḥmāni r-Raḥīm</div>
+              <div class="text-xs text-slate-400">"In the Name of Allah, the Entirely Merciful, the Especially Merciful."</div>
+              <div class="text-[11px] text-sky-400 pt-0.5"><strong>Roots:</strong> Ism (Name) • R-Ḥ-M (Mercy, Compassion)</div>
+            </div>
+            <button onclick="playVerseAudio('001001')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+
+          <!-- Verse 2 -->
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-lg font-serif text-right text-emerald-400 tracking-wide font-medium">الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ</div>
+              <div class="text-xs text-slate-300 font-mono">Al-ḥamdu li-llāhi Rabbi l-'ālamīn</div>
+              <div class="text-xs text-slate-400">"All praise and gratitude is due to Allah, Lord of all creation."</div>
+              <div class="text-[11px] text-sky-400 pt-0.5"><strong>Roots:</strong> Ḥ-M-D (Praise/Thanks) • R-B-B (Lord, Sustainer) • '-L-M (The World/Creation)</div>
+            </div>
+            <button onclick="playVerseAudio('001002')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+
+          <!-- Verse 3 -->
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-lg font-serif text-right text-emerald-400 tracking-wide font-medium">الرَّحْمَٰنِ الرَّحِيمِ</div>
+              <div class="text-xs text-slate-300 font-mono">Ar-Raḥmāni r-Raḥīm</div>
+              <div class="text-xs text-slate-400">"The Entirely Merciful, the Especially Merciful."</div>
+              <div class="text-[11px] text-sky-400 pt-0.5"><strong>Roots:</strong> Raḥmān (Universal grace) • Raḥīm (Enduring specific mercy)</div>
+            </div>
+            <button onclick="playVerseAudio('001003')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+
+          <!-- Verse 4 -->
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-lg font-serif text-right text-emerald-400 tracking-wide font-medium">مَالِكِ يَوْمِ الدِّينِ</div>
+              <div class="text-xs text-slate-300 font-mono">Māliki yawmi d-dīn</div>
+              <div class="text-xs text-slate-400">"Master and Sovereign of the Day of Judgment."</div>
+              <div class="text-[11px] text-sky-400 pt-0.5"><strong>Roots:</strong> M-L-K (Sovereignty/Ownership) • Y-W-M (Day) • D-Y-N (Judgment/Account)</div>
+            </div>
+            <button onclick="playVerseAudio('001004')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+
+          <!-- Verse 5 -->
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-lg font-serif text-right text-emerald-400 tracking-wide font-medium">إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ</div>
+              <div class="text-xs text-slate-300 font-mono">Iyyāka na'budu wa iyyāka nasta'īn</div>
+              <div class="text-xs text-slate-400">"You alone we worship, and You alone we ask for help."</div>
+              <div class="text-[11px] text-sky-400 pt-0.5"><strong>Roots:</strong> '-B-D (Worship/Devotion) • '-W-N (Help/Assistance)</div>
+            </div>
+            <button onclick="playVerseAudio('001005')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+
+          <!-- Verse 6 -->
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-lg font-serif text-right text-emerald-400 tracking-wide font-medium">اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ</div>
+              <div class="text-xs text-slate-300 font-mono">Ihdinā ṣ-ṣirāṭa l-mustaqīm</div>
+              <div class="text-xs text-slate-400">"Guide us to the straight and upright path."</div>
+              <div class="text-[11px] text-sky-400 pt-0.5"><strong>Roots:</strong> H-D-Y (Guidance) • Ṣ-R-Ṭ (Path) • Q-W-M (Straight/Upright)</div>
+            </div>
+            <button onclick="playVerseAudio('001006')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+
+          <!-- Verse 7 -->
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-lg font-serif text-right text-emerald-400 tracking-wide font-medium">صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ</div>
+              <div class="text-xs text-slate-300 font-mono">Ṣirāṭa lladhīna an'amta 'alayhim, ghayri l-maghḍūbi 'alayhim wa la ḍ-ḍāllīn</div>
+              <div class="text-xs text-slate-400">"The path of those upon whom You bestowed favor, not of those who earned anger, nor of those who are astray."</div>
+              <div class="text-[11px] text-sky-400 pt-0.5"><strong>Roots:</strong> N-'-M (Blessing/Favor) • Gh-Ḍ-B (Anger) • Ḍ-L-L (Astray)</div>
+            </div>
+            <button onclick="playVerseAudio('001007')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Audio Element for Recitation Engine -->
+      <audio id="prayer-audio-player" class="hidden"></audio>
+
+      <!-- Essential Positions & Recitation Cheat Sheet -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+        <h4 class="text-lg font-bold text-white flex items-center gap-2">
+          <i data-lucide="activity" class="text-emerald-400 w-5 h-5"></i> Physical Movements & Required Phrases
+        </h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+            <span class="font-bold text-emerald-400 text-sm">Ruku' (Bowing Position)</span>
+            <p class="text-slate-300 font-serif text-base">سُبْحَانَ رَبِّيَ الْعَظِيمِ</p>
+            <p class="font-mono text-slate-400">Subḥāna Rabbiya l-'Aẓīm (x3)</p>
+            <p class="text-slate-400">"Glory be to my Lord, the Magnificent."</p>
+          </div>
+
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+            <span class="font-bold text-sky-400 text-sm">Rising from Bowing</span>
+            <p class="text-slate-300 font-serif text-base">سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ • رَبَّنَا وَلَكَ الْحَمْدُ</p>
+            <p class="font-mono text-slate-400">Sami'a Allāhu li-man ḥamidah • Rabbanā wa laka l-ḥamd</p>
+            <p class="text-slate-400">"Allah hears whoever praises Him. Our Lord, to You belongs all praise."</p>
+          </div>
+
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+            <span class="font-bold text-emerald-400 text-sm">Sujud (Prostration)</span>
+            <p class="text-slate-300 font-serif text-base">سُبْحَانَ رَبِّيَ الْأَعْلَىٰ</p>
+            <p class="font-mono text-slate-400">Subḥāna Rabbiya l-A'lā (x3)</p>
+            <p class="text-slate-400">"Glory be to my Lord, the Most High."</p>
+          </div>
+
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+            <span class="font-bold text-purple-400 text-sm">Sitting Between Prostrations</span>
+            <p class="text-slate-300 font-serif text-base">رَبِّ اغْفِرْ لِي، رَبِّ اغْفِرْ لِي</p>
+            <p class="font-mono text-slate-400">Rabbi-ghfir lī, Rabbi-ghfir lī</p>
+            <p class="text-slate-400">"My Lord, forgive me. My Lord, forgive me."</p>
+          </div>
+
+        </div>
+      </div>
+
     </div>
 
     <!-- TAB 2: EQ & SPIRITUAL ANCHORS (NEW) -->
@@ -735,6 +905,18 @@
       }
     }
 
+        /* Prayer Audio Streaming Engine */
+    function playVerseAudio(ayahKey) {
+      const player = document.getElementById('prayer-audio-player');
+      // Using Al-Husary 128kbps crystal-clear pedagogical recitation from EveryAyah
+      const audioUrl = `https://everyayah.com/data/Husary_128kbps/${ayahKey}.mp3`;
+      player.src = audioUrl;
+      player.play().catch(e => {
+        console.warn('Audio playback error:', e);
+        alert('Could not stream audio. Please ensure you are connected to the internet.');
+      });
+    }
+
     /* Flashcard Answer Toggle */
     function toggleAnswer(cardId, btn) {
       const card = document.getElementById(cardId);
@@ -896,3 +1078,4 @@
   </script>
 </body>
 </html>
+
