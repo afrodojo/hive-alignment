@@ -15,6 +15,7 @@
     .flip-front, .flip-back { backface-visibility: hidden; }
     .flip-back { transform: rotateY(180deg); }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-slate-950 min-h-screen flex flex-col">
 
@@ -789,6 +790,16 @@
             </h3>
             <p class="text-xs text-slate-400 mt-0.5">Synthesized studies, textbooks, and teachings feeding your Spring 2027 academic baseline.</p>
           </div>
+                    <div class="flex items-center gap-2">
+            <label for="camera-input" class="cursor-pointer px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 shadow-sm">
+              <i data-lucide="camera" class="w-4 h-4"></i> Scan Page / Doc
+            </label>
+            <input type="file" id="camera-input" accept="image/*" capture="environment" class="hidden" onchange="handleImageScan(event)">
+            <label for="file-upload-input" class="cursor-pointer px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-lg text-xs transition flex items-center gap-1.5 border border-slate-700">
+              <i data-lucide="upload" class="w-4 h-4"></i> Upload File
+            </label>
+            <input type="file" id="file-upload-input" accept="image/*,.pdf,.txt" class="hidden" onchange="handleDocumentUpload(event)">
+          </div>
           <div class="relative w-full sm:w-64">
             <input type="text" id="vault-search" oninput="filterVault()" placeholder="Search books, studies, tags..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
           </div>
@@ -1137,6 +1148,178 @@
       updateTimerDisplay();
     }
   </script>
+  <!-- OCR Processing & Deepstash Stash Modal -->
+  <div id="scan-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="layers" class="text-emerald-400 w-5 h-5"></i> Deepstash Card Creator
+        </h3>
+        <button onclick="closeScanModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+
+      <!-- OCR Status Banner -->
+      <div id="ocr-status-box" class="p-3 bg-slate-950 rounded-xl border border-slate-800 flex items-center gap-3">
+        <div id="ocr-spinner" class="w-4 h-4 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
+        <span id="ocr-status-text" class="text-xs text-slate-300 font-medium">Extracting text from image...</span>
+      </div>
+
+      <!-- Scanned Preview / Raw Text -->
+      <div class="space-y-1">
+        <label class="text-[11px] font-semibold text-slate-400 uppercase">Extracted Text (Editable)</label>
+        <textarea id="scanned-raw-text" rows="4" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 font-mono"></textarea>
+      </div>
+
+      <!-- Deepstash Structuring Inputs -->
+      <div class="grid grid-cols-2 gap-3 text-xs">
+        <div>
+          <label class="text-[11px] text-slate-400 font-medium">Idea Title</label>
+          <input type="text" id="stash-title" placeholder="e.g., The Obstacle Is the Way" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-white mt-1">
+        </div>
+        <div>
+          <label class="text-[11px] text-slate-400 font-medium">Author / Source</label>
+          <input type="text" id="stash-author" placeholder="e.g., Marcus Aurelius" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-white mt-1">
+        </div>
+      </div>
+
+      <div class="text-xs">
+        <label class="text-[11px] text-slate-400 font-medium">Key Takeaway (The Stash / Core Idea)</label>
+        <input type="text" id="stash-takeaway" placeholder="What is the 1-sentence actionable insight?" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-white mt-1">
+      </div>
+
+      <div class="flex justify-between items-center pt-2">
+        <select id="stash-category" class="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-300">
+          <option value="Philosophy">Philosophy</option>
+          <option value="Mental Health">Mental Health</option>
+          <option value="Focus & Energy">Focus & Energy</option>
+          <option value="Business Management">Business Management</option>
+          <option value="Fraternity Heritage">Fraternity Heritage</option>
+          <option value="Spiritual / Arabic">Spiritual / Arabic</option>
+        </select>
+        <div class="flex gap-2">
+          <button onclick="closeScanModal()" class="px-3 py-1.5 bg-slate-800 text-slate-300 rounded-lg text-xs font-semibold">Cancel</button>
+          <button onclick="saveDeepstashCard()" class="px-4 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
+            <i data-lucide="bookmark" class="w-3.5 h-3.5"></i> Save to Vault
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* OCR & Camera Ingestion Engine */
+    function openScanModal() {
+      document.getElementById('scan-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeScanModal() {
+      document.getElementById('scan-modal').classList.add('hidden');
+    }
+
+    async function handleImageScan(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      openScanModal();
+      const statusBox = document.getElementById('ocr-status-box');
+      const statusText = document.getElementById('ocr-status-text');
+      const spinner = document.getElementById('ocr-spinner');
+      const rawTextArea = document.getElementById('scanned-raw-text');
+
+      statusText.innerText = "Analyzing image with Tesseract OCR...";
+      spinner.classList.remove('hidden');
+
+      try {
+        const result = await Tesseract.recognize(file, 'eng', {
+          logger: m => {
+            if (m.status === 'recognizingtext') {
+              statusText.innerText = `Extracting text... ${(m.progress * 100).toFixed(0)}%`;
+            }
+          }
+        });
+
+        const extracted = result.data.text.trim();
+        rawTextArea.value = extracted;
+        spinner.classList.add('hidden');
+        statusText.innerText = "Text extracted successfully! Verify and add your takeaway.";
+
+        // Pre-fill initial fields
+        const lines = extracted.split('\n').filter(l => l.trim().length > 0);
+        if (lines.length > 0) {
+          document.getElementById('stash-title').value = lines[0].substring(0, 40);
+        }
+      } catch (err) {
+        console.error("OCR Error:", err);
+        spinner.classList.add('hidden');
+        statusText.innerText = "Could not extract text. You can type or paste manually below.";
+      }
+    }
+
+    function handleDocumentUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      if (file.type.startsWith('image/')) {
+        handleImageScan(event);
+      } else if (file.type === "text/plain") {
+        const reader = new FileReader();
+        reader.onload = e => {
+          openScanModal();
+          document.getElementById('ocr-spinner').classList.add('hidden');
+          document.getElementById('ocr-status-text').innerText = "Document loaded.";
+          document.getElementById('scanned-raw-text').value = e.target.result;
+        };
+        reader.readAsText(file);
+      } else {
+        alert("For PDFs, take a screenshot or photo of the page for high-accuracy OCR extraction.");
+      }
+    }
+
+    /* Save Deepstash Card into Live Vault (Persists locally and displays instantly) */
+    function saveDeepstashCard() {
+      const title = document.getElementById('stash-title').value || "Scanned Insight";
+      const author = document.getElementById('stash-author').value || "Extracted Reading";
+      const summary = document.getElementById('scanned-raw-text').value.substring(0, 220) + "...";
+      const takeaway = document.getElementById('stash-takeaway').value || "Reflect and apply to daily routine.";
+      const category = document.getElementById('stash-category').value;
+
+      const newCard = {
+        id: "stash-" + Date.now(),
+        title: title,
+        type: "Deepstash Idea",
+        author: author,
+        category: category,
+        date_added: new Date().toISOString().split('T')[0],
+        summary: summary,
+        takeaway: takeaway,
+        tag: "Camera-Ingest"
+      };
+
+      // Add to active memory vault
+      if (typeof vaultData !== 'undefined') {
+        vaultData.unshift(newCard);
+        renderVault(vaultData);
+      }
+
+      // Also persist to localStorage
+      const savedCards = JSON.parse(localStorage.getItem('hive_local_vault') || '[]');
+      savedCards.unshift(newCard);
+      localStorage.setItem('hive_local_vault', JSON.stringify(savedCards));
+
+      closeScanModal();
+      alert(`Saved idea card: "${title}" to your Knowledge Vault!`);
+    }
+
+    // Load any locally saved camera stash cards on startup
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedCards = JSON.parse(localStorage.getItem('hive_local_vault') || '[]');
+      if (savedCards.length > 0 && typeof vaultData !== 'undefined') {
+        vaultData.unshift(...savedCards);
+        renderVault(vaultData);
+      }
+    });
+  </script>
 </body>
 </html>
 
@@ -1152,4 +1335,5 @@ async function updatePrayerTimes() {
     }
   } catch (e) { console.warn(e); }
 }
+
 
