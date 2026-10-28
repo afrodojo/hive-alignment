@@ -11,6 +11,7 @@ export default function DeckHeader({
   focusBar,
   archiveLink = true,
   syncSlot,
+  onOpenMetrics,
 }) {
   return (
     <header className="shrink-0 space-y-2">
@@ -46,14 +47,16 @@ export default function DeckHeader({
 
       <div className="flex items-center justify-between gap-2">
         {focusBar}
-        <span
-          title={`${masteredToday} of ${dailyGoal} invariants mastered today`}
-          className="flex shrink-0 items-center gap-1 font-mono text-[9px] uppercase tracking-[0.1em] text-emerald-300/90"
+        <button
+          type="button"
+          onClick={onOpenMetrics}
+          title={`${masteredToday} of ${dailyGoal} invariants mastered today — open focus metrics`}
+          className="flex shrink-0 items-center gap-1 rounded-full font-mono text-[9px] uppercase tracking-[0.1em] text-emerald-300/90 transition hover:text-emerald-200"
         >
           <CheckCircle2 className="h-3 w-3 text-emerald-400" />
           {masteredToday} / {dailyGoal}
           <span className="text-slate-600">invariants today</span>
-        </span>
+        </button>
       </div>
     </header>
   );

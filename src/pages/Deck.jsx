@@ -15,8 +15,9 @@ import FocusModeToggle from '@/components/FocusModeToggle';
 import DecompressionState from '@/components/DecompressionState';
 import EmergencyRecenterButton from '@/components/EmergencyRecenterButton';
 import EmergencyRecenter from '@/components/EmergencyRecenter';
+import FocusMetricsModal from '@/components/FocusMetricsModal';
 import { isGitHubCacheFresh, loadGitHubCards, mergeFeedCards, readCachedGitHubCards } from '@/lib/ghCards';
-import { DAILY_GOAL, logDailyInternalized, readDailyInternalized } from '@/lib/dailyHabit';
+import { DAILY_GOAL, readInternalizedToday, recordInternalized } from '@/lib/telemetry';
 import { useFocusTimer } from '@/lib/focusSession';
 import {
   categoryCounts,
@@ -49,7 +50,8 @@ export default function Deck() {
   const [masteredIds, setMasteredIds] = useState([]);
   const [phase, setPhase] = useState('loading');
   const [category, setCategory] = useState('ALL');
-  const [dailyIds, setDailyIds] = useState(() => readDailyInternalized());
+  const [todayEntries, setTodayEntries] = useState(() => readInternalizedToday());
+  const [metricsOpen, setMetricsOpen] = useState(false);
   const [recenterCard, setRecenterCard] = useState(null);
   const primedRef = useRef(null);
   const categoryRef = useRef('ALL');
@@ -193,8 +195,8 @@ export default function Deck() {
     if (!target || masteredIds.includes(target.id)) return;
     await logInteraction(target, 'MASTERED');
     setMasteredIds((prevList) => [...prevList, target.id]);
-    // Digested for the day: the local daily counter the header reads.
-    setDailyIds(logDailyInternalized(target.id));
+    // Digested for the day: the local record both the header and the export read.
+    setTodayEntries(recordInternalized(target));
     const patch = {
       current_streak: nextStreak(user),
       last_active_at: new Date().toISOString(),
@@ -300,6 +302,12 @@ export default function Deck() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meeting, category]);
 
+  // The daily record rolls over at 04:00 local; refresh it while the deck stays open.
+  useEffect(() => {
+    const id = setInterval(() => setTodayEntries(readInternalizedToday()), 60 * 1000);
+    return () => clearInterval(id);
+  }, []);
+
   return (
     <div className="relative flex min-h-[100dvh] w-full flex-col bg-slate-950">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.10),transparent_65%)]" />
@@ -307,8 +315,9 @@ export default function Deck() {
         <DeckHeader
           sessionSeconds={sessionSeconds}
           streak={user?.current_streak ?? 0}
-          masteredToday={dailyIds.length}
+          masteredToday={todayEntries.length}
           dailyGoal={DAILY_GOAL}
+          onOpenMetrics={() => setMetricsOpen(true)}
           focusSlot={
             <FocusTimerRing
               remaining={focus.remaining}
@@ -408,6 +417,13 @@ export default function Deck() {
         {phase === 'session' && card && focus.phase !== 'break' && (
           <EmergencyRecenterButton onClick={openRecenter} />
         )}
+
+        <FocusMetricsModal
+          open={metricsOpen}
+          onOpenChange={setMetricsOpen}
+          entries={todayEntries}
+          streak={user?.current_streak ?? 0}
+        />
 
         {recenterCard && (
           <EmergencyRecenter
