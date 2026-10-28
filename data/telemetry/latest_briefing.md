@@ -1,8 +1,8 @@
-# MORNING BIOMETRIC BRIEFING — 2026-10-28
+# AFTERNOON BIOMETRIC BRIEFING — 2026-10-28
 
-> “Energy flows where attention goes. With maximum autonomic reserve, point your focus at your highest-value target.”
+> “Focus on being productive instead of busy. Protect your bandwidth as strain accumulates.”
 >
-> *— Tony Robbins*
+> *— Tim Ferriss*
 
 ---
 
@@ -10,30 +10,29 @@
 
 | Metric | Reading | Status |
 | :--- | :--- | :--- |
-| **Recovery Index** | **78%** | `GREEN ZONE` |
-| **HRV (rMSSD)** | 92.9 ms | Autonomic Nervous System Tone |
-| **Resting Heart Rate** | 59.6 bpm | Cardiovascular Baseline |
-| **Day Strain** | 6.8 / 21 | Cardiovascular Exertion |
-| **Sleep Performance** | 78% | Sleep Need Fulfilled |
+| **Recovery Index** | **65%** | `YELLOW ZONE` |
+| **HRV (rMSSD)** | 73.4 ms | Autonomic Nervous System Tone |
+| **Resting Heart Rate** | 58.1 bpm | Cardiovascular Baseline |
+| **Day Strain** | 5.3 / 21 | Cardiovascular Exertion |
+| **Sleep Performance** | 62% | Sleep Need Fulfilled |
 
 ## Operational Directive
 
-- **Physiological State:** Optimal parasympathetic dominance. Autonomic reserve is primed for high cognitive or metabolic demand.
-- **Target Strain Budget:** `14.0 – 17.5`
-- **Action Protocol:** Schedule high-friction work, intensive training, or critical decisions before midday.
+- **Exertion Tracking:** Strain accumulated: `5.3`.
+- **Midday Protocol:** Hydrate, perform a 5-minute visual reset away from screens, and pace physical workload.
 
 ---
 
 ## 🏋️ Tactical S&C Auto-Regulation Prescription
 
-> **Status:** `🟩 GREEN — HIGH ADAPTIVE CAPACITY`  
-> **Recovery:** `78%` | **HRV (rMSSD):** `92.9 ms` | **RHR:** `59.6 bpm` | **ACWR Gate:** `1.02 (Optimal Overload Zone: 0.80 – 1.10)`
+> **Status:** `🟨 YELLOW — MAINTENANCE / HOMEOSTASIS`  
+> **Recovery:** `65%` | **HRV (rMSSD):** `73.4 ms` | **RHR:** `58.1 bpm` | **ACWR Gate:** `0.92 (Safe Equilibrium Zone: 0.80 – 1.10)`
 
 | Parameter | Prescribed Target |
 | :--- | :--- |
-| **Volume Allocation** | Full Volume (4 sets × 12–15 reps) |
-| **Intensity Gate** | `RPE 7.5 – 8.5` |
-| **Load Overload Modulation** | **+2.5% Progressive Microcycle Overload** |
-| **Inter-Set Recovery** | 90–120s compound / 60s isolation |
-| **Movement Selections** | High axial loading: Barbell Back Squat, Weighted Pull-Ups, Overhead Press |
-| **Conditioning Protocol** | High-Intensity Functional Intervals or Lactate Threshold threshold intervals |
+| **Volume Allocation** | Moderate Volume (3 sets × 8–10 reps capped) |
+| **Intensity Gate** | `RPE 6.5 – 7.0 (Strict Cap)` |
+| **Load Overload Modulation** | **-10% Load Reduction vs Baseline** |
+| **Inter-Set Recovery** | Extended Rest (+30s: 120–150s) |
+| **Movement Selections** | Reduced spine loading: Dumbbell Bulgarian Split Squat, Chest-Supported Rows |
+| **Conditioning Protocol** | Zone 2 Steady State aerobic pacing (120–135 BPM) |

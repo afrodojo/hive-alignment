@@ -1,13 +1,13 @@
 {
-  "updated_at": "2026-10-28T04:29:16.999039+00:00",
-  "phase": "morning",
+  "updated_at": "2026-10-28T16:52:14.927395+00:00",
+  "phase": "afternoon",
   "date": "2026-10-28",
-  "recovery_score": 78,
-  "recovery_zone": "GREEN",
-  "hrv_ms": 92.9,
-  "rhr_bpm": 59.6,
-  "current_strain": 6.8,
-  "sleep_performance": 78,
-  "quote": "\u201cEnergy flows where attention goes. With maximum autonomic reserve, point your focus at your highest-value target.\u201d",
-  "quote_author": "Tony Robbins"
+  "recovery_score": 65,
+  "recovery_zone": "YELLOW",
+  "hrv_ms": 73.4,
+  "rhr_bpm": 58.1,
+  "current_strain": 5.3,
+  "sleep_performance": 62,
+  "quote": "\u201cFocus on being productive instead of busy. Protect your bandwidth as strain accumulates.\u201d",
+  "quote_author": "Tim Ferriss"
 }
