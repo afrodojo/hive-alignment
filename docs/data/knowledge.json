@@ -196,5 +196,93 @@
         "summary":  "Founded Nov 17, 1911 at Howard University. Grounded upon four Cardinal Principles: Manhood, Scholarship, Perseverance, and Uplift. First fraternal organization founded at an HBCU.",
         "takeaway":  "Integrate the four principles directly into daily executive conduct, academic rigor for 2027, and physical perseverance.",
         "tag":  "Omega-Foundations"
+    },
+    {
+        "id":  "founding-dates--milestone",
+        "title":  "Founding Dates, Milestones \u0026 First Chapters",
+        "type":  "History / Timeline",
+        "author":  "Alpha Chapter Archive",
+        "category":  "Fraternity Heritage",
+        "date_added":  "2026-10-28",
+        "summary":  "Nov 15 (initial meeting in Just\u0027s office), Nov 17 (Founding at Thirkield Hall), Dec 8 (Constitution adopted), Dec 15 (Alpha Chapter chartered, 14 members), Oct 28 1914 (Incorporation by Congress), 1917 (Fort Des Moines War Chapter), 1923 (Lambda: Pearl of the West Coast).",
+        "takeaway":  "Master all chronological sequences cold: date, location, key participants, and significance.",
+        "tag":  "Omega-Milestones"
+    },
+    {
+        "id":  "the-first-ten-grand-basil",
+        "title":  "The First Ten Grand Basilei",
+        "type":  "Leadership Archive",
+        "author":  "National Conclave Records",
+        "category":  "Fraternity Heritage",
+        "date_added":  "2026-10-28",
+        "summary":  "1. Edgar A. Love, 2. Oscar J. Cooper, 3. Edgar A. Love, 4. George A. Hall, 5. James C. McMorris, 6. Clarence F. Holmes, 7. Raymond G. Robinson, 8. Harold K. Thomas, 9. J. Alston Atkins, 10. John W. Love.",
+        "takeaway":  "Edgar A. Love served as both the 1st and 3rd Grand Basileus. Memorize order 1 through 10.",
+        "tag":  "First-10-Grand"
+    },
+    {
+        "id":  "fraternal-poetry-suite--i",
+        "title":  "Fraternal Poetry Suite: Invictus, See It Through, Bridge Builder, If",
+        "type":  "Literature / Poetry",
+        "author":  "Henley, Guest, Dromgoole, Kipling",
+        "category":  "Philosophy",
+        "date_added":  "2026-10-28",
+        "summary":  "Invictus (unconquerable soul, bloody but unbowed), See It Through (face trouble squarely, keep fighting trim), The Bridge Builder (uplift and paving paths for future youth), If— (stoic balance, triumph/disaster, holding on to virtue).",
+        "takeaway":  "Recite stanzas during 21:00 evening decompression and connect themes to Manhood, Scholarship, Perseverance, and Uplift.",
+        "tag":  "Omega-Poems"
+    },
+    {
+        "id":  "modern-era-milestones--19",
+        "title":  "Modern Era Milestones: 1980s to 1990s",
+        "type":  "History / Modern",
+        "author":  "National Archives",
+        "category":  "Fraternity Heritage",
+        "date_added":  "2026-10-28",
+        "summary":  "1981 Rust College Endowed Chair; 1984 Moses C. Norman Sr. elected Grand Basileus (served 6 yrs); 1986 75th Conclave in DC; Brother Ronald McNair (Challenger); 1990 L. Douglas Wilder (VA Governor, 1st elected African American governor); C. Tyrone Gilmore Sr. (34th GB); 1994 Dorsey C. Miller Jr. (35th GB); 3951 Snapfinger Pkwy World Center.",
+        "takeaway":  "Connect historical legacy from 1911 through the modern era, notable political breakthroughs, and national centers.",
+        "tag":  "Omega-Modern"
+    },
+    {
+        "id":  "founding-dates--milestone",
+        "title":  "Founding Dates, Milestones \u0026 First Chapters",
+        "type":  "History / Timeline",
+        "author":  "Alpha Chapter Archive",
+        "category":  "Fraternity Heritage",
+        "date_added":  "2026-10-28",
+        "summary":  "Nov 15 (initial meeting in Just\u0027s office), Nov 17 (Founding at Thirkield Hall), Dec 8 (Constitution adopted), Dec 15 (Alpha Chapter chartered, 14 members), Oct 28 1914 (Incorporation by Congress), 1917 (Fort Des Moines War Chapter), 1923 (Lambda: Pearl of the West Coast).",
+        "takeaway":  "Master all chronological sequences cold: date, location, key participants, and significance.",
+        "tag":  "Omega-Milestones"
+    },
+    {
+        "id":  "the-first-ten-grand-basil",
+        "title":  "The First Ten Grand Basilei",
+        "type":  "Leadership Archive",
+        "author":  "National Conclave Records",
+        "category":  "Fraternity Heritage",
+        "date_added":  "2026-10-28",
+        "summary":  "1. Edgar A. Love, 2. Oscar J. Cooper, 3. Edgar A. Love, 4. George A. Hall, 5. James C. McMorris, 6. Clarence F. Holmes, 7. Raymond G. Robinson, 8. Harold K. Thomas, 9. J. Alston Atkins, 10. John W. Love.",
+        "takeaway":  "Edgar A. Love served as both the 1st and 3rd Grand Basileus. Memorize order 1 through 10.",
+        "tag":  "First-10-Grand"
+    },
+    {
+        "id":  "fraternal-poetry-suite--i",
+        "title":  "Fraternal Poetry Suite: Invictus, See It Through, Bridge Builder, If",
+        "type":  "Literature / Poetry",
+        "author":  "Henley, Guest, Dromgoole, Kipling",
+        "category":  "Philosophy",
+        "date_added":  "2026-10-28",
+        "summary":  "Invictus (unconquerable soul, bloody but unbowed), See It Through (face trouble squarely, keep fighting trim), The Bridge Builder (uplift and paving paths for future youth), If— (stoic balance, triumph/disaster, holding on to virtue).",
+        "takeaway":  "Recite stanzas during 21:00 evening decompression and connect themes to Manhood, Scholarship, Perseverance, and Uplift.",
+        "tag":  "Omega-Poems"
+    },
+    {
+        "id":  "modern-era-milestones--19",
+        "title":  "Modern Era Milestones: 1980s to 1990s",
+        "type":  "History / Modern",
+        "author":  "National Archives",
+        "category":  "Fraternity Heritage",
+        "date_added":  "2026-10-28",
+        "summary":  "1981 Rust College Endowed Chair; 1984 Moses C. Norman Sr. elected Grand Basileus (served 6 yrs); 1986 75th Conclave in DC; Brother Ronald McNair (Challenger); 1990 L. Douglas Wilder (VA Governor, 1st elected African American governor); C. Tyrone Gilmore Sr. (34th GB); 1994 Dorsey C. Miller Jr. (35th GB); 3951 Snapfinger Pkwy World Center.",
+        "takeaway":  "Connect historical legacy from 1911 through the modern era, notable political breakthroughs, and national centers.",
+        "tag":  "Omega-Modern"
     }
 ]
