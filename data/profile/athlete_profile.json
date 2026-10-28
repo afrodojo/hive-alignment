@@ -1,0 +1,55 @@
+﻿{
+  "athlete": {
+    "name": "Asaad",
+    "height_inches": 70,
+    "current_weight_lbs": 185.0,
+    "target_weight_lbs": 175.0,
+    "supplements": [
+      "Men of Mars Multivitamin"
+    ],
+    "goals": [
+      "Full-body mobility & desk-decompression",
+      "Aerobic stamina & cardiovascular health",
+      "Stress regulation & mental health balance",
+      "Sustainable work-life-study harmony"
+    ]
+  },
+  "training_schedule": {
+    "monday": {
+      "focus": "Upper Body Push & Rotational Core",
+      "location": "Crunch Fitness",
+      "duration_minutes": 50,
+      "time_window": "17:30 - 18:20"
+    },
+    "tuesday": {
+      "focus": "Lower Body Hip-Hinge & Mobility Flow",
+      "location": "Crunch Fitness",
+      "duration_minutes": 50,
+      "time_window": "17:30 - 18:20"
+    },
+    "wednesday": {
+      "focus": "Aerobic Base & Zone 2 Cardio Ergometer",
+      "location": "Crunch Fitness",
+      "duration_minutes": 45,
+      "time_window": "17:30 - 18:15"
+    },
+    "thursday": {
+      "focus": "Upper Body Pull & Posterior Chain",
+      "location": "Crunch Fitness",
+      "duration_minutes": 50,
+      "time_window": "17:30 - 18:20"
+    },
+    "friday": {
+      "focus": "Full Body Functional Capacity & Finisher",
+      "location": "Crunch Fitness",
+      "duration_minutes": 45,
+      "time_window": "17:00 - 17:45"
+    },
+    "sunday": {
+      "focus": "Couple's Weekly Reflection & Strategic Alignment",
+      "location": "Home / Dedicated Quiet Space",
+      "duration_minutes": 45,
+      "time_window": "20:00 - 20:45"
+    }
+  }
+}

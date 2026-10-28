@@ -322,6 +322,7 @@ jobs:
         run: |
           git config user.name "Cyber Dojo Sensei"
           git config user.email "cyberdojosensei@gmail.com"
-          git add data/telemetry/ README.md
+          git add data/ docs/ scripts/ README.md
           git diff-index --quiet HEAD || (git commit -m "chore(telemetry): update briefings and README [skip ci]" && git push)
+
 
