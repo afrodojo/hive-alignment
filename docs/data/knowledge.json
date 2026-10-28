@@ -108,5 +108,93 @@
         "summary":  "Reflective thinking requires suspending judgment during a state of perplexity and conducting active, systematic inquiry to test hypothetical solutions before settling on belief.",
         "takeaway":  "Enforce the 3-sentence Feynman synthesis rule on your scratchpad: true conceptual mastery is demonstrated by translating high-level abstraction into plain language.",
         "tag":  "Reflective Thought"
+    },
+    {
+        "id":  "epictetus---aurelius--the",
+        "title":  "Epictetus \u0026 Aurelius: The Dichotomy of Control",
+        "type":  "Book",
+        "author":  "Epictetus / Marcus Aurelius",
+        "category":  "Philosophy",
+        "date_added":  "2026-10-28",
+        "summary":  "External events carry zero moral weight; suffering emerges only from the internal judgment assigned to them. Autonomic resilience is conserved by disregarding outcomes outside direct executive will.",
+        "takeaway":  "Filter every perceived friction in the office or training program into \u0027actionable by me today\u0027 vs \u0027irrelevant noise\u0027.",
+        "tag":  "Philosophy-W1"
+    },
+    {
+        "id":  "habit-automation---neural",
+        "title":  "Habit Automation \u0026 Neural Economics",
+        "type":  "Book",
+        "author":  "William James",
+        "category":  "Mental Health",
+        "date_added":  "2026-10-28",
+        "summary":  "Conscious willpower is an expensive biological resource. Routinizing physical movement and daily rituals reduces metabolic cost in the prefrontal cortex, preserving cognitive capacity for higher-order work.",
+        "takeaway":  "Eliminate daily decisions around workouts and evening wind-downs; treat them as fixed, automated appointments.",
+        "tag":  "MentalHealth-W2"
+    },
+    {
+        "id":  "personal-enterprise-syste",
+        "title":  "Personal Enterprise Systems Architecture",
+        "type":  "Open Textbook",
+        "author":  "OpenStax Management Series",
+        "category":  "Business Management",
+        "date_added":  "2026-10-28",
+        "summary":  "Strategic execution degrades when operational inputs exceed capacity buffers. Maintaining buffer zones in daily schedules preserves the flexibility required to navigate sudden demands without systemic failure.",
+        "takeaway":  "Schedule no more than 80% of daily working hours; reserve 20% as a strategic buffer for family, recovery, and unexpected executive tasks.",
+        "tag":  "Management-W3"
+    },
+    {
+        "id":  "mechanics-of-sensory-inhi",
+        "title":  "Mechanics of Sensory Inhibition",
+        "type":  "Academic Monograph",
+        "author":  "W. B. Pillsbury",
+        "category":  "Focus and Energy",
+        "date_added":  "2026-10-28",
+        "summary":  "Sustained attention is an act of selective suppression. When an environment contains ambient notifications or clutter, energy is expended on active inhibition rather than deep processing.",
+        "takeaway":  "Clear the physical desk and close all background communication windows before initiating each 20-minute focus sprint.",
+        "tag":  "Focus-W4"
+    },
+    {
+        "id":  "neuromuscular---autonomic",
+        "title":  "Neuromuscular \u0026 Autonomic Recovery",
+        "type":  "Open Textbook",
+        "author":  "Betts et al. (OpenStax)",
+        "category":  "Wellness",
+        "date_added":  "2026-10-28",
+        "summary":  "Hypertrophy and functional adaptation occur during periods of parasympathetic dominance, not during physical training. Chronic sympathetic elevation impedes muscle protein synthesis and impairs immune regulation.",
+        "takeaway":  "Treat the post-workout evening decompression as an essential stimulus requirement for strength gains and nervous system reset.",
+        "tag":  "Wellness-W5"
+    },
+    {
+        "id":  "social-psychology---empat",
+        "title":  "Social Psychology \u0026 Empathetic Inquiry",
+        "type":  "Book",
+        "author":  "John Dewey",
+        "category":  "Social Personalities",
+        "date_added":  "2026-10-28",
+        "summary":  "Interpersonal friction often stems from unexamined habit loops and perceived defensiveness. Open diagnostic questions de-escalate tension and support mutual problem-solving.",
+        "takeaway":  "Approach Sunday reflection sessions and workplace conversations with inquiry-first phrasing: \u0027Walk me through how this looked from your side.\u0027",
+        "tag":  "Social-W6"
+    },
+    {
+        "id":  "systematic-reflective-inq",
+        "title":  "Systematic Reflective Inquiry",
+        "type":  "Book",
+        "author":  "John Dewey",
+        "category":  "Building Intellect",
+        "date_added":  "2026-10-28",
+        "summary":  "Intellectual maturity involves suspending judgment during ambiguous conditions and testing hypotheses systematically before adopting conclusions. True understanding requires framing ideas in simple language.",
+        "takeaway":  "Validate the 3-sentence Feynman scratchpad protocol at the close of every study block to ensure active retention and conceptual clarity.",
+        "tag":  "Intellect-W7"
+    },
+    {
+        "id":  "omega-psi-phi--founding-h",
+        "title":  "Omega Psi Phi: Founding Heritage \u0026 Cardinal Principles",
+        "type":  "Teachings / History",
+        "author":  "Four Founders (Love, Cooper, Coleman, Just)",
+        "category":  "Building Intellect",
+        "date_added":  "2026-10-28",
+        "summary":  "Founded Nov 17, 1911 at Howard University. Grounded upon four Cardinal Principles: Manhood, Scholarship, Perseverance, and Uplift. First fraternal organization founded at an HBCU.",
+        "takeaway":  "Integrate the four principles directly into daily executive conduct, academic rigor for 2027, and physical perseverance.",
+        "tag":  "Omega-Foundations"
     }
 ]
