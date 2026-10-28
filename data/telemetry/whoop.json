@@ -1,9 +1,12 @@
 {
-  "updated_at": "2026-10-28T02:30:28.989790+00:00",
+  "updated_at": "2026-10-28T02:35:20.224556+00:00",
+  "phase": "evening",
   "recovery_score": 50,
+  "recovery_zone": "YELLOW",
   "hrv_ms": 0.0,
   "rhr_bpm": 0.0,
-  "recovery_zone": "YELLOW",
+  "current_strain": 6.8,
+  "sleep_performance": 0,
   "spo2_percentage": null,
   "skin_temp_celsius": null
 }
