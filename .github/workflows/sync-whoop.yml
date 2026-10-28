@@ -2,7 +2,6 @@ name: Sync WHOOP Biometrics Telemetry
 
 on:
   schedule:
-    # Runs at 10:00 UTC (6:00 AM EDT) daily
     - cron: '0 10 * * *'
   workflow_dispatch:
 
@@ -37,16 +36,12 @@ jobs:
           client_secret = os.environ.get("CLIENT_SECRET", "").strip()
           refresh_token = os.environ.get("REFRESH_TOKEN", "").strip()
 
-          if not client_id or not client_secret or not refresh_token:
-              raise ValueError("One or more WHOOP secrets are missing or empty.")
-
-          # WHOOP requires redirect_uri even on refresh_token requests
           token_payload = {
               "grant_type": "refresh_token",
               "refresh_token": refresh_token,
               "client_id": client_id,
               "client_secret": client_secret,
-              "redirect_uri": "https://httpbin.org/anything"
+              "scope": "offline"
           }
 
           token_res = httpx.post(
@@ -56,34 +51,21 @@ jobs:
               timeout=20.0
           )
 
-          print(f"WHOOP Auth Status: {token_res.status_code}")
-          try:
-              tokens = token_res.json()
-          except Exception:
-              tokens = {"raw": token_res.text}
-
+          tokens = token_res.json()
           if token_res.status_code != 200:
-              print("WHOOP Token Refresh Failed:")
-              print(json.dumps(tokens, indent=2))
+              print(f"WHOOP Auth Failure: {json.dumps(tokens, indent=2)}")
               token_res.raise_for_status()
 
           access_token = tokens["access_token"]
-          new_refresh = tokens.get("refresh_token")
-          if new_refresh and new_refresh != refresh_token:
-              print("Notice: WHOOP issued a rotated refresh_token.")
 
-          # 2. Fetch Latest Recovery
+          # Fetch recovery records
           headers = {"Authorization": f"Bearer {access_token}"}
           rec_res = httpx.get("https://api.prod.whoop.com/developer/v1/recovery?limit=1", headers=headers, timeout=20.0)
-
-          print(f"WHOOP Recovery Endpoint Code: {rec_res.status_code}")
-          if rec_res.status_code != 200:
-              print(f"WHOOP Recovery Error: {rec_res.text}")
-              rec_res.raise_for_status()
+          rec_res.raise_for_status()
 
           records = rec_res.json().get("records", [])
           if not records:
-              print("No recovery records returned yet today.")
+              print("No recovery records returned for today yet.")
               exit(0)
 
           score = records[0].get("score", {})
