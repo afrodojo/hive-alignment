@@ -1,0 +1,16 @@
+{
+  "domain": "WARRIOR_ETHOS",
+  "title": "Law 4: Say Less Than Necessary to Guard Focus",
+  "hook": "Over-explaining is an anxiety response that surrenders leverage.",
+  "core_insight": "Robert Greene's 4th Law of Power dictates that powerful people impress and intimidate by saying less. ADHD often manifests in high-stakes rooms as verbal processing—over-explaining to validate competence or resolve awkward silence. Silence projects poise, forces others to reveal their motives, and drastically conserves working memory. Let concise outputs carry the burden of proof.",
+  "takeaways": [
+    "State the technical conclusion in one sentence, then embrace the silence.",
+    "Treat speech as a scarce resource: excess words provide attack surfaces and bleed leverage."
+  ],
+  "proof_or_code": "\\text{Perceived Authority} \\propto \\frac{\\text{Semantic Density}}{\\text{Utterance Volume} + \\epsilon}",
+  "read_time_seconds": 40,
+  "commit_hash": "power01",
+  "repo_url": "https://github.com/afrodojo/hive-alignment",
+  "live_site_url": "https://hive-align.eds-360.com",
+  "external_reference": "Robert Greene, 48 Laws of Power, Law 4"
+}
