@@ -1,0 +1,74 @@
+﻿BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//HiveAlignment//CrunchAndReflection//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Hive Alignment & Fitness
+X-WR-TIMEZONE:America/New_York
+BEGIN:VEVENT
+UID:monday-crunch-hive@afrodojo.github.io
+DTSTAMP:20261028T050000Z
+DTSTART;TZID=America/New_York:20261102T173000
+DTEND;TZID=America/New_York:20261102T182000
+RRULE:FREQ=WEEKLY;BYDAY=MO
+SUMMARY:[Fitness] Upper Body Push & Rotational Core
+DESCRIPTION:Location: Crunch Fitness\nDuration: 50 min\nFocus: Bench Press, Incline DB, Lateral Raises, Planks
+LOCATION:Crunch Fitness
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:tuesday-crunch-hive@afrodojo.github.io
+DTSTAMP:20261028T050000Z
+DTSTART;TZID=America/New_York:20261103T173000
+DTEND;TZID=America/New_York:20261103T182000
+RRULE:FREQ=WEEKLY;BYDAY=TU
+SUMMARY:[Fitness] Lower Body Hip-Hinge & Mobility Flow
+DESCRIPTION:Location: Crunch Fitness\nDuration: 50 min\nFocus: Romanian Deadlifts, Goblet Squats, 90/90s
+LOCATION:Crunch Fitness
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:wednesday-crunch-hive@afrodojo.github.io
+DTSTAMP:20261028T050000Z
+DTSTART;TZID=America/New_York:20261104T173000
+DTEND;TZID=America/New_York:20261104T181500
+RRULE:FREQ=WEEKLY;BYDAY=WE
+SUMMARY:[Fitness] Aerobic Base & Zone 2 Cardio Ergometer
+DESCRIPTION:Location: Crunch Fitness\nDuration: 45 min\nFocus: Rowing Ergometer & Incline Rucking (125-135 BPM)
+LOCATION:Crunch Fitness
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:thursday-crunch-hive@afrodojo.github.io
+DTSTAMP:20261028T050000Z
+DTSTART;TZID=America/New_York:20261105T173000
+DTEND;TZID=America/New_York:20261105T182000
+RRULE:FREQ=WEEKLY;BYDAY=TH
+SUMMARY:[Fitness] Upper Body Pull & Posterior Chain
+DESCRIPTION:Location: Crunch Fitness\nDuration: 50 min\nFocus: Lat Pulldowns, Seated Cable Rows, Face Pulls
+LOCATION:Crunch Fitness
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:friday-crunch-hive@afrodojo.github.io
+DTSTAMP:20261028T050000Z
+DTSTART;TZID=America/New_York:20261106T170000
+DTEND;TZID=America/New_York:20261106T174500
+RRULE:FREQ=WEEKLY;BYDAY=FR
+SUMMARY:[Fitness] Full Body Functional Capacity & Finisher
+DESCRIPTION:Location: Crunch Fitness\nDuration: 45 min\nFocus: Kettlebell Swings, Farmer Carries, Full Kinetic Flow
+LOCATION:Crunch Fitness
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sunday-reflection-hive@afrodojo.github.io
+DTSTAMP:20261028T050000Z
+DTSTART;TZID=America/New_York:20261101T200000
+DTEND;TZID=America/New_York:20261101T204500
+RRULE:FREQ=WEEKLY;BYDAY=SU
+SUMMARY:❤️ Couple's Weekly Reflection & Strategic Alignment
+DESCRIPTION:Protected alignment ritual with wife.\n\nPrompts:\n1. What went well this week?\n2. Where did we feel stretched?\n3. How can I support you next week?\n4. Academic/Work check-in.
+LOCATION:Home / Dedicated Quiet Space
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR
