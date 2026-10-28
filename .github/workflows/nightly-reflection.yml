@@ -1,0 +1,98 @@
+name: Generate Nightly Reflection Card
+
+on:
+  schedule:
+    # 03:30 UTC = 11:30 PM EDT
+    - cron: '30 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  synthesize-reflection:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install httpx pydantic
+
+      - name: Compile Daily Synthesis
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          import os, json, glob, httpx, hashlib
+          from datetime import datetime, timezone
+          from pydantic import BaseModel, Field
+
+          class ReflectionCard(BaseModel):
+              domain: str = "SPIRITUAL_PILLARS"
+              title: str = Field(max_length=120)
+              hook: str = Field(max_length=255)
+              core_insight: str
+              takeaways: list[str] = Field(min_length=2, max_length=2)
+              proof_or_code: str = Field(description="Formal LaTeX expression unifying today's internalized principles into an executive invariant")
+              read_time_seconds: int = 50
+
+          today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+          
+          # Inspect recent cards ingested today
+          card_files = sorted(glob.glob("data/cards/*.json"), key=os.path.getmtime, reverse=True)[:5]
+          collected = []
+          for cf in card_files:
+              try:
+                  with open(cf, "r") as f:
+                      collected.append(json.load(f))
+              except Exception:
+                  pass
+
+          context_text = "\n".join([f"- [{c.get('domain')}] {c.get('title')}: {c.get('hook')}" for c in collected])
+          if not context_text:
+              context_text = "- Focus on intentionality, emotional armor, strategic patience, and technical rigor."
+
+          prompt = (
+              f"Generate a grounding Daily Synthesis Focus Card for an AI Solutions Architect & CS PhD managing ADHD.\n"
+              f"Today's digested themes:\n{context_text}\n\n"
+              f"Requirements:\n"
+              f"- Reconcile the day's technical output, strategic patience, and spiritual servitude.\n"
+              f"- Emphasize nervous-system closure, quieting executive hyper-vigilance, and restorative rest.\n"
+              f"- proof_or_code MUST be a rigorous LaTeX invariant expression representing consolidated daily entropy reduction."
+          )
+
+          res = httpx.post(
+              "https://api.openai.com/v1/chat/completions",
+              headers={"Authorization": f"Bearer {os.environ['OPENAI_API_KEY']}"},
+              json={
+                  "model": "gpt-4o-mini",
+                  "messages": [{"role": "user", "content": prompt}],
+                  "response_format": {"type": "json_schema", "json_schema": {"name": "ReflectionCard", "schema": ReflectionCard.model_json_schema()}}
+              },
+              timeout=35.0
+          )
+
+          card_data = json.loads(res.json()["choices"][0]["message"]["content"])
+          card_data["commit_hash"] = f"refl{datetime.now().strftime('%m%d')}"
+          card_data["repo_url"] = "https://github.com/afrodojo/hive-alignment"
+          card_data["live_site_url"] = "https://hive-align.eds-360.com"
+          card_data["external_reference"] = f"Nightly Review: {today_str}"
+
+          os.makedirs("data/cards", exist_ok=True)
+          out_file = f"data/cards/daily-reflection-{today_str}.json"
+          with open(out_file, "w") as f:
+              json.dump(card_data, f, indent=2)
+          print(f"Generated {out_file}")
+        shell: python
+
+      - name: Commit Reflection Card
+        run: |
+          git config user.name "Cyber Dojo Sensei"
+          git config user.email "cyberdojosensei@gmail.com"
+          git add data/cards/
+          git diff-index --quiet HEAD || (git commit -m "chore(reflection): compile daily focus invariant [skip ci]" && git push)
