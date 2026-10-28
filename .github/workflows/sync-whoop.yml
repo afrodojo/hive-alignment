@@ -97,26 +97,44 @@ jobs:
 
           headers = {"Authorization": f"Bearer {access_token}"}
 
-          # 2. Query Collections
-          rec_res = httpx.get("https://api.prod.whoop.com/developer/v1/recovery?limit=1", headers=headers, timeout=20.0)
-          cycle_res = httpx.get("https://api.prod.whoop.com/developer/v1/cycle?limit=1", headers=headers, timeout=20.0)
-          sleep_res = httpx.get("https://api.prod.whoop.com/developer/v1/activity/sleep?limit=1", headers=headers, timeout=20.0)
+          # 2. Query Collections (Pull latest batches to sort and extract the most recent settled records)
+          rec_res = httpx.get("https://api.prod.whoop.com/developer/v1/recovery?limit=10", headers=headers, timeout=20.0)
+          cycle_res = httpx.get("https://api.prod.whoop.com/developer/v1/cycle?limit=5", headers=headers, timeout=20.0)
+          sleep_res = httpx.get("https://api.prod.whoop.com/developer/v1/activity/sleep?limit=10", headers=headers, timeout=20.0)
 
-          rec_data = rec_res.json().get("records", [{}])[0] if rec_res.status_code == 200 and rec_res.json().get("records") else {}
-          cycle_data = cycle_res.json().get("records", [{}])[0] if cycle_res.status_code == 200 and cycle_res.json().get("records") else {}
-          sleep_data = sleep_res.json().get("records", [{}])[0] if sleep_res.status_code == 200 and sleep_res.json().get("records") else {}
+          rec_records = rec_res.json().get("records", []) if rec_res.status_code == 200 else []
+          cycle_records = cycle_res.json().get("records", []) if cycle_res.status_code == 200 else []
+          sleep_records = sleep_res.json().get("records", []) if sleep_res.status_code == 200 else []
+
+          def get_timestamp(item):
+              return item.get("end") or item.get("created_at") or item.get("start") or ""
+
+          rec_records.sort(key=get_timestamp, reverse=True)
+          cycle_records.sort(key=get_timestamp, reverse=True)
+          sleep_records.sort(key=get_timestamp, reverse=True)
+
+          rec_data = rec_records[0] if rec_records else {}
+          cycle_data = cycle_records[0] if cycle_records else {}
+          sleep_data = sleep_records[0] if sleep_records else {}
 
           rec_score = rec_data.get("score", {})
           cycle_score = cycle_data.get("score", {})
           sleep_score = sleep_data.get("score", {})
 
-          recovery_score = rec_score.get("recovery_score", 50)
-          hrv_ms = rec_score.get("hrv_rmssd_milli", 0.0)
-          rhr_bpm = rec_score.get("resting_heart_rate", 0.0)
+          # Extraction with cycle/recovery fallback hierarchy
+          recovery_score = rec_score.get("recovery_score")
+          if recovery_score is None:
+              recovery_score = cycle_score.get("recovery_score", 50)
+
+          hrv_ms = rec_score.get("hrv_rmssd_milli") or 0.0
+          rhr_bpm = rec_score.get("resting_heart_rate") or 0.0
           spo2 = rec_score.get("spo2_percentage")
           skin_temp = rec_score.get("skin_temp_celsius")
           current_strain = cycle_score.get("strain", 0.0)
-          sleep_perf = sleep_score.get("sleep_performance_percentage", 0)
+
+          sleep_perf = sleep_score.get("sleep_performance_percentage")
+          if sleep_perf is None:
+              sleep_perf = rec_score.get("sleep_performance_percentage", 0)
 
           zone = "YELLOW"
           if recovery_score >= 66:
