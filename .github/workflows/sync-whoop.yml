@@ -1,4 +1,4 @@
-﻿name: Sync WHOOP Biometrics Telemetry
+name: Sync WHOOP Biometrics Telemetry
 
 on:
   schedule:
@@ -42,7 +42,7 @@ jobs:
 
           # 1. Load existing base data
           if os.path.exists(telemetry_file):
-              with open(telemetry_file, "r") as f:
+              with open(telemetry_file, "r", encoding="utf-8-sig") as f:
                   data = json.load(f)
           else:
               data = {
