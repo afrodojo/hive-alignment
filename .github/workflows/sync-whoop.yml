@@ -65,13 +65,12 @@ jobs:
               except Exception:
                   pass
 
-          # 1. Refresh OAuth Token
+          # 1. Refresh OAuth Token (RFC 6749: omit scope on token refresh)
           token_payload = {
               "grant_type": "refresh_token",
               "refresh_token": refresh_token,
               "client_id": client_id,
-              "client_secret": client_secret,
-              "scope": "offline"
+              "client_secret": client_secret
           }
 
           token_res = httpx.post(
@@ -98,7 +97,7 @@ jobs:
 
           headers = {"Authorization": f"Bearer {access_token}"}
 
-          # 2. Query Endpoints
+          # 2. Query Collections
           rec_res = httpx.get("https://api.prod.whoop.com/developer/v1/recovery?limit=1", headers=headers, timeout=20.0)
           cycle_res = httpx.get("https://api.prod.whoop.com/developer/v1/cycle?limit=1", headers=headers, timeout=20.0)
           sleep_res = httpx.get("https://api.prod.whoop.com/developer/v1/activity/sleep?limit=1", headers=headers, timeout=20.0)
@@ -260,7 +259,7 @@ jobs:
                       f.write(updated_readme)
                   print("Updated README.md with latest briefing.")
 
-          # Export metadata for next workflow steps
+          # Export metadata for subsequent workflow steps
           with open(os.environ["GITHUB_ENV"], "a") as env_file:
               env_file.write(f"BRIEFING_PHASE={phase.title()}\n")
               env_file.write(f"BRIEFING_DATE={date_str}\n")
