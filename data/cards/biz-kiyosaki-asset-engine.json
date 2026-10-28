@@ -1,0 +1,16 @@
+{
+  "domain": "BIZ_ACUMEN",
+  "title": "Asset Sovereignty: Decoupling Energy from Survival",
+  "hook": "If your primary income requires real-time presence, your focus is owned by external variance.",
+  "core_insight": "In 'Rich Dad Poor Dad', Kiyosaki defines an asset strictly as what puts money into your pocket, and a liability as what takes money out. Financial anxiety spikes when all capital inflows depend on immediate high-stress consulting hours. Channel surplus technical leverage into intellectual property, automated platforms, and cash-flowing reserves to construct an unshakeable operational buffer.",
+  "takeaways": [
+    "Triage daily effort: dedicate fixed blocks to building assets that compound without live attendance.",
+    "Financial sovereignty reduces baseline anxiety, making you immune to client pressure."
+  ],
+  "proof_or_code": "\\frac{d(\\text{Sovereignty})}{dt} = \\sum \\text{CashFlow}(\\text{Assets}) - \\text{FixedBurn}(\\text{Liabilities}) > 0",
+  "read_time_seconds": 45,
+  "commit_hash": "rich01",
+  "repo_url": "https://github.com/afrodojo/hive-alignment",
+  "live_site_url": "https://hive-align.eds-360.com",
+  "external_reference": "Robert Kiyosaki, Rich Dad Poor Dad"
+}
