@@ -1,4 +1,30 @@
-- name: Fetch Recovery & Sleep Metrics
+name: Sync WHOOP Biometrics Telemetry
+
+on:
+  schedule:
+    # Runs at 10:00 UTC (6:00 AM EDT) daily
+    - cron: '0 10 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  pull-whoop:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install httpx
+
+      - name: Fetch Recovery & Sleep Metrics
         env:
           CLIENT_ID: ${{ secrets.WHOOP_CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.WHOOP_CLIENT_SECRET }}
@@ -26,16 +52,15 @@
               },
               timeout=20.0
           )
-          
+
           print(f"WHOOP Auth Response Code: {token_res.status_code}")
           tokens = token_res.json()
-          
+
           if token_res.status_code != 200:
               print(f"WHOOP Auth Error Details: {json.dumps(tokens, indent=2)}")
               token_res.raise_for_status()
 
           access_token = tokens["access_token"]
-          # If WHOOP rotated the refresh token, log that information
           new_refresh = tokens.get("refresh_token")
           if new_refresh and new_refresh != refresh_token:
               print("Notice: WHOOP issued a rotated refresh_token.")
@@ -43,7 +68,7 @@
           # 2. Fetch Latest Recovery
           headers = {"Authorization": f"Bearer {access_token}"}
           rec_res = httpx.get("https://api.prod.whoop.com/developer/v1/recovery?limit=1", headers=headers, timeout=20.0)
-          
+
           print(f"WHOOP Recovery Endpoint Code: {rec_res.status_code}")
           if rec_res.status_code != 200:
               print(f"WHOOP Recovery Error: {rec_res.text}")
@@ -59,7 +84,6 @@
           hrv_ms = score.get("hrv_rmssd_milli", 0)
           rhr_bpm = score.get("resting_heart_rate", 0)
 
-          # Classify Recovery Zone
           zone = "YELLOW"
           if recovery_score >= 66:
               zone = "GREEN"
@@ -82,3 +106,10 @@
 
           print(f"Successfully synced WHOOP: {recovery_score}% ({zone} Zone) | HRV: {hrv_ms}ms")
         shell: python
+
+      - name: Commit Telemetry
+        run: |
+          git config user.name "Cyber Dojo Sensei"
+          git config user.email "cyberdojosensei@gmail.com"
+          git add data/telemetry/whoop.json
+          git diff-index --quiet HEAD || (git commit -m "chore(telemetry): sync WHOOP recovery [skip ci]" && git push)
