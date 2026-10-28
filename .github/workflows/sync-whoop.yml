@@ -2,7 +2,8 @@
 
 on:
   schedule:
-    - cron: '0 11 * * *' # Runs daily at 7:00 AM EST (after morning recovery calculates)
+    # Runs 3 times a day: 07:00 AM EST (11:00 UTC), 01:00 PM EST (17:00 UTC), 09:00 PM EST (01:00 UTC next day)
+    - cron: '0 11,17,1 * * *'
   workflow_dispatch:
 
 permissions:
@@ -23,18 +24,23 @@ jobs:
       - name: Install dependencies
         run: pip install httpx
 
-      - name: Fetch and Parse WHOOP Telemetry
+      - name: Fetch and Sync Live WHOOP Data
         env:
-          WHOOP_API_TOKEN: ${{ secrets.WHOOP_API_TOKEN }}
+          WHOOP_CLIENT_ID: ${{ secrets.WHOOP_CLIENT_ID }}
+          WHOOP_CLIENT_SECRET: ${{ secrets.WHOOP_CLIENT_SECRET }}
+          WHOOP_REFRESH_TOKEN: ${{ secrets.WHOOP_REFRESH_TOKEN }}
         run: |
           python - << 'EOF'
           import os, json, httpx
           from datetime import datetime
 
-          token = os.environ.get("WHOOP_API_TOKEN")
+          client_id = os.environ.get("WHOOP_CLIENT_ID")
+          client_secret = os.environ.get("WHOOP_CLIENT_SECRET")
+          refresh_token = os.environ.get("WHOOP_REFRESH_TOKEN")
+
           telemetry_file = "docs/data/telemetry.json"
 
-          # Load existing data as base
+          # 1. Load existing base data
           if os.path.exists(telemetry_file):
               with open(telemetry_file, "r") as f:
                   data = json.load(f)
@@ -45,25 +51,88 @@ jobs:
                   "strain": 5.3,
                   "hrv": 92.9,
                   "height": "6'0\" (72 in)",
-                  "weight": 235
+                  "weight": 235,
+                  "schedule": "Monday – Friday"
               }
 
-          # If WHOOP API token is present, pull latest cycle
-          if token:
-              headers = {"Authorization": f"Bearer {token}"}
+          # 2. Exchange refresh token for fresh access token
+          access_token = None
+          if client_id and client_secret and refresh_token:
+              token_url = "https://api.prod.whoop.com/oauth/oauth2/token"
+              payload = {
+                  "grant_type": "refresh_token",
+                  "refresh_token": refresh_token,
+                  "client_id": client_id,
+                  "client_secret": client_secret,
+                  "scope": "offline read:recovery read:cycles read:sleep read:workout"
+              }
               try:
-                  res = httpx.get("https://api.prod.whoop.com/developer/v1/cycle?limit=1", headers=headers, timeout=15.0)
-                  if res.status_code == 200:
-                      cycle = res.json()["records"][0]
-                      data["strain"] = round(cycle["score"]["strain"], 1)
-                      data["last_updated"] = datetime.utcnow().isoformat() + "Z"
-                      print(f"WHOOP strain updated: {data['strain']}")
+                  token_res = httpx.post(token_url, data=payload, timeout=15.0)
+                  if token_res.status_code == 200:
+                      access_token = token_res.json().get("access_token")
+                      print("WHOOP Access Token successfully refreshed.")
+                  else:
+                      print(f"Token refresh failed ({token_res.status_code}): {token_res.text}")
               except Exception as e:
-                  print(f"WHOOP API fetch note: {e}")
+                  print(f"Token refresh network error: {e}")
 
+          # 3. Fetch latest metrics using the active access token
+          if access_token:
+              headers = {"Authorization": f"Bearer {access_token}"}
+              base_url = "https://api.prod.whoop.com/developer/v1"
+
+              # Fetch Latest Recovery
+              try:
+                  rec_res = httpx.get(f"{base_url}/recovery?limit=1", headers=headers, timeout=15.0)
+                  if rec_res.status_code == 200:
+                      rec_records = rec_res.json().get("records", [])
+                      if rec_records:
+                          score = rec_records[0].get("score", {})
+                          if "recovery_score" in score:
+                              data["recovery"] = int(round(score["recovery_score"]))
+                          if "hrv_rmssd_milli" in score:
+                              data["hrv"] = round(score["hrv_rmssd_milli"], 1)
+                          if "resting_heart_rate" in score:
+                              data["rhr"] = int(round(score["resting_heart_rate"]))
+                          print(f"Updated Recovery: {data.get('recovery')}% | HRV: {data.get('hrv')} ms")
+              except Exception as e:
+                  print(f"Recovery fetch error: {e}")
+
+              # Fetch Latest Sleep
+              try:
+                  sleep_res = httpx.get(f"{base_url}/activity/sleep?limit=1", headers=headers, timeout=15.0)
+                  if sleep_res.status_code == 200:
+                      sleep_records = sleep_res.json().get("records", [])
+                      if sleep_records:
+                          s_score = sleep_records[0].get("score", {})
+                          if "sleep_performance_percentage" in s_score:
+                              data["sleep"] = int(round(s_score["sleep_performance_percentage"]))
+                          print(f"Updated Sleep Performance: {data.get('sleep')}%")
+              except Exception as e:
+                  print(f"Sleep fetch error: {e}")
+
+              # Fetch Latest Cycle (Day Strain)
+              try:
+                  cycle_res = httpx.get(f"{base_url}/cycle?limit=1", headers=headers, timeout=15.0)
+                  if cycle_res.status_code == 200:
+                      cycle_records = cycle_res.json().get("records", [])
+                      if cycle_records:
+                          c_score = cycle_records[0].get("score", {})
+                          if "strain" in c_score:
+                              data["strain"] = round(c_score["strain"], 1)
+                          print(f"Updated Day Strain: {data.get('strain')}")
+              except Exception as e:
+                  print(f"Cycle fetch error: {e}")
+
+          data["last_updated"] = datetime.utcnow().isoformat() + "Z"
+          data["height"] = "6'0\" (72 in)"
+          data["weight"] = 235
+
+          os.makedirs("docs/data", exist_ok=True)
           with open(telemetry_file, "w", encoding="utf-8") as f:
               json.dump(data, f, indent=2)
-          print("Updated docs/data/telemetry.json successfully.")
+
+          print("Successfully updated docs/data/telemetry.json with live biometrics.")
           EOF
 
       - name: Commit Updated Telemetry
@@ -71,5 +140,5 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add docs/data/telemetry.json
-          git diff-index --quiet HEAD || git commit -m "chore(telemetry): auto-update WHOOP recovery & vitals [skip ci]"
+          git diff-index --quiet HEAD || git commit -m "chore(telemetry): auto-sync live WHOOP biometrics [skip ci]"
           git push origin main
