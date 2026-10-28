@@ -2,8 +2,24 @@ name: Sync WHOOP Biometrics Telemetry
 
 on:
   schedule:
-    - cron: '0 10 * * *'
+    # 07:00 EDT (11:00 UTC) - Morning Briefing
+    - cron: '0 11 * * *'
+    # 13:30 EDT (17:30 UTC) - Afternoon Briefing
+    - cron: '30 17 * * *'
+    # 21:00 EDT (01:00 UTC) - Evening Briefing
+    - cron: '0 1 * * *'
   workflow_dispatch:
+    inputs:
+      briefing_phase:
+        description: 'Briefing Phase'
+        required: false
+        default: 'auto'
+        type: choice
+        options:
+          - auto
+          - morning
+          - afternoon
+          - evening
 
 permissions:
   contents: write
@@ -23,24 +39,33 @@ jobs:
       - name: Install dependencies
         run: pip install httpx
 
-      - name: Fetch Recovery & Sleep Metrics
+      - name: Fetch Biomarkers & Generate Briefing
         env:
           CLIENT_ID: ${{ secrets.WHOOP_CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.WHOOP_CLIENT_SECRET }}
-          REFRESH_TOKEN: ${{ secrets.WHOOP_REFRESH_TOKEN }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INITIAL_REFRESH_TOKEN: ${{ secrets.WHOOP_REFRESH_TOKEN }}
+          BRIEFING_INPUT: ${{ inputs.briefing_phase }}
         run: |
-          import os, json, subprocess, httpx
-          from datetime import datetime, timezone
+          import os, json, httpx
+          from datetime import datetime, timezone, timedelta
 
           client_id = os.environ.get("CLIENT_ID", "").strip()
           client_secret = os.environ.get("CLIENT_SECRET", "").strip()
-          refresh_token = os.environ.get("REFRESH_TOKEN", "").strip()
+          initial_refresh = os.environ.get("INITIAL_REFRESH_TOKEN", "").strip()
 
-          if not client_id or not client_secret or not refresh_token:
-              raise ValueError("Missing WHOOP secrets!")
+          session_path = "data/telemetry/.whoop_session.json"
+          refresh_token = initial_refresh
 
-          # 1. Refresh OAuth Token (RFC 6749 form-encoded client_secret_post)
+          # Load dynamic session if present
+          if os.path.exists(session_path):
+              try:
+                  with open(session_path, "r") as f:
+                      session = json.load(f)
+                      refresh_token = session.get("refresh_token", initial_refresh)
+              except Exception:
+                  pass
+
+          # 1. Refresh Token
           token_payload = {
               "grant_type": "refresh_token",
               "refresh_token": refresh_token,
@@ -57,57 +82,40 @@ jobs:
           )
 
           tokens = token_res.json()
-          print(f"WHOOP Auth Status: {token_res.status_code}")
           if token_res.status_code != 200:
               print(f"WHOOP Auth Failure: {json.dumps(tokens, indent=2)}")
               token_res.raise_for_status()
 
           access_token = tokens["access_token"]
-          new_refresh = tokens.get("refresh_token")
+          new_refresh = tokens.get("refresh_token", refresh_token)
 
-          # Persist the newly rotated refresh token back to repository secrets
-          if new_refresh and new_refresh != refresh_token and os.environ.get("GH_TOKEN"):
-              try:
-                  subprocess.run(
-                      ["gh", "secret", "set", "WHOOP_REFRESH_TOKEN", "--body", new_refresh],
-                      check=True
-                  )
-                  print("Rotated WHOOP_REFRESH_TOKEN successfully updated in GitHub Secrets.")
-              except Exception as e:
-                  print(f"Notice: Could not auto-update secret via CLI: {e}")
+          # Persist updated refresh token locally so the next run inherits it
+          os.makedirs("data/telemetry", exist_ok=True)
+          with open(session_path, "w") as f:
+              json.dump({"refresh_token": new_refresh, "updated_at": datetime.now(timezone.utc).isoformat()}, f, indent=2)
 
           headers = {"Authorization": f"Bearer {access_token}"}
 
-          # 2. Fetch Latest Recovery Records
-          rec_res = httpx.get("https://api.prod.whoop.com/developer/v1/recovery", headers=headers, timeout=20.0)
-          print(f"Recovery Endpoint Status: {rec_res.status_code}")
+          # 2. Query Collections (Recovery, Cycles, Sleep)
+          rec_res = httpx.get("https://api.prod.whoop.com/developer/v1/recovery?limit=1", headers=headers, timeout=20.0)
+          cycle_res = httpx.get("https://api.prod.whoop.com/developer/v1/cycle?limit=1", headers=headers, timeout=20.0)
+          sleep_res = httpx.get("https://api.prod.whoop.com/developer/v1/activity/sleep?limit=1", headers=headers, timeout=20.0)
 
-          score_data = {}
-          recovery_score = None
+          rec_data = rec_res.json().get("records", [{}])[0] if rec_res.status_code == 200 and rec_res.json().get("records") else {}
+          cycle_data = cycle_res.json().get("records", [{}])[0] if cycle_res.status_code == 200 and cycle_res.json().get("records") else {}
+          sleep_data = sleep_res.json().get("records", [{}])[0] if sleep_res.status_code == 200 and sleep_res.json().get("records") else {}
 
-          if rec_res.status_code == 200:
-              records = rec_res.json().get("records", [])
-              if records:
-                  score_data = records[0].get("score", {})
-                  recovery_score = score_data.get("recovery_score")
+          rec_score = rec_data.get("score", {})
+          cycle_score = cycle_data.get("score", {})
+          sleep_score = sleep_data.get("score", {})
 
-          # Fallback to Cycle endpoint if recovery is empty
-          if recovery_score is None:
-              cycle_res = httpx.get("https://api.prod.whoop.com/developer/v1/cycle", headers=headers, timeout=20.0)
-              print(f"Cycle Endpoint Status: {cycle_res.status_code}")
-              if cycle_res.status_code == 200:
-                  cycles = cycle_res.json().get("records", [])
-                  if cycles:
-                      score_data = cycles[0].get("score", {})
-                      recovery_score = score_data.get("recovery_score")
-
-          if recovery_score is None:
-              recovery_score = 50
-
-          hrv_ms = score_data.get("hrv_rmssd_milli", 0.0)
-          rhr_bpm = score_data.get("resting_heart_rate", 0.0)
-          spo2 = score_data.get("spo2_percentage")
-          skin_temp = score_data.get("skin_temp_celsius")
+          recovery_score = rec_score.get("recovery_score", 50)
+          hrv_ms = rec_score.get("hrv_rmssd_milli", 0.0)
+          rhr_bpm = rec_score.get("resting_heart_rate", 0.0)
+          spo2 = rec_score.get("spo2_percentage")
+          skin_temp = rec_score.get("skin_temp_celsius")
+          current_strain = cycle_score.get("strain", 0.0)
+          sleep_perf = sleep_score.get("sleep_performance_percentage", 0)
 
           zone = "YELLOW"
           if recovery_score >= 66:
@@ -115,26 +123,75 @@ jobs:
           elif recovery_score < 34:
               zone = "RED"
 
-          telemetry_payload = {
-              "updated_at": datetime.now(timezone.utc).isoformat(),
-              "recovery_score": recovery_score,
-              "hrv_ms": round(float(hrv_ms), 1),
-              "rhr_bpm": round(float(rhr_bpm), 1),
-              "recovery_zone": zone,
-              "spo2_percentage": spo2,
-              "skin_temp_celsius": skin_temp
-          }
+          now_utc = datetime.now(timezone.utc)
+          # EDT offset (UTC-4)
+          edt_hour = (now_utc - timedelta(hours=4)).hour
 
-          os.makedirs("data/telemetry", exist_ok=True)
+          phase = os.environ.get("BRIEFING_INPUT", "auto")
+          if phase == "auto" or not phase:
+              if edt_hour < 12:
+                  phase = "morning"
+              elif edt_hour < 18:
+                  phase = "afternoon"
+              else:
+                  phase = "evening"
+
+          # 3. Format Briefing Card
+          date_str = (now_utc - timedelta(hours=4)).strftime("%Y-%m-%d")
+          briefing_content = f"# {phase.upper()} BIOMETRIC BRIEFING — {date_str}\n\n"
+          briefing_content += f"**Phase:** `{phase.upper()}` | **Generated:** `{now_utc.strftime('%H:%M UTC')}`\n\n"
+          briefing_content += "## Telemetry Dashboard\n"
+          briefing_content += f"| Metric | Value | Baseline Status |\n"
+          briefing_content += f"| :--- | :--- | :--- |\n"
+          briefing_content += f"| **Recovery** | **{recovery_score}%** | `{zone} ZONE` |\n"
+          briefing_content += f"| **HRV (rMSSD)** | {round(hrv_ms, 1)} ms | Autonomic Nervous System Balance |\n"
+          briefing_content += f"| **Resting Heart Rate** | {round(rhr_bpm, 1)} bpm | Cardiovascular Readiness |\n"
+          briefing_content += f"| **Current Strain** | {round(current_strain, 1)} / 21 | Day Accumulation |\n"
+          briefing_content += f"| **Sleep Performance** | {sleep_perf}% | Quality & Need Met |\n\n"
+
+          briefing_content += "## Tactical Protocol\n"
+          if phase == "morning":
+              if zone == "GREEN":
+                  briefing_content += "> **Optimal Readiness:** High vagal tone and parasympathetic dominance. Recommended target strain: `14.0 - 17.5`. Prime cognitive and high-intensity physical capacity.\n"
+              elif zone == "YELLOW":
+                  briefing_content += "> **Moderate Capacity:** Baseline equilibrium. Recommended target strain: `10.0 - 13.5`. Maintain structured execution; monitor fatigue before pushing maximum efforts.\n"
+              else:
+                  briefing_content += "> **Sub-Optimal Recovery:** High sympathetic activation or active physiological rebuilding. Recommended target strain: `< 9.5`. Prioritize recovery-centric workflows and zone-2 restoration.\n"
+          elif phase == "afternoon":
+              remaining = max(0.0, 14.0 - current_strain)
+              briefing_content += f"> **Midday Exertion Check:** Current strain is at `{round(current_strain, 1)}`. Target pacing delta remaining: `{round(remaining, 1)}`. Transition from deep work focus into afternoon cadence.\n"
+          else:
+              briefing_content += f"> **Evening Wind-Down:** Closed the day with `{round(current_strain, 1)}` total strain. Sleep performance previous night was `{sleep_perf}%`. Initiate blue-light titration and lower ambient temperature to facilitate rapid sleep latency.\n"
+
+          # Write out telemetry and briefing files
           with open("data/telemetry/whoop.json", "w") as f:
-              json.dump(telemetry_payload, f, indent=2)
+              json.dump({
+                  "updated_at": now_utc.isoformat(),
+                  "phase": phase,
+                  "recovery_score": recovery_score,
+                  "recovery_zone": zone,
+                  "hrv_ms": round(float(hrv_ms), 1),
+                  "rhr_bpm": round(float(rhr_bpm), 1),
+                  "current_strain": round(float(current_strain), 1),
+                  "sleep_performance": sleep_perf,
+                  "spo2_percentage": spo2,
+                  "skin_temp_celsius": skin_temp
+              }, f, indent=2)
 
-          print(f"Successfully synced WHOOP: {recovery_score}% ({zone} Zone) | HRV: {hrv_ms}ms")
+          briefing_filename = f"data/telemetry/briefing_{phase}.md"
+          with open(briefing_filename, "w") as f:
+              f.write(briefing_content)
+
+          # Also write to latest briefing pointer
+          with open("data/telemetry/latest_briefing.md", "w") as f:
+              f.write(briefing_content)
+
+          print(f"Generated {phase.upper()} Briefing: {recovery_score}% ({zone}) | Strain: {current_strain}")
         shell: python
 
-      - name: Commit Telemetry
+      - name: Commit Telemetry & Briefing Cards
         run: |
           git config user.name "Cyber Dojo Sensei"
           git config user.email "cyberdojosensei@gmail.com"
-          git add data/telemetry/whoop.json
-          git diff-index --quiet HEAD || (git commit -m "chore(telemetry): sync WHOOP recovery [skip ci]" && git push)
+          git add data/telemetry/
+          git diff-index --quiet HEAD || (git commit -m "chore(telemetry): update $GITHUB_WORKFLOW briefings [skip ci]" && git push)
