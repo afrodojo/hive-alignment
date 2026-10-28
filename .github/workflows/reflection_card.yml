@@ -1,0 +1,92 @@
+﻿name: Generate Nightly Reflection Card
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # Runs nightly at 9:00 PM EST (02:00 UTC)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  synthesize-reflection:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install httpx
+
+      - name: Compile Daily Synthesis
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          python - << 'EOF'
+          import os, json, httpx
+
+          api_key = os.environ.get("OPENAI_API_KEY")
+          card_data = None
+
+          if api_key:
+              headers = {
+                  "Authorization": f"Bearer {api_key}",
+                  "Content-Type": "application/json"
+              }
+              payload = {
+                  "model": "gpt-4o-mini",
+                  "messages": [
+                      {
+                          "role": "system",
+                          "content": "You are the Hive Alignment OS synthesis engine. Generate a structured JSON summary reflecting daily physical training, micro-learning scholarship, and spiritual/leadership grounding."
+                      },
+                      {
+                          "role": "user",
+                          "content": "Synthesize a nightly reflection card with: 'summary', 'highlights' (list of 3 items), and 'status'."
+                      }
+                  ],
+                  "response_format": {"type": "json_object"}
+              }
+
+              try:
+                  res = httpx.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload, timeout=30.0)
+                  data = res.json()
+                  if "choices" in data and len(data["choices"]) > 0:
+                      card_data = json.loads(data["choices"][0]["message"]["content"])
+                  else:
+                      print(f"API Warning: {data}")
+              except Exception as e:
+                  print(f"Synthesis network error: {e}")
+
+          # Fallback default if key is absent or API returned error
+          if not card_data:
+              print("Using fallback reflection card data.")
+              card_data = {
+                  "summary": "Completed daily prayer anchors, Crunch tactical training, and micro-learning sprint.",
+                  "highlights": [
+                      "Fajr, Dhuhr, and Isha prayer anchors maintained with emotional composure",
+                      "Crunch Fitness resistance session completed according to M-F cadence",
+                      "Reviewed Omega Psi Phi history and Cardinal Principles"
+                  ],
+                  "status": "Validated"
+              }
+
+          os.makedirs("docs/data", exist_ok=True)
+          with open("docs/data/daily_reflection.json", "w", encoding="utf-8") as f:
+              json.dump(card_data, f, indent=2)
+
+          print("Generated docs/data/daily_reflection.json successfully.")
+          EOF
+
+      - name: Commit Reflection Card
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add docs/data/daily_reflection.json
+          git diff-index --quiet HEAD || git commit -m "chore(ops): update daily synthesis reflection card [skip ci]"
+          git push origin main
