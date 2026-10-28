@@ -1,36 +1,37 @@
-name: Synthesize Book Focus Card
+name: Synthesize Wisdom & MasterClass Card
 
 on:
   workflow_dispatch:
     inputs:
-      book_title:
-        description: 'Book Title and Author'
+      source_title:
+        description: 'Source (e.g. MasterClass: Chris Voss on Negotiation / Book: 48 Laws of Power)'
         required: true
-      core_concept:
-        description: 'Core chapter, concept, or raw quote'
+      raw_notes:
+        description: 'Raw transcript segment, notes, or lesson takeaway'
         required: true
       domain:
-        description: 'Card Domain'
+        description: 'Target Domain'
         required: true
         default: 'WARRIOR_ETHOS'
         type: choice
         options:
           - WARRIOR_ETHOS
           - BIZ_ACUMEN
-          - CS_RESEARCH
+          - COMMUNITY_UPLIFT
           - SPIRITUAL_PILLARS
+          - CS_RESEARCH
 
 permissions:
   contents: write
 
 jobs:
-  generate-card:
+  synthesize-card:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -38,11 +39,11 @@ jobs:
       - name: Install dependencies
         run: pip install httpx pydantic
 
-      - name: Synthesize Card
+      - name: Run Synthesis Engine
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          BOOK_TITLE: ${{ inputs.book_title }}
-          CONCEPT: ${{ inputs.core_concept }}
+          SOURCE_TITLE: ${{ inputs.source_title }}
+          NOTES: ${{ inputs.raw_notes }}
           DOMAIN: ${{ inputs.domain }}
         run: |
           python -c '
@@ -55,48 +56,58 @@ jobs:
               hook: str = Field(max_length=255)
               core_insight: str
               takeaways: list[str] = Field(min_length=2, max_length=2)
-              proof_or_code: str = Field(description="LaTeX invariant or mathematical formulation of the strategic principle")
+              proof_or_code: str = Field(description="Strict LaTeX invariant or formal mathematical relation modeling the human/strategic principle")
               read_time_seconds: int = 45
 
-          prompt = (
-              f"Convert this strategic/warrior text into a high-density, grounding micro-card for an AI Solutions Architect / CS PhD managing ADHD and focus.\n"
-              f"Domain: {os.environ[\"DOMAIN\"]}\n"
-              f"Book: {os.environ[\"BOOK_TITLE\"]}\n"
-              f"Concept/Passage: {os.environ[\"CONCEPT\"]}\n\n"
-              f"Requirements:\n"
-              f"- No platitudes. Tone: Grounded, stoic, rigorous, warrior-monk clarity.\n"
-              f"- The proof_or_code MUST be a rigorous LaTeX formula or mathematical relation modeling the focus/strategy concept.\n"
-              f"- Emphasize cognitive steadiness, task triage, and overcoming analysis paralysis."
+          source = os.environ["SOURCE_TITLE"]
+          notes = os.environ["NOTES"]
+          domain = os.environ["DOMAIN"]
+
+          system_prompt = (
+              "You are an elite cognitive mentor and executive strategist compiling micro-cards for an AI Solutions Architect, CS PhD student, and Cyber SME.\n"
+              "The reader experiences ADHD and high-stakes performance anxiety.\n"
+              "Synthesize the provided notes into an authoritative, stoic, high-density mental model.\n"
+              "Strict rules:\n"
+              "1. Zero platitudes or self-help fluff.\n"
+              "2. Frame power and human nature through defensive discernment, poise, and service.\n"
+              "3. proof_or_code MUST be a rigorous LaTeX formula mapping the principle into a formal invariant.\n"
+              "4. Output strictly adhering to the JSON schema."
           )
+
+          user_prompt = f"Source: {source}\nDomain: {domain}\n\nContent/Notes:\n{notes}"
 
           res = httpx.post(
               "https://api.openai.com/v1/chat/completions",
               headers={"Authorization": f"Bearer {os.environ[\"OPENAI_API_KEY\"]}"},
               json={
                   "model": "gpt-4o-mini",
-                  "messages": [{"role": "user", "content": prompt}],
+                  "messages": [
+                      {"role": "system", "content": system_prompt},
+                      {"role": "user", "content": user_prompt}
+                  ],
                   "response_format": {"type": "json_schema", "json_schema": {"name": "CardSchema", "schema": CardSchema.model_json_schema()}}
               },
-              timeout=30.0
+              timeout=35.0
           )
 
           card_data = json.loads(res.json()["choices"][0]["message"]["content"])
-          card_hash = hashlib.sha256((os.environ["BOOK_TITLE"] + os.environ["CONCEPT"]).encode()).hexdigest()[:7]
+          card_hash = hashlib.sha256((source + notes[:50]).encode()).hexdigest()[:7]
           card_data["commit_hash"] = card_hash
           card_data["repo_url"] = "https://github.com/afrodojo/hive-alignment"
           card_data["live_site_url"] = "https://hive-align.eds-360.com"
-          card_data["external_reference"] = os.environ["BOOK_TITLE"]
+          card_data["external_reference"] = source
 
           os.makedirs("data/cards", exist_ok=True)
-          out_file = f"data/cards/{card_hash}.json"
-          with open(out_file, "w") as f:
+          out_path = f"data/cards/{card_hash}.json"
+          with open(out_path, "w") as f:
               json.dump(card_data, f, indent=2)
-          print(f"Generated {out_file}")
+
+          print(f"Card successfully compiled to {out_path}")
           '
 
-      - name: Commit Card
+      - name: Commit to GitHub Repo
         run: |
           git config user.name "Cyber Dojo Sensei"
           git config user.email "cyberdojosensei@gmail.com"
           git add data/cards/
-          git diff-index --quiet HEAD || (git commit -m "feat(cards): ingest warrior/strategy wisdom [skip ci]" && git push)
+          git diff-index --quiet HEAD || (git commit -m "feat(wisdom): synthesize card from ${{ inputs.source_title }} [skip ci]" && git push)
