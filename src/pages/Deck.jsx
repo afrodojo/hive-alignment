@@ -9,7 +9,14 @@ import SignalBanner from '@/components/SignalBanner';
 import ContextPrimingBanner from '@/components/ContextPrimingBanner';
 import DeckSkeleton from '@/components/DeckSkeleton';
 import SyncFeedButton from '@/components/SyncFeedButton';
+import CategoryTabs from '@/components/CategoryTabs';
 import { isGitHubCacheFresh, loadGitHubCards, mergeFeedCards, readCachedGitHubCards } from '@/lib/ghCards';
+import {
+  categoryCounts,
+  categoryForDomain,
+  categoryIncludes,
+  cardsInCategory,
+} from '@/lib/categories';
 import { pinPrimedCard } from '@/lib/calendar';
 import { ACTIVE_MEETING_POLL_MS, fetchActiveMeeting, primedMeeting } from '@/lib/activeMeeting';
 import {
@@ -34,7 +41,9 @@ export default function Deck() {
   const [savedIds, setSavedIds] = useState([]);
   const [masteredIds, setMasteredIds] = useState([]);
   const [phase, setPhase] = useState('loading');
+  const [category, setCategory] = useState('ALL');
   const primedRef = useRef(null);
+  const categoryRef = useRef('ALL');
 
   useEffect(() => {
     let cancelled = false;
@@ -77,7 +86,7 @@ export default function Deck() {
         const merged = mergeFeedCards(researchCards);
         setCards(merged);
         if (!built.length) {
-          const refreshed = buildSession(merged, history, {
+          const refreshed = buildSession(cardsInCategory(merged, categoryRef.current), history, {
             preferences: me.domain_preferences,
             signalDomains: activeSignalDomains(live),
             size: SESSION_SIZE,
@@ -97,6 +106,29 @@ export default function Deck() {
   const card = session[index];
   const sessionSeconds = useMemo(() => sumReadTime(session), [session]);
   const signal = useMemo(() => primarySignal(signals), [signals]);
+  const counts = useMemo(() => categoryCounts(cards), [cards]);
+
+  // Tapping a category resets the deck to card 1 of that filtered subset.
+  const selectCategory = (key) => {
+    if (key === category) return;
+    categoryRef.current = key;
+    setCategory(key);
+
+    const subset = cardsInCategory(cards, key);
+    const built = buildSession(subset, interactions, {
+      preferences: user?.domain_preferences,
+      signalDomains: activeSignalDomains(signals),
+      size: SESSION_SIZE,
+    });
+    const pinned =
+      meeting?.domain && categoryIncludes(key, meeting.domain)
+        ? pinPrimedCard(built, meeting.domain, subset)
+        : built;
+
+    setSession(pinned);
+    setIndex(0);
+    setPhase(built.length ? 'session' : 'empty');
+  };
 
   const next = useCallback(() => {
     if (index >= session.length - 1) setPhase('summary');
@@ -180,12 +212,17 @@ export default function Deck() {
   };
 
   const restart = () => {
-    const built = buildSession(cards, interactions, {
+    const subset = cardsInCategory(cards, category);
+    const built = buildSession(subset, interactions, {
       preferences: user?.domain_preferences,
       signalDomains: activeSignalDomains(signals),
       size: SESSION_SIZE,
     });
-    setSession(meeting?.domain ? pinPrimedCard(built, meeting.domain, cards) : built);
+    const pinned =
+      meeting?.domain && categoryIncludes(category, meeting.domain)
+        ? pinPrimedCard(built, meeting.domain, subset)
+        : built;
+    setSession(pinned);
     setIndex(0);
     setPhase(built.length ? 'session' : 'empty');
   };
@@ -195,12 +232,17 @@ export default function Deck() {
     setCards(merged);
     if (phase !== 'empty') return;
 
-    const built = buildSession(merged, interactions, {
+    const subset = cardsInCategory(merged, category);
+    const built = buildSession(subset, interactions, {
       preferences: user?.domain_preferences,
       signalDomains: activeSignalDomains(signals),
       size: SESSION_SIZE,
     });
-    setSession(meeting?.domain ? pinPrimedCard(built, meeting.domain, merged) : built);
+    const pinned =
+      meeting?.domain && categoryIncludes(category, meeting.domain)
+        ? pinPrimedCard(built, meeting.domain, subset)
+        : built;
+    setSession(pinned);
     setIndex(0);
     setPhase(built.length ? 'session' : 'empty');
   };
@@ -227,12 +269,13 @@ export default function Deck() {
   // Context priming: a meeting inside the window pins a card of its domain to the head of the deck.
   useEffect(() => {
     if (!meeting || primedRef.current === meeting.startTime) return;
+    if (!categoryIncludes(category, meeting.domain)) return;
 
     primedRef.current = meeting.startTime;
     setSession((current) => pinPrimedCard(current, meeting.domain, cards));
     setIndex(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [meeting]);
+  }, [meeting, category]);
 
   return (
     <div className="relative flex min-h-[100dvh] w-full flex-col bg-slate-950">
@@ -244,9 +287,17 @@ export default function Deck() {
           syncSlot={<SyncFeedButton onSynced={onFeedSynced} />}
         />
 
+        <CategoryTabs value={category} counts={counts} onChange={selectCategory} />
+
         {signal && <SignalBanner signal={signal} />}
 
-        {meeting && <ContextPrimingBanner summary={meeting.summary} domain={meeting.domain} />}
+        {meeting && (
+          <ContextPrimingBanner
+            summary={meeting.summary}
+            domain={meeting.domain}
+            onClick={() => selectCategory(categoryForDomain(meeting.domain))}
+          />
+        )}
 
         {phase === 'loading' && <DeckSkeleton />}
 
@@ -292,7 +343,7 @@ export default function Deck() {
           <div className="flex flex-1 flex-col items-center justify-center px-4 text-center">
             <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-emerald-400/70">Library clear</p>
             <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white">
-              Nothing left this cycle.
+              {category === 'ALL' ? 'Nothing left this cycle.' : 'Nothing in this lane yet.'}
             </h2>
             <p className="mt-2 max-w-[17rem] text-[13px] leading-relaxed text-slate-500">
               Every insight in the current rotation has been internalized. Review what you have kept, then come back.
