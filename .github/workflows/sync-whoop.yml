@@ -36,6 +36,10 @@ jobs:
           client_secret = os.environ.get("CLIENT_SECRET", "").strip()
           refresh_token = os.environ.get("REFRESH_TOKEN", "").strip()
 
+          if not client_id or not client_secret or not refresh_token:
+              raise ValueError("One or more WHOOP secrets are missing or blank!")
+
+          # 1. Refresh OAuth Token
           token_payload = {
               "grant_type": "refresh_token",
               "refresh_token": refresh_token,
@@ -50,28 +54,55 @@ jobs:
               headers={"Content-Type": "application/x-www-form-urlencoded"},
               timeout=20.0
           )
-
           tokens = token_res.json()
           if token_res.status_code != 200:
               print(f"WHOOP Auth Failure: {json.dumps(tokens, indent=2)}")
               token_res.raise_for_status()
 
           access_token = tokens["access_token"]
+          headers = {
+              "Authorization": f"Bearer {access_token}",
+              "Content-Type": "application/json"
+          }
 
-          # Fetch recovery records
-          headers = {"Authorization": f"Bearer {access_token}"}
-          rec_res = httpx.get("https://api.prod.whoop.com/developer/v1/recovery?limit=1", headers=headers, timeout=20.0)
-          rec_res.raise_for_status()
+          # 2. Fetch Latest Physiological Cycle / Recovery
+          # Try cycle endpoint first, fallback to recovery collection
+          score_data = {}
+          recovery_score = None
+          hrv_ms = 0.0
+          rhr_bpm = 0.0
+          spo2 = None
+          skin_temp = None
 
-          records = rec_res.json().get("records", [])
-          if not records:
-              print("No recovery records returned for today yet.")
-              exit(0)
+          cycle_res = httpx.get("https://api.prod.whoop.com/developer/v1/cycle?limit=1", headers=headers, timeout=20.0)
+          print(f"Cycle API Status: {cycle_res.status_code}")
 
-          score = records[0].get("score", {})
-          recovery_score = score.get("recovery_score", 50)
-          hrv_ms = score.get("hrv_rmssd_milli", 0)
-          rhr_bpm = score.get("resting_heart_rate", 0)
+          if cycle_res.status_code == 200:
+              cycle_records = cycle_res.json().get("records", [])
+              if cycle_records:
+                  cycle = cycle_records[0]
+                  score_data = cycle.get("score", {})
+                  # Cycle endpoint nests recovery or score details
+                  recovery_score = score_data.get("recovery_score")
+
+          if recovery_score is None:
+              rec_res = httpx.get("https://api.prod.whoop.com/developer/v1/recovery", headers=headers, timeout=20.0)
+              print(f"Recovery API Status: {rec_res.status_code}")
+              if rec_res.status_code == 200:
+                  rec_records = rec_res.json().get("records", [])
+                  if rec_records:
+                      score_data = rec_records[0].get("score", {})
+                      recovery_score = score_data.get("recovery_score")
+
+          if recovery_score is None:
+              # Fallback if recovery has not calculated yet for today
+              print("No finalized recovery score returned yet. Defaulting to baseline.")
+              recovery_score = 50
+
+          hrv_ms = score_data.get("hrv_rmssd_milli", 0.0)
+          rhr_bpm = score_data.get("resting_heart_rate", 0.0)
+          spo2 = score_data.get("spo2_percentage")
+          skin_temp = score_data.get("skin_temp_celsius")
 
           zone = "YELLOW"
           if recovery_score >= 66:
@@ -82,11 +113,11 @@ jobs:
           telemetry_payload = {
               "updated_at": datetime.now(timezone.utc).isoformat(),
               "recovery_score": recovery_score,
-              "hrv_ms": round(hrv_ms, 1),
-              "rhr_bpm": round(rhr_bpm, 1),
+              "hrv_ms": round(float(hrv_ms), 1),
+              "rhr_bpm": round(float(rhr_bpm), 1),
               "recovery_zone": zone,
-              "spo2_percentage": score.get("spo2_percentage", None),
-              "skin_temp_celsius": score.get("skin_temp_celsius", None)
+              "spo2_percentage": spo2,
+              "skin_temp_celsius": skin_temp
           }
 
           os.makedirs("data/telemetry", exist_ok=True)
