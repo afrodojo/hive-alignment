@@ -1,0 +1,35 @@
+﻿[
+  {
+    "id": "huberman-hrv-2024",
+    "title": "Heart Rate Variability & Autonomic Modulation",
+    "type": "Publication / Study",
+    "author": "Dr. Andrew Huberman / Lab Protocols",
+    "category": "Autonomic Science",
+    "date_added": "2026-10-28",
+    "summary": "HRV rMSSD reflects vagal nerve tone and the balance between sympathetic mobilization and parasympathetic recovery. A sudden drop signals incomplete systemic recovery.",
+    "takeaway": "When recovery is Yellow (<50%), substitute high-intensity intervals at Crunch Fitness with Zone 2 aerobic base and reduce heavy academic problem sets.",
+    "tag": "Spring 2027 Biometrics"
+  },
+  {
+    "id": "newport-deep-work",
+    "title": "Deep Work: Rules for Focused Success in a Distracted World",
+    "type": "Book",
+    "author": "Cal Newport",
+    "category": "Focus & Cognition",
+    "date_added": "2026-10-28",
+    "summary": "Attention residue accumulates rapidly with frequent task switching. High-cognitive work requires insulated 20-to-50 minute time blocks without intermediate inbox checks.",
+    "takeaway": "Enforce the morning 06:30 pre-work focus window and 12:30 micro-learning sprint with browser notifications strictly blocked.",
+    "tag": "Focus Shielding"
+  },
+  {
+    "id": "walker-sleep-science",
+    "title": "Why We Sleep: Unlocking the Power of Sleep and Dreams",
+    "type": "Book",
+    "author": "Dr. Matthew Walker",
+    "category": "Sleep & Recovery",
+    "date_added": "2026-10-28",
+    "summary": "NREM Slow-Wave Sleep (SWS) mediates physical tissue and endocrine restoration, while REM consolidates memory, complex schema, and new learning acquired during study sprints.",
+    "takeaway": "Prioritize the 21:00 evening decompression (box breathing and spinal release) to initiate core body temperature drops and parasympathetic tone before bed.",
+    "tag": "Restoration"
+  }
+]
