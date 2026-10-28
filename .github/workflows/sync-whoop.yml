@@ -40,7 +40,7 @@ jobs:
           if not client_id or not client_secret or not refresh_token:
               raise ValueError("Missing WHOOP secrets!")
 
-          # 1. Refresh OAuth Token (client_secret_post)
+          # 1. Refresh OAuth Token (RFC 6749 form-encoded client_secret_post)
           token_payload = {
               "grant_type": "refresh_token",
               "refresh_token": refresh_token,
@@ -55,8 +55,9 @@ jobs:
               headers={"Content-Type": "application/x-www-form-urlencoded"},
               timeout=20.0
           )
-          
+
           tokens = token_res.json()
+          print(f"WHOOP Auth Status: {token_res.status_code}")
           if token_res.status_code != 200:
               print(f"WHOOP Auth Failure: {json.dumps(tokens, indent=2)}")
               token_res.raise_for_status()
@@ -64,7 +65,7 @@ jobs:
           access_token = tokens["access_token"]
           new_refresh = tokens.get("refresh_token")
 
-          # Persist the newly rotated refresh token back to repository secrets if GH CLI is available
+          # Persist the newly rotated refresh token back to repository secrets
           if new_refresh and new_refresh != refresh_token and os.environ.get("GH_TOKEN"):
               try:
                   subprocess.run(
@@ -73,14 +74,14 @@ jobs:
                   )
                   print("Rotated WHOOP_REFRESH_TOKEN successfully updated in GitHub Secrets.")
               except Exception as e:
-                  print(f"Notice: Could not auto-update secret via CLI (requires admin repo scope): {e}")
+                  print(f"Notice: Could not auto-update secret via CLI: {e}")
 
           headers = {"Authorization": f"Bearer {access_token}"}
 
-          # 2. Fetch Latest Recovery Record
+          # 2. Fetch Latest Recovery Records
           rec_res = httpx.get("https://api.prod.whoop.com/developer/v1/recovery", headers=headers, timeout=20.0)
           print(f"Recovery Endpoint Status: {rec_res.status_code}")
-          
+
           score_data = {}
           recovery_score = None
 
