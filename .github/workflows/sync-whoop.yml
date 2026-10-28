@@ -1,0 +1,94 @@
+name: Sync WHOOP Biometrics Telemetry
+
+on:
+  schedule:
+    # Runs at 10:00 UTC (6:00 AM EDT) daily
+    - cron: '0 10 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  pull-whoop:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install httpx
+
+      - name: Fetch Recovery & Sleep Metrics
+        env:
+          CLIENT_ID: ${{ secrets.WHOOP_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.WHOOP_CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.WHOOP_REFRESH_TOKEN }}
+        run: |
+          import os, json, httpx
+          from datetime import datetime, timezone
+
+          # 1. Refresh OAuth Token
+          token_res = httpx.post(
+              "https://api.prod.whoop.com/oauth/oauth2/token",
+              data={
+                  "grant_type": "refresh_token",
+                  "refresh_token": os.environ["REFRESH_TOKEN"],
+                  "client_id": os.environ["CLIENT_ID"],
+                  "client_secret": os.environ["CLIENT_SECRET"],
+                  "scope": "offline read:recovery read:cycles read:workout read:sleep"
+              },
+              timeout=15.0
+          )
+          tokens = token_res.json()
+          access_token = tokens["access_token"]
+
+          # 2. Fetch Latest Recovery
+          headers = {"Authorization": f"Bearer {access_token}"}
+          rec_res = httpx.get("https://api.prod.whoop.com/developer/v1/recovery?limit=1", headers=headers, timeout=15.0)
+          records = rec_res.json().get("records", [])
+
+          if not records:
+              print("No recovery records returned.")
+              exit(0)
+
+          score = records[0].get("score", {})
+          recovery_score = score.get("recovery_score", 50)
+          hrv_ms = score.get("hrv_rmssd_milli", 0)
+          rhr_bpm = score.get("resting_heart_rate", 0)
+
+          # Classify Recovery Zone
+          zone = "YELLOW"
+          if recovery_score >= 66:
+              zone = "GREEN"
+          elif recovery_score < 34:
+              zone = "RED"
+
+          telemetry_payload = {
+              "updated_at": datetime.now(timezone.utc).isoformat(),
+              "recovery_score": recovery_score,
+              "hrv_ms": round(hrv_ms, 1),
+              "rhr_bpm": round(rhr_bpm, 1),
+              "recovery_zone": zone,
+              "spo2_percentage": score.get("spo2_percentage", None),
+              "skin_temp_celsius": score.get("skin_temp_celsius", None)
+          }
+
+          os.makedirs("data/telemetry", exist_ok=True)
+          with open("data/telemetry/whoop.json", "w") as f:
+              json.dump(telemetry_payload, f, indent=2)
+
+          print(f"Synced WHOOP Recovery: {recovery_score}% ({zone} Zone) | HRV: {hrv_ms}ms")
+        shell: python
+
+      - name: Commit Telemetry
+        run: |
+          git config user.name "Cyber Dojo Sensei"
+          git config user.email "cyberdojosensei@gmail.com"
+          git add data/telemetry/whoop.json
+          git diff-index --quiet HEAD || (git commit -m "chore(telemetry): sync WHOOP recovery [skip ci]" && git push)
