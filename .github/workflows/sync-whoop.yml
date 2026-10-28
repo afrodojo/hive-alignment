@@ -40,12 +40,13 @@ jobs:
           if not client_id or not client_secret or not refresh_token:
               raise ValueError("One or more WHOOP secrets (CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN) are missing or blank!")
 
-          # 1. Refresh OAuth Token (RFC 6749 compliant: minimal payload, no scope field)
+          # WHOOP OAuth 2.0 requires client_secret_post
           token_payload = {
               "grant_type": "refresh_token",
               "refresh_token": refresh_token,
               "client_id": client_id,
-              "client_secret": client_secret
+              "client_secret": client_secret,
+              "scope": "offline"
           }
 
           token_res = httpx.post(
@@ -55,22 +56,15 @@ jobs:
               timeout=20.0
           )
 
-          # Fallback: Try Basic Auth header if body credentials triggered 400
-          if token_res.status_code == 400:
-              print("Body credentials rejected. Retrying via HTTP Basic Auth...")
-              token_res = httpx.post(
-                  "https://api.prod.whoop.com/oauth/oauth2/token",
-                  auth=(client_id, client_secret),
-                  data={"grant_type": "refresh_token", "refresh_token": refresh_token},
-                  headers={"Content-Type": "application/x-www-form-urlencoded"},
-                  timeout=20.0
-              )
-
-          print(f"WHOOP Auth Response Code: {token_res.status_code}")
-          tokens = token_res.json()
+          print(f"WHOOP Auth Status: {token_res.status_code}")
+          try:
+              tokens = token_res.json()
+          except Exception:
+              tokens = {"raw": token_res.text}
 
           if token_res.status_code != 200:
-              print(f"WHOOP Auth Error Details: {json.dumps(tokens, indent=2)}")
+              print("WHOOP Rejected Body Credentials:")
+              print(json.dumps(tokens, indent=2))
               token_res.raise_for_status()
 
           access_token = tokens["access_token"]
