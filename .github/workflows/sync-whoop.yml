@@ -1,30 +1,4 @@
-name: Sync WHOOP Biometrics Telemetry
-
-on:
-  schedule:
-    # Runs at 10:00 UTC (6:00 AM EDT) daily
-    - cron: '0 10 * * *'
-  workflow_dispatch:
-
-permissions:
-  contents: write
-
-jobs:
-  pull-whoop:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: pip install httpx
-
-      - name: Fetch Recovery & Sleep Metrics
+- name: Fetch Recovery & Sleep Metrics
         env:
           CLIENT_ID: ${{ secrets.WHOOP_CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.WHOOP_CLIENT_SECRET }}
@@ -40,18 +14,31 @@ jobs:
           if not client_id or not client_secret or not refresh_token:
               raise ValueError("One or more WHOOP secrets (CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN) are missing or blank!")
 
-          # 1. Refresh OAuth Token
+          # 1. Refresh OAuth Token (RFC 6749 compliant: minimal payload, no scope field)
+          token_payload = {
+              "grant_type": "refresh_token",
+              "refresh_token": refresh_token,
+              "client_id": client_id,
+              "client_secret": client_secret
+          }
+
           token_res = httpx.post(
               "https://api.prod.whoop.com/oauth/oauth2/token",
-              data={
-                  "grant_type": "refresh_token",
-                  "refresh_token": refresh_token,
-                  "client_id": client_id,
-                  "client_secret": client_secret,
-                  "scope": "offline read:recovery read:cycles read:workout read:sleep"
-              },
+              data=token_payload,
+              headers={"Content-Type": "application/x-www-form-urlencoded"},
               timeout=20.0
           )
+
+          # Fallback: Try Basic Auth header if body credentials triggered 400
+          if token_res.status_code == 400:
+              print("Body credentials rejected. Retrying via HTTP Basic Auth...")
+              token_res = httpx.post(
+                  "https://api.prod.whoop.com/oauth/oauth2/token",
+                  auth=(client_id, client_secret),
+                  data={"grant_type": "refresh_token", "refresh_token": refresh_token},
+                  headers={"Content-Type": "application/x-www-form-urlencoded"},
+                  timeout=20.0
+              )
 
           print(f"WHOOP Auth Response Code: {token_res.status_code}")
           tokens = token_res.json()
@@ -106,10 +93,3 @@ jobs:
 
           print(f"Successfully synced WHOOP: {recovery_score}% ({zone} Zone) | HRV: {hrv_ms}ms")
         shell: python
-
-      - name: Commit Telemetry
-        run: |
-          git config user.name "Cyber Dojo Sensei"
-          git config user.email "cyberdojosensei@gmail.com"
-          git add data/telemetry/whoop.json
-          git diff-index --quiet HEAD || (git commit -m "chore(telemetry): sync WHOOP recovery [skip ci]" && git push)
