@@ -10,7 +10,14 @@ import ContextPrimingBanner from '@/components/ContextPrimingBanner';
 import DeckSkeleton from '@/components/DeckSkeleton';
 import SyncFeedButton from '@/components/SyncFeedButton';
 import CategoryTabs from '@/components/CategoryTabs';
+import FocusTimerRing from '@/components/FocusTimerRing';
+import FocusModeToggle from '@/components/FocusModeToggle';
+import DecompressionState from '@/components/DecompressionState';
+import EmergencyRecenterButton from '@/components/EmergencyRecenterButton';
+import EmergencyRecenter from '@/components/EmergencyRecenter';
 import { isGitHubCacheFresh, loadGitHubCards, mergeFeedCards, readCachedGitHubCards } from '@/lib/ghCards';
+import { DAILY_GOAL, logDailyInternalized, readDailyInternalized } from '@/lib/dailyHabit';
+import { useFocusTimer } from '@/lib/focusSession';
 import {
   categoryCounts,
   categoryForDomain,
@@ -42,8 +49,11 @@ export default function Deck() {
   const [masteredIds, setMasteredIds] = useState([]);
   const [phase, setPhase] = useState('loading');
   const [category, setCategory] = useState('ALL');
+  const [dailyIds, setDailyIds] = useState(() => readDailyInternalized());
+  const [recenterCard, setRecenterCard] = useState(null);
   const primedRef = useRef(null);
   const categoryRef = useRef('ALL');
+  const focus = useFocusTimer();
 
   useEffect(() => {
     let cancelled = false;
@@ -179,18 +189,22 @@ export default function Deck() {
     await persistWeights(card, 'SAVED');
   };
 
-  const onMaster = async () => {
-    if (!card || masteredIds.includes(card.id)) return;
-    await logInteraction(card, 'MASTERED');
-    setMasteredIds((prevList) => [...prevList, card.id]);
+  const masterCard = async (target) => {
+    if (!target || masteredIds.includes(target.id)) return;
+    await logInteraction(target, 'MASTERED');
+    setMasteredIds((prevList) => [...prevList, target.id]);
+    // Digested for the day: the local daily counter the header reads.
+    setDailyIds(logDailyInternalized(target.id));
     const patch = {
       current_streak: nextStreak(user),
       last_active_at: new Date().toISOString(),
-      domain_preferences: bumpPreferences(user.domain_preferences, card.domain, 'MASTERED'),
+      domain_preferences: bumpPreferences(user.domain_preferences, target.domain, 'MASTERED'),
     };
     await base44.auth.updateMe(patch);
     setUser((u) => ({ ...u, ...patch }));
   };
+
+  const onMaster = () => masterCard(card);
 
   const onDismiss = async () => {
     if (!card) return;
@@ -209,6 +223,15 @@ export default function Deck() {
     const text = `${card.title} — ${card.hook}`;
     if (navigator.share) await navigator.share({ title: card.title, text });
     else await navigator.clipboard.writeText(text);
+  };
+
+  // Anti-paralysis: one random Armor or Pillars invariant, nothing else on screen.
+  const openRecenter = () => {
+    const pool = cards.filter((c) =>
+      ['WARRIOR_ETHOS', 'SPIRITUAL_PILLARS', 'OMEGA_HISTORY'].includes(c.domain)
+    );
+    if (!pool.length) return;
+    setRecenterCard(pool[Math.floor(Math.random() * pool.length)]);
   };
 
   const restart = () => {
@@ -284,9 +307,32 @@ export default function Deck() {
         <DeckHeader
           sessionSeconds={sessionSeconds}
           streak={user?.current_streak ?? 0}
+          masteredToday={dailyIds.length}
+          dailyGoal={DAILY_GOAL}
+          focusSlot={
+            <FocusTimerRing
+              remaining={focus.remaining}
+              total={focus.total}
+              phase={focus.phase}
+              active={focus.active}
+              onClick={focus.active ? focus.stop : focus.start}
+            />
+          }
+          focusBar={
+            <FocusModeToggle
+              active={focus.active}
+              presetId={focus.presetId}
+              onToggle={focus.active ? focus.stop : focus.start}
+              onSelectPreset={focus.selectPreset}
+            />
+          }
           syncSlot={<SyncFeedButton onSynced={onFeedSynced} />}
         />
 
+        {focus.phase === 'break' ? (
+          <DecompressionState remaining={focus.remaining} onOverride={focus.endBreak} />
+        ) : (
+          <>
         <CategoryTabs value={category} counts={counts} onChange={selectCategory} />
 
         {signal && <SignalBanner signal={signal} />}
@@ -355,6 +401,21 @@ export default function Deck() {
               Open archive
             </Link>
           </div>
+        )}
+          </>
+        )}
+
+        {phase === 'session' && card && focus.phase !== 'break' && (
+          <EmergencyRecenterButton onClick={openRecenter} />
+        )}
+
+        {recenterCard && (
+          <EmergencyRecenter
+            card={recenterCard}
+            mastered={masteredIds.includes(recenterCard.id)}
+            onMaster={() => masterCard(recenterCard)}
+            onClose={() => setRecenterCard(null)}
+          />
         )}
       </div>
     </div>
