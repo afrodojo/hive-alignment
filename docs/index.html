@@ -126,7 +126,7 @@
         <h2 class="text-2xl font-bold text-white flex items-center gap-2">
           <i data-lucide="layout-dashboard" class="text-emerald-400"></i> Member Operations Cockpit
         </h2>
-        <p class="text-xs text-slate-400 mt-1">Telemetry • Crunch Fitness • Family Rituals • Live Calendar</p>
+        <p class="text-xs text-slate-400 mt-1">Telemetry • Crunch Fitness • Micro-Learning & Focus • Family Rituals • Live Calendar</p>
       </div>
       <button onclick="toggleCockpit(false)" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-lg text-sm text-slate-300 transition">
         Return to Overview
@@ -140,6 +140,9 @@
       </button>
       <button onclick="switchTab('tab-crunch')" id="btn-tab-crunch" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">
         Crunch Fitness (M–F)
+      </button>
+      <button onclick="switchTab('tab-learning')" id="btn-tab-learning" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition flex items-center gap-2">
+        <i data-lucide="book-open" class="w-4 h-4 text-emerald-400"></i> Micro-Learning & Focus
       </button>
       <button onclick="switchTab('tab-reflection')" id="btn-tab-reflection" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">
         Family & Reflection
@@ -240,7 +243,106 @@
       </div>
     </div>
 
-    <!-- TAB 3: Family & Reflection -->
+    <!-- TAB 3: Micro-Learning & Focus (NEW) -->
+    <div id="tab-learning" class="tab-content space-y-6">
+      <!-- Focus Sprint Timer / Protocol Block -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-950 border border-emerald-800 flex items-center justify-center text-emerald-400">
+              <i data-lucide="timer"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-white">20-Min Micro-Sprint</h3>
+              <p class="text-xs text-slate-400">Single-Concept Mastery</p>
+            </div>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Dedicate 20 uninterrupted minutes to one discrete reading, paper summary, or code module. Zero browser tabs, zero notifications.
+          </p>
+          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 text-xs text-slate-400">
+            <strong class="text-emerald-400">Protocol:</strong> 20 min active study &rarr; 5 min note synthesis &rarr; Full shutdown.
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-sky-950 border border-sky-800 flex items-center justify-center text-sky-400">
+              <i data-lucide="brain"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-white">Feynman Micro-Audit</h3>
+              <p class="text-xs text-slate-400">Active Recall Engine</p>
+            </div>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Immediately explain the topic in 3 sentences as if teaching someone with zero technical background. If you stumble, re-read only that snippet.
+          </p>
+          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 text-xs text-slate-400">
+            <strong class="text-sky-400">Storage:</strong> Log atomic summaries into your repository notes folder.
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-purple-950 border border-purple-800 flex items-center justify-center text-purple-400">
+              <i data-lucide="shield-alert"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-white">Focus Shielding</h3>
+              <p class="text-xs text-slate-400">Cognitive Defense</p>
+            </div>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            High cognitive load tasks require low autonomic arousal. Schedule academic sprints when WHOOP recovery is Green/Yellow, never during peak cortisol crashes.
+          </p>
+          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 text-xs text-slate-400">
+            <strong class="text-purple-400">Optimal Slot:</strong> 06:30 – 07:15 AM or 12:30 – 13:00 PM.
+          </div>
+        </div>
+      </div>
+
+      <!-- Spring 2027 Academic Transition Roadmap -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+        <div class="flex justify-between items-center">
+          <h3 class="text-lg font-bold text-white flex items-center gap-2">
+            <i data-lucide="graduation-cap" class="text-emerald-400"></i> Spring 2027 Academic Integration Architecture
+          </h3>
+          <span class="text-xs bg-emerald-950 text-emerald-300 border border-emerald-800 px-3 py-1 rounded-full font-medium">Pre-Matriculation Ramp</span>
+        </div>
+        <p class="text-xs text-slate-400">
+          The gradual volume build ensures high academic performance without compromising family rituals or resistance consistency.
+        </p>
+
+        <div class="space-y-3 pt-2">
+          <div class="p-4 bg-slate-950 rounded-lg border border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+            <div>
+              <span class="text-sm font-semibold text-emerald-400">Phase 1: Habit Inoculation (Now – Late 2026)</span>
+              <p class="text-xs text-slate-400 mt-0.5">Two 25-minute sprints per week. Focus on building the physical habit of sitting down to read research papers without device distraction.</p>
+            </div>
+            <span class="text-xs bg-slate-800 px-3 py-1 rounded text-slate-300">50 min / week</span>
+          </div>
+
+          <div class="p-4 bg-slate-950 rounded-lg border border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+            <div>
+              <span class="text-sm font-semibold text-sky-400">Phase 2: Academic Conditioning (Fall 2026)</span>
+              <p class="text-xs text-slate-400 mt-0.5">Four 25-minute sprints per week. Read domain-specific textbooks or relevant research before evening gym or during lunch blocks.</p>
+            </div>
+            <span class="text-xs bg-slate-800 px-3 py-1 rounded text-slate-300">100 min / week</span>
+          </div>
+
+          <div class="p-4 bg-slate-950 rounded-lg border border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+            <div>
+              <span class="text-sm font-semibold text-amber-400">Phase 3: Live Academic Load (Spring 2027 Launch)</span>
+              <p class="text-xs text-slate-400 mt-0.5">Courses go live. Crunch workout shifts into tight 45-min lunch windows or immediate post-work slots, preserving evening family decompression.</p>
+            </div>
+            <span class="text-xs bg-slate-800 px-3 py-1 rounded text-amber-300">Full Course Integration</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: Family & Reflection -->
     <div id="tab-reflection" class="tab-content space-y-6">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="bg-rose-950/20 border border-rose-900/40 rounded-xl p-6 space-y-4">
@@ -283,7 +385,7 @@
       </div>
     </div>
 
-    <!-- TAB 4: Live Google Calendar -->
+    <!-- TAB 5: Live Google Calendar -->
     <div id="tab-calendar" class="tab-content space-y-4">
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
