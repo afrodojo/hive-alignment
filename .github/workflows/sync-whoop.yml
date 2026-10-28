@@ -271,13 +271,16 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Close prior briefing issues to keep tracker clean
+          # 1. Ensure the label exists in the repository
+          gh label create "biometric-briefing" --color "0E8A16" --description "Automated WHOOP daily physiological briefings" --force || true
+
+          # 2. Close prior briefing issues to keep tracker clean
           PRIOR_ISSUES=$(gh issue list --label "biometric-briefing" --state open --json number -q '.[].number')
           for num in $PRIOR_ISSUES; do
             gh issue close "$num" --comment "Superseded by ${{ env.BRIEFING_PHASE }} Briefing."
           done
 
-          # Create new issue with latest card
+          # 3. Create new issue with latest card
           gh issue create \
             --title "[Biometrics] ${{ env.BRIEFING_PHASE }} Briefing — ${{ env.BRIEFING_DATE }} (${{ env.BRIEFING_ZONE }})" \
             --body-file "data/telemetry/latest_briefing.md" \
