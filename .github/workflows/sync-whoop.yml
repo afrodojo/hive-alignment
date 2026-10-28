@@ -28,8 +28,9 @@ jobs:
           CLIENT_ID: ${{ secrets.WHOOP_CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.WHOOP_CLIENT_SECRET }}
           REFRESH_TOKEN: ${{ secrets.WHOOP_REFRESH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          import os, json, httpx
+          import os, json, subprocess, httpx
           from datetime import datetime, timezone
 
           client_id = os.environ.get("CLIENT_ID", "").strip()
@@ -37,9 +38,9 @@ jobs:
           refresh_token = os.environ.get("REFRESH_TOKEN", "").strip()
 
           if not client_id or not client_secret or not refresh_token:
-              raise ValueError("One or more WHOOP secrets are missing or blank!")
+              raise ValueError("Missing WHOOP secrets!")
 
-          # 1. Refresh OAuth Token
+          # 1. Refresh OAuth Token (client_secret_post)
           token_payload = {
               "grant_type": "refresh_token",
               "refresh_token": refresh_token,
@@ -54,49 +55,52 @@ jobs:
               headers={"Content-Type": "application/x-www-form-urlencoded"},
               timeout=20.0
           )
+          
           tokens = token_res.json()
           if token_res.status_code != 200:
               print(f"WHOOP Auth Failure: {json.dumps(tokens, indent=2)}")
               token_res.raise_for_status()
 
           access_token = tokens["access_token"]
-          headers = {
-              "Authorization": f"Bearer {access_token}",
-              "Content-Type": "application/json"
-          }
+          new_refresh = tokens.get("refresh_token")
 
-          # 2. Fetch Latest Physiological Cycle / Recovery
-          # Try cycle endpoint first, fallback to recovery collection
+          # Persist the newly rotated refresh token back to repository secrets if GH CLI is available
+          if new_refresh and new_refresh != refresh_token and os.environ.get("GH_TOKEN"):
+              try:
+                  subprocess.run(
+                      ["gh", "secret", "set", "WHOOP_REFRESH_TOKEN", "--body", new_refresh],
+                      check=True
+                  )
+                  print("Rotated WHOOP_REFRESH_TOKEN successfully updated in GitHub Secrets.")
+              except Exception as e:
+                  print(f"Notice: Could not auto-update secret via CLI (requires admin repo scope): {e}")
+
+          headers = {"Authorization": f"Bearer {access_token}"}
+
+          # 2. Fetch Latest Recovery Record
+          rec_res = httpx.get("https://api.prod.whoop.com/developer/v1/recovery", headers=headers, timeout=20.0)
+          print(f"Recovery Endpoint Status: {rec_res.status_code}")
+          
           score_data = {}
           recovery_score = None
-          hrv_ms = 0.0
-          rhr_bpm = 0.0
-          spo2 = None
-          skin_temp = None
 
-          cycle_res = httpx.get("https://api.prod.whoop.com/developer/v1/cycle?limit=1", headers=headers, timeout=20.0)
-          print(f"Cycle API Status: {cycle_res.status_code}")
-
-          if cycle_res.status_code == 200:
-              cycle_records = cycle_res.json().get("records", [])
-              if cycle_records:
-                  cycle = cycle_records[0]
-                  score_data = cycle.get("score", {})
-                  # Cycle endpoint nests recovery or score details
+          if rec_res.status_code == 200:
+              records = rec_res.json().get("records", [])
+              if records:
+                  score_data = records[0].get("score", {})
                   recovery_score = score_data.get("recovery_score")
 
+          # Fallback to Cycle endpoint if recovery is empty
           if recovery_score is None:
-              rec_res = httpx.get("https://api.prod.whoop.com/developer/v1/recovery", headers=headers, timeout=20.0)
-              print(f"Recovery API Status: {rec_res.status_code}")
-              if rec_res.status_code == 200:
-                  rec_records = rec_res.json().get("records", [])
-                  if rec_records:
-                      score_data = rec_records[0].get("score", {})
+              cycle_res = httpx.get("https://api.prod.whoop.com/developer/v1/cycle", headers=headers, timeout=20.0)
+              print(f"Cycle Endpoint Status: {cycle_res.status_code}")
+              if cycle_res.status_code == 200:
+                  cycles = cycle_res.json().get("records", [])
+                  if cycles:
+                      score_data = cycles[0].get("score", {})
                       recovery_score = score_data.get("recovery_score")
 
           if recovery_score is None:
-              # Fallback if recovery has not calculated yet for today
-              print("No finalized recovery score returned yet. Defaulting to baseline.")
               recovery_score = 50
 
           hrv_ms = score_data.get("hrv_rmssd_milli", 0.0)
