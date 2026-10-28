@@ -41,7 +41,7 @@
         Harmonize Office Demands, Family, & <span class="text-emerald-400">Athletic Vitality</span>
       </h1>
       <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">
-        A personal wellness operating system syncing WHOOP physiological telemetry, Crunch Fitness resistance cycles, and protected family reflection rituals.
+        A personal wellness operating system syncing WHOOP physiological telemetry, daily briefings, Crunch Fitness resistance cycles, and protected family reflection rituals.
       </p>
       <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
         <button onclick="toggleCockpit(true)" class="px-8 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-emerald-500/10 transition flex items-center justify-center gap-2">
@@ -102,6 +102,7 @@
             Preparing for Spring 2027 academic workloads while managing executive duties and family life requires deliberate time blocking, micro-learning discipline, and automated physical recovery.
           </p>
           <ul class="space-y-3 text-slate-300 text-sm">
+            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> Morning, mid-day, and evening operational checkpoints</li>
             <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> M–F Crunch Fitness tactical resistance & cardio routines</li>
             <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> 20-min focused micro-learning study intervals for Spring 2027 prep</li>
             <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> 30-minute evening decompression (spinal release & box breathing)</li>
@@ -110,7 +111,7 @@
         </div>
         <div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl space-y-6">
           <h3 class="text-xl font-bold text-white">Enter the Operations Cockpit</h3>
-          <p class="text-sm text-slate-400">Access your live biometrics, training schedule tabs, focus timers, reflection checklists, and Google Calendar sync tools.</p>
+          <p class="text-sm text-slate-400">Access your live biometrics, daily check-in protocols, focus timers, reflection checklists, and Google Calendar sync tools.</p>
           <button onclick="toggleCockpit(true)" class="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition flex items-center justify-center gap-2">
             Launch Cockpit Tabs <i data-lucide="arrow-right" class="w-4 h-4"></i>
           </button>
@@ -126,7 +127,7 @@
         <h2 class="text-2xl font-bold text-white flex items-center gap-2">
           <i data-lucide="layout-dashboard" class="text-emerald-400"></i> Member Operations Cockpit
         </h2>
-        <p class="text-xs text-slate-400 mt-1">Telemetry • Crunch Fitness • Focus Modes & Learning • Family Rituals • Live Calendar</p>
+        <p class="text-xs text-slate-400 mt-1">Briefings • Telemetry • Crunch Fitness • Focus Modes • Family Rituals • Live Calendar</p>
       </div>
       <button onclick="toggleCockpit(false)" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-lg text-sm text-slate-300 transition">
         Return to Overview
@@ -135,14 +136,17 @@
 
     <!-- Cockpit Navigation Tabs -->
     <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-2">
-      <button onclick="switchTab('tab-telemetry')" id="btn-tab-telemetry" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold bg-emerald-500 text-slate-950 transition">
+      <button onclick="switchTab('tab-briefings')" id="btn-tab-briefings" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold bg-emerald-500 text-slate-950 transition flex items-center gap-2">
+        <i data-lucide="check-square" class="w-4 h-4"></i> Daily Briefings
+      </button>
+      <button onclick="switchTab('tab-telemetry')" id="btn-tab-telemetry" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">
         Biometrics & Recovery
       </button>
       <button onclick="switchTab('tab-crunch')" id="btn-tab-crunch" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">
         Crunch Fitness (M–F)
       </button>
       <button onclick="switchTab('tab-learning')" id="btn-tab-learning" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition flex items-center gap-2">
-        <i data-lucide="brain" class="w-4 h-4 text-emerald-400"></i> Micro-Learning & Focus Modes
+        <i data-lucide="brain" class="w-4 h-4 text-emerald-400"></i> Micro-Learning & Focus
       </button>
       <button onclick="switchTab('tab-reflection')" id="btn-tab-reflection" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">
         Family & Reflection
@@ -152,8 +156,95 @@
       </button>
     </div>
 
-    <!-- TAB 1: Biometrics & Telemetry -->
-    <div id="tab-telemetry" class="tab-content active space-y-6">
+    <!-- TAB 1: DAILY BRIEFINGS & CHECK-INS -->
+    <div id="tab-briefings" class="tab-content active space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- Morning Primer -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+          <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+            <div class="flex items-center gap-2 text-emerald-400 font-bold text-sm">
+              <i data-lucide="sunrise" class="w-4 h-4"></i> Morning Primer
+            </div>
+            <span class="text-[11px] text-slate-400">06:30 – 07:15</span>
+          </div>
+          <p class="text-xs text-slate-400">Physiological baseline calibration before executive work begins.</p>
+          <div class="space-y-3 pt-1 text-xs">
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-m1" onchange="syncCheck('chk-m1')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">WHOOP recovery verification (&gt;66% Green target)</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-m2" onchange="syncCheck('chk-m2')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Men of Mars supplement + 24 oz hydration</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-m3" onchange="syncCheck('chk-m3')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Identify Top 1 high-leverage focus priority</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Mid-Day Tactical Recalibration -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+          <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+            <div class="flex items-center gap-2 text-sky-400 font-bold text-sm">
+              <i data-lucide="sun" class="w-4 h-4"></i> Mid-Day Recalibration
+            </div>
+            <span class="text-[11px] text-slate-400">12:30 – 13:00</span>
+          </div>
+          <p class="text-xs text-slate-400">Cognitive reset and pre-workout physical alignment.</p>
+          <div class="space-y-3 pt-1 text-xs">
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-d1" onchange="syncCheck('chk-d1')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">20-min micro-learning sprint (Feynman summary)</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-d2" onchange="syncCheck('chk-d2')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Postural reset + 32 oz cumulative hydration</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-d3" onchange="syncCheck('chk-d3')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Confirm Crunch session lock (17:30 / 17:00 Fri)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Evening Restoration Briefing -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+          <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+            <div class="flex items-center gap-2 text-purple-400 font-bold text-sm">
+              <i data-lucide="moon" class="w-4 h-4"></i> Evening Restoration
+            </div>
+            <span class="text-[11px] text-slate-400">21:00 – 21:30</span>
+          </div>
+          <p class="text-xs text-slate-400">Parasympathetic down-regulation and family closure.</p>
+          <div class="space-y-3 pt-1 text-xs">
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-e1" onchange="syncCheck('chk-e1')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">30-min decompression (Thoracic, 90/90, Box breath)</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-e2" onchange="syncCheck('chk-e2')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Save scratchpad notes into browser cache</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-e3" onchange="syncCheck('chk-e3')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Screen shutdown & family alignment connection</span>
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex justify-between items-center text-xs">
+        <span class="text-slate-400">Briefing checklist state is automatically saved to local browser storage.</span>
+        <button onclick="resetBriefings()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded font-medium transition">Reset Daily Checklist</button>
+      </div>
+    </div>
+
+    <!-- TAB 2: Biometrics & Telemetry -->
+    <div id="tab-telemetry" class="tab-content space-y-6">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
           <span class="text-xs text-slate-400 uppercase font-medium">Recovery Score</span>
@@ -193,7 +284,7 @@
       </div>
     </div>
 
-    <!-- TAB 2: Crunch Fitness M-F -->
+    <!-- TAB 3: Crunch Fitness M-F -->
     <div id="tab-crunch" class="tab-content space-y-4">
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
         <h3 class="text-lg font-bold text-white flex items-center gap-2">
@@ -243,32 +334,25 @@
       </div>
     </div>
 
-    <!-- TAB 3: MICRO-LEARNING & FOCUS MODES (EXPANDED) -->
+    <!-- TAB 4: MICRO-LEARNING & FOCUS MODES -->
     <div id="tab-learning" class="tab-content space-y-6">
-      
-      <!-- Top Row: Interactive Focus Timer & Focus Protocol Shield -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
-        <!-- Interactive Focus / Micro-Learning Timer Engine -->
         <div class="lg:col-span-1 bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col items-center justify-center text-center space-y-4">
           <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-emerald-400">
             <i data-lucide="timer" class="w-4 h-4"></i> Focus Engine
           </div>
 
-          <!-- Time Display -->
           <div id="timer-display" class="text-5xl font-mono font-extrabold text-white tracking-tight my-2">
             25:00
           </div>
           <span id="timer-label" class="text-xs text-slate-400 uppercase font-semibold">Micro-Learning Sprint</span>
 
-          <!-- Mode Selectors -->
           <div class="flex gap-2 w-full pt-1">
             <button onclick="setTimerMode(20, 'Micro-Sprint')" class="flex-1 py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-lg text-xs font-medium text-slate-300">20m Sprint</button>
             <button onclick="setTimerMode(25, 'Standard Focus')" class="flex-1 py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-lg text-xs font-medium text-slate-300">25m Focus</button>
             <button onclick="setTimerMode(5, 'Mental Reset')" class="flex-1 py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-lg text-xs font-medium text-slate-300">5m Reset</button>
           </div>
 
-          <!-- Timer Controls -->
           <div class="flex gap-3 w-full">
             <button id="start-btn" onclick="startTimer()" class="flex-1 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-sm transition">
               Start Focus
@@ -280,11 +364,9 @@
               Reset
             </button>
           </div>
-
-          <p class="text-[11px] text-slate-500">Mute phone notifications. Zero tab switching during active ticks.</p>
+          <p class="text-[11px] text-slate-500">Mute notifications. Zero tab switching during active ticks.</p>
         </div>
 
-        <!-- Focus Hygiene & Cognitive Windows -->
         <div class="lg:col-span-2 bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
           <div class="flex justify-between items-center">
             <h3 class="text-base font-bold text-white flex items-center gap-2">
@@ -296,10 +378,10 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
             <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
               <span class="font-bold text-emerald-400 flex items-center gap-1.5">
-                <i data-lucide="sun" class="w-3.5 h-3.5"></i> High-Energy Cognitive Window
+                <i data-lucide="sun" class="w-3.5 h-3.5"></i> High-Energy Window
               </span>
               <p class="text-slate-400 leading-relaxed">
-                <strong class="text-slate-200">06:30 – 07:45 AM:</strong> Pre-work window. Peak cortisol and zero inbound work Slack messages. Ideal for dense academic literature, paper summaries, or core mathematics.
+                <strong class="text-slate-200">06:30 – 07:45 AM:</strong> Pre-work window. Peak cortisol and zero inbound messages. Ideal for dense academic literature, paper summaries, or core math.
               </p>
             </div>
 
@@ -308,16 +390,16 @@
                 <i data-lucide="coffee" class="w-3.5 h-3.5"></i> Micro-Sprint Window
               </span>
               <p class="text-slate-400 leading-relaxed">
-                <strong class="text-slate-200">12:30 – 13:00 PM:</strong> Post-lunch or mid-day recovery slot. Restrict to one 20-minute conceptual sprint with the Feynman 3-sentence summary method.
+                <strong class="text-slate-200">12:30 – 13:00 PM:</strong> Post-lunch recovery slot. Restrict to one 20-minute conceptual sprint with the Feynman 3-sentence summary method.
               </p>
             </div>
 
             <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
               <span class="font-bold text-purple-400 flex items-center gap-1.5">
-                <i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Distraction Hardening Protocol
+                <i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Distraction Hardening
               </span>
               <p class="text-slate-400 leading-relaxed">
-                Close mail clients. Single browser window full-screened. Every time you switch tasks, a 23-minute cognitive penalty is incurred according to attention restoration research.
+                Single browser window full-screened. Every time you switch tasks, a 23-minute cognitive penalty is incurred according to attention restoration research.
               </p>
             </div>
 
@@ -326,49 +408,9 @@
                 <i data-lucide="battery-low" class="w-3.5 h-3.5"></i> Low Recovery (RED) Fallback
               </span>
               <p class="text-slate-400 leading-relaxed">
-                If WHOOP recovery is below 33%, substitute deep problem sets with low-stress passive audio lectures or reschedule the micro-sprint to avoid autonomic overload.
+                If recovery is below 33%, substitute deep problem sets with low-stress passive audio lectures to avoid autonomic overload.
               </p>
             </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Spring 2027 Academic Integration Architecture -->
-      <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-          <h3 class="text-lg font-bold text-white flex items-center gap-2">
-            <i data-lucide="graduation-cap" class="text-emerald-400"></i> Spring 2027 Academic Transition Roadmap
-          </h3>
-          <span class="text-xs bg-emerald-950 text-emerald-300 border border-emerald-800 px-3 py-1 rounded-full font-medium">Pre-Matriculation Ramp</span>
-        </div>
-        <p class="text-xs text-slate-400">
-          Scaling academic focus volume gradually over 2026 to ensure zero degradation to Crunch Fitness consistency or protected family reflection rituals.
-        </p>
-
-        <div class="space-y-3 pt-2">
-          <div class="p-4 bg-slate-950 rounded-lg border border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
-            <div>
-              <span class="text-sm font-semibold text-emerald-400">Phase 1: Habit Inoculation (Now – Late 2026)</span>
-              <p class="text-xs text-slate-400 mt-0.5">Two 25-minute sprints per week. Building the neuromuscular habit of reading dense research papers without distraction.</p>
-            </div>
-            <span class="text-xs bg-slate-800 px-3 py-1 rounded text-slate-300">50 min / week</span>
-          </div>
-
-          <div class="p-4 bg-slate-950 rounded-lg border border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
-            <div>
-              <span class="text-sm font-semibold text-sky-400">Phase 2: Academic Conditioning (Fall 2026)</span>
-              <p class="text-xs text-slate-400 mt-0.5">Four 25-minute sprints per week. Domain-specific textbooks or coding modules scheduled immediately before the evening gym session.</p>
-            </div>
-            <span class="text-xs bg-slate-800 px-3 py-1 rounded text-slate-300">100 min / week</span>
-          </div>
-
-          <div class="p-4 bg-slate-950 rounded-lg border border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
-            <div>
-              <span class="text-sm font-semibold text-amber-400">Phase 3: Live Academic Load (Spring 2027 Matriculation)</span>
-              <p class="text-xs text-slate-400 mt-0.5">Full course load starts. Crunch training converts into compressed 45-min lunch windows, protecting evening study and family rituals.</p>
-            </div>
-            <span class="text-xs bg-slate-800 px-3 py-1 rounded text-amber-300">Full Course Integration</span>
           </div>
         </div>
       </div>
@@ -385,10 +427,9 @@
           <button onclick="saveNotes()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition">Save Concept</button>
         </div>
       </div>
-
     </div>
 
-    <!-- TAB 4: Family & Reflection -->
+    <!-- TAB 5: Family & Reflection -->
     <div id="tab-reflection" class="tab-content space-y-6">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="bg-rose-950/20 border border-rose-900/40 rounded-xl p-6 space-y-4">
@@ -431,7 +472,7 @@
       </div>
     </div>
 
-    <!-- TAB 5: Live Google Calendar -->
+    <!-- TAB 6: Live Google Calendar -->
     <div id="tab-calendar" class="tab-content space-y-4">
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
@@ -493,6 +534,30 @@
       }
     }
 
+    /* Checkbox Persistence */
+    const checkIds = ['chk-m1', 'chk-m2', 'chk-m3', 'chk-d1', 'chk-d2', 'chk-d3', 'chk-e1', 'chk-e2', 'chk-e3'];
+    checkIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && localStorage.getItem('hive_' + id) === 'true') {
+        el.checked = true;
+      }
+    });
+
+    function syncCheck(id) {
+      const el = document.getElementById(id);
+      if (el) localStorage.setItem('hive_' + id, el.checked ? 'true' : 'false');
+    }
+
+    function resetBriefings() {
+      checkIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.checked = false;
+          localStorage.removeItem('hive_' + id);
+        }
+      });
+    }
+
     /* Pomodoro / Micro-Sprint Timer Logic */
     let timerDuration = 25 * 60;
     let timerRemaining = 25 * 60;
@@ -546,7 +611,7 @@
     /* Scratchpad Storage */
     const notesKey = 'hive_atomic_notes';
     const notesInput = document.getElementById('atomic-notes');
-    if (localStorage.getItem(notesKey)) {
+    if (notesInput && localStorage.getItem(notesKey)) {
       notesInput.value = localStorage.getItem(notesKey);
     }
 
