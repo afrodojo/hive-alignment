@@ -1,13 +1,13 @@
 {
-  "updated_at": "2026-10-28T03:48:55.328805+00:00",
-  "phase": "evening",
-  "date": "2026-10-27",
+  "updated_at": "2026-10-28T04:14:07.537302+00:00",
+  "phase": "morning",
+  "date": "2026-10-28",
   "recovery_score": 50,
   "recovery_zone": "YELLOW",
   "hrv_ms": 0.0,
   "rhr_bpm": 0.0,
   "current_strain": 6.8,
   "sleep_performance": 0,
-  "quote": "\u201cSleep is the golden chain that ties health and our bodies together. Protect your recovery window tonight.\u201d",
-  "quote_author": "Thomas Dekker"
+  "quote": "\u201cSmall disciplines repeated with consistency every day lead to great achievements gained slowly over time.\u201d",
+  "quote_author": "John C. Maxwell"
 }

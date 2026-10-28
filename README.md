@@ -1,10 +1,10 @@
 <!-- WHOOP_BRIEFING_START -->
 
-# EVENING BIOMETRIC BRIEFING — 2026-10-27
+# MORNING BIOMETRIC BRIEFING — 2026-10-28
 
-> “Sleep is the golden chain that ties health and our bodies together. Protect your recovery window tonight.”
+> “Small disciplines repeated with consistency every day lead to great achievements gained slowly over time.”
 >
-> *— Thomas Dekker*
+> *— John C. Maxwell*
 
 ---
 
@@ -20,7 +20,8 @@
 
 ## Operational Directive
 
-- **End-of-Day Audit:** Closed day at `6.8` strain. Last recorded sleep efficiency: `0%`.
-- **Night Protocol:** Dim ambient lighting, avoid late digestion, and initiate deliberate wind-down to maximize HRV recovery.
+- **Physiological State:** Steady maintenance mode. Baseline metrics within normal variance.
+- **Target Strain Budget:** `10.0 – 13.5`
+- **Action Protocol:** Execute structured priorities; preserve stamina by eliminating low-leverage distractions.
 
 <!-- WHOOP_BRIEFING_END -->
