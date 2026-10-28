@@ -1,170 +1,349 @@
-$publicLanding = @'
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
-  <title>Hive Alignment — Sustainable Wellness & Performance Operating System</title>
+  <title>Hive Alignment — Sustainable Wellness & Performance System</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+  </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-slate-950">
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-slate-950 min-h-screen flex flex-col">
 
-  <!-- Navigation -->
-  <nav class="fixed top-0 w-full z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-900">
+  <!-- Navigation Bar -->
+  <nav class="sticky top-0 w-full z-40 bg-slate-950/90 backdrop-blur-md border-b border-slate-900">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-3 cursor-pointer" onclick="showLandingView()">
         <i data-lucide="shield-check" class="text-emerald-400 w-6 h-6"></i>
         <span class="font-bold text-lg tracking-tight text-white">Hive Alignment</span>
       </div>
       <div class="flex items-center gap-4">
-        <a href="#science" class="text-sm text-slate-300 hover:text-white transition hidden md:block">Science & Studies</a>
-        <a href="#benefits" class="text-sm text-slate-300 hover:text-white transition hidden md:block">Core Benefits</a>
-        <button onclick="toggleCockpit()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-semibold rounded-lg text-sm transition flex items-center gap-2">
-          <i data-lucide="lock" class="w-4 h-4"></i> Member Cockpit
+        <a href="#science" onclick="showLandingView()" class="text-sm text-slate-300 hover:text-white transition hidden md:block">Science & Studies</a>
+        <a href="#benefits" onclick="showLandingView()" class="text-sm text-slate-300 hover:text-white transition hidden md:block">Core Benefits</a>
+        <button onclick="toggleCockpit(true)" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg text-sm transition flex items-center gap-2">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Member Cockpit
         </button>
       </div>
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <section class="pt-32 pb-20 px-6 max-w-5xl mx-auto text-center space-y-6">
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950 border border-emerald-800 text-emerald-300 text-xs font-medium">
-      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Biometric Auto-Regulation Live
-    </div>
-    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white leading-tight">
-      Balance Office Work, Family, & <span class="text-emerald-400">Peak Performance</span>
-    </h1>
-    <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">
-      An open-source wellness operating system syncing WHOOP physiological telemetry, Crunch Fitness resistance routines, and intentional daily recovery rituals.
-    </p>
-    <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
-      <button onclick="toggleCockpit()" class="px-8 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-emerald-500/10 transition flex items-center justify-center gap-2">
-        Launch Wellness Cockpit <i data-lucide="arrow-right" class="w-4 h-4"></i>
-      </button>
-      <a href="#science" class="px-8 py-3.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 font-semibold rounded-xl transition">
-        Explore the Research
-      </a>
-    </div>
-  </section>
-
-  <!-- Science & Studies Highlight Section -->
-  <section id="science" class="py-20 px-6 max-w-6xl mx-auto border-t border-slate-900">
-    <div class="text-center max-w-2xl mx-auto space-y-3 mb-16">
-      <h2 class="text-3xl font-bold tracking-tight text-white">Backed by Physiology & Autonomic Science</h2>
-      <p class="text-slate-400">Our engine translates raw wearable data into actionable clinical and lifestyle pacing models.</p>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
-        <div class="w-10 h-10 rounded-xl bg-emerald-950 border border-emerald-800 flex items-center justify-center text-emerald-400">
-          <i data-lucide="activity"></i>
-        </div>
-        <h3 class="text-xl font-bold text-white">HRV & Parasympathetic Tone</h3>
-        <p class="text-sm text-slate-400 leading-relaxed">
-          Rooted in studies on heart rate variability (rMSSD), our auto-regulation gateway detects autonomic nervous system strain before fatigue compounds into burnout.
-        </p>
+  <!-- LANDING VIEW -->
+  <main id="landing-view" class="flex-grow">
+    <!-- Hero Section -->
+    <section class="pt-20 pb-16 px-6 max-w-5xl mx-auto text-center space-y-6">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950 border border-emerald-800 text-emerald-300 text-xs font-medium">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Biometric Auto-Regulation Active
       </div>
-
-      <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
-        <div class="w-10 h-10 rounded-xl bg-sky-950 border border-sky-800 flex items-center justify-center text-sky-400">
-          <i data-lucide="zap"></i>
-        </div>
-        <h3 class="text-xl font-bold text-white">Men of Mars Supplement Protocol</h3>
-        <p class="text-sm text-slate-400 leading-relaxed">
-          Targeted micronutrient support formulated to combat midday energy slumps, support endocrine health, and optimize daily metabolic output under heavy cognitive workloads.
-        </p>
-      </div>
-
-      <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
-        <div class="w-10 h-10 rounded-xl bg-purple-950 border border-purple-800 flex items-center justify-center text-purple-400">
-          <i data-lucide="heart"></i>
-        </div>
-        <h3 class="text-xl font-bold text-white">Acute:Chronic Workload Ratios</h3>
-        <p class="text-sm text-slate-400 leading-relaxed">
-          Utilizing validated sports science algorithms to maintain workload ratios between 0.80 and 1.10, preventing overtraining while driving sustainable strength gains.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Benefits Section -->
-  <section id="benefits" class="py-20 px-6 max-w-6xl mx-auto border-t border-slate-900">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-      <div class="space-y-6">
-        <h2 class="text-3xl font-bold tracking-tight text-white">Designed for Busy Professionals, Dads, & Future Scholars</h2>
-        <p class="text-slate-400 leading-relaxed">
-          Balancing an office career, family responsibilities, and upcoming academic demands (Spring 2027) requires rigid structural simplicity. Hive Alignment automates your tracking so you can focus on living.
-        </p>
-        <ul class="space-y-3 text-slate-300 text-sm">
-          <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5"></i> M–F Crunch Fitness tactical resistance routines</li>
-          <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5"></i> 30-minute daily mobility and breathwork decompression</li>
-          <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5"></i> Protected Sunday Couple's Reflection Ritual</li>
-        </ul>
-      </div>
-      <div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl space-y-6 relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl"></div>
-        <h3 class="text-xl font-bold text-white">Ready to Enter Your Cockpit?</h3>
-        <p class="text-sm text-slate-400">Access your live WHOOP biometric briefing, training prescriptions, and Google Calendar sync tools instantly.</p>
-        <button onclick="toggleCockpit()" class="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition">
-          Unlock Member Dashboard
+      <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white leading-tight">
+        Harmonize Office Demands, Family, & <span class="text-emerald-400">Athletic Vitality</span>
+      </h1>
+      <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">
+        A personal wellness operating system syncing WHOOP physiological telemetry, Crunch Fitness resistance cycles, and protected family reflection rituals.
+      </p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
+        <button onclick="toggleCockpit(true)" class="px-8 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-emerald-500/10 transition flex items-center justify-center gap-2">
+          Open Member Cockpit <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Cockpit Modal / View Container (Initially Hidden or Toggled) -->
-  <div id="cockpit-modal" class="hidden fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md overflow-y-auto p-6">
-    <div class="max-w-5xl mx-auto space-y-6 py-10">
-      <div class="flex justify-between items-center pb-4 border-b border-slate-800">
-        <h2 class="text-2xl font-bold text-white flex items-center gap-2">
-          <i data-lucide="shield-check" class="text-emerald-400"></i> Hive Alignment Cockpit
-        </h2>
-        <button onclick="toggleCockpit()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm font-semibold transition">
-          Close Cockpit
-        </button>
-      </div>
-
-      <!-- Embedded Dashboard View -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-          <span class="text-xs font-medium text-slate-400 uppercase">Recovery Index</span>
-          <div class="text-2xl font-bold text-emerald-400 mt-1">78% (GREEN)</div>
-        </div>
-        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-          <span class="text-xs font-medium text-slate-400 uppercase">Autonomic HRV</span>
-          <div class="text-2xl font-bold text-sky-400 mt-1">92.9 ms rMSSD</div>
-        </div>
-        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-          <span class="text-xs font-medium text-slate-400 uppercase">Training Strain</span>
-          <div class="text-2xl font-bold text-amber-400 mt-1">6.8 / 21</div>
-        </div>
-      </div>
-
-      <div class="bg-slate-900 border border-slate-800 p-6 rounded-xl space-y-4">
-        <h3 class="text-lg font-bold text-white">Crunch Fitness & Schedule Sync</h3>
-        <p class="text-sm text-slate-400">Your M–F training cadences and Sunday reflection rituals are active and synchronized with Google Calendar.</p>
-        <a href="../data/calendar/routine_schedule.ics" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-sm font-semibold text-slate-950 transition">
-          <i data-lucide="calendar"></i> Download routine_schedule.ics
+        <a href="#science" class="px-8 py-3.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 font-semibold rounded-xl transition">
+          Explore the Science
         </a>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <footer class="py-12 px-6 text-center text-xs text-slate-500 border-t border-slate-900">
-    © 2026 Hive Alignment. Open-source performance architecture.
+    <!-- Science & Studies Highlight Section -->
+    <section id="science" class="py-16 px-6 max-w-6xl mx-auto border-t border-slate-900">
+      <div class="text-center max-w-2xl mx-auto space-y-3 mb-12">
+        <h2 class="text-3xl font-bold tracking-tight text-white">Backed by Physiology & Autonomic Science</h2>
+        <p class="text-slate-400">Translating raw biometric telemetry into sustainable lifestyle pacing models.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+          <div class="w-10 h-10 rounded-xl bg-emerald-950 border border-emerald-800 flex items-center justify-center text-emerald-400">
+            <i data-lucide="activity"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white">HRV & Autonomic Tone</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Monitors rMSSD heart rate variability thresholds to identify autonomic nervous system fatigue early and prevent cumulative overtraining.
+          </p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+          <div class="w-10 h-10 rounded-xl bg-sky-950 border border-sky-800 flex items-center justify-center text-sky-400">
+            <i data-lucide="zap"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white">Men of Mars Protocol</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Targeted daily micronutrient supplementation to counter cognitive fatigue, support cellular recovery, and maintain stable daytime energy.
+          </p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+          <div class="w-10 h-10 rounded-xl bg-purple-950 border border-purple-800 flex items-center justify-center text-purple-400">
+            <i data-lucide="trending-up"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white">Workload Auto-Regulation</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Dynamically shifts training volume between 0.80 and 1.10 acute-to-chronic ratios, ensuring continuous adaptation without systemic exhaustion.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="benefits" class="py-16 px-6 max-w-6xl mx-auto border-t border-slate-900">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+        <div class="space-y-6">
+          <h2 class="text-3xl font-bold tracking-tight text-white">Structured for Career, Family, & Academics</h2>
+          <p class="text-slate-400 leading-relaxed">
+            Preparing for Spring 2027 academic workloads while managing executive duties and family life requires deliberate time blocking and automated physical recovery.
+          </p>
+          <ul class="space-y-3 text-slate-300 text-sm">
+            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> M–F Crunch Fitness tactical resistance & cardio routines</li>
+            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> 30-minute evening decompression (spinal release & box breathing)</li>
+            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> Protected Sunday Couple's Reflection Ritual</li>
+          </ul>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl space-y-6">
+          <h3 class="text-xl font-bold text-white">Enter the Operations Cockpit</h3>
+          <p class="text-sm text-slate-400">Access your live biometrics, training schedule tabs, reflection checklists, and Google Calendar sync tools.</p>
+          <button onclick="toggleCockpit(true)" class="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition flex items-center justify-center gap-2">
+            Launch Cockpit Tabs <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- COCKPIT DASHBOARD VIEW -->
+  <section id="cockpit-view" class="hidden flex-grow max-w-6xl mx-auto px-6 py-8 w-full space-y-6">
+    <!-- Header with Quick Exit -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b border-slate-800 gap-4">
+      <div>
+        <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+          <i data-lucide="layout-dashboard" class="text-emerald-400"></i> Member Operations Cockpit
+        </h2>
+        <p class="text-xs text-slate-400 mt-1">Telemetry • Crunch Fitness • Family Rituals • Live Calendar</p>
+      </div>
+      <button onclick="toggleCockpit(false)" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-lg text-sm text-slate-300 transition">
+        Return to Overview
+      </button>
+    </div>
+
+    <!-- Cockpit Navigation Tabs -->
+    <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-2">
+      <button onclick="switchTab('tab-telemetry')" id="btn-tab-telemetry" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold bg-emerald-500 text-slate-950 transition">
+        Biometrics & Recovery
+      </button>
+      <button onclick="switchTab('tab-crunch')" id="btn-tab-crunch" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">
+        Crunch Fitness (M–F)
+      </button>
+      <button onclick="switchTab('tab-reflection')" id="btn-tab-reflection" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">
+        Family & Reflection
+      </button>
+      <button onclick="switchTab('tab-calendar')" id="btn-tab-calendar" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">
+        Live Google Calendar
+      </button>
+    </div>
+
+    <!-- TAB 1: Biometrics & Telemetry -->
+    <div id="tab-telemetry" class="tab-content active space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <span class="text-xs text-slate-400 uppercase font-medium">Recovery Score</span>
+          <div class="text-2xl font-bold text-emerald-400 mt-1 flex items-center gap-2">
+            78% <span class="text-xs px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-300">GREEN</span>
+          </div>
+          <p class="text-xs text-slate-500 mt-2">Optimal Parasympathetic Reserve</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <span class="text-xs text-slate-400 uppercase font-medium">Autonomic HRV</span>
+          <div class="text-2xl font-bold text-sky-400 mt-1">92.9 ms</div>
+          <p class="text-xs text-slate-500 mt-2">rMSSD Autonomic Baseline</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <span class="text-xs text-slate-400 uppercase font-medium">Day Strain</span>
+          <div class="text-2xl font-bold text-amber-400 mt-1">6.8 / 21</div>
+          <p class="text-xs text-slate-500 mt-2">Target Budget: 14.0 – 17.5</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <span class="text-xs text-slate-400 uppercase font-medium">Micronutrients</span>
+          <div class="text-lg font-semibold text-purple-300 mt-1">Men of Mars</div>
+          <p class="text-xs text-slate-500 mt-2">Daily Multivitamin Protocol</p>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-6">
+        <h3 class="text-lg font-bold text-white mb-2">Athlete Vitals Profile</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mt-4">
+          <div><span class="text-slate-500">Height:</span> <span class="font-medium text-slate-200">5'10" (70 in)</span></div>
+          <div><span class="text-slate-500">Target Weight:</span> <span class="font-medium text-slate-200">175 lbs</span></div>
+          <div><span class="text-slate-500">Schedule:</span> <span class="font-medium text-slate-200">Monday – Friday</span></div>
+          <div><span class="text-slate-500">Academic Target:</span> <span class="font-medium text-slate-200">Spring 2027</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: Crunch Fitness M-F -->
+    <div id="tab-crunch" class="tab-content space-y-4">
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i data-lucide="dumbbell" class="text-emerald-400"></i> Monday – Friday Resistance Cadence
+        </h3>
+        <div class="space-y-3">
+          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 flex justify-between items-center">
+            <div>
+              <span class="font-semibold text-emerald-400">Monday:</span> Upper Body Push & Core
+              <p class="text-xs text-slate-400 mt-0.5">Bench Press, Dumbbell Incline, Lateral Raises, Planks</p>
+            </div>
+            <span class="text-xs bg-slate-800 px-2.5 py-1 rounded text-slate-300">50 min • 17:30</span>
+          </div>
+
+          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 flex justify-between items-center">
+            <div>
+              <span class="font-semibold text-emerald-400">Tuesday:</span> Lower Body Hip Hinge & Mobility
+              <p class="text-xs text-slate-400 mt-0.5">Romanian Deadlifts, Goblet Squats, Hamstring Curls, 90/90s</p>
+            </div>
+            <span class="text-xs bg-slate-800 px-2.5 py-1 rounded text-slate-300">50 min • 17:30</span>
+          </div>
+
+          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 flex justify-between items-center">
+            <div>
+              <span class="font-semibold text-sky-400">Wednesday:</span> Aerobic Base Zone 2 Cardio
+              <p class="text-xs text-slate-400 mt-0.5">Rowing Ergometer & Incline Rucking (125–135 BPM)</p>
+            </div>
+            <span class="text-xs bg-slate-800 px-2.5 py-1 rounded text-slate-300">45 min • 17:30</span>
+          </div>
+
+          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 flex justify-between items-center">
+            <div>
+              <span class="font-semibold text-emerald-400">Thursday:</span> Upper Body Pull & Back
+              <p class="text-xs text-slate-400 mt-0.5">Lat Pulldowns, Seated Cable Rows, Face Pulls, Biceps</p>
+            </div>
+            <span class="text-xs bg-slate-800 px-2.5 py-1 rounded text-slate-300">50 min • 17:30</span>
+          </div>
+
+          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 flex justify-between items-center">
+            <div>
+              <span class="font-semibold text-emerald-400">Friday:</span> Full-Body Capacity & Mobility Finisher
+              <p class="text-xs text-slate-400 mt-0.5">Kettlebell Swings, Farmer Carries, Full Kinetic Flow</p>
+            </div>
+            <span class="text-xs bg-slate-800 px-2.5 py-1 rounded text-slate-300">45 min • 17:00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Family & Reflection -->
+    <div id="tab-reflection" class="tab-content space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-rose-950/20 border border-rose-900/40 rounded-xl p-6 space-y-4">
+          <div class="flex justify-between items-center">
+            <h3 class="text-lg font-bold text-rose-300 flex items-center gap-2">
+              <i data-lucide="heart-handshake" class="text-rose-400"></i> Sunday Reflection Ritual
+            </h3>
+            <span class="text-xs bg-rose-900/40 text-rose-300 px-2.5 py-1 rounded">20:00 – 20:45</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Protected weekly alignment conversation with your wife. Dedicated quiet environment without screens.
+          </p>
+          <div class="space-y-2 mt-4 text-xs text-slate-300">
+            <div class="p-2.5 bg-slate-950/60 rounded border border-rose-900/30">1. What went exceptionally well this week?</div>
+            <div class="p-2.5 bg-slate-950/60 rounded border border-rose-900/30">2. Where did we feel stretched or fatigued?</div>
+            <div class="p-2.5 bg-slate-950/60 rounded border border-rose-900/30">3. How can I best support you this upcoming week?</div>
+            <div class="p-2.5 bg-slate-950/60 rounded border border-rose-900/30">4. Family schedule, office bandwidth, and academic check-in.</div>
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+          <h3 class="text-lg font-bold text-white flex items-center gap-2">
+            <i data-lucide="moon" class="text-sky-400"></i> Daily 30-Min Evening Restoration
+          </h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Run nightly between 21:00 and 21:30 to reverse seated desk posture and signal parasympathetic down-regulation before sleep.
+          </p>
+          <ul class="text-xs text-slate-300 space-y-2.5 mt-2">
+            <li class="p-2.5 bg-slate-950 rounded border border-slate-800">
+              <strong class="text-emerald-400">10 min:</strong> Thoracic Thread & Cat-Cow Decompression
+            </li>
+            <li class="p-2.5 bg-slate-950 rounded border border-slate-800">
+              <strong class="text-emerald-400">10 min:</strong> 90/90 Hip Flow & Elevated Pigeon
+            </li>
+            <li class="p-2.5 bg-slate-950 rounded border border-slate-800">
+              <strong class="text-emerald-400">10 min:</strong> 4-4-4-4 Box Breathing & Supine Body Scan
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: Live Google Calendar -->
+    <div id="tab-calendar" class="tab-content space-y-4">
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <i data-lucide="calendar" class="text-emerald-400"></i> Hive Alignment & Fitness Live Calendar
+            </h3>
+            <p class="text-xs text-slate-400">Directly synchronized with your Google Calendar.</p>
+          </div>
+          <a href="../data/calendar/routine_schedule.ics" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-2">
+            <i data-lucide="download"></i> Download .ics File
+          </a>
+        </div>
+        <div class="w-full h-[500px] rounded-lg overflow-hidden border border-slate-800 bg-slate-950">
+          <iframe src="https://calendar.google.com/calendar/embed?src=32058af897d9533fbc91beaa2b20d3cfea0b44d1b17839893c0f99570ffc5f69%40group.calendar.google.com&ctz=America%2FNew_York" style="border: 0" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="py-8 px-6 text-center text-xs text-slate-500 border-t border-slate-900 mt-auto">
+    © 2026 Hive Alignment. Open-source health & performance architecture.
   </footer>
 
   <script>
     lucide.createIcons();
-    function toggleCockpit() {
-      const modal = document.getElementById('cockpit-modal');
-      modal.classList.toggle('hidden');
+
+    function toggleCockpit(show) {
+      const landing = document.getElementById('landing-view');
+      const cockpit = document.getElementById('cockpit-view');
+      if (show) {
+        landing.classList.add('hidden');
+        cockpit.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        cockpit.classList.add('hidden');
+        landing.classList.remove('hidden');
+      }
+    }
+
+    function showLandingView() {
+      toggleCockpit(false);
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-emerald-500', 'text-slate-950');
+        btn.classList.add('text-slate-400');
+      });
+
+      const activeTab = document.getElementById(tabId);
+      if (activeTab) activeTab.classList.add('active');
+
+      const activeBtn = document.getElementById('btn-' + tabId);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-emerald-500', 'text-slate-950');
+        activeBtn.classList.remove('text-slate-400');
+      }
     }
   </script>
 </body>
 </html>
-'@
-
-Set-Content -Path "docs/index.html" -Value $publicLanding -Encoding utf8
-Write-Host "Created public-facing landing page at docs/index.html!" -ForegroundColor Green
