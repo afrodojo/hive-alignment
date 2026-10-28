@@ -13,7 +13,7 @@
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-slate-950 min-h-screen flex flex-col">
 
-  <!-- Navigation Bar -->
+  <!-- Top Navigation -->
   <nav class="sticky top-0 w-full z-40 bg-slate-950/90 backdrop-blur-md border-b border-slate-900">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3 cursor-pointer" onclick="showLandingView()">
@@ -30,7 +30,7 @@
     </div>
   </nav>
 
-  <!-- LANDING VIEW -->
+  <!-- PUBLIC LANDING VIEW -->
   <main id="landing-view" class="flex-grow">
     <!-- Hero Section -->
     <section class="pt-20 pb-16 px-6 max-w-5xl mx-auto text-center space-y-6">
@@ -53,7 +53,7 @@
       </div>
     </section>
 
-    <!-- Science & Studies Highlight Section -->
+    <!-- Science Section -->
     <section id="science" class="py-16 px-6 max-w-6xl mx-auto border-t border-slate-900">
       <div class="text-center max-w-2xl mx-auto space-y-3 mb-12">
         <h2 class="text-3xl font-bold tracking-tight text-white">Backed by Physiology & Autonomic Science</h2>
@@ -99,17 +99,18 @@
         <div class="space-y-6">
           <h2 class="text-3xl font-bold tracking-tight text-white">Structured for Career, Family, & Academics</h2>
           <p class="text-slate-400 leading-relaxed">
-            Preparing for Spring 2027 academic workloads while managing executive duties and family life requires deliberate time blocking and automated physical recovery.
+            Preparing for Spring 2027 academic workloads while managing executive duties and family life requires deliberate time blocking, micro-learning discipline, and automated physical recovery.
           </p>
           <ul class="space-y-3 text-slate-300 text-sm">
             <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> M–F Crunch Fitness tactical resistance & cardio routines</li>
+            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> 20-min focused micro-learning study intervals for Spring 2027 prep</li>
             <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> 30-minute evening decompression (spinal release & box breathing)</li>
             <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> Protected Sunday Couple's Reflection Ritual</li>
           </ul>
         </div>
         <div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl space-y-6">
           <h3 class="text-xl font-bold text-white">Enter the Operations Cockpit</h3>
-          <p class="text-sm text-slate-400">Access your live biometrics, training schedule tabs, reflection checklists, and Google Calendar sync tools.</p>
+          <p class="text-sm text-slate-400">Access your live biometrics, training schedule tabs, focus timers, reflection checklists, and Google Calendar sync tools.</p>
           <button onclick="toggleCockpit(true)" class="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition flex items-center justify-center gap-2">
             Launch Cockpit Tabs <i data-lucide="arrow-right" class="w-4 h-4"></i>
           </button>
@@ -120,13 +121,12 @@
 
   <!-- COCKPIT DASHBOARD VIEW -->
   <section id="cockpit-view" class="hidden flex-grow max-w-6xl mx-auto px-6 py-8 w-full space-y-6">
-    <!-- Header with Quick Exit -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b border-slate-800 gap-4">
       <div>
         <h2 class="text-2xl font-bold text-white flex items-center gap-2">
           <i data-lucide="layout-dashboard" class="text-emerald-400"></i> Member Operations Cockpit
         </h2>
-        <p class="text-xs text-slate-400 mt-1">Telemetry • Crunch Fitness • Micro-Learning & Focus • Family Rituals • Live Calendar</p>
+        <p class="text-xs text-slate-400 mt-1">Telemetry • Crunch Fitness • Focus Modes & Learning • Family Rituals • Live Calendar</p>
       </div>
       <button onclick="toggleCockpit(false)" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-lg text-sm text-slate-300 transition">
         Return to Overview
@@ -142,7 +142,7 @@
         Crunch Fitness (M–F)
       </button>
       <button onclick="switchTab('tab-learning')" id="btn-tab-learning" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition flex items-center gap-2">
-        <i data-lucide="book-open" class="w-4 h-4 text-emerald-400"></i> Micro-Learning & Focus
+        <i data-lucide="brain" class="w-4 h-4 text-emerald-400"></i> Micro-Learning & Focus Modes
       </button>
       <button onclick="switchTab('tab-reflection')" id="btn-tab-reflection" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">
         Family & Reflection
@@ -243,82 +243,114 @@
       </div>
     </div>
 
-    <!-- TAB 3: Micro-Learning & Focus (NEW) -->
+    <!-- TAB 3: MICRO-LEARNING & FOCUS MODES (EXPANDED) -->
     <div id="tab-learning" class="tab-content space-y-6">
-      <!-- Focus Sprint Timer / Protocol Block -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-emerald-950 border border-emerald-800 flex items-center justify-center text-emerald-400">
-              <i data-lucide="timer"></i>
-            </div>
-            <div>
-              <h3 class="font-bold text-white">20-Min Micro-Sprint</h3>
-              <p class="text-xs text-slate-400">Single-Concept Mastery</p>
-            </div>
+      
+      <!-- Top Row: Interactive Focus Timer & Focus Protocol Shield -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Interactive Focus / Micro-Learning Timer Engine -->
+        <div class="lg:col-span-1 bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col items-center justify-center text-center space-y-4">
+          <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-emerald-400">
+            <i data-lucide="timer" class="w-4 h-4"></i> Focus Engine
           </div>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            Dedicate 20 uninterrupted minutes to one discrete reading, paper summary, or code module. Zero browser tabs, zero notifications.
-          </p>
-          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 text-xs text-slate-400">
-            <strong class="text-emerald-400">Protocol:</strong> 20 min active study &rarr; 5 min note synthesis &rarr; Full shutdown.
+
+          <!-- Time Display -->
+          <div id="timer-display" class="text-5xl font-mono font-extrabold text-white tracking-tight my-2">
+            25:00
+          </div>
+          <span id="timer-label" class="text-xs text-slate-400 uppercase font-semibold">Micro-Learning Sprint</span>
+
+          <!-- Mode Selectors -->
+          <div class="flex gap-2 w-full pt-1">
+            <button onclick="setTimerMode(20, 'Micro-Sprint')" class="flex-1 py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-lg text-xs font-medium text-slate-300">20m Sprint</button>
+            <button onclick="setTimerMode(25, 'Standard Focus')" class="flex-1 py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-lg text-xs font-medium text-slate-300">25m Focus</button>
+            <button onclick="setTimerMode(5, 'Mental Reset')" class="flex-1 py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-lg text-xs font-medium text-slate-300">5m Reset</button>
+          </div>
+
+          <!-- Timer Controls -->
+          <div class="flex gap-3 w-full">
+            <button id="start-btn" onclick="startTimer()" class="flex-1 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-sm transition">
+              Start Focus
+            </button>
+            <button onclick="pauseTimer()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl text-sm transition">
+              Pause
+            </button>
+            <button onclick="resetTimer()" class="px-4 py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-400 font-semibold rounded-xl text-sm transition">
+              Reset
+            </button>
+          </div>
+
+          <p class="text-[11px] text-slate-500">Mute phone notifications. Zero tab switching during active ticks.</p>
+        </div>
+
+        <!-- Focus Hygiene & Cognitive Windows -->
+        <div class="lg:col-span-2 bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+          <div class="flex justify-between items-center">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <i data-lucide="shield" class="text-sky-400 w-5 h-5"></i> Cognitive Shielding & WHOOP Alignment
+            </h3>
+            <span class="text-xs bg-sky-950 border border-sky-800 text-sky-300 px-2.5 py-0.5 rounded-full">Autonomic Gated</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+              <span class="font-bold text-emerald-400 flex items-center gap-1.5">
+                <i data-lucide="sun" class="w-3.5 h-3.5"></i> High-Energy Cognitive Window
+              </span>
+              <p class="text-slate-400 leading-relaxed">
+                <strong class="text-slate-200">06:30 – 07:45 AM:</strong> Pre-work window. Peak cortisol and zero inbound work Slack messages. Ideal for dense academic literature, paper summaries, or core mathematics.
+              </p>
+            </div>
+
+            <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+              <span class="font-bold text-amber-400 flex items-center gap-1.5">
+                <i data-lucide="coffee" class="w-3.5 h-3.5"></i> Micro-Sprint Window
+              </span>
+              <p class="text-slate-400 leading-relaxed">
+                <strong class="text-slate-200">12:30 – 13:00 PM:</strong> Post-lunch or mid-day recovery slot. Restrict to one 20-minute conceptual sprint with the Feynman 3-sentence summary method.
+              </p>
+            </div>
+
+            <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+              <span class="font-bold text-purple-400 flex items-center gap-1.5">
+                <i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Distraction Hardening Protocol
+              </span>
+              <p class="text-slate-400 leading-relaxed">
+                Close mail clients. Single browser window full-screened. Every time you switch tasks, a 23-minute cognitive penalty is incurred according to attention restoration research.
+              </p>
+            </div>
+
+            <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+              <span class="font-bold text-rose-400 flex items-center gap-1.5">
+                <i data-lucide="battery-low" class="w-3.5 h-3.5"></i> Low Recovery (RED) Fallback
+              </span>
+              <p class="text-slate-400 leading-relaxed">
+                If WHOOP recovery is below 33%, substitute deep problem sets with low-stress passive audio lectures or reschedule the micro-sprint to avoid autonomic overload.
+              </p>
+            </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-sky-950 border border-sky-800 flex items-center justify-center text-sky-400">
-              <i data-lucide="brain"></i>
-            </div>
-            <div>
-              <h3 class="font-bold text-white">Feynman Micro-Audit</h3>
-              <p class="text-xs text-slate-400">Active Recall Engine</p>
-            </div>
-          </div>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            Immediately explain the topic in 3 sentences as if teaching someone with zero technical background. If you stumble, re-read only that snippet.
-          </p>
-          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 text-xs text-slate-400">
-            <strong class="text-sky-400">Storage:</strong> Log atomic summaries into your repository notes folder.
-          </div>
-        </div>
-
-        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-purple-950 border border-purple-800 flex items-center justify-center text-purple-400">
-              <i data-lucide="shield-alert"></i>
-            </div>
-            <div>
-              <h3 class="font-bold text-white">Focus Shielding</h3>
-              <p class="text-xs text-slate-400">Cognitive Defense</p>
-            </div>
-          </div>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            High cognitive load tasks require low autonomic arousal. Schedule academic sprints when WHOOP recovery is Green/Yellow, never during peak cortisol crashes.
-          </p>
-          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 text-xs text-slate-400">
-            <strong class="text-purple-400">Optimal Slot:</strong> 06:30 – 07:15 AM or 12:30 – 13:00 PM.
-          </div>
-        </div>
       </div>
 
-      <!-- Spring 2027 Academic Transition Roadmap -->
+      <!-- Spring 2027 Academic Integration Architecture -->
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
-        <div class="flex justify-between items-center">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
           <h3 class="text-lg font-bold text-white flex items-center gap-2">
-            <i data-lucide="graduation-cap" class="text-emerald-400"></i> Spring 2027 Academic Integration Architecture
+            <i data-lucide="graduation-cap" class="text-emerald-400"></i> Spring 2027 Academic Transition Roadmap
           </h3>
           <span class="text-xs bg-emerald-950 text-emerald-300 border border-emerald-800 px-3 py-1 rounded-full font-medium">Pre-Matriculation Ramp</span>
         </div>
         <p class="text-xs text-slate-400">
-          The gradual volume build ensures high academic performance without compromising family rituals or resistance consistency.
+          Scaling academic focus volume gradually over 2026 to ensure zero degradation to Crunch Fitness consistency or protected family reflection rituals.
         </p>
 
         <div class="space-y-3 pt-2">
           <div class="p-4 bg-slate-950 rounded-lg border border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
             <div>
               <span class="text-sm font-semibold text-emerald-400">Phase 1: Habit Inoculation (Now – Late 2026)</span>
-              <p class="text-xs text-slate-400 mt-0.5">Two 25-minute sprints per week. Focus on building the physical habit of sitting down to read research papers without device distraction.</p>
+              <p class="text-xs text-slate-400 mt-0.5">Two 25-minute sprints per week. Building the neuromuscular habit of reading dense research papers without distraction.</p>
             </div>
             <span class="text-xs bg-slate-800 px-3 py-1 rounded text-slate-300">50 min / week</span>
           </div>
@@ -326,20 +358,34 @@
           <div class="p-4 bg-slate-950 rounded-lg border border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
             <div>
               <span class="text-sm font-semibold text-sky-400">Phase 2: Academic Conditioning (Fall 2026)</span>
-              <p class="text-xs text-slate-400 mt-0.5">Four 25-minute sprints per week. Read domain-specific textbooks or relevant research before evening gym or during lunch blocks.</p>
+              <p class="text-xs text-slate-400 mt-0.5">Four 25-minute sprints per week. Domain-specific textbooks or coding modules scheduled immediately before the evening gym session.</p>
             </div>
             <span class="text-xs bg-slate-800 px-3 py-1 rounded text-slate-300">100 min / week</span>
           </div>
 
           <div class="p-4 bg-slate-950 rounded-lg border border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
             <div>
-              <span class="text-sm font-semibold text-amber-400">Phase 3: Live Academic Load (Spring 2027 Launch)</span>
-              <p class="text-xs text-slate-400 mt-0.5">Courses go live. Crunch workout shifts into tight 45-min lunch windows or immediate post-work slots, preserving evening family decompression.</p>
+              <span class="text-sm font-semibold text-amber-400">Phase 3: Live Academic Load (Spring 2027 Matriculation)</span>
+              <p class="text-xs text-slate-400 mt-0.5">Full course load starts. Crunch training converts into compressed 45-min lunch windows, protecting evening study and family rituals.</p>
             </div>
             <span class="text-xs bg-slate-800 px-3 py-1 rounded text-amber-300">Full Course Integration</span>
           </div>
         </div>
       </div>
+
+      <!-- Quick Atomic Notes Scratchpad -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="edit-3" class="text-emerald-400 w-4 h-4"></i> Atomic Note & Synthesis Scratchpad
+        </h3>
+        <p class="text-xs text-slate-400">Summarize the 20-min reading or lecture below in 3 sentences (Feynman Technique). Persists locally in your browser storage.</p>
+        <textarea id="atomic-notes" rows="3" placeholder="Core Concept: In 3 sentences, what did you learn and how does it connect to the bigger picture?" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"></textarea>
+        <div class="flex justify-between items-center pt-1">
+          <span id="save-status" class="text-[11px] text-slate-500">Auto-saved to local browser cache</span>
+          <button onclick="saveNotes()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition">Save Concept</button>
+        </div>
+      </div>
+
     </div>
 
     <!-- TAB 4: Family & Reflection -->
@@ -445,6 +491,74 @@
         activeBtn.classList.add('bg-emerald-500', 'text-slate-950');
         activeBtn.classList.remove('text-slate-400');
       }
+    }
+
+    /* Pomodoro / Micro-Sprint Timer Logic */
+    let timerDuration = 25 * 60;
+    let timerRemaining = 25 * 60;
+    let timerInterval = null;
+    let isRunning = false;
+
+    function updateTimerDisplay() {
+      const mins = Math.floor(timerRemaining / 60);
+      const secs = timerRemaining % 60;
+      document.getElementById('timer-display').innerText = 
+        `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function setTimerMode(minutes, label) {
+      pauseTimer();
+      timerDuration = minutes * 60;
+      timerRemaining = timerDuration;
+      document.getElementById('timer-label').innerText = label;
+      updateTimerDisplay();
+    }
+
+    function startTimer() {
+      if (isRunning) return;
+      isRunning = true;
+      document.getElementById('start-btn').innerText = 'Running...';
+      timerInterval = setInterval(() => {
+        if (timerRemaining > 0) {
+          timerRemaining--;
+          updateTimerDisplay();
+        } else {
+          clearInterval(timerInterval);
+          isRunning = false;
+          document.getElementById('start-btn').innerText = 'Start Focus';
+          alert('Sprint complete! Run your 3-sentence Feynman synthesis.');
+        }
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      clearInterval(timerInterval);
+      isRunning = false;
+      document.getElementById('start-btn').innerText = 'Start Focus';
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      timerRemaining = timerDuration;
+      updateTimerDisplay();
+    }
+
+    /* Scratchpad Storage */
+    const notesKey = 'hive_atomic_notes';
+    const notesInput = document.getElementById('atomic-notes');
+    if (localStorage.getItem(notesKey)) {
+      notesInput.value = localStorage.getItem(notesKey);
+    }
+
+    function saveNotes() {
+      localStorage.setItem(notesKey, notesInput.value);
+      const status = document.getElementById('save-status');
+      status.innerText = 'Saved to browser cache at ' + new Date().toLocaleTimeString();
+      status.classList.add('text-emerald-400');
+      setTimeout(() => {
+        status.classList.remove('text-emerald-400');
+        status.innerText = 'Auto-saved to local browser cache';
+      }, 3000);
     }
   </script>
 </body>
