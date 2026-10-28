@@ -1,8 +1,8 @@
 # MORNING BIOMETRIC BRIEFING — 2026-10-28
 
-> “You don't rise to the level of your goals, you fall to the level of your systems. Your biological foundation is primed to build.”
+> “Energy flows where attention goes. With maximum autonomic reserve, point your focus at your highest-value target.”
 >
-> *— James Clear*
+> *— Tony Robbins*
 
 ---
 

@@ -1,8 +1,8 @@
 # MORNING BIOMETRIC BRIEFING — 2026-10-28
 
-> “You don't rise to the level of your goals, you fall to the level of your systems. Your biological foundation is primed to build.”
+> “Energy flows where attention goes. With maximum autonomic reserve, point your focus at your highest-value target.”
 >
-> *— James Clear*
+> *— Tony Robbins*
 
 ---
 
@@ -21,3 +21,19 @@
 - **Physiological State:** Optimal parasympathetic dominance. Autonomic reserve is primed for high cognitive or metabolic demand.
 - **Target Strain Budget:** `14.0 – 17.5`
 - **Action Protocol:** Schedule high-friction work, intensive training, or critical decisions before midday.
+
+---
+
+## 🏋️ Tactical S&C Auto-Regulation Prescription
+
+> **Status:** `🟩 GREEN — HIGH ADAPTIVE CAPACITY`  
+> **Recovery:** `78%` | **HRV (rMSSD):** `92.9 ms` | **RHR:** `59.6 bpm` | **ACWR Gate:** `1.02 (Optimal Overload Zone: 0.80 – 1.10)`
+
+| Parameter | Prescribed Target |
+| :--- | :--- |
+| **Volume Allocation** | Full Volume (4 sets × 12–15 reps) |
+| **Intensity Gate** | `RPE 7.5 – 8.5` |
+| **Load Overload Modulation** | **+2.5% Progressive Microcycle Overload** |
+| **Inter-Set Recovery** | 90–120s compound / 60s isolation |
+| **Movement Selections** | High axial loading: Barbell Back Squat, Weighted Pull-Ups, Overhead Press |
+| **Conditioning Protocol** | High-Intensity Functional Intervals or Lactate Threshold threshold intervals |

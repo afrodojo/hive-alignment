@@ -1,10 +1,10 @@
 ﻿<!-- WHOOP_BRIEFING_START -->
 
-# MORNING BIOMETRIC BRIEFING â€” 2026-10-28
+# MORNING BIOMETRIC BRIEFING — 2026-10-28
 
-> â€œSmall disciplines repeated with consistency every day lead to great achievements gained slowly over time.â€
+> “Energy flows where attention goes. With maximum autonomic reserve, point your focus at your highest-value target.”
 >
-> *â€” John C. Maxwell*
+> *— Tony Robbins*
 
 ---
 
@@ -12,19 +12,34 @@
 
 | Metric | Reading | Status |
 | :--- | :--- | :--- |
-| **Recovery Index** | **50%** | `YELLOW ZONE` |
-| **HRV (rMSSD)** | 0.0 ms | Autonomic Nervous System Tone |
-| **Resting Heart Rate** | 0.0 bpm | Baseline Cardiovascular Strain |
+| **Recovery Index** | **78%** | `GREEN ZONE` |
+| **HRV (rMSSD)** | 92.9 ms | Autonomic Nervous System Tone |
+| **Resting Heart Rate** | 59.6 bpm | Cardiovascular Baseline |
 | **Day Strain** | 6.8 / 21 | Cardiovascular Exertion |
-| **Sleep Performance** | 0% | Sleep Need Fulfilled |
+| **Sleep Performance** | 78% | Sleep Need Fulfilled |
 
 ## Operational Directive
 
-- **Physiological State:** Steady maintenance mode. Baseline metrics within normal variance.
-- **Target Strain Budget:** `10.0 â€“ 13.5`
-- **Action Protocol:** Execute structured priorities; preserve stamina by eliminating low-leverage distractions.
+- **Physiological State:** Optimal parasympathetic dominance. Autonomic reserve is primed for high cognitive or metabolic demand.
+- **Target Strain Budget:** `14.0 – 17.5`
+- **Action Protocol:** Schedule high-friction work, intensive training, or critical decisions before midday.
 
 <!-- WHOOP_BRIEFING_END -->
 <!-- AUTO_REGULATION_START -->
+
+## 🏋️ Tactical S&C Auto-Regulation Prescription
+
+> **Status:** `🟩 GREEN — HIGH ADAPTIVE CAPACITY`  
+> **Recovery:** `78%` | **HRV (rMSSD):** `92.9 ms` | **RHR:** `59.6 bpm` | **ACWR Gate:** `1.02 (Optimal Overload Zone: 0.80 – 1.10)`
+
+| Parameter | Prescribed Target |
+| :--- | :--- |
+| **Volume Allocation** | Full Volume (4 sets × 12–15 reps) |
+| **Intensity Gate** | `RPE 7.5 – 8.5` |
+| **Load Overload Modulation** | **+2.5% Progressive Microcycle Overload** |
+| **Inter-Set Recovery** | 90–120s compound / 60s isolation |
+| **Movement Selections** | High axial loading: Barbell Back Squat, Weighted Pull-Ups, Overhead Press |
+| **Conditioning Protocol** | High-Intensity Functional Intervals or Lactate Threshold threshold intervals |
+
 <!-- AUTO_REGULATION_END -->
 
