@@ -1,4 +1,4 @@
-name: Sync WHOOP Biometrics Telemetry
+ï»¿name: Sync WHOOP Biometrics Telemetry
 
 on:
   schedule:
@@ -176,54 +176,54 @@ jobs:
           QUOTES = {
               "GREEN": {
                   "morning": [
-                      ("“The secret of getting ahead is getting started. Today your nervous system is fully primed—execute without hesitation.”", "Mark Twain / Cyber Dojo"),
-                      ("“Energy flows where attention goes. With maximum autonomic reserve, point your focus at your highest-value target.”", "Tony Robbins"),
-                      ("“You don't rise to the level of your goals, you fall to the level of your systems. Your biological foundation is primed to build.”", "James Clear")
+                      ("â€œThe secret of getting ahead is getting started. Today your nervous system is fully primedâ€”execute without hesitation.â€", "Mark Twain / Cyber Dojo"),
+                      ("â€œEnergy flows where attention goes. With maximum autonomic reserve, point your focus at your highest-value target.â€", "Tony Robbins"),
+                      ("â€œYou don't rise to the level of your goals, you fall to the level of your systems. Your biological foundation is primed to build.â€", "James Clear")
                   ],
                   "afternoon": [
-                      ("“Do not pray for an easy life, pray for the strength to endure a difficult one. You have surplus physiological capacity—push deeper.”", "Bruce Lee"),
-                      ("“Discipline is choosing between what you want now and what you want most. Keep your cadence high.”", "Abraham Lincoln")
+                      ("â€œDo not pray for an easy life, pray for the strength to endure a difficult one. You have surplus physiological capacityâ€”push deeper.â€", "Bruce Lee"),
+                      ("â€œDiscipline is choosing between what you want now and what you want most. Keep your cadence high.â€", "Abraham Lincoln")
                   ],
                   "evening": [
-                      ("“Well done is better than well said. You converted biological capacity into raw output today. Now downshift into restoration.”", "Benjamin Franklin")
+                      ("â€œWell done is better than well said. You converted biological capacity into raw output today. Now downshift into restoration.â€", "Benjamin Franklin")
                   ]
               },
               "YELLOW": {
                   "morning": [
-                      ("“It is not about having time, it is about making choices. Steady equilibrium requires surgical efficiency today.”", "Cyber Dojo"),
-                      ("“Small disciplines repeated with consistency every day lead to great achievements gained slowly over time.”", "John C. Maxwell"),
-                      ("“In the middle of difficulty lies opportunity. Keep your cadence controlled and protect your baseline.”", "Albert Einstein")
+                      ("â€œIt is not about having time, it is about making choices. Steady equilibrium requires surgical efficiency today.â€", "Cyber Dojo"),
+                      ("â€œSmall disciplines repeated with consistency every day lead to great achievements gained slowly over time.â€", "John C. Maxwell"),
+                      ("â€œIn the middle of difficulty lies opportunity. Keep your cadence controlled and protect your baseline.â€", "Albert Einstein")
                   ],
                   "afternoon": [
-                      ("“Patience and perseverance have a magical effect before which difficulties disappear and obstacles vanish.”", "John Quincy Adams"),
-                      ("“Focus on being productive instead of busy. Protect your bandwidth as strain accumulates.”", "Tim Ferriss")
+                      ("â€œPatience and perseverance have a magical effect before which difficulties disappear and obstacles vanish.â€", "John Quincy Adams"),
+                      ("â€œFocus on being productive instead of busy. Protect your bandwidth as strain accumulates.â€", "Tim Ferriss")
                   ],
                   "evening": [
-                      ("“Sleep is the golden chain that ties health and our bodies together. Protect your recovery window tonight.”", "Thomas Dekker")
+                      ("â€œSleep is the golden chain that ties health and our bodies together. Protect your recovery window tonight.â€", "Thomas Dekker")
                   ]
               },
               "RED": {
                   "morning": [
-                      ("“Rest is not the absence of work; it is the source of power. Real discipline is knowing when to let the body rebuild.”", "Jocko Willink"),
-                      ("“The bamboo that bends is stronger than the oak that resists. Yield to your biology today so you can strike tomorrow.”", "Japanese Proverb"),
-                      ("“Mastery is not only knowing when to push, but having the humility to step back and restore equilibrium.”", "Cyber Dojo Sensei")
+                      ("â€œRest is not the absence of work; it is the source of power. Real discipline is knowing when to let the body rebuild.â€", "Jocko Willink"),
+                      ("â€œThe bamboo that bends is stronger than the oak that resists. Yield to your biology today so you can strike tomorrow.â€", "Japanese Proverb"),
+                      ("â€œMastery is not only knowing when to push, but having the humility to step back and restore equilibrium.â€", "Cyber Dojo Sensei")
                   ],
                   "afternoon": [
-                      ("“Energy management, not time management, is the key to high performance. Protect your reserve tank this afternoon.”", "Jim Loehr"),
-                      ("“Simplicity is the ultimate sophistication. Eliminate non-essential friction.”", "Leonardo da Vinci")
+                      ("â€œEnergy management, not time management, is the key to high performance. Protect your reserve tank this afternoon.â€", "Jim Loehr"),
+                      ("â€œSimplicity is the ultimate sophistication. Eliminate non-essential friction.â€", "Leonardo da Vinci")
                   ],
                   "evening": [
-                      ("“Tough days build strong armor, but the forge requires rest to temper the steel. Clear your mind and let sleep do its work.”", "Cyber Dojo Sensei")
+                      ("â€œTough days build strong armor, but the forge requires rest to temper the steel. Clear your mind and let sleep do its work.â€", "Cyber Dojo Sensei")
                   ]
               }
           }
 
-          pool = QUOTES.get(zone, {}).get(phase, [("“Consistency is the ultimate competitive advantage.”", "Cyber Dojo")])
+          pool = QUOTES.get(zone, {}).get(phase, [("â€œConsistency is the ultimate competitive advantage.â€", "Cyber Dojo")])
           quote_text, quote_author = random.choice(pool)
 
           # 5. Render Markdown Card
-          card = f"# {phase.upper()} BIOMETRIC BRIEFING — {date_str}\n\n"
-          card += f"> {quote_text}\n>\n> *— {quote_author}*\n\n"
+          card = f"# {phase.upper()} BIOMETRIC BRIEFING â€” {date_str}\n\n"
+          card += f"> {quote_text}\n>\n> *â€” {quote_author}*\n\n"
           card += "---\n\n"
           card += "## Physiological Readout\n\n"
           card += "| Metric | Reading | Status |\n"
@@ -238,11 +238,11 @@ jobs:
           if phase == "morning":
               if zone == "GREEN":
                   card += "- **Physiological State:** Optimal parasympathetic dominance. Autonomic reserve is primed for high cognitive or metabolic demand.\n"
-                  card += "- **Target Strain Budget:** `14.0 – 17.5`\n"
+                  card += "- **Target Strain Budget:** `14.0 â€“ 17.5`\n"
                   card += "- **Action Protocol:** Schedule high-friction work, intensive training, or critical decisions before midday.\n"
               elif zone == "YELLOW":
                   card += "- **Physiological State:** Steady maintenance mode. Baseline metrics within normal variance.\n"
-                  card += "- **Target Strain Budget:** `10.0 – 13.5`\n"
+                  card += "- **Target Strain Budget:** `10.0 â€“ 13.5`\n"
                   card += "- **Action Protocol:** Execute structured priorities; preserve stamina by eliminating low-leverage distractions.\n"
               else:
                   card += "- **Physiological State:** Sympathetic activation or high systemic fatigue. Biological bandwidth is constrained.\n"
@@ -299,6 +299,9 @@ jobs:
               env_file.write(f"BRIEFING_ZONE={zone}\n")
         shell: python
 
+      - name: Generate Auto-Regulated Training Prescription
+        run: python scripts/auto_regulator.py
+
       - name: Publish GitHub Issue
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -311,7 +314,7 @@ jobs:
           done
 
           gh issue create \
-            --title "[Biometrics] ${{ env.BRIEFING_PHASE }} Briefing — ${{ env.BRIEFING_DATE }} (${{ env.BRIEFING_ZONE }})" \
+            --title "[Biometrics] ${{ env.BRIEFING_PHASE }} Briefing â€” ${{ env.BRIEFING_DATE }} (${{ env.BRIEFING_ZONE }})" \
             --body-file "data/telemetry/latest_briefing.md" \
             --label "biometric-briefing"
 
@@ -321,3 +324,4 @@ jobs:
           git config user.email "cyberdojosensei@gmail.com"
           git add data/telemetry/ README.md
           git diff-index --quiet HEAD || (git commit -m "chore(telemetry): update briefings and README [skip ci]" && git push)
+
