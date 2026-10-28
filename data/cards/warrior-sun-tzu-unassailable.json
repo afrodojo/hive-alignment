@@ -1,0 +1,16 @@
+{
+  "domain": "WARRIOR_ETHOS",
+  "title": "Sun Tzu: The Unassailable Center",
+  "hook": "Invincibility lies in the defense; the possibility of victory in the attack.",
+  "core_insight": "Sun Tzu teaches that making oneself invincible is entirely within one's own control, whereas the enemy's vulnerability depends on them. When ADHD or anxiety triggers reactive panic, the instinct is to counter-attack or solve everything at once. Secure your defensive perimeter first: stabilize your health, sleep, core codebases, and financial reserves. Let adversaries and chaotic systems exhaust themselves against your stillness.",
+  "takeaways": [
+    "Never enter a negotiation or confrontation until your internal position is mathematically solid.",
+    "Master the pause: emotional equilibrium under stress denies the room any leverage over you."
+  ],
+  "proof_or_code": "\\text{Invincibility} = f(\\text{Internal Discipline}, \\text{Redundancy}) \\implies \\nabla \\text{Vulnerability} = 0",
+  "read_time_seconds": 40,
+  "commit_hash": "suntzu01",
+  "repo_url": "https://github.com/afrodojo/hive-alignment",
+  "live_site_url": "https://hive-align.eds-360.com",
+  "external_reference": "Sun Tzu, The Art of War, Ch. 4 (Tactical Dispositions)"
+}
