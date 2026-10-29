@@ -140,51 +140,37 @@
 
     <!-- Cockpit Navigation Tabs -->
     <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-2">
-    <!-- Restored Interactive Tab Navigation Bar -->
-    <div class="flex flex-wrap items-center gap-2 mb-6">
-      <button onclick="switchTab('briefings')" class="tab-btn active px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center gap-1.5 shadow-sm transition-colors">
+        <!-- Restored Interactive Tab Navigation Bar -->
+        <!-- Restored Interactive Tab Navigation Bar -->
+    <div id="cockpit-tabs-nav" class="flex flex-wrap items-center gap-2 mb-6">
+      <button id="btn-tab-briefings" onclick="switchTab('tab-briefings')" class="tab-btn active px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-slate-950 flex items-center gap-1.5 shadow-sm transition-colors">
         <i data-lucide="check-square" class="w-3.5 h-3.5"></i> Daily Briefings
       </button>
-      <button onclick="switchTab('arabic')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
-        <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Prayer Recitation &amp; Arabic
+      <button id="btn-tab-arabic" onclick="switchTabWithTag('tab-vault', 'Arabic')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
+        <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Prayer &amp; Arabic
       </button>
-      <button onclick="switchTab('anchors')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
-        <i data-lucide="compass" class="w-3.5 h-3.5"></i> EQ &amp; Spiritual Anchors
+      <button id="btn-tab-spiritual" onclick="switchTabWithTag('tab-vault', 'Spiritual')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
+        <i data-lucide="compass" class="w-3.5 h-3.5"></i> EQ &amp; Anchors
       </button>
-      <button onclick="switchTab('omega')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
-        <i data-lucide="bookmark" class="w-3.5 h-3.5 text-amber-400"></i> Seeker Knowledge (Omega)
+      <button id="btn-tab-seeker" onclick="switchTabWithTag('tab-vault', 'Omega')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-amber-400 hover:text-amber-300 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
+        <i data-lucide="bookmark" class="w-3.5 h-3.5"></i> Seeker Knowledge (Omega)
       </button>
-      <button onclick="switchTab('biometrics')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
+      <button id="btn-tab-biometrics" onclick="switchTab('tab-briefings'); document.getElementById('telemetry-simulator-card')?.scrollIntoView({behavior: 'smooth'});" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
         <i data-lucide="activity" class="w-3.5 h-3.5"></i> Biometrics &amp; Recovery
       </button>
-      <span class="text-xs text-slate-500 font-normal ml-1">Crunch Fitness (Monday - Friday)</span>
-      <button onclick="switchTab('vault')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
+      <button id="btn-tab-fitness" onclick="switchTab('tab-briefings');" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
+        <i data-lucide="dumbbell" class="w-3.5 h-3.5"></i> Crunch Fitness (M-F)
+      </button>
+      <button id="btn-tab-vault" onclick="switchTab('tab-vault')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
         <i data-lucide="book-open" class="w-3.5 h-3.5 text-emerald-400"></i> Focus &amp; Knowledge Vault
       </button>
-      <button onclick="switchTab('family')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
+      <button id="btn-tab-reflection" onclick="switchTab('tab-reflection')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
         <i data-lucide="heart" class="w-3.5 h-3.5"></i> Family &amp; Reflection
       </button>
-      <button onclick="switchTab('calendar')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
+      <button id="btn-tab-calendar" onclick="switchTab('tab-calendar')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
         <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Live Google Calendar
       </button>
     </div>
-
-    <!-- Autonomic Telemetry & Auto-Regulator Simulator Card -->
-    <div id="telemetry-simulator-card" class="bg-slate-900/90 border border-emerald-500/30 rounded-xl p-5 mb-6 shadow-lg shadow-black/40">
-      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" id="sim-status-dot"></span>
-            <h3 class="text-sm font-semibold text-slate-100 uppercase tracking-wider">Autonomic Telemetry &amp; Auto-Regulator</h3>
-          </div>
-          <p class="text-xs text-slate-400 mt-1">Live sync or drag the recovery slider below to test dynamic workout prescription gating.</p>
-        </div>
-        <div>
-          <button type="button" id="toggle-sim-mode" onclick="toggleTelemetryMode()" class="px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors">
-            Mode: <span id="sim-mode-label" class="text-emerald-400 font-semibold">Live Telemetry</span>
-          </button>
-        </div>
-      </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
         <!-- Recovery Slider -->
@@ -334,7 +320,7 @@
 
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex justify-between items-center text-xs">
         <span class="text-slate-400">Briefing checklist state is saved automatically to local browser storage.</span>
-        <button onclick="resetBriefings &bull; Focus &bull; Telemetry &bull; Grounding &bull; Execution Shield</span>
+        <button onclick="resetDailyChecklist()" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 text-xs transition-colors">Reset Daily Checklist</button>
             <p class="text-slate-400">Locking 90-minute study blocks into executive calendar buffers to prevent corporate bleed.</p>
           </div>
           <div class="p-3 bg-slate-950/70 rounded-xl border border-slate-800 space-y-1">
@@ -344,7 +330,10 @@
         </div>
       </div>
 
-      <!-- Ingested Knowledge Vault Dynamic Cards -->
+          </div> <!-- Close tab-briefings -->
+
+    <!-- TAB: Ingested Knowledge Vault -->
+    <div id="tab-vault" class="tab-content space-y-6 hidden">
       <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-4">
           <div>
@@ -2079,6 +2068,61 @@ ${muhasabah}
   document.addEventListener('DOMContentLoaded', () => {
     renderTelemetryUI();
   });
+</script>
+<script>
+  function switchTab(tabId) {
+    // Hide all tab contents
+    document.querySelectorAll('.tab-content').forEach(tab => {
+      tab.classList.remove('active');
+      tab.classList.add('hidden');
+    });
+
+    // Reset button styles
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.remove('bg-emerald-500', 'text-slate-950', 'bg-amber-500', 'font-semibold');
+      btn.classList.add('font-medium');
+      if (btn.id === 'btn-tab-seeker') {
+        btn.classList.add('text-amber-400');
+      } else {
+        btn.classList.add('text-slate-400');
+      }
+    });
+
+    // Activate the targeted tab container
+    const activeTab = document.getElementById(tabId);
+    if (activeTab) {
+      activeTab.classList.remove('hidden');
+      activeTab.classList.add('active');
+    }
+
+    // Highlight the active button
+    const activeBtn = document.getElementById('btn-' + tabId);
+    if (activeBtn) {
+      if (tabId === 'tab-seeker') {
+        activeBtn.classList.add('bg-amber-500', 'text-slate-950', 'font-semibold');
+        activeBtn.classList.remove('text-amber-400', 'text-slate-400');
+      } else {
+        activeBtn.classList.add('bg-emerald-500', 'text-slate-950', 'font-semibold');
+        activeBtn.classList.remove('text-slate-400');
+      }
+    }
+
+    if (tabId === 'tab-vault' && typeof loadVault === 'function') {
+      loadVault();
+    }
+    if (window.lucide) { lucide.createIcons(); }
+  }
+
+  function switchTabWithTag(tabId, tagFilter) {
+    switchTab(tabId);
+    const searchInput = document.getElementById('vault-search');
+    if (searchInput) {
+      searchInput.value = tagFilter;
+      if (typeof filterVault === 'function') {
+        filterVault();
+      }
+    }
+  }
 </script>
 </body>
 </html>
