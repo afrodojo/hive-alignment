@@ -1,68 +1,134 @@
 [
-  {
-    "id": "tau-rho-charter",
-    "title": "Tau Rho Chapter Charter & Fredericksburg History",
-    "author": "Tau Rho Chapter Archives",
-    "type": "Fraternity Heritage",
-    "category": "Fraternity Heritage",
-    "date_added": "1964-12-07",
-    "summary": "Tau Rho Chapter was chartered on December 7, 1964 in Fredericksburg, Virginia, under the Third District. It serves Fredericksburg, Spotsylvania, Stafford, Caroline, and King George counties. Named Third District Overall Small Chapter of the Year.",
-    "takeaway": "Charter date: Dec 7, 1964; Third District; Serving 5 VA counties.",
-    "tag": "Tau-Rho-Charter"
-  },
-  {
-    "id": "oppf-founding-1911",
-    "title": "Omega Psi Phi Founding & Cardinal Principles",
-    "author": "Howard University Archives",
-    "type": "Foundational History",
-    "category": "Fraternity Heritage",
-    "date_added": "1911-11-17",
-    "summary": "Founded on Friday evening, November 17, 1911, in Thirkield Hall at Howard University by undergraduate students Edgar Amos Love, Oscar James Cooper, and Frank Coleman, with faculty advisor Ernest Everett Just. Motto: 'Friendship is Essential to the Soul'. Four Cardinal Principles: Manhood, Scholarship, Perseverance, Uplift.",
-    "takeaway": "Nov 17, 1911, Thirkield Hall, Howard University. Love, Cooper, Coleman, Just.",
-    "tag": "OPPF-Founding"
-  },
-  {
-    "id": "stoic-dichotomy-control",
-    "title": "The Enchiridion: Dichotomy of Control",
-    "author": "Epictetus",
-    "type": "Core Philosophy",
-    "category": "Philosophy",
-    "date_added": "2026-10-28",
-    "summary": "Some things are in our control and others not. Things in our control are opinion, pursuit, desire, aversion, and whatever are our own actions. Things not in our control are body, property, reputation, command, and one's external circumstances.",
-    "takeaway": "Focus 100% of executive bandwidth exclusively on internal response, never on external volatility.",
-    "tag": "Stoic-Composure"
-  },
-  {
-    "id": "autonomic-hrv-pacing",
-    "title": "Autonomic Nervous System Pacing & HRV Regulation",
-    "author": "Physiological Science & Telemetry",
-    "type": "Performance Science",
-    "category": "Focus & Energy",
-    "date_added": "2026-10-28",
-    "summary": "Heart Rate Variability (rMSSD) serves as an objective marker of parasympathetic recovery. High baseline values reflect autonomic resilience, while downward trends indicate central nervous system fatigue requiring autoregulated training loads.",
-    "takeaway": "Autoregulate volume: high mechanical tension on Green days (>66%), aerobic Zone 2 on Red days (<34%).",
-    "tag": "Autonomic-Tone"
-  },
-  {
-    "id": "prophetic-emotional-restraint",
-    "title": "Prophetic Emotional Composure & Sabr Under Strain",
-    "author": "Spiritual Tradition",
-    "type": "Spiritual / Arabic",
-    "category": "Spiritual / Arabic",
-    "date_added": "2026-10-28",
-    "summary": "True internal strength lies in emotional composure during moments of sudden provocation. Pausing before reaction and anchoring the autonomic nervous system via intentional breath preserves prefrontal reasoning.",
-    "takeaway": "'The strong man is the one who controls himself when angry.' Guard speech under tension.",
-    "tag": "Sabr-Discipline"
-  },
-  {
-    "id": "deep-work-cal-newport",
-    "title": "Deep Work: Rules for Focused Success",
-    "author": "Cal Newport",
-    "type": "Cognitive Protocol",
-    "category": "Business Management",
-    "date_added": "2026-10-28",
-    "summary": "The ability to perform deep work is becoming increasingly rare at exactly the same time it is becoming increasingly valuable in our economy. Eliminating task switching and cognitive fragmentation is required for elite academic and professional output.",
-    "takeaway": "Shield unbroken morning 90-minute blocks without email, chat, or phone notifications.",
-    "tag": "Deep-Work"
-  }
+    {
+        "id":  "hadith-nawawi-1",
+        "title":  "Hadith 1: Intentions Anchor Action (Innamal A\u0027malu bin-Niyyat)",
+        "author":  "Imam al-Nawawi / Bukhari \u0026 Muslim",
+        "type":  "Primary Hadith",
+        "category":  "Spiritual / Arabic",
+        "date_added":  "2026-10-29",
+        "summary":  "Actions are judged solely by intentions, and every person will attain only what they intended. Worldly labor, physical discipline, and intellectual rigor are transformed into worship when consecrated with a sincere inward purpose.",
+        "takeaway":  "Before initiating corporate tasks, lifting, or study, perform a 5-second internal reset of your underlying purpose.",
+        "tag":  "Hadith-1-Niyyah"
+    },
+    {
+        "id":  "hadith-nawawi-2",
+        "title":  "Hadith 2: The Core Framework (Islam, Iman, Ihsan)",
+        "author":  "Imam al-Nawawi / Muslim",
+        "type":  "Primary Hadith",
+        "category":  "Spiritual / Arabic",
+        "date_added":  "2026-10-29",
+        "summary":  "The Archangel Gabriel questioned the Prophet on the three dimensions of religion: Islam (outward compliance and rituals), Iman (internal conviction and theology), and Ihsan (excellence: worshipping God as if you see Him, knowing that He sees you).",
+        "takeaway":  "Operate at the level of Ihsan in every domain: deliver thorough, unhurried excellence across all duties.",
+        "tag":  "Hadith-2-Ihsan"
+    },
+    {
+        "id":  "hadith-nawawi-12",
+        "title":  "Hadith 12: Cognitive Shield (Leaving What Does Not Concern You)",
+        "author":  "Imam al-Nawawi / Tirmidhi",
+        "type":  "Primary Hadith",
+        "category":  "Spiritual / Arabic",
+        "date_added":  "2026-10-29",
+        "summary":  "Part of the perfection of a person\u0027s faith is leaving alone that which does not concern them. Eliminates gossip, trivial social media, workplace politicking, and extraneous noise that depletes executive and spiritual energy.",
+        "takeaway":  "Ruthlessly eliminate low-signal information and gossip. If it does not build faith, family, or duty, bypass it.",
+        "tag":  "Hadith-12-Focus"
+    },
+    {
+        "id":  "hadith-nawawi-15",
+        "title":  "Hadith 15: Restraint of Tongue \u0026 High-Status Speech",
+        "author":  "Imam al-Nawawi / Bukhari \u0026 Muslim",
+        "type":  "Primary Hadith",
+        "category":  "Spiritual / Arabic",
+        "date_added":  "2026-10-29",
+        "summary":  "Whoever believes in Allah and the Last Day should speak what is good or remain silent. Ties directly to high-status executive composure: deliberate verbal economy over impulse-driven speaking.",
+        "takeaway":  "Honor the 3-second pause. If the upcoming response does not clarify, heal, or resolve, maintain stillness.",
+        "tag":  "Hadith-15-Silence"
+    },
+    {
+        "id":  "hadith-nawawi-16",
+        "title":  "Hadith 16: Emotional Self-Command (Do Not Become Angry)",
+        "author":  "Imam al-Nawawi / Bukhari",
+        "type":  "Primary Hadith",
+        "category":  "Spiritual / Arabic",
+        "date_added":  "2026-10-29",
+        "summary":  "A man asked the Prophet for counsel, and he repeated three times: \u0027Do not become angry.\u0027 Real strength is not displayed by physical dominance, but by absolute composure during acute frustration.",
+        "takeaway":  "When provocation hits, engage the physiological sigh. Detach from personal offense; answer only the objective facts.",
+        "tag":  "Hadith-16-Sabr"
+    },
+    {
+        "id":  "hadith-nawawi-18",
+        "title":  "Hadith 18: God-Consciousness \u0026 Noble Conduct (Husn al-Khuluq)",
+        "author":  "Imam al-Nawawi / Tirmidhi",
+        "type":  "Primary Hadith",
+        "category":  "Spiritual / Arabic",
+        "date_added":  "2026-10-29",
+        "summary":  "Be conscious of God wherever you are; follow a misstep with a righteous deed to erase it; and treat people with exemplary character. Piety is verified through how you speak to family, peers, and subordinates.",
+        "takeaway":  "High moral character is the ultimate metric. Lead with warmth at home and unshakable fairness at work.",
+        "tag":  "Hadith-18-Character"
+    },
+    {
+        "id":  "tau-rho-charter",
+        "title":  "Tau Rho Chapter Charter \u0026 Fredericksburg History",
+        "author":  "Tau Rho Chapter Archives",
+        "type":  "Fraternity Heritage",
+        "category":  "Fraternity Heritage",
+        "date_added":  "1964-12-07",
+        "summary":  "Tau Rho Chapter was chartered on December 7, 1964 in Fredericksburg, Virginia, under the Third District. It serves Fredericksburg, Spotsylvania, Stafford, Caroline, and King George counties. Named Third District Overall Small Chapter of the Year.",
+        "takeaway":  "Charter date: Dec 7, 1964; Third District; Serving 5 VA counties.",
+        "tag":  "Tau-Rho-Charter"
+    },
+    {
+        "id":  "oppf-founding-1911",
+        "title":  "Omega Psi Phi Founding \u0026 Cardinal Principles",
+        "author":  "Howard University Archives",
+        "type":  "Foundational History",
+        "category":  "Fraternity Heritage",
+        "date_added":  "1911-11-17",
+        "summary":  "Founded on Friday evening, November 17, 1911, in Thirkield Hall at Howard University by undergraduate students Edgar Amos Love, Oscar James Cooper, and Frank Coleman, with faculty advisor Ernest Everett Just. Motto: \u0027Friendship is Essential to the Soul\u0027. Four Cardinal Principles: Manhood, Scholarship, Perseverance, Uplift.",
+        "takeaway":  "Nov 17, 1911, Thirkield Hall, Howard University. Love, Cooper, Coleman, Just.",
+        "tag":  "OPPF-Founding"
+    },
+    {
+        "id":  "stoic-dichotomy-control",
+        "title":  "The Enchiridion: Dichotomy of Control",
+        "author":  "Epictetus",
+        "type":  "Core Philosophy",
+        "category":  "Philosophy",
+        "date_added":  "2026-10-28",
+        "summary":  "Some things are in our control and others not. Things in our control are opinion, pursuit, desire, aversion, and whatever are our own actions. Things not in our control are body, property, reputation, command, and one\u0027s external circumstances.",
+        "takeaway":  "Focus 100% of executive bandwidth exclusively on internal response, never on external volatility.",
+        "tag":  "Stoic-Composure"
+    },
+    {
+        "id":  "autonomic-hrv-pacing",
+        "title":  "Autonomic Nervous System Pacing \u0026 HRV Regulation",
+        "author":  "Physiological Science \u0026 Telemetry",
+        "type":  "Performance Science",
+        "category":  "Focus \u0026 Energy",
+        "date_added":  "2026-10-28",
+        "summary":  "Heart Rate Variability (rMSSD) serves as an objective marker of parasympathetic recovery. High baseline values reflect autonomic resilience, while downward trends indicate central nervous system fatigue requiring autoregulated training loads.",
+        "takeaway":  "Autoregulate volume: high mechanical tension on Green days (\u003e66%), aerobic Zone 2 on Red days (\u003c34%).",
+        "tag":  "Autonomic-Tone"
+    },
+    {
+        "id":  "prophetic-emotional-restraint",
+        "title":  "Prophetic Emotional Composure \u0026 Sabr Under Strain",
+        "author":  "Spiritual Tradition",
+        "type":  "Spiritual / Arabic",
+        "category":  "Spiritual / Arabic",
+        "date_added":  "2026-10-28",
+        "summary":  "True internal strength lies in emotional composure during moments of sudden provocation. Pausing before reaction and anchoring the autonomic nervous system via intentional breath preserves prefrontal reasoning.",
+        "takeaway":  "\u0027The strong man is the one who controls himself when angry.\u0027 Guard speech under tension.",
+        "tag":  "Sabr-Discipline"
+    },
+    {
+        "id":  "deep-work-cal-newport",
+        "title":  "Deep Work: Rules for Focused Success",
+        "author":  "Cal Newport",
+        "type":  "Cognitive Protocol",
+        "category":  "Business Management",
+        "date_added":  "2026-10-28",
+        "summary":  "The ability to perform deep work is becoming increasingly rare at exactly the same time it is becoming increasingly valuable in our economy. Eliminating task switching and cognitive fragmentation is required for elite academic and professional output.",
+        "takeaway":  "Shield unbroken morning 90-minute blocks without email, chat, or phone notifications.",
+        "tag":  "Deep-Work"
+    }
 ]
