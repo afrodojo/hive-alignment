@@ -140,9 +140,93 @@
 
     <!-- Cockpit Navigation Tabs -->
     <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-2">
-      <button onclick="switchTab('tab-briefings')" id="btn-tab-briefings" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold bg-emerald-500 text-slate-950 transition flex items-center gap-2">
-        <i data-lucide="check-square" class="w-4 h-4"></i> Daily Briefings &bull; Focus &bull; Telemetry &bull; Grounding &bull; Execution
+    <!-- Restored Interactive Tab Navigation Bar -->
+    <div class="flex flex-wrap items-center gap-2 mb-6">
+      <button onclick="switchTab('briefings')" class="tab-btn active px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center gap-1.5 shadow-sm transition-colors">
+        <i data-lucide="check-square" class="w-3.5 h-3.5"></i> Daily Briefings
       </button>
+      <button onclick="switchTab('arabic')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
+        <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Prayer Recitation &amp; Arabic
+      </button>
+      <button onclick="switchTab('anchors')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
+        <i data-lucide="compass" class="w-3.5 h-3.5"></i> EQ &amp; Spiritual Anchors
+      </button>
+      <button onclick="switchTab('omega')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
+        <i data-lucide="bookmark" class="w-3.5 h-3.5 text-amber-400"></i> Seeker Knowledge (Omega)
+      </button>
+      <button onclick="switchTab('biometrics')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
+        <i data-lucide="activity" class="w-3.5 h-3.5"></i> Biometrics &amp; Recovery
+      </button>
+      <span class="text-xs text-slate-500 font-normal ml-1">Crunch Fitness (Monday - Friday)</span>
+      <button onclick="switchTab('vault')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
+        <i data-lucide="book-open" class="w-3.5 h-3.5 text-emerald-400"></i> Focus &amp; Knowledge Vault
+      </button>
+      <button onclick="switchTab('family')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
+        <i data-lucide="heart" class="w-3.5 h-3.5"></i> Family &amp; Reflection
+      </button>
+      <button onclick="switchTab('calendar')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
+        <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Live Google Calendar
+      </button>
+    </div>
+
+    <!-- Autonomic Telemetry & Auto-Regulator Simulator Card -->
+    <div id="telemetry-simulator-card" class="bg-slate-900/90 border border-emerald-500/30 rounded-xl p-5 mb-6 shadow-lg shadow-black/40">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" id="sim-status-dot"></span>
+            <h3 class="text-sm font-semibold text-slate-100 uppercase tracking-wider">Autonomic Telemetry &amp; Auto-Regulator</h3>
+          </div>
+          <p class="text-xs text-slate-400 mt-1">Live sync or drag the recovery slider below to test dynamic workout prescription gating.</p>
+        </div>
+        <div>
+          <button type="button" id="toggle-sim-mode" onclick="toggleTelemetryMode()" class="px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors">
+            Mode: <span id="sim-mode-label" class="text-emerald-400 font-semibold">Live Telemetry</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
+        <!-- Recovery Slider -->
+        <div class="bg-slate-950/70 border border-slate-800 rounded-lg p-4">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-xs font-medium text-slate-400">Recovery Score</span>
+            <span id="sim-recovery-val" class="text-lg font-bold font-mono text-emerald-400">78%</span>
+          </div>
+          <input type="range" id="sim-recovery-slider" min="10" max="98" value="78" 
+                 oninput="updateSimulatedRecovery(this.value)" 
+                 class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+          <div class="flex justify-between text-[10px] text-slate-500 mt-1">
+            <span class="text-rose-400 font-medium">Red &lt;33%</span>
+            <span class="text-amber-400 font-medium">Yellow 34-65%</span>
+            <span class="text-emerald-400 font-medium">Green &gt;66%</span>
+          </div>
+        </div>
+
+        <!-- Biometric Readouts -->
+        <div class="bg-slate-950/70 border border-slate-800 rounded-lg p-4 flex flex-col justify-center">
+          <div class="flex justify-between items-center py-1 border-b border-slate-900">
+            <span class="text-xs text-slate-400">Heart Rate Variability (rMSSD)</span>
+            <span id="sim-hrv-val" class="text-xs font-mono font-bold text-slate-200">58 ms</span>
+          </div>
+          <div class="flex justify-between items-center py-1">
+            <span class="text-xs text-slate-400">Resting Heart Rate (RHR)</span>
+            <span id="sim-rhr-val" class="text-xs font-mono font-bold text-slate-200">49 bpm</span>
+          </div>
+        </div>
+
+        <!-- Auto-Regulated Training Output -->
+        <div id="sim-prescription-box" class="bg-emerald-950/30 border border-emerald-800/50 rounded-lg p-4 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between">
+              <span id="sim-gate-badge" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Green Gate (&gt;66%)</span>
+              <span class="text-[10px] text-slate-400 font-mono">ACWR: 0.95</span>
+            </div>
+            <p id="sim-action-text" class="text-xs text-slate-300 mt-2 font-medium">Full Tactical S&amp;C Volume (4 sets &times; 12-15 reps). Target RPE 7.5-8.0. +2.5% microcycle overload active.</p>
+          </div>
+        </div>
+      </div>
+    </div>
     </div>
 
     <!-- TAB 1: DAILY BRIEFINGS -->
