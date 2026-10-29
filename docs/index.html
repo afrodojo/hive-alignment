@@ -1913,6 +1913,89 @@ ${muhasabah}
       </div>
     </div>
   </div>
+<script>
+  let telemetryState = {
+    isManual: localStorage.getItem('hive_telemetry_manual') === 'true',
+    recovery: parseInt(localStorage.getItem('hive_telemetry_recovery') || '78', 10)
+  };
+
+  function updateSimulatedRecovery(val) {
+    val = parseInt(val, 10);
+    telemetryState.recovery = val;
+    telemetryState.isManual = true;
+    localStorage.setItem('hive_telemetry_manual', 'true');
+    localStorage.setItem('hive_telemetry_recovery', val.toString());
+    renderTelemetryUI();
+  }
+
+  function toggleTelemetryMode() {
+    telemetryState.isManual = !telemetryState.isManual;
+    localStorage.setItem('hive_telemetry_manual', telemetryState.isManual ? 'true' : 'false');
+    if (!telemetryState.isManual) {
+      telemetryState.recovery = 78; // Reset to default baseline
+      localStorage.setItem('hive_telemetry_recovery', '78');
+    }
+    renderTelemetryUI();
+  }
+
+  function renderTelemetryUI() {
+    const val = telemetryState.recovery;
+    const isMan = telemetryState.isManual;
+
+    const valEl = document.getElementById('sim-recovery-val');
+    const sliderEl = document.getElementById('sim-recovery-slider');
+    const hrvEl = document.getElementById('sim-hrv-val');
+    const rhrEl = document.getElementById('sim-rhr-val');
+    const gateBadge = document.getElementById('sim-gate-badge');
+    const actionText = document.getElementById('sim-action-text');
+    const presBox = document.getElementById('sim-prescription-box');
+    const modeLabel = document.getElementById('sim-mode-label');
+    const statusDot = document.getElementById('sim-status-dot');
+
+    if (!valEl || !sliderEl) return;
+
+    sliderEl.value = val;
+    valEl.textContent = val + '%';
+    modeLabel.textContent = isMan ? 'Manual Override' : 'Live Sync';
+    modeLabel.className = isMan ? 'text-amber-400 font-semibold' : 'text-emerald-400 font-semibold';
+
+    if (val >= 66) {
+      // Green Zone
+      valEl.className = 'text-lg font-bold font-mono text-emerald-400';
+      statusDot.className = 'inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse';
+      hrvEl.textContent = Math.round(52 + (val - 66) * 0.8) + ' ms';
+      rhrEl.textContent = Math.round(51 - (val - 66) * 0.2) + ' bpm';
+      gateBadge.className = 'px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+      gateBadge.textContent = 'Green Gate (>66%)';
+      presBox.className = 'bg-emerald-950/20 border border-emerald-800/40 rounded-lg p-4 flex flex-col justify-between';
+      actionText.innerHTML = 'Full Tactical S&amp;C Volume (4 sets &times; 12-15 reps). Target RPE 7.5-8.0. +2.5% microcycle overload active.';
+    } else if (val >= 34) {
+      // Yellow Zone
+      valEl.className = 'text-lg font-bold font-mono text-amber-400';
+      statusDot.className = 'inline-block w-2.5 h-2.5 rounded-full bg-amber-400';
+      hrvEl.textContent = Math.round(28 + (val - 34) * 0.7) + ' ms';
+      rhrEl.textContent = Math.round(56 - (val - 34) * 0.15) + ' bpm';
+      gateBadge.className = 'px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/30';
+      gateBadge.textContent = 'Yellow Gate (34-65%)';
+      presBox.className = 'bg-amber-950/20 border border-amber-800/40 rounded-lg p-4 flex flex-col justify-between';
+      actionText.innerHTML = 'Standard volume with 10% load reduction. Rep caps at 10. Max RPE 7.0. Extended rest intervals (+30s).';
+    } else {
+      // Red Zone
+      valEl.className = 'text-lg font-bold font-mono text-rose-400';
+      statusDot.className = 'inline-block w-2.5 h-2.5 rounded-full bg-rose-400';
+      hrvEl.textContent = Math.round(18 + (val / 34) * 8) + ' ms';
+      rhrEl.textContent = Math.round(62 - (val / 34) * 5) + ' bpm';
+      gateBadge.className = 'px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-rose-500/20 text-rose-400 border border-rose-500/30';
+      gateBadge.textContent = 'Red Gate (<33%)';
+      presBox.className = 'bg-rose-950/20 border border-rose-800/40 rounded-lg p-4 flex flex-col justify-between';
+      actionText.innerHTML = 'Auto-swap heavy S&amp;C for Zone 2 Ergometer Rowing / Incline Walk (&lt;135 BPM). Add 20-min Therabody &amp; Box Breathing reset.';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderTelemetryUI();
+  });
+</script>
 </body>
 </html>
 
