@@ -107,10 +107,10 @@
             Integrate cognitive output, autonomic recovery, ethical grounding, and daily execution into a single, zero-friction operating cockpit.
           </p>
           <ul class="space-y-3 text-slate-300 text-sm">
-            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> Daily grounding anchors tailored to your spiritual or philosophical path</li>
+            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> 5 Daily Prayer anchors & mindful emotional pauses</li>
             <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> Progressive physical conditioning, recovery targets &amp; strain cadence</li>
-            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> Executive presence protocols, tactical pauses & composure drills</li>
-            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> Evening reflection ritual and 30-min down-regulation</li>
+            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> Seeker study modules & Cardinal Principle alignment</li>
+            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> Daily evening muhasabah and 30-min down-regulation</li>
           </ul>
         </div>
         <div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl space-y-6">
@@ -140,40 +140,55 @@
 
     <!-- Cockpit Navigation Tabs -->
     <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-2">
-        <!-- Restored Interactive Tab Navigation Bar -->
-        <!-- Restored Interactive Tab Navigation Bar -->
-    <div id="cockpit-tabs-nav" class="flex flex-wrap items-center gap-2 mb-6">
-      <button id="btn-tab-briefings" onclick="switchTab('tab-briefings')" class="tab-btn active px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-slate-950 flex items-center gap-1.5 shadow-sm transition-colors">
-        <i data-lucide="check-square" class="w-3.5 h-3.5"></i> Daily Briefings
+      <button onclick="switchTab('tab-briefings')" id="btn-tab-briefings" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold bg-emerald-500 text-slate-950 transition flex items-center gap-2">
+        <i data-lucide="check-square" class="w-4 h-4"></i> Daily Briefings
       </button>
-      <button id="btn-tab-arabic" onclick="switchTabWithTag('tab-vault', 'Arabic')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
-        <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Prayer &amp; Arabic
+            <button onclick="switchTab('tab-prayer-learning')" id="btn-tab-prayer-learning" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition flex items-center gap-2">
+        <i data-lucide="volume-2" class="w-4 h-4 text-emerald-400"></i> Prayer Recitation & Arabic
       </button>
-      <button id="btn-tab-spiritual" onclick="switchTabWithTag('tab-vault', 'Spiritual')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
-        <i data-lucide="compass" class="w-3.5 h-3.5"></i> EQ &amp; Anchors
+      <button onclick="switchTab('tab-spiritual')" id="btn-tab-spiritual" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition flex items-center gap-2">
+        <i data-lucide="compass" class="w-4 h-4 text-emerald-400"></i> EQ & Spiritual Anchors
       </button>
-      <button id="btn-tab-seeker" onclick="switchTabWithTag('tab-vault', 'Omega')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-amber-400 hover:text-amber-300 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
-        <i data-lucide="bookmark" class="w-3.5 h-3.5"></i> Seeker Knowledge (Omega)
+      <button onclick="switchTab('tab-seeker')" id="btn-tab-seeker" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-amber-400 hover:text-amber-300 transition flex items-center gap-2">
+        <i data-lucide="award" class="w-4 h-4 text-amber-400"></i> Seeker Knowledge (Omega)
       </button>
-      <button id="btn-tab-biometrics" onclick="switchTab('tab-briefings'); document.getElementById('telemetry-simulator-card')?.scrollIntoView({behavior: 'smooth'});" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
-        <i data-lucide="activity" class="w-3.5 h-3.5"></i> Biometrics &amp; Recovery
+      <button onclick="switchTab('tab-telemetry')" id="btn-tab-telemetry" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">
+        Biometrics & Recovery
       </button>
-      <button id="btn-tab-fitness" onclick="switchTab('tab-briefings');" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
-        <i data-lucide="dumbbell" class="w-3.5 h-3.5"></i> Crunch Fitness (M-F)
+      <button onclick="switchTab('tab-crunch')" id="btn-tab-crunch" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">
+        Crunch Fitness <span class="text-xs text-slate-400 font-normal">(Monday - Friday)</span>
       </button>
-      <button id="btn-tab-vault" onclick="switchTab('tab-vault')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
-        <i data-lucide="book-open" class="w-3.5 h-3.5 text-emerald-400"></i> Focus &amp; Knowledge Vault
+      <button onclick="switchTab('tab-learning')" id="btn-tab-learning" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition flex items-center gap-2">
+        <i data-lucide="brain" class="w-4 h-4 text-emerald-400"></i> Focus & Knowledge Vault
       </button>
-      <button id="btn-tab-reflection" onclick="switchTab('tab-reflection')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
-        <i data-lucide="heart" class="w-3.5 h-3.5"></i> Family &amp; Reflection
+      <button onclick="switchTab('tab-reflection')" id="btn-tab-reflection" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">
+        Family & Reflection
       </button>
-      <button id="btn-tab-calendar" onclick="switchTab('tab-calendar')" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-transparent transition-colors flex items-center gap-1.5">
-        <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Live Google Calendar
+      <button onclick="switchTab('tab-calendar')" id="btn-tab-calendar" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">
+        Live Google Calendar
       </button>
     </div>
 
+    <!-- TAB 1: DAILY BRIEFINGS -->
+    <div id="tab-briefings" class="tab-content active space-y-6">
+    <!-- Autonomic Telemetry & Auto-Regulator Simulator Card -->
+    <div id="telemetry-simulator-card" class="bg-slate-900/90 border border-emerald-500/30 rounded-xl p-5 mb-6 shadow-lg shadow-black/40">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" id="sim-status-dot"></span>
+            <h3 class="text-sm font-semibold text-slate-100 uppercase tracking-wider">Autonomic Telemetry &amp; Auto-Regulator</h3>
+          </div>
+          <p class="text-xs text-slate-400 mt-1">Live sync or drag the recovery slider below to test dynamic workout prescription gating.</p>
+        </div>
+        <div>
+          <button type="button" id="toggle-sim-mode" onclick="toggleTelemetryMode()" class="px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors">
+            Mode: <span id="sim-mode-label" class="text-emerald-400 font-semibold">Live Telemetry</span>
+          </button>
+        </div>
+      </div>
+
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
-        <!-- Recovery Slider -->
         <div class="bg-slate-950/70 border border-slate-800 rounded-lg p-4">
           <div class="flex justify-between items-center mb-2">
             <span class="text-xs font-medium text-slate-400">Recovery Score</span>
@@ -189,7 +204,6 @@
           </div>
         </div>
 
-        <!-- Biometric Readouts -->
         <div class="bg-slate-950/70 border border-slate-800 rounded-lg p-4 flex flex-col justify-center">
           <div class="flex justify-between items-center py-1 border-b border-slate-900">
             <span class="text-xs text-slate-400">Heart Rate Variability (rMSSD)</span>
@@ -201,7 +215,6 @@
           </div>
         </div>
 
-        <!-- Auto-Regulated Training Output -->
         <div id="sim-prescription-box" class="bg-emerald-950/30 border border-emerald-800/50 rounded-lg p-4 flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between">
@@ -213,10 +226,6 @@
         </div>
       </div>
     </div>
-    </div>
-
-    <!-- TAB 1: DAILY BRIEFINGS -->
-    <div id="tab-briefings" class="tab-content active space-y-6">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
           <div class="flex justify-between items-center border-b border-slate-800 pb-3">
@@ -320,7 +329,770 @@
 
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex justify-between items-center text-xs">
         <span class="text-slate-400">Briefing checklist state is saved automatically to local browser storage.</span>
-        <button onclick="resetDailyChecklist()" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 text-xs transition-colors">Reset Daily Checklist</button>
+        <button onclick="resetBriefings()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded font-medium transition">Reset Daily Checklist</button>
+      </div>
+    </div>
+
+        <!-- TAB: PRAYER RECITATION & ARABIC LEARNING -->
+    <div id="tab-prayer-learning" class="tab-content space-y-6">
+      
+      <!-- Top Overview Banner -->
+      <div class="bg-gradient-to-r from-emerald-950/40 via-sky-950/30 to-emerald-950/40 border border-emerald-800/40 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-400">Quranic Arabic & Salah Mastery</span>
+          <h3 class="text-2xl font-extrabold text-white mt-1">Prayer Recitation, Phonetics & Vocabulary</h3>
+          <p class="text-xs text-slate-300 mt-1">Hear the correct pronunciation, read word-by-word roots, and recite with full cognitive presence.</p>
+        </div>
+        <div class="flex items-center gap-2 bg-slate-950/80 border border-emerald-500/30 px-3.5 py-2 rounded-xl text-xs text-emerald-300">
+          <i data-lucide="headphones" class="w-4 h-4 text-emerald-400"></i>
+          <span>Audio: <strong>Mahmoud Khalil Al-Husary (Mu'allim)</strong></span>
+        </div>
+      </div>
+
+      <!-- Verse-by-Verse Recitation Player: Surah Al-Fatihah -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+          <div>
+            <h4 class="text-lg font-bold text-white flex items-center gap-2">
+              <i data-lucide="book-open" class="text-emerald-400 w-5 h-5"></i> Surah Al-Fatihah (The Opening)
+            </h4>
+            <p class="text-xs text-slate-400">Recited in every unit (Rak'ah) of prayer. Click the audio icon to listen and repeat.</p>
+          </div>
+          <span class="text-xs bg-emerald-950 border border-emerald-800 text-emerald-300 px-2.5 py-1 rounded-full font-medium">Pillar of Salah</span>
+        </div>
+
+        <div class="space-y-3 pt-2 text-sm">
+          
+          <!-- Verse 1 -->
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-lg font-serif text-right text-emerald-400 tracking-wide font-medium"> ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒ¦‚¬ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒ¦‚¬ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒ¦‚¬ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚</div>
+              <div class="text-xs text-slate-300 font-mono">Bismi-ll ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚hi r-Ra ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚m ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚ni r-Ra ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚m</div>
+              <div class="text-xs text-slate-400">"In the Name of Allah, the Entirely Merciful, the Especially Merciful."</div>
+              <div class="text-[11px] text-sky-400 pt-0.5"><strong>Roots:</strong> Ism (Name)  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ R- ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚-M (Mercy, Compassion)</div>
+            </div>
+            <button onclick="playVerseAudio('001001')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+
+          <!-- Verse 2 -->
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-lg font-serif text-right text-emerald-400 tracking-wide font-medium"> ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚  ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒ¦‚¬ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒ¦‚¬ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚</div>
+              <div class="text-xs text-slate-300 font-mono">Al- ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚amdu li-ll ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚hi Rabbi l-' ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚lam ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚n</div>
+              <div class="text-xs text-slate-400">"All praise and gratitude is due to Allah, Lord of all creation."</div>
+              <div class="text-[11px] text-sky-400 pt-0.5"><strong>Roots:</strong>  ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚-M-D (Praise/Thanks)  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ R-B-B (Lord, Sustainer)  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ '-L-M (The World/Creation)</div>
+            </div>
+            <button onclick="playVerseAudio('001002')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+
+          <!-- Verse 3 -->
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-lg font-serif text-right text-emerald-400 tracking-wide font-medium"> ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒ¦‚¬ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒ¦‚¬ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚</div>
+              <div class="text-xs text-slate-300 font-mono">Ar-Ra ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚m ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚ni r-Ra ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚m</div>
+              <div class="text-xs text-slate-400">"The Entirely Merciful, the Especially Merciful."</div>
+              <div class="text-[11px] text-sky-400 pt-0.5"><strong>Roots:</strong> Ra ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚m ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚n (Universal grace)  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ Ra ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚m (Enduring specific mercy)</div>
+            </div>
+            <button onclick="playVerseAudio('001003')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+
+          <!-- Verse 4 -->
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-lg font-serif text-right text-emerald-400 tracking-wide font-medium"> ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒ‚¬Å¡‚ƒ‚¬Å‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚  ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒ‚¬Å¡‚ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒ¦‚¬ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚</div>
+              <div class="text-xs text-slate-300 font-mono">M ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚liki yawmi d-d ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚n</div>
+              <div class="text-xs text-slate-400">"Master and Sovereign of the Day of Judgment."</div>
+              <div class="text-[11px] text-sky-400 pt-0.5"><strong>Roots:</strong> M-L-K (Sovereignty/Ownership)  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ Y-W-M (Day)  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ D-Y-N (Judgment/Account)</div>
+            </div>
+            <button onclick="playVerseAudio('001004')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+
+          <!-- Verse 5 -->
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-lg font-serif text-right text-emerald-400 tracking-wide font-medium"> ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒ¦‚¬ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒ‚¬Å¡‚ƒ‚¬Å‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚  ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚  ‚¬„‚ƒš…ƒš‚š‚‚ƒ‚¬Å¡‚ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒ¦‚¬ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒ‚¬Å¡‚ƒ‚¬Å‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚  ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚</div>
+              <div class="text-xs text-slate-300 font-mono">Iyy ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚ka na'budu wa iyy ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚ka nasta' ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚n</div>
+              <div class="text-xs text-slate-400">"You alone we worship, and You alone we ask for help."</div>
+              <div class="text-[11px] text-sky-400 pt-0.5"><strong>Roots:</strong> '-B-D (Worship/Devotion)  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ '-W-N (Help/Assistance)</div>
+            </div>
+            <button onclick="playVerseAudio('001005')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+
+          <!-- Verse 6 -->
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-lg font-serif text-right text-emerald-400 tracking-wide font-medium"> ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒ¦‚¬ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚</div>
+              <div class="text-xs text-slate-300 font-mono">Ihdin ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚  ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚- ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ir ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚ ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚a l-mustaq ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚m</div>
+              <div class="text-xs text-slate-400">"Guide us to the straight and upright path."</div>
+              <div class="text-[11px] text-sky-400 pt-0.5"><strong>Roots:</strong> H-D-Y (Guidance)  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚  ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚-R- ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ (Path)  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ Q-W-M (Straight/Upright)</div>
+            </div>
+            <button onclick="playVerseAudio('001006')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+
+          <!-- Verse 7 -->
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-lg font-serif text-right text-emerald-400 tracking-wide font-medium"> ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒ¦‚¬ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒ‚¬Å¡‚ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚  ‚¬„‚ƒš…ƒš‚š‚‚ƒ‚¬Å¡‚ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒ¦‚¬ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒ¦‚¬ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚</div>
+              <div class="text-xs text-slate-300 font-mono"> ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ir ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚ ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚a lladh ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚na an'amta 'alayhim, ghayri l-magh ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒ‚¬Å¡‚ƒš‚š…‚¬Å¡ƒš‚bi 'alayhim wa la  ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚- ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚ll ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚n</div>
+              <div class="text-xs text-slate-400">"The path of those upon whom You bestowed favor, not of those who earned anger, nor of those who are astray."</div>
+              <div class="text-[11px] text-sky-400 pt-0.5"><strong>Roots:</strong> N-'-M (Blessing/Favor)  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ Gh- ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ‚¬Å‚-B (Anger)  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚  ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ‚¬Å‚-L-L (Astray)</div>
+            </div>
+            <button onclick="playVerseAudio('001007')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Audio Element for Recitation Engine -->
+      <audio id="prayer-audio-player" class="hidden"></audio>
+
+      <!-- Essential Positions & Recitation Cheat Sheet -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+        <h4 class="text-lg font-bold text-white flex items-center gap-2">
+          <i data-lucide="activity" class="text-emerald-400 w-5 h-5"></i> Physical Movements & Required Phrases
+        </h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+            <span class="font-bold text-emerald-400 text-sm">Ruku' (Bowing Position)</span>
+            <p class="text-slate-300 font-serif text-base"> ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒ¦‚¬ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚</p>
+            <p class="font-mono text-slate-400">Sub ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚na Rabbiya l-'A ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš… ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚m (x3)</p>
+            <p class="text-slate-400">"Glory be to my Lord, the Magnificent."</p>
+          </div>
+
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+            <span class="font-bold text-sky-400 text-sm">Rising from Bowing</span>
+            <p class="text-slate-300 font-serif text-base"> ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒ¦‚¬ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚  ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒ¦‚¬ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚  ‚¬„‚ƒš…ƒš‚š‚‚ƒ‚¬Å¡‚ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒ‚¬Å¡‚ƒ‚¬Å‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚</p>
+            <p class="font-mono text-slate-400">Sami'a All ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚hu li-man  ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚amidah  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ Rabban ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚ wa laka l- ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚amd</p>
+            <p class="text-slate-400">"Allah hears whoever praises Him. Our Lord, to You belongs all praise."</p>
+          </div>
+
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+            <span class="font-bold text-emerald-400 text-sm">Sujud (Prostration)</span>
+            <p class="text-slate-300 font-serif text-base"> ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒ¦‚¬ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚</p>
+            <p class="font-mono text-slate-400">Sub ‚¬„‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚na Rabbiya l-A'l ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚ (x3)</p>
+            <p class="text-slate-400">"Glory be to my Lord, the Most High."</p>
+          </div>
+
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+            <span class="font-bold text-purple-400 text-sm">Sitting Between Prostrations</span>
+            <p class="text-slate-300 font-serif text-base"> ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒ¦‚¬ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚  ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š‚‚ƒ‚¬Å¡‚ƒ‚¬Å‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒ¦‚¬ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚  ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚¬ƒ¦‚¬š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚ƒš…ƒš‚  ‚¬„‚ƒš…ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš‚ ‚¬„‚ƒš…ƒš‚š…‚¬Å¡ƒš‚ ‚¬„‚ƒš…ƒš‚š‚‚¬Å¡ƒš‚</p>
+            <p class="font-mono text-slate-400">Rabbi-ghfir l ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚, Rabbi-ghfir l ‚¬„‚ƒ‚¬Å¡‚ƒ¦‚š…‚¬Å¡ƒš‚</p>
+            <p class="text-slate-400">"My Lord, forgive me. My Lord, forgive me."</p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB 2: EQ & SPIRITUAL ANCHORS (NEW) -->
+    <div id="tab-spiritual" class="tab-content space-y-6">
+      
+      <!-- Top Banner -->
+      <div class="bg-gradient-to-r from-emerald-950/40 via-sky-950/30 to-emerald-950/40 border border-emerald-800/40 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-400">Spiritual Compass & Emotional Governance</span>
+          <h3 class="text-2xl font-extrabold text-white mt-1">Faith, Emotional Intelligence & Discipline</h3>
+          <p class="text-xs text-slate-300 mt-1">Anchoring daily executive strain in prayer, patience (Sabr), emotional restraint, and continuous self-accounting.</p>
+        </div>
+        <div class="flex items-center gap-2 bg-slate-950/80 border border-emerald-500/30 px-3.5 py-2 rounded-xl text-xs text-emerald-300">
+          <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+          <span>EQ Principle: <strong>Respond with Reason, Never Reaction</strong></span>
+        </div>
+      </div>
+
+      <!-- Core EQ & Islamic Principles Matrix -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+          <div class="flex items-center gap-2 text-emerald-400 font-bold text-sm">
+            <i data-lucide="shield" class="w-4 h-4"></i> Sabr & Emotional Regulation
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Patience is not passive waiting; it is active emotional composure during sudden stress. Whenever encountering friction at work or home, pause for 5 seconds before speaking.
+          </p>
+          <div class="p-2.5 bg-slate-950 rounded border border-slate-800 text-[11px] text-slate-400">
+            <strong class="text-emerald-400">Prophetic Guidance:</strong> "The strong man is not the good wrestler; the strong man is the one who controls himself when angry."
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+          <div class="flex items-center gap-2 text-sky-400 font-bold text-sm">
+            <i data-lucide="clock" class="w-4 h-4"></i> Prayer as Autonomic Anchors
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            The five daily prayers act as parasympathetic resets throughout the day. Wudu (ablution) physically cools the nervous system, and prostration (Sujood) grounds cognitive overthinking.
+          </p>
+          <div class="p-2.5 bg-slate-950 rounded border border-slate-800 text-[11px] text-slate-400">
+            <strong class="text-sky-400">Protocol:</strong> Protect Dhuhr (12:30) and Asr (16:30) as non-negotiable boundaries from corporate Slack noise.
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+          <div class="flex items-center gap-2 text-purple-400 font-bold text-sm">
+            <i data-lucide="clipboard-check" class="w-4 h-4"></i> Nightly Muhasabah (Audit)
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Rigorous daily self-examination before sleep. Review conduct, speech, family attentiveness, and intellectual rigor. Forgive others before closing your eyes.
+          </p>
+          <div class="p-2.5 bg-slate-950 rounded border border-slate-800 text-[11px] text-slate-400">
+            <strong class="text-purple-400">Core Maxim:</strong> "Bring yourselves to account before you are brought to account." (Umar ibn al-Khattab)
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Daily Muhasabah Scratchpad -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="pen-tool" class="text-emerald-400 w-4 h-4"></i> Daily Muhasabah & Self-Accountability Log
+        </h3>
+        <p class="text-xs text-slate-400">Reflect on your emotional regulation, prayers, and leadership today. Persists in your local browser cache.</p>
+        <textarea id="muhasabah-notes" rows="3" placeholder="1. Where did I exercise patience (Sabr) today? 2. How did I embody Manhood & Uplift with my family? 3. What will I refine tomorrow?" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"></textarea>
+        <div class="flex justify-between items-center pt-1">
+          <span id="muhasabah-status" class="text-[11px] text-slate-500">Auto-saved to local browser cache</span>
+          <button onclick="saveMuhasabah()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition">Save Muhasabah</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB 3: SEEKER KNOWLEDGE & HERITAGE (OMEGA) -->
+    <div id="tab-seeker" class="tab-content space-y-6">
+      <div class="bg-gradient-to-r from-purple-950/40 via-amber-950/30 to-purple-950/40 border border-amber-900/40 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-amber-400">Aspirant Knowledge Portal</span>
+          <h3 class="text-2xl font-extrabold text-white mt-1">Omega Psi Phi Heritage & Drill Engine</h3>
+          <p class="text-xs text-slate-300 mt-1">"Friendship is Essential to the Soul"  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ Manhood  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ Scholarship  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ Perseverance  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ Uplift</p>
+        </div>
+        <div class="flex items-center gap-2 bg-slate-950/80 border border-amber-500/30 px-3.5 py-2 rounded-xl text-xs text-amber-300">
+          <i data-lucide="shield" class="w-4 h-4 text-amber-400"></i>
+          <span>Active Discipline: <strong>100% Precision</strong></span>
+        </div>
+      </div>
+
+      <!-- Flashcards Matrix -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-amber-400 font-bold uppercase tracking-wider text-[10px]">Principles</span>
+              <span class="text-slate-500 text-[10px]">#01</span>
+            </div>
+            <h4 class="font-bold text-white text-base mt-2">The 4 Cardinal Principles</h4>
+            <div id="ans-card-1" class="hidden mt-3 text-xs text-slate-300 space-y-1.5 p-3 bg-slate-950 rounded-lg border border-slate-800">
+              <p><strong class="text-amber-400">1. Manhood:</strong> Moral character & courage.</p>
+              <p><strong class="text-amber-400">2. Scholarship:</strong> Rigorous intellectual inquiry.</p>
+              <p><strong class="text-amber-400">3. Perseverance:</strong> Steadfast endurance.</p>
+              <p><strong class="text-amber-400">4. Uplift:</strong> Elevation of community & society.</p>
+            </div>
+          </div>
+          <button onclick="toggleAnswer('ans-card-1', this)" class="w-full py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-lg text-xs font-semibold text-slate-300 transition">
+            Reveal Answer
+          </button>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-amber-400 font-bold uppercase tracking-wider text-[10px]">Origins</span>
+              <span class="text-slate-500 text-[10px]">#02</span>
+            </div>
+            <h4 class="font-bold text-white text-base mt-2">Founding Date & Place</h4>
+            <div id="ans-card-2" class="hidden mt-3 text-xs text-slate-300 space-y-1.5 p-3 bg-slate-950 rounded-lg border border-slate-800">
+              <p><strong class="text-amber-400">Date:</strong> Friday evening, November 17, 1911.</p>
+              <p><strong class="text-amber-400">Location:</strong> Science Building (Thirkield Hall), Howard University, Washington, D.C.</p>
+              <p><strong class="text-amber-400">Incorporation:</strong> October 28, 1914 (U.S. Congress / D.C.).</p>
+            </div>
+          </div>
+          <button onclick="toggleAnswer('ans-card-2', this)" class="w-full py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-lg text-xs font-semibold text-slate-300 transition">
+            Reveal Answer
+          </button>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-amber-400 font-bold uppercase tracking-wider text-[10px]">Founders</span>
+              <span class="text-slate-500 text-[10px]">#03</span>
+            </div>
+            <h4 class="font-bold text-white text-base mt-2">The Four Founders</h4>
+            <div id="ans-card-3" class="hidden mt-3 text-xs text-slate-300 space-y-1.5 p-3 bg-slate-950 rounded-lg border border-slate-800">
+              <p><strong class="text-amber-400">1. Dr. Ernest Everett Just</strong> (Biologist / Faculty Advisor)</p>
+              <p><strong class="text-amber-400">2. Prof. Frank Coleman</strong> (Physicist / Head of Dept)</p>
+              <p><strong class="text-amber-400">3. Dr. Oscar James Cooper</strong> (Physician / MD)</p>
+              <p><strong class="text-amber-400">4. Bishop Edgar Amos Love</strong> (Bishop / 1st Grand Basileus)</p>
+            </div>
+          </div>
+          <button onclick="toggleAnswer('ans-card-3', this)" class="w-full py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-lg text-xs font-semibold text-slate-300 transition">
+            Reveal Answer
+          </button>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-amber-400 font-bold uppercase tracking-wider text-[10px]">Leadership</span>
+              <span class="text-slate-500 text-[10px]">#04</span>
+            </div>
+            <h4 class="font-bold text-white text-base mt-2">First Ten Grand Basilei</h4>
+            <div id="ans-card-4" class="hidden mt-3 text-xs text-slate-300 space-y-1.5 p-3 bg-slate-950 rounded-lg border border-slate-800">
+              <p><strong class="text-amber-400">1.</strong> Edgar A. Love &bull; <strong class="text-amber-400">2.</strong> Oscar J. Cooper</p>
+              <p><strong class="text-amber-400">3.</strong> Edgar A. Love &bull; <strong class="text-amber-400">4.</strong> George A. Hall</p>
+              <p><strong class="text-amber-400">5.</strong> James C. McMorris &bull; <strong class="text-amber-400">6.</strong> Clarence F. Holmes</p>
+              <p><strong class="text-amber-400">7.</strong> Raymond G. Robinson &bull; <strong class="text-amber-400">8.</strong> Harold K. Thomas</p>
+              <p><strong class="text-amber-400">9.</strong> J. Alston Atkins &bull; <strong class="text-amber-400">10.</strong> John W. Love</p>
+            </div>
+          </div>
+          <button onclick="toggleAnswer('ans-card-4', this)" class="w-full py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-lg text-xs font-semibold text-slate-300 transition">
+            Reveal Answer
+          </button>
+        </div>
+      </div>
+    </div>
+
+        <!-- TAB 4: Biometrics & Telemetry -->
+    <div id="tab-telemetry" class="tab-content space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <span class="text-xs text-slate-400 uppercase font-medium">Recovery Score</span>
+          <div class="text-2xl font-bold text-emerald-400 mt-1 flex items-center gap-2">
+            <span id="telemetry-recovery">66%</span> <span id="telemetry-recovery-badge" class="text-xs px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-300">GREEN</span>
+          </div>
+          <p class="text-xs text-slate-500 mt-2">Optimal Parasympathetic Reserve</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <span class="text-xs text-slate-400 uppercase font-medium">Sleep Performance</span>
+          <div class="text-2xl font-bold text-sky-400 mt-1 flex items-center gap-2">
+            <span id="telemetry-sleep">61%</span> <span class="text-xs px-2 py-0.5 rounded bg-sky-950 border border-sky-800 text-sky-300">WHOOP</span>
+          </div>
+          <p class="text-xs text-slate-500 mt-2">Restorative Sleep Efficiency</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <span class="text-xs text-slate-400 uppercase font-medium">Day Strain</span>
+          <div class="text-2xl font-bold text-amber-400 mt-1">
+            <span id="telemetry-strain">5.3</span> / 21
+          </div>
+          <p class="text-xs text-slate-500 mt-2">Target Budget: 14.0  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš… 17.5</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <span class="text-xs text-slate-400 uppercase font-medium">Autonomic HRV</span>
+          <div class="text-2xl font-bold text-purple-400 mt-1">
+            <span id="telemetry-hrv">92.9</span> ms
+          </div>
+          <p class="text-xs text-slate-500 mt-2">rMSSD Autonomic Baseline</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <span class="text-xs text-slate-400 uppercase font-medium">Micronutrients</span>
+          <div class="text-lg font-semibold text-emerald-300 mt-1">Men of Mars</div>
+          <p class="text-xs text-slate-500 mt-2">Daily Multivitamin Protocol</p>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-bold text-white">Athlete Vitals Profile</h3>
+          <button onclick="editVitalsModal()" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs font-semibold transition flex items-center gap-1.5">
+            <i data-lucide="edit-2" class="w-3.5 h-3.5"></i> Update Biometrics
+          </button>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          <div><span class="text-slate-500">Height:</span> <span id="vitals-height" class="font-medium text-slate-200">6'0" (72 in)</span></div>
+          <div><span class="text-slate-500">Weight:</span> <span id="vitals-weight" class="font-medium text-slate-200">235 lbs</span></div>
+          <div><span class="text-slate-500">Schedule:</span> <span class="font-medium text-slate-200">Monday  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš… Friday</span></div>
+          <div><span class="text-slate-500">Academic Target:</span> <span class="font-medium text-slate-200">Spring 2027</span></div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- TAB 5: Crunch Fitness M-F -->
+    <div id="tab-crunch" class="tab-content space-y-4">
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i data-lucide="dumbbell" class="text-emerald-400"></i> Monday  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš… Friday Resistance Cadence
+        </h3>
+        <div class="space-y-3">
+          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 flex justify-between items-center">
+            <div>
+              <span class="font-semibold text-emerald-400">Monday:</span> Upper Body Push & Core
+              <p class="text-xs text-slate-400 mt-0.5">Bench Press, Dumbbell Incline, Lateral Raises, Planks</p>
+            </div>
+            <span class="text-xs bg-slate-800 px-2.5 py-1 rounded text-slate-300">50 min  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ 17:30</span>
+          </div>
+
+          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 flex justify-between items-center">
+            <div>
+              <span class="font-semibold text-emerald-400">Tuesday:</span> Lower Body Hip Hinge & Mobility
+              <p class="text-xs text-slate-400 mt-0.5">Romanian Deadlifts, Goblet Squats, Hamstring Curls, 90/90s</p>
+            </div>
+            <span class="text-xs bg-slate-800 px-2.5 py-1 rounded text-slate-300">50 min  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ 17:30</span>
+          </div>
+
+          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 flex justify-between items-center">
+            <div>
+              <span class="font-semibold text-sky-400">Wednesday:</span> Aerobic Base Zone 2 Cardio
+              <p class="text-xs text-slate-400 mt-0.5">Rowing Ergometer & Incline Rucking (125 ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš…135 BPM)</p>
+            </div>
+            <span class="text-xs bg-slate-800 px-2.5 py-1 rounded text-slate-300">45 min  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ 17:30</span>
+          </div>
+
+          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 flex justify-between items-center">
+            <div>
+              <span class="font-semibold text-emerald-400">Thursday:</span> Upper Body Pull & Back
+              <p class="text-xs text-slate-400 mt-0.5">Lat Pulldowns, Seated Cable Rows, Face Pulls, Biceps</p>
+            </div>
+            <span class="text-xs bg-slate-800 px-2.5 py-1 rounded text-slate-300">50 min  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ 17:30</span>
+          </div>
+
+          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 flex justify-between items-center">
+            <div>
+              <span class="font-semibold text-emerald-400">Friday:</span> Full-Body Capacity & Mobility Finisher
+              <p class="text-xs text-slate-400 mt-0.5">Kettlebell Swings, Farmer Carries, Full Kinetic Flow</p>
+            </div>
+            <span class="text-xs bg-slate-800 px-2.5 py-1 rounded text-slate-300">45 min  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š…‚¬Å¡ƒš‚ 17:00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 6: FOCUS & INGESTED KNOWLEDGE VAULT -->
+    <div id="tab-learning" class="tab-content space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-1 bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col items-center justify-center text-center space-y-4">
+          <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-emerald-400">
+            <i data-lucide="timer" class="w-4 h-4"></i> Focus Engine
+          </div>
+
+          <div id="timer-display" class="text-5xl font-mono font-extrabold text-white tracking-tight my-2">
+            25:00
+          </div>
+          <span id="timer-label" class="text-xs text-slate-400 uppercase font-semibold">Micro-Learning Sprint</span>
+
+          <div class="flex gap-2 w-full pt-1">
+            <button onclick="setTimerMode(20, 'Micro-Sprint')" class="flex-1 py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-lg text-xs font-medium text-slate-300">20m Sprint</button>
+            <button onclick="setTimerMode(25, 'Standard Focus')" class="flex-1 py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-lg text-xs font-medium text-slate-300">25m Focus</button>
+            <button onclick="setTimerMode(5, 'Mental Reset')" class="flex-1 py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-lg text-xs font-medium text-slate-300">5m Reset</button>
+          </div>
+
+          <div class="flex gap-3 w-full">
+            <button id="start-btn" onclick="startTimer()" class="flex-1 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-sm transition">
+              Start Focus
+            </button>
+            <button onclick="pauseTimer()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl text-sm transition">
+              Pause
+            </button>
+            <button onclick="resetTimer()" class="px-4 py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-400 font-semibold rounded-xl text-sm transition">
+              Reset
+            </button>
+          </div>
+          <p class="text-[11px] text-slate-500">Mute notifications. Zero tab switching during active ticks.</p>
+        </div>
+
+        <div class="lg:col-span-2 bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+          <div class="flex justify-between items-center">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <i data-lucide="shield" class="text-sky-400 w-5 h-5"></i> Cognitive Shielding & WHOOP Alignment
+            </h3>
+            <span class="text-xs bg-sky-950 border border-sky-800 text-sky-300 px-2.5 py-0.5 rounded-full">Autonomic Gated</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+              <span class="font-bold text-emerald-400 flex items-center gap-1.5">
+                <i data-lucide="sun" class="w-3.5 h-3.5"></i> High-Energy Window
+              </span>
+              <p class="text-slate-400 leading-relaxed">
+                <strong class="text-slate-200">06:30  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš… 07:45 AM:</strong> Pre-work window. Peak cortisol and zero inbound messages. Ideal for dense academic literature, paper summaries, or core math.
+              </p>
+            </div>
+
+            <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+              <span class="font-bold text-amber-400 flex items-center gap-1.5">
+                <i data-lucide="coffee" class="w-3.5 h-3.5"></i> Micro-Sprint Window
+              </span>
+              <p class="text-slate-400 leading-relaxed">
+                <strong class="text-slate-200">12:30  ‚¬„‚¬Å¡ƒš‚š‚‚ƒ‚¬Å¡‚ƒ¦‚‚¬Å¡ƒš‚š‚‚ƒš…ƒš‚‚¬ƒš… 13:00 PM:</strong> Post-lunch recovery slot. Restrict to one 20-minute conceptual sprint with the Feynman 3-sentence summary method.
+              </p>
+            </div>
+
+            <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+              <span class="font-bold text-purple-400 flex items-center gap-1.5">
+                <i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Distraction Hardening
+              </span>
+              <p class="text-slate-400 leading-relaxed">
+                Single browser window full-screened. Every time you switch tasks, a 23-minute cognitive penalty is incurred according to attention restoration research.
+              </p>
+            </div>
+
+            <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+              <span class="font-bold text-rose-400 flex items-center gap-1.5">
+                <i data-lucide="battery-low" class="w-3.5 h-3.5"></i> Low Recovery (RED) Fallback
+              </span>
+              <p class="text-slate-400 leading-relaxed">
+                If recovery is below 33%, substitute deep problem sets with low-stress passive audio lectures to avoid autonomic overload.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+                        <!-- ARABIC CONVERSATIONAL FLUENCY & ROOT LAB -->
+      <div class="bg-gradient-to-br from-slate-900 via-slate-900/90 to-slate-950 border border-slate-800 rounded-2xl p-6 space-y-6">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-4">
+          <div class="flex items-center gap-3">
+        <button onclick="openCustomizerModal()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 shadow-sm" title="Personalize Focus Areas & Profile">
+          <i data-lucide="sliders" class="w-3.5 h-3.5 text-teal-400"></i>
+          <span class="hidden sm:inline">Customize Cockpit</span>
+        </button>
+            <div class="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400">
+              <i data-lucide="languages" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-white flex items-center gap-2">
+                Arabic Conversational Lab & Root Matrix
+              </h3>
+              <p class="text-xs text-slate-400">Communicative acquisition: 3-letter root families, living dialect phrases, and spoken dialogues.</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="toggleArabicTab('dialogue')" id="tab-btn-dialogue" class="px-3 py-1 bg-teal-600 text-slate-950 font-bold rounded-lg text-xs transition">Daily Dialogue</button>
+            <button onclick="toggleArabicTab('roots')" id="tab-btn-roots" class="px-3 py-1 bg-slate-800 text-slate-300 font-semibold rounded-lg text-xs hover:bg-slate-700 transition">Root Families</button>
+          </div>
+        </div>
+
+        <!-- VIEW 1: Conversational Dialogue Drills -->
+        <div id="arabic-dialogue-view" class="space-y-4">
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-slate-300 font-bold uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="message-square" class="w-3.5 h-3.5 text-teal-400"></i> Active Conversational Scenarios
+            </span>
+            <div class="flex gap-1">
+              <button onclick="loadDialogueScenario('greeting')" class="px-2.5 py-1 bg-slate-950 border border-slate-800 rounded text-[11px] text-slate-300 hover:border-teal-500 transition">Greeting & Respect</button>
+              <button onclick="loadDialogueScenario('meeting')" class="px-2.5 py-1 bg-slate-950 border border-slate-800 rounded text-[11px] text-slate-300 hover:border-teal-500 transition">Work & Time</button>
+              <button onclick="loadDialogueScenario('character')" class="px-2.5 py-1 bg-slate-950 border border-slate-800 rounded text-[11px] text-slate-300 hover:border-teal-500 transition">Virtue & Sabr</button>
+            </div>
+          </div>
+
+          <div id="dialogue-container" class="space-y-3 bg-slate-950 p-4 rounded-xl border border-slate-800/80">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+
+        <!-- VIEW 2: 3-Letter Root Matrix -->
+        <div id="arabic-roots-view" class="hidden space-y-4">
+          <p class="text-xs text-slate-400">Arabic vocabulary expands from 3-letter consonants. Learn 1 root family &rarr; unlock 10+ operational words across conversational and Quranic contexts.</p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="roots-matrix-container">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+
+        <!-- Practice & Personal Translation Scratchpad -->
+        <div class="border-t border-slate-800 pt-4 space-y-3">
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-slate-300 font-bold uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="mic" class="w-3.5 h-3.5 text-sky-400"></i> Daily Vocalization & Active Rehearsal
+            </span>
+            <span class="text-[11px] text-slate-500">Engage speech motor cortex</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <input type="text" id="arabic-custom-phrase" placeholder="New Arabic Phrase (e.g., Kayfa haluk ya akhi?)" class="bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-teal-500">
+            <input type="text" id="arabic-custom-meaning" placeholder="English Meaning & Context" class="bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-teal-500">
+          </div>
+          <div class="flex justify-end">
+            <button onclick="saveCustomArabicPhrase()" class="px-3.5 py-1.5 bg-teal-600 hover:bg-teal-500 text-slate-950 font-bold rounded-lg text-xs transition">Add to Spoken Repertoire</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXECUTIVE PRESENCE & HIGH-STAKES PRESSURE COCKPIT -->
+      <div class="bg-gradient-to-br from-slate-900 via-slate-900/90 to-slate-950 border border-slate-800 rounded-2xl p-6 space-y-6">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-4">
+          <div class="flex items-center gap-3">
+        <button onclick="openCustomizerModal()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 shadow-sm" title="Personalize Focus Areas & Profile">
+          <i data-lucide="sliders" class="w-3.5 h-3.5 text-teal-400"></i>
+          <span class="hidden sm:inline">Customize Cockpit</span>
+        </button>
+            <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+              <i data-lucide="shield-alert" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-white flex items-center gap-2">
+                Executive Presence & High-Stakes Pressure Cockpit
+              </h3>
+              <p class="text-xs text-slate-400">Tactical composure, autonomic down-regulation, and high-status communication protocols.</p>
+            </div>
+          </div>
+          <span class="text-[11px] bg-amber-950/60 border border-amber-800/60 text-amber-300 font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider">Active Drills</span>
+        </div>
+
+        <!-- 3-Second Tactical Silence Timer & Somatic Pacer -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-slate-950/80 border border-slate-800/80 rounded-xl p-4 flex flex-col justify-between space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <i data-lucide="mic-off" class="w-4 h-4 text-sky-400"></i>
+                <span class="text-xs font-bold text-white uppercase tracking-wider">3-Second Tactical Pause</span>
+              </div>
+              <span id="tactical-timer-display" class="text-xs font-mono font-bold text-slate-400">Ready</span>
+            </div>
+            <p class="text-xs text-slate-400">Defuse amygdala hijacking. Count 3 full seconds of steady eye contact before delivering BLUF.</p>
+            <div class="flex items-center gap-2">
+              <button onclick="startTacticalPause()" id="pause-btn" class="w-full py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm">
+                <i data-lucide="play" class="w-3.5 h-3.5"></i> Run 3s Silence Cadence
+              </button>
+            </div>
+          </div>
+
+          <div class="bg-slate-950/80 border border-slate-800/80 rounded-xl p-4 flex flex-col justify-between space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <i data-lucide="wind" class="w-4 h-4 text-emerald-400"></i>
+                <span class="text-xs font-bold text-white uppercase tracking-wider">Covert Physiological Sigh</span>
+              </div>
+              <span id="sigh-guide-display" class="text-xs font-mono font-bold text-slate-400">Standby</span>
+            </div>
+            <p class="text-xs text-slate-400">Quiet double-inhale through nose, slow unforced mouth exhale. Lowers HR in &lt;4 seconds.</p>
+            <button onclick="startPhysiologicalSigh()" id="sigh-btn" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm">
+              <i data-lucide="activity" class="w-3.5 h-3.5"></i> Initiate 4s Vagal Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- High-Stakes Pressure Scenario Selector -->
+        <div class="space-y-3 pt-1">
+          <div class="flex justify-between items-center">
+            <span class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-400"></i> Tactical Scenario Response Rehearsal
+            </span>
+            <span class="text-[11px] text-slate-500">Tap to load response standard</span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <button onclick="loadScenario('interrupted')" class="scenario-btn p-2.5 rounded-lg border border-slate-800 bg-slate-950 hover:border-amber-500/50 text-left transition" id="scen-interrupted">
+              <span class="text-xs font-bold text-white block">Interrupted</span>
+              <span class="text-[10px] text-slate-500 block truncate">Talking over you</span>
+            </button>
+            <button onclick="loadScenario('blindsided')" class="scenario-btn p-2.5 rounded-lg border border-slate-800 bg-slate-950 hover:border-amber-500/50 text-left transition" id="scen-blindsided">
+              <span class="text-xs font-bold text-white block">Blindsided</span>
+              <span class="text-[10px] text-slate-500 block truncate">Hostile cross-exam</span>
+            </button>
+            <button onclick="loadScenario('raised')" class="scenario-btn p-2.5 rounded-lg border border-slate-800 bg-slate-950 hover:border-amber-500/50 text-left transition" id="scen-raised">
+              <span class="text-xs font-bold text-white block">Raised Voice</span>
+              <span class="text-[10px] text-slate-500 block truncate">Emotional yelling</span>
+            </button>
+            <button onclick="loadScenario('demand')" class="scenario-btn p-2.5 rounded-lg border border-slate-800 bg-slate-950 hover:border-amber-500/50 text-left transition" id="scen-demand">
+              <span class="text-xs font-bold text-white block">Bad Demand</span>
+              <span class="text-[10px] text-slate-500 block truncate">Boundary breach</span>
+            </button>
+          </div>
+
+          <!-- Scenario Card Detail Container -->
+          <div id="scenario-detail-box" class="bg-slate-950 border border-slate-800/90 rounded-xl p-4 space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-800/60 pb-2">
+              <span id="scen-title" class="text-xs font-bold text-amber-400 uppercase">Scenario: Interrupted Mid-Sentence</span>
+              <span class="text-[10px] text-slate-500 font-mono">Response Standard</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+              <div class="p-3 bg-rose-950/20 border border-rose-900/30 rounded-lg">
+                <span class="text-rose-400 font-bold block mb-1">ƒ‚… Eliminate Instinct:</span>
+                <p id="scen-eliminate" class="text-slate-300">Rushing to talk over them, speeding up cadence, or shrinking back silently.</p>
+              </div>
+              <div class="p-3 bg-emerald-950/20 border border-emerald-900/30 rounded-lg">
+                <span class="text-emerald-400 font-bold block mb-1">ƒ…‚¬ Executive Execution:</span>
+                <p id="scen-execute" class="text-slate-300">Hold steady eye contact. Pause cleanly until they finish. State: "Returning to my point," and continue at 0.9x speed with downward pitch.</p>
+              </div>
+            </div>
+            <div class="bg-slate-900/60 p-2.5 rounded-lg border border-slate-800 text-xs flex items-center justify-between">
+              <span class="text-slate-400 font-mono text-[11px]">Command Phrase:</span>
+              <span id="scen-phrase" class="text-white font-semibold italic">"Returning to my point..."</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Daily Composure Audit (Self-Accounting) -->
+        <div class="border-t border-slate-800 pt-4 space-y-2">
+          <span class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="check-square" class="w-3.5 h-3.5 text-emerald-400"></i> Daily Executive Composure Audit
+          </span>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+            <label class="flex items-center gap-2 p-2.5 bg-slate-950 rounded-lg border border-slate-800/70 hover:border-slate-700 cursor-pointer">
+              <input type="checkbox" id="audit-pause" onchange="saveAuditState()" class="rounded border-slate-700 bg-slate-900 text-sky-500 focus:ring-0">
+              <span class="text-slate-300">Held 3s pause before replying</span>
+            </label>
+            <label class="flex items-center gap-2 p-2.5 bg-slate-950 rounded-lg border border-slate-800/70 hover:border-slate-700 cursor-pointer">
+              <input type="checkbox" id="audit-bluf" onchange="saveAuditState()" class="rounded border-slate-700 bg-slate-900 text-sky-500 focus:ring-0">
+              <span class="text-slate-300">Delivered conclusion first (BLUF)</span>
+            </label>
+            <label class="flex items-center gap-2 p-2.5 bg-slate-950 rounded-lg border border-slate-800/70 hover:border-slate-700 cursor-pointer">
+              <input type="checkbox" id="audit-cadence" onchange="saveAuditState()" class="rounded border-slate-700 bg-slate-900 text-sky-500 focus:ring-0">
+              <span class="text-slate-300">Maintained low vocal pitch</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feynman 3-Line Synthesis Scratchpad -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+          <h4 class="text-sm font-bold text-white flex items-center gap-2">
+            <i data-lucide="edit-3" class="text-emerald-400 w-4 h-4"></i> Feynman Active-Recall Micro-Synthesis
+          </h4>
+          <span class="text-[10px] bg-emerald-950 border border-emerald-800 text-emerald-300 px-2 py-0.5 rounded uppercase font-semibold">Active Distillation</span>
+        </div>
+        <p class="text-xs text-slate-400">Read a passage or chapter? Synthesize the author's core thesis in 3 plain sentences without jargon.</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+          <input type="text" id="feynman-1" placeholder="1. Core Principle (What is the irreducible truth?)" class="bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+          <input type="text" id="feynman-2" placeholder="2. Real-World Metaphor (Explain it to a 12-year-old)" class="bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+          <input type="text" id="feynman-3" placeholder="3. Operational Application (How do I execute this today?)" class="bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+        </div>
+        <div class="flex justify-between items-center pt-1">
+          <span id="feynman-status" class="text-[11px] text-slate-500">Tested recall builds permanent synaptic retention.</span>
+          <button onclick="saveFeynmanSynthesis()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition">Save to Daily Notes</button>
+        </div>
+      </div>
+
+      <!-- FUTURE STATE: Spring 2027 Academic Pre-Quarter Launch Ramp -->
+      <div class="bg-gradient-to-r from-slate-950 via-sky-950/20 to-slate-950 border border-sky-900/40 rounded-2xl p-6 space-y-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800/80 pb-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-sky-950 border border-sky-800 flex items-center justify-center text-sky-400">
+              <i data-lucide="lock" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                Spring 2027 Academic Deep Ramp <span class="text-[10px] bg-sky-950 text-sky-300 border border-sky-800 px-2 py-0.5 rounded uppercase font-semibold">Future State</span>
+              </h4>
+              <p class="text-xs text-slate-400">Automated activation: Scheduled for T-minus 30 days prior to Spring Quarter matriculation.</p>
+            </div>
+          </div>
+          <span class="text-xs font-mono text-sky-400 bg-slate-950 px-2.5 py-1 rounded border border-slate-800">Target: Spring 2027</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-slate-400">
+          <div class="p-3 bg-slate-950/70 rounded-xl border border-slate-800 space-y-1">
+            <span class="text-sky-300 font-semibold text-[11px]">Phase 1: Syllabus & Text Dry-Run</span>
+            <p class="text-slate-400">Pre-reading 40% of assigned readings and compiling foundational bibliographies before Day 1.</p>
+          </div>
+          <div class="p-3 bg-slate-950/70 rounded-xl border border-slate-800 space-y-1">
+            <span class="text-sky-300 font-semibold text-[11px]">Phase 2: Academic Calendar Shield</span>
             <p class="text-slate-400">Locking 90-minute study blocks into executive calendar buffers to prevent corporate bleed.</p>
           </div>
           <div class="p-3 bg-slate-950/70 rounded-xl border border-slate-800 space-y-1">
@@ -330,10 +1102,7 @@
         </div>
       </div>
 
-          </div> <!-- Close tab-briefings -->
-
-    <!-- TAB: Ingested Knowledge Vault -->
-    <div id="tab-vault" class="tab-content space-y-6 hidden">
+      <!-- Ingested Knowledge Vault Dynamic Cards -->
       <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-4">
           <div>
@@ -436,8 +1205,8 @@
     </div>
   </section>
 
-  <footer class="border-t border-slate-900 py-8 text-center text-xs text-slate-600">
-    <p>&copy; 2026 Hive Alignment. Open-source health &amp; performance architecture.</p>
+  <footer class="py-8 px-6 text-center text-xs text-slate-500 border-t border-slate-900 mt-auto">
+    <p class="text-xs text-slate-600 text-center py-6">&copy; 2026 Hive Alignment. Open-source health &amp; performance architecture.</p>
   </footer>
 
   <script>
@@ -1986,144 +2755,6 @@ ${muhasabah}
       </div>
     </div>
   </div>
-<script>
-  let telemetryState = {
-    isManual: localStorage.getItem('hive_telemetry_manual') === 'true',
-    recovery: parseInt(localStorage.getItem('hive_telemetry_recovery') || '78', 10)
-  };
-
-  function updateSimulatedRecovery(val) {
-    val = parseInt(val, 10);
-    telemetryState.recovery = val;
-    telemetryState.isManual = true;
-    localStorage.setItem('hive_telemetry_manual', 'true');
-    localStorage.setItem('hive_telemetry_recovery', val.toString());
-    renderTelemetryUI();
-  }
-
-  function toggleTelemetryMode() {
-    telemetryState.isManual = !telemetryState.isManual;
-    localStorage.setItem('hive_telemetry_manual', telemetryState.isManual ? 'true' : 'false');
-    if (!telemetryState.isManual) {
-      telemetryState.recovery = 78; // Reset to default baseline
-      localStorage.setItem('hive_telemetry_recovery', '78');
-    }
-    renderTelemetryUI();
-  }
-
-  function renderTelemetryUI() {
-    const val = telemetryState.recovery;
-    const isMan = telemetryState.isManual;
-
-    const valEl = document.getElementById('sim-recovery-val');
-    const sliderEl = document.getElementById('sim-recovery-slider');
-    const hrvEl = document.getElementById('sim-hrv-val');
-    const rhrEl = document.getElementById('sim-rhr-val');
-    const gateBadge = document.getElementById('sim-gate-badge');
-    const actionText = document.getElementById('sim-action-text');
-    const presBox = document.getElementById('sim-prescription-box');
-    const modeLabel = document.getElementById('sim-mode-label');
-    const statusDot = document.getElementById('sim-status-dot');
-
-    if (!valEl || !sliderEl) return;
-
-    sliderEl.value = val;
-    valEl.textContent = val + '%';
-    modeLabel.textContent = isMan ? 'Manual Override' : 'Live Sync';
-    modeLabel.className = isMan ? 'text-amber-400 font-semibold' : 'text-emerald-400 font-semibold';
-
-    if (val >= 66) {
-      // Green Zone
-      valEl.className = 'text-lg font-bold font-mono text-emerald-400';
-      statusDot.className = 'inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse';
-      hrvEl.textContent = Math.round(52 + (val - 66) * 0.8) + ' ms';
-      rhrEl.textContent = Math.round(51 - (val - 66) * 0.2) + ' bpm';
-      gateBadge.className = 'px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
-      gateBadge.textContent = 'Green Gate (>66%)';
-      presBox.className = 'bg-emerald-950/20 border border-emerald-800/40 rounded-lg p-4 flex flex-col justify-between';
-      actionText.innerHTML = 'Full Tactical S&amp;C Volume (4 sets &times; 12-15 reps). Target RPE 7.5-8.0. +2.5% microcycle overload active.';
-    } else if (val >= 34) {
-      // Yellow Zone
-      valEl.className = 'text-lg font-bold font-mono text-amber-400';
-      statusDot.className = 'inline-block w-2.5 h-2.5 rounded-full bg-amber-400';
-      hrvEl.textContent = Math.round(28 + (val - 34) * 0.7) + ' ms';
-      rhrEl.textContent = Math.round(56 - (val - 34) * 0.15) + ' bpm';
-      gateBadge.className = 'px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/30';
-      gateBadge.textContent = 'Yellow Gate (34-65%)';
-      presBox.className = 'bg-amber-950/20 border border-amber-800/40 rounded-lg p-4 flex flex-col justify-between';
-      actionText.innerHTML = 'Standard volume with 10% load reduction. Rep caps at 10. Max RPE 7.0. Extended rest intervals (+30s).';
-    } else {
-      // Red Zone
-      valEl.className = 'text-lg font-bold font-mono text-rose-400';
-      statusDot.className = 'inline-block w-2.5 h-2.5 rounded-full bg-rose-400';
-      hrvEl.textContent = Math.round(18 + (val / 34) * 8) + ' ms';
-      rhrEl.textContent = Math.round(62 - (val / 34) * 5) + ' bpm';
-      gateBadge.className = 'px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-rose-500/20 text-rose-400 border border-rose-500/30';
-      gateBadge.textContent = 'Red Gate (<33%)';
-      presBox.className = 'bg-rose-950/20 border border-rose-800/40 rounded-lg p-4 flex flex-col justify-between';
-      actionText.innerHTML = 'Auto-swap heavy S&amp;C for Zone 2 Ergometer Rowing / Incline Walk (&lt;135 BPM). Add 20-min Therabody &amp; Box Breathing reset.';
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    renderTelemetryUI();
-  });
-</script>
-<script>
-  function switchTab(tabId) {
-    // Hide all tab contents
-    document.querySelectorAll('.tab-content').forEach(tab => {
-      tab.classList.remove('active');
-      tab.classList.add('hidden');
-    });
-
-    // Reset button styles
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.classList.remove('bg-emerald-500', 'text-slate-950', 'bg-amber-500', 'font-semibold');
-      btn.classList.add('font-medium');
-      if (btn.id === 'btn-tab-seeker') {
-        btn.classList.add('text-amber-400');
-      } else {
-        btn.classList.add('text-slate-400');
-      }
-    });
-
-    // Activate the targeted tab container
-    const activeTab = document.getElementById(tabId);
-    if (activeTab) {
-      activeTab.classList.remove('hidden');
-      activeTab.classList.add('active');
-    }
-
-    // Highlight the active button
-    const activeBtn = document.getElementById('btn-' + tabId);
-    if (activeBtn) {
-      if (tabId === 'tab-seeker') {
-        activeBtn.classList.add('bg-amber-500', 'text-slate-950', 'font-semibold');
-        activeBtn.classList.remove('text-amber-400', 'text-slate-400');
-      } else {
-        activeBtn.classList.add('bg-emerald-500', 'text-slate-950', 'font-semibold');
-        activeBtn.classList.remove('text-slate-400');
-      }
-    }
-
-    if (tabId === 'tab-vault' && typeof loadVault === 'function') {
-      loadVault();
-    }
-    if (window.lucide) { lucide.createIcons(); }
-  }
-
-  function switchTabWithTag(tabId, tagFilter) {
-    switchTab(tabId);
-    const searchInput = document.getElementById('vault-search');
-    if (searchInput) {
-      searchInput.value = tagFilter;
-      if (typeof filterVault === 'function') {
-        filterVault();
-      }
-    }
-  }
-</script>
 </body>
 </html>
 
