@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
@@ -1392,17 +1392,97 @@ ${muhasabah}
     }
 
     /* Knowledge Vault Dynamic Rendering */
-    let vaultData = [];
+        /* Permanent Knowledge Vault Engine */
+    const permanentBaseVault = [
+      {
+        id: "tau-rho-charter",
+        title: "Tau Rho Chapter Charter & Fredericksburg History",
+        author: "Tau Rho Chapter Archives",
+        type: "Fraternity Heritage",
+        category: "Fraternity Heritage",
+        date_added: "1964-12-07",
+        summary: "Tau Rho Chapter was chartered on December 7, 1964 in Fredericksburg, Virginia, under the Third District. It serves Fredericksburg, Spotsylvania, Stafford, Caroline, and King George counties. Named Third District Overall Small Chapter of the Year.",
+        takeaway: "Charter date: Dec 7, 1964; Third District; Serving 5 VA counties.",
+        tag: "Tau-Rho-Charter"
+      },
+      {
+        id: "oppf-founding-1911",
+        title: "Omega Psi Phi Founding & Cardinal Principles",
+        author: "Howard University Archives",
+        type: "Foundational History",
+        category: "Fraternity Heritage",
+        date_added: "1911-11-17",
+        summary: "Founded on Friday evening, November 17, 1911, in Thirkield Hall at Howard University by undergraduate students Edgar Amos Love, Oscar James Cooper, and Frank Coleman, with faculty advisor Ernest Everett Just. Motto: 'Friendship is Essential to the Soul'. Four Cardinal Principles: Manhood, Scholarship, Perseverance, Uplift.",
+        takeaway: "Nov 17, 1911, Thirkield Hall, Howard University. Love, Cooper, Coleman, Just.",
+        tag: "OPPF-Founding"
+      },
+      {
+        id: "stoic-dichotomy-control",
+        title: "The Enchiridion: Dichotomy of Control",
+        author: "Epictetus",
+        type: "Core Philosophy",
+        category: "Philosophy",
+        date_added: "2026-10-28",
+        summary: "Some things are in our control and others not. Things in our control are opinion, pursuit, desire, aversion, and whatever are our own actions. Things not in our control are body, property, reputation, command, and one's external circumstances.",
+        takeaway: "Focus 100% of executive bandwidth exclusively on internal response, never on external volatility.",
+        tag: "Stoic-Composure"
+      },
+      {
+        id: "autonomic-hrv-pacing",
+        title: "Autonomic Nervous System Pacing & HRV Regulation",
+        author: "Physiological Science & Telemetry",
+        type: "Performance Science",
+        category: "Focus & Energy",
+        date_added: "2026-10-28",
+        summary: "Heart Rate Variability (rMSSD) serves as an objective marker of parasympathetic recovery. High baseline values reflect autonomic resilience, while downward trends indicate central nervous system fatigue requiring autoregulated training loads.",
+        takeaway: "Autoregulate volume: high mechanical tension on Green days (>66%), aerobic Zone 2 on Red days (<34%).",
+        tag: "Autonomic-Tone"
+      },
+      {
+        id: "prophetic-emotional-restraint",
+        title: "Prophetic Emotional Composure & Sabr Under Strain",
+        author: "Spiritual Tradition",
+        type: "Spiritual / Arabic",
+        category: "Spiritual / Arabic",
+        date_added: "2026-10-28",
+        summary: "True internal strength lies in emotional composure during moments of sudden provocation. Pausing before reaction and anchoring the autonomic nervous system via intentional breath preserves prefrontal reasoning.",
+        takeaway: "'The strong man is the one who controls himself when angry.' Guard speech under tension.",
+        tag: "Sabr-Discipline"
+      },
+      {
+        id: "deep-work-cal-newport",
+        title: "Deep Work: Rules for Focused Success",
+        author: "Cal Newport",
+        type: "Cognitive Protocol",
+        category: "Business Management",
+        date_added: "2026-10-28",
+        summary: "The ability to perform deep work is becoming increasingly rare at exactly the same time it is becoming increasingly valuable in our economy. Eliminating task switching and cognitive fragmentation is required for elite academic and professional output.",
+        takeaway: "Shield unbroken morning 90-minute blocks without email, chat, or phone notifications.",
+        tag: "Deep-Work"
+      }
+    ];
+
+    let vaultData = [...permanentBaseVault];
+
     async function loadVault() {
       try {
         const res = await fetch('data/knowledge.json');
         if (res.ok) {
-          vaultData = await res.json();
-          renderVault(vaultData);
+          const remoteData = await res.json();
+          if (Array.isArray(remoteData) && remoteData.length > 0) {
+            vaultData = remoteData;
+          }
         }
       } catch (err) {
-        console.warn('Vault fetch note:', err);
+        console.warn('Using embedded permanent knowledge base:', err);
       }
+
+      // Merge locally scanned camera cards without duplication
+      const savedCards = JSON.parse(localStorage.getItem('hive_local_vault') || '[]');
+      const combined = [...savedCards, ...vaultData];
+      const uniqueVault = Array.from(new Map(combined.map(item => [item.id || item.title, item])).values());
+      vaultData = uniqueVault;
+      renderVault(vaultData);
     }
 
     function renderVault(items) {
