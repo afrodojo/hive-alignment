@@ -2,8 +2,8 @@ name: Sync WHOOP Biometrics Telemetry
 
 on:
   schedule:
-    # Runs 3 times a day: 07:00 AM EST (11:00 UTC), 01:00 PM EST (17:00 UTC), 09:00 PM EST (01:00 UTC next day)
-    - cron: '0 11,17,1 * * *'
+    # 07:15 AM EDT (11:15 UTC), 01:15 PM EDT (17:15 UTC), 09:15 PM EDT (01:15 UTC next day)
+    - cron: '15 11,17,1 * * *'
   workflow_dispatch:
 
 permissions:
@@ -52,10 +52,10 @@ jobs:
                   "hrv": 92.9,
                   "height": "6'0\" (72 in)",
                   "weight": 235,
-                  "schedule": "Monday â€“ Friday"
+                  "schedule": "Monday – Friday"
               }
 
-          # 2. Exchange refresh token for fresh access token
+          # 2. Exchange refresh token for fresh access token (without scope)
           access_token = None
           if client_id and client_secret and refresh_token:
               token_url = "https://api.prod.whoop.com/oauth/oauth2/token"
@@ -65,63 +65,66 @@ jobs:
                   "client_id": client_id.strip(),
                   "client_secret": client_secret.strip()
               }
-              token_headers = {"Content-Type": "application/x-www-form-urlencoded"}
-              token_res = httpx.post(token_url, data=payload, headers=token_headers, timeout=20.0)
+              headers_token = {
+                  "Content-Type": "application/x-www-form-urlencoded"
+              }
+              try:
+                  token_res = httpx.post(token_url, data=payload, headers=headers_token, timeout=20.0)
                   if token_res.status_code == 200:
-                      access_token = token_res.json().get("access_token")
-                      print("WHOOP Access Token successfully refreshed.")
+                      token_payload = token_res.json()
+                      access_token = token_payload.get("access_token")
+                      print("SUCCESS: WHOOP Access Token refreshed.")
                   else:
-                      print(f"Token refresh failed ({token_res.status_code}): {token_res.text}")
+                      print(f"ERROR: Token refresh failed ({token_res.status_code}): {token_res.text}")
               except Exception as e:
-                  print(f"Token refresh network error: {e}")
+                  print(f"ERROR: Token refresh network exception: {e}")
+          else:
+              print("WARNING: Missing one or more WHOOP secrets in GitHub repository.")
 
-          # 3. Fetch latest metrics using the active access token
+          # 3. Query telemetry endpoints
           if access_token:
               headers = {"Authorization": f"Bearer {access_token}"}
               base_url = "https://api.prod.whoop.com/developer/v1"
 
-              # Fetch Latest Recovery
+              # Recovery
               try:
-                  rec_res = httpx.get(f"{base_url}/recovery?limit=1", headers=headers, timeout=15.0)
-                  if rec_res.status_code == 200:
-                      rec_records = rec_res.json().get("records", [])
-                      if rec_records:
-                          score = rec_records[0].get("score", {})
-                          if "recovery_score" in score:
-                              data["recovery"] = int(round(score["recovery_score"]))
-                          if "hrv_rmssd_milli" in score:
-                              data["hrv"] = round(score["hrv_rmssd_milli"], 1)
-                          if "resting_heart_rate" in score:
-                              data["rhr"] = int(round(score["resting_heart_rate"]))
-                          print(f"Updated Recovery: {data.get('recovery')}% | HRV: {data.get('hrv')} ms")
+                  r = httpx.get(f"{base_url}/recovery?limit=1", headers=headers, timeout=20.0)
+                  print(f"Recovery Endpoint Status: {r.status_code}")
+                  if r.status_code == 200 and r.json().get("records"):
+                      score = r.json()["records"][0].get("score", {})
+                      if "recovery_score" in score:
+                          data["recovery"] = int(round(score["recovery_score"]))
+                      if "hrv_rmssd_milli" in score:
+                          data["hrv"] = round(score["hrv_rmssd_milli"], 1)
+                      if "resting_heart_rate" in score:
+                          data["rhr"] = int(round(score["resting_heart_rate"]))
+                      print(f"-> Set Recovery: {data.get('recovery')}% | HRV: {data.get('hrv')} ms | RHR: {data.get('rhr')} bpm")
               except Exception as e:
-                  print(f"Recovery fetch error: {e}")
+                  print(f"Recovery Fetch Error: {e}")
 
-              # Fetch Latest Sleep
+              # Sleep
               try:
-                  sleep_res = httpx.get(f"{base_url}/activity/sleep?limit=1", headers=headers, timeout=15.0)
-                  if sleep_res.status_code == 200:
-                      sleep_records = sleep_res.json().get("records", [])
-                      if sleep_records:
-                          s_score = sleep_records[0].get("score", {})
-                          if "sleep_performance_percentage" in s_score:
-                              data["sleep"] = int(round(s_score["sleep_performance_percentage"]))
-                          print(f"Updated Sleep Performance: {data.get('sleep')}%")
+                  s = httpx.get(f"{base_url}/activity/sleep?limit=1", headers=headers, timeout=20.0)
+                  print(f"Sleep Endpoint Status: {s.status_code}")
+                  if s.status_code == 200 and s.json().get("records"):
+                      s_score = s.json()["records"][0].get("score", {})
+                      if "sleep_performance_percentage" in s_score:
+                          data["sleep"] = int(round(s_score["sleep_performance_percentage"]))
+                      print(f"-> Set Sleep: {data.get('sleep')}%")
               except Exception as e:
-                  print(f"Sleep fetch error: {e}")
+                  print(f"Sleep Fetch Error: {e}")
 
-              # Fetch Latest Cycle (Day Strain)
+              # Day Strain
               try:
-                  cycle_res = httpx.get(f"{base_url}/cycle?limit=1", headers=headers, timeout=15.0)
-                  if cycle_res.status_code == 200:
-                      cycle_records = cycle_res.json().get("records", [])
-                      if cycle_records:
-                          c_score = cycle_records[0].get("score", {})
-                          if "strain" in c_score:
-                              data["strain"] = round(c_score["strain"], 1)
-                          print(f"Updated Day Strain: {data.get('strain')}")
+                  c = httpx.get(f"{base_url}/cycle?limit=1", headers=headers, timeout=20.0)
+                  print(f"Cycle Endpoint Status: {c.status_code}")
+                  if c.status_code == 200 and c.json().get("records"):
+                      c_score = c.json()["records"][0].get("score", {})
+                      if "strain" in c_score:
+                          data["strain"] = round(c_score["strain"], 1)
+                      print(f"-> Set Day Strain: {data.get('strain')}")
               except Exception as e:
-                  print(f"Cycle fetch error: {e}")
+                  print(f"Cycle Fetch Error: {e}")
 
           data["last_updated"] = datetime.utcnow().isoformat() + "Z"
           data["height"] = "6'0\" (72 in)"
@@ -131,7 +134,7 @@ jobs:
           with open(telemetry_file, "w", encoding="utf-8") as f:
               json.dump(data, f, indent=2)
 
-          print("Successfully updated docs/data/telemetry.json with live biometrics.")
+          print(f"Wrote docs/data/telemetry.json at {data['last_updated']}")
           EOF
 
       - name: Commit Updated Telemetry
