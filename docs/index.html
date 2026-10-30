@@ -3201,7 +3201,7 @@ ${muhasabah}
         <p class="text-xs text-slate-400">Brotherhood Operations &bull; Private Access</p>
       </div>
 
-      <form id="brother-login-form" onsubmit="handleBrotherLogin(event)" class="space-y-4 text-xs">
+      <form id="brother-login-form" onsubmit="handleBrotherLogin(event); return false;" class="space-y-4 text-xs">
         <div>
           <label class="text-slate-400 block mb-1 font-medium">Brotherhood Email</label>
           <input type="email" id="auth-email-input" required placeholder="name@domain.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-emerald-500 text-xs">
@@ -3509,7 +3509,7 @@ ${muhasabah}
           <p class="text-xs text-slate-400">Receive a secure reset token or temporary login link</p>
         </div>
 
-        <form id="forgot-password-form" onsubmit="handleSendResetEmail(event)" class="space-y-3 text-xs">
+        <form id="forgot-password-form" onsubmit="handleSendResetEmail(event); return false;" class="space-y-3 text-xs">
           <div>
             <label class="text-slate-400 block mb-1 font-medium">Brotherhood Email</label>
             <input type="email" id="reset-email-input" required placeholder="name@domain.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-emerald-500 text-xs">
@@ -3534,7 +3534,7 @@ ${muhasabah}
           <p class="text-xs text-slate-400">Update temporary or forgotten credentials</p>
         </div>
 
-        <form id="update-password-form" onsubmit="handleUpdatePassword(event)" class="space-y-3 text-xs">
+        <form id="update-password-form" onsubmit="handleUpdatePassword(event); return false;" class="space-y-3 text-xs">
           <div>
             <label class="text-slate-400 block mb-1 font-medium">New Password</label>
             <input type="password" id="new-password-input" minlength="6" required placeholder="At least 6 characters" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-emerald-500 text-xs">
@@ -3801,8 +3801,49 @@ ${muhasabah}
       }
     };
   </script>
+
+  <script>
+    // Restore authenticated brother session on page load & listen for auth state changes
+    window.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const client = window.getSupaClient ? window.getSupaClient() : window.supaClient;
+        if (!client) return;
+
+        const { data: { session } } = await client.auth.getSession();
+        if (session && session.user) {
+          currentUserSession = session.user;
+          const email = (session.user.email || '').toLowerCase();
+          const profileKey = (window.BROTHER_EMAIL_MAP && window.BROTHER_EMAIL_MAP[email]) || 'asaad';
+
+          // Update header badges
+          const lBtn = document.getElementById('brother-login-btn');
+          if (lBtn) lBtn.classList.add('hidden');
+
+          const badge = document.getElementById('auth-user-badge');
+          const nameEl = document.getElementById('auth-user-name');
+          if (badge) {
+            badge.classList.remove('hidden');
+            badge.classList.add('flex');
+          }
+          if (nameEl && window.BROTHER_PROFILES_DATA && window.BROTHER_PROFILES_DATA[profileKey]) {
+            nameEl.innerText = window.BROTHER_PROFILES_DATA[profileKey].name;
+          }
+
+          if (typeof switchBrotherProfile === 'function') {
+            switchBrotherProfile(profileKey);
+          }
+          if (typeof enforceOmegaGate === 'function') {
+            enforceOmegaGate(profileKey);
+          }
+        }
+      } catch (err) {
+        console.warn("Session auto-restore check:", err);
+      }
+    });
+  </script>
 </body>
 </html>
+
 
 
 
