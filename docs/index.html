@@ -3269,6 +3269,31 @@ ${muhasabah}
     </div>
   </div>
 
+
+  <!-- Set New Password Modal -->
+  <div id="reset-password-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[110] hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-emerald-900/40 rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl">
+      <div class="text-center space-y-1">
+        <div class="inline-flex p-3 rounded-2xl bg-emerald-950/70 border border-emerald-800/40 text-emerald-400 mb-1">
+          <i data-lucide="key-round" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-lg font-extrabold text-white">Reset Account Password</h3>
+        <p class="text-xs text-slate-400">Enter a new secure password for your sanctuary account.</p>
+      </div>
+
+      <form id="new-password-form" onsubmit="handlePasswordUpdate(event)" class="space-y-3.5 text-xs">
+        <div>
+          <label class="text-slate-400 block mb-1">New Password</label>
+          <input type="password" id="new-pass-input" required minlength="6" placeholder="��������" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-slate-200 focus:outline-none focus:border-emerald-500">
+        </div>
+        <div id="reset-error-msg" class="hidden p-2 bg-rose-950/50 border border-rose-900/50 rounded-lg text-rose-300 text-[11px]"></div>
+        <button type="submit" id="reset-submit-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl transition flex items-center justify-center gap-2">
+          Update Password
+        </button>
+      </form>
+    </div>
+  </div>
+
 </body>
 </html>
 
