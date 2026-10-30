@@ -3750,8 +3750,660 @@ ${muhasabah}
 }
     })();
   </script>
+
+  <!-- Unified Sanctuary Gateway & Auth Controller -->
+  <script>
+    window.SUPA_URL = 'https://jsyooxahstzrhipbocss.supabase.co';
+    window.SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeW9veGFoc3R6cmhpcGJvY3NzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzODU1MTcsImV4cCI6MjEwODk2MTUxN30.BJXbrkrO-2IwRQHX38-YvWGkiFC7ONcfrq6fbY4OkNI';
+    window.supaClient = null;
+    window.currentUserSession = null;
+
+    window.getSupaClient = function() {
+      if (window.supaClient) return window.supaClient;
+      if (window.supabase && typeof window.supabase.createClient === 'function') {
+        window.supaClient = window.supabase.createClient(window.SUPA_URL, window.SUPA_ANON_KEY);
+        return window.supaClient;
+      }
+      return null;
+    };
+
+    try {
+      window.getSupaClient();
+    } catch(e) {}
+
+    var BROTHER_EMAIL_MAP = {
+      'cyberdojosensei@gmail.com': 'asaad',
+      'mrevans3571894@yahoo.com': 'gabe',
+      'nadeem.ahmad4790@gmail.com': 'nadeem'
+    };
+
+    window.showLoginModal = function() {
+      var m = document.getElementById('brotherhood-auth-modal');
+      if (m) { m.classList.remove('hidden'); m.style.display = 'flex'; }
+    };
+
+    window.hideLoginModal = function() {
+      var m = document.getElementById('brotherhood-auth-modal');
+      if (m) { m.classList.add('hidden'); m.style.display = 'none'; }
+    };
+
+    window.showForgotPasswordView = function() {
+      window.hideLoginModal();
+      var pw = document.getElementById('brotherhood-password-modal');
+      var rView = document.getElementById('pw-reset-request-view');
+      var uView = document.getElementById('pw-update-view');
+      if (pw) { pw.classList.remove('hidden'); pw.style.display = 'flex'; }
+      if (rView) rView.classList.remove('hidden');
+      if (uView) uView.classList.add('hidden');
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.closePasswordModal = function() {
+      var pw = document.getElementById('brotherhood-password-modal');
+      if (pw) { pw.classList.add('hidden'); pw.style.display = 'none'; }
+    };
+
+    window.returnToLoginModal = function() {
+      window.closePasswordModal();
+      window.showLoginModal();
+    };
+
+    window.showChangePasswordModal = function() {
+      var pw = document.getElementById('brotherhood-password-modal');
+      var rView = document.getElementById('pw-reset-request-view');
+      var uView = document.getElementById('pw-update-view');
+      if (pw) { pw.classList.remove('hidden'); pw.style.display = 'flex'; }
+      if (rView) rView.classList.add('hidden');
+      if (uView) uView.classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+    };
+
+    // Gate cockpit behind active login session
+    window.toggleCockpit = function(show) {
+      if (show && !window.currentUserSession) {
+        window.showLoginModal();
+        return;
+      }
+      var landing = document.getElementById('landing-view');
+      var cockpit = document.getElementById('cockpit-view');
+      if (show) {
+        if (landing) landing.classList.add('hidden');
+        if (cockpit) cockpit.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        if (cockpit) cockpit.classList.add('hidden');
+        if (landing) landing.classList.remove('hidden');
+      }
+      if (window.lucide) lucide.createIcons();
+    };
+
+    // Process Brother Login
+    window.handleBrotherLogin = async function(e) {
+      if (e && e.preventDefault) e.preventDefault();
+
+      var emailInput = document.getElementById('auth-email-input');
+      var passInput = document.getElementById('auth-password-input');
+      var btn = document.getElementById('auth-submit-btn');
+      var errBox = document.getElementById('auth-error-msg');
+
+      if (!emailInput || !passInput) return false;
+
+      var email = emailInput.value.trim().toLowerCase();
+      var password = passInput.value;
+
+      if (errBox) { errBox.classList.add('hidden'); errBox.innerText = ''; }
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Verifying...';
+      }
+
+      try {
+        var client = window.getSupaClient();
+        if (!client) throw new Error("Auth gateway unavailable. Please reload.");
+
+        var res = await client.auth.signInWithPassword({ email: email, password: password });
+        if (res.error) throw res.error;
+
+        window.currentUserSession = res.data.user;
+        var profileKey = BROTHER_EMAIL_MAP[email] || 'asaad';
+
+        window.hideLoginModal();
+
+        var landing = document.getElementById('landing-view');
+        var cockpit = document.getElementById('cockpit-view');
+        if (landing) landing.classList.add('hidden');
+        if (cockpit) cockpit.classList.remove('hidden');
+
+        var lBtn = document.getElementById('brother-login-btn');
+        if (lBtn) lBtn.classList.add('hidden');
+
+        var badge = document.getElementById('auth-user-badge');
+        var nameEl = document.getElementById('auth-user-name');
+        if (badge) { badge.classList.remove('hidden'); badge.classList.add('flex'); }
+        if (nameEl && window.BROTHER_PROFILES_DATA && window.BROTHER_PROFILES_DATA[profileKey]) {
+          nameEl.innerText = window.BROTHER_PROFILES_DATA[profileKey].name;
+        }
+
+        if (typeof switchBrotherProfile === 'function') switchBrotherProfile(profileKey);
+        if (typeof enforceOmegaGate === 'function') enforceOmegaGate(profileKey);
+
+        var switcher = document.getElementById('prof-btn-asaad');
+        if (switcher && switcher.parentElement) switcher.parentElement.style.display = 'none';
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (window.lucide) lucide.createIcons();
+
+      } catch (err) {
+        console.error("Login rejected:", err);
+        if (errBox) {
+          errBox.innerText = err.message || "Invalid email or password.";
+          errBox.classList.remove('hidden');
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i data-lucide="lock" class="w-3.5 h-3.5"></i> Enter Sanctuary';
+          if (window.lucide) lucide.createIcons();
+        }
+      }
+      return false;
+    };
+
+    // Exit Sanctuary / Sign Out
+    window.brotherSignOut = async function() {
+      try {
+        var client = window.getSupaClient();
+        if (client) await client.auth.signOut();
+      } catch (e) {}
+      window.currentUserSession = null;
+
+      var landing = document.getElementById('landing-view');
+      var cockpit = document.getElementById('cockpit-view');
+      if (cockpit) cockpit.classList.add('hidden');
+      if (landing) landing.classList.remove('hidden');
+
+      var badge = document.getElementById('auth-user-badge');
+      if (badge) { badge.classList.add('hidden'); badge.classList.remove('flex'); }
+      var lBtn = document.getElementById('brother-login-btn');
+      if (lBtn) lBtn.classList.remove('hidden');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (window.lucide) lucide.createIcons();
+    };
+
+    // Password Reset Dispatch
+    window.handleSendResetEmail = async function(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      var emailInput = document.getElementById('reset-email-input');
+      var btn = document.getElementById('reset-submit-btn');
+      var msg = document.getElementById('reset-status-msg');
+
+      if (!emailInput) return false;
+      var email = emailInput.value.trim().toLowerCase();
+
+      if (msg) msg.className = 'hidden';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Dispatching...';
+      }
+
+      try {
+        var client = window.getSupaClient();
+        if (!client) throw new Error("Auth engine not loaded.");
+
+        var res = await client.auth.resetPasswordForEmail(email, {
+          redirectTo: window.location.origin + window.location.pathname
+        });
+        if (res.error) throw res.error;
+
+        if (msg) {
+          msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block';
+          msg.innerHTML = 'Reset link sent! Check your email inbox.';
+        }
+      } catch (err) {
+        if (msg) {
+          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
+          msg.innerText = err.message || 'Error sending reset email.';
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = 'Send Reset Instructions';
+        }
+      }
+      return false;
+    };
+
+    // Password Update
+    window.handleUpdatePassword = async function(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      var p1 = document.getElementById('new-password-input');
+      var p2 = document.getElementById('confirm-password-input');
+      var btn = document.getElementById('update-submit-btn');
+      var msg = document.getElementById('update-status-msg');
+
+      if (!p1 || !p2 || p1.value !== p2.value) {
+        if (msg) {
+          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
+          msg.innerText = 'Passwords do not match.';
+        }
+        return false;
+      }
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Saving...';
+      }
+
+      try {
+        var client = window.getSupaClient();
+        if (!client) throw new Error("Auth engine not loaded.");
+
+        var res = await client.auth.updateUser({ password: p1.value });
+        if (res.error) throw res.error;
+
+        if (msg) {
+          msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block';
+          msg.innerText = 'Password successfully updated!';
+        }
+        setTimeout(function() {
+          window.closePasswordModal();
+          window.location.hash = '';
+        }, 1200);
+      } catch (err) {
+        if (msg) {
+          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
+          msg.innerText = err.message || 'Failed to update password.';
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = 'Save New Password';
+        }
+      }
+      return false;
+    };
+
+    // Safe Telemetry Sync
+    window.syncBrotherStatusToCloud = async function(profileKey, data) {
+      try {
+        var client = window.getSupaClient();
+        if (!client) return;
+        await client.from('brotherhood_status').upsert({
+          brother: profileKey,
+          data: data,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'brother' });
+      } catch (err) {
+        console.warn("Telemetry sync bypass:", err.message || err);
+      }
+    };
+
+    // Auto-restore session on page load
+    window.addEventListener('DOMContentLoaded', async function() {
+      try {
+        var client = window.getSupaClient();
+        if (!client) return;
+
+        var res = await client.auth.getSession();
+        if (res.data && res.data.session && res.data.session.user) {
+          window.currentUserSession = res.data.session.user;
+          var email = (window.currentUserSession.email || '').toLowerCase();
+          var profileKey = BROTHER_EMAIL_MAP[email] || 'asaad';
+
+          var lBtn = document.getElementById('brother-login-btn');
+          if (lBtn) lBtn.classList.add('hidden');
+
+          var badge = document.getElementById('auth-user-badge');
+          var nameEl = document.getElementById('auth-user-name');
+          if (badge) {
+            badge.classList.remove('hidden');
+            badge.classList.add('flex');
+          }
+          if (nameEl && window.BROTHER_PROFILES_DATA && window.BROTHER_PROFILES_DATA[profileKey]) {
+            nameEl.innerText = window.BROTHER_PROFILES_DATA[profileKey].name;
+          }
+          if (typeof switchBrotherProfile === 'function') switchBrotherProfile(profileKey);
+          if (typeof enforceOmegaGate === 'function') enforceOmegaGate(profileKey);
+        }
+      } catch (err) {
+        console.warn("Session restore notice:", err);
+      }
+
+      if (window.location.hash.includes('type=recovery')) {
+        setTimeout(window.showChangePasswordModal, 500);
+      }
+    });
+  </script>
+
+  <!-- Unified Sanctuary Gateway & Auth Controller -->
+  <script>
+    window.SUPA_URL = 'https://jsyooxahstzrhipbocss.supabase.co';
+    window.SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeW9veGFoc3R6cmhpcGJvY3NzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzODU1MTcsImV4cCI6MjEwODk2MTUxN30.BJXbrkrO-2IwRQHX38-YvWGkiFC7ONcfrq6fbY4OkNI';
+    window.supaClient = null;
+    window.currentUserSession = null;
+
+    window.getSupaClient = function() {
+      if (window.supaClient) return window.supaClient;
+      if (window.supabase && typeof window.supabase.createClient === 'function') {
+        window.supaClient = window.supabase.createClient(window.SUPA_URL, window.SUPA_ANON_KEY);
+        return window.supaClient;
+      }
+      return null;
+    };
+
+    try {
+      window.getSupaClient();
+    } catch(e) {}
+
+    var BROTHER_EMAIL_MAP = {
+      'cyberdojosensei@gmail.com': 'asaad',
+      'mrevans3571894@yahoo.com': 'gabe',
+      'nadeem.ahmad4790@gmail.com': 'nadeem'
+    };
+
+    window.showLoginModal = function() {
+      var m = document.getElementById('brotherhood-auth-modal');
+      if (m) { m.classList.remove('hidden'); m.style.display = 'flex'; }
+    };
+
+    window.hideLoginModal = function() {
+      var m = document.getElementById('brotherhood-auth-modal');
+      if (m) { m.classList.add('hidden'); m.style.display = 'none'; }
+    };
+
+    window.showForgotPasswordView = function() {
+      window.hideLoginModal();
+      var pw = document.getElementById('brotherhood-password-modal');
+      var rView = document.getElementById('pw-reset-request-view');
+      var uView = document.getElementById('pw-update-view');
+      if (pw) { pw.classList.remove('hidden'); pw.style.display = 'flex'; }
+      if (rView) rView.classList.remove('hidden');
+      if (uView) uView.classList.add('hidden');
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.closePasswordModal = function() {
+      var pw = document.getElementById('brotherhood-password-modal');
+      if (pw) { pw.classList.add('hidden'); pw.style.display = 'none'; }
+    };
+
+    window.returnToLoginModal = function() {
+      window.closePasswordModal();
+      window.showLoginModal();
+    };
+
+    window.showChangePasswordModal = function() {
+      var pw = document.getElementById('brotherhood-password-modal');
+      var rView = document.getElementById('pw-reset-request-view');
+      var uView = document.getElementById('pw-update-view');
+      if (pw) { pw.classList.remove('hidden'); pw.style.display = 'flex'; }
+      if (rView) rView.classList.add('hidden');
+      if (uView) uView.classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+    };
+
+    // Gate cockpit behind active login session
+    window.toggleCockpit = function(show) {
+      if (show && !window.currentUserSession) {
+        window.showLoginModal();
+        return;
+      }
+      var landing = document.getElementById('landing-view');
+      var cockpit = document.getElementById('cockpit-view');
+      if (show) {
+        if (landing) landing.classList.add('hidden');
+        if (cockpit) cockpit.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        if (cockpit) cockpit.classList.add('hidden');
+        if (landing) landing.classList.remove('hidden');
+      }
+      if (window.lucide) lucide.createIcons();
+    };
+
+    // Process Brother Login
+    window.handleBrotherLogin = async function(e) {
+      if (e && e.preventDefault) e.preventDefault();
+
+      var emailInput = document.getElementById('auth-email-input');
+      var passInput = document.getElementById('auth-password-input');
+      var btn = document.getElementById('auth-submit-btn');
+      var errBox = document.getElementById('auth-error-msg');
+
+      if (!emailInput || !passInput) return false;
+
+      var email = emailInput.value.trim().toLowerCase();
+      var password = passInput.value;
+
+      if (errBox) { errBox.classList.add('hidden'); errBox.innerText = ''; }
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Verifying...';
+      }
+
+      try {
+        var client = window.getSupaClient();
+        if (!client) throw new Error("Auth gateway unavailable. Please reload.");
+
+        var res = await client.auth.signInWithPassword({ email: email, password: password });
+        if (res.error) throw res.error;
+
+        window.currentUserSession = res.data.user;
+        var profileKey = BROTHER_EMAIL_MAP[email] || 'asaad';
+
+        window.hideLoginModal();
+
+        var landing = document.getElementById('landing-view');
+        var cockpit = document.getElementById('cockpit-view');
+        if (landing) landing.classList.add('hidden');
+        if (cockpit) cockpit.classList.remove('hidden');
+
+        var lBtn = document.getElementById('brother-login-btn');
+        if (lBtn) lBtn.classList.add('hidden');
+
+        var badge = document.getElementById('auth-user-badge');
+        var nameEl = document.getElementById('auth-user-name');
+        if (badge) { badge.classList.remove('hidden'); badge.classList.add('flex'); }
+        if (nameEl && window.BROTHER_PROFILES_DATA && window.BROTHER_PROFILES_DATA[profileKey]) {
+          nameEl.innerText = window.BROTHER_PROFILES_DATA[profileKey].name;
+        }
+
+        if (typeof switchBrotherProfile === 'function') switchBrotherProfile(profileKey);
+        if (typeof enforceOmegaGate === 'function') enforceOmegaGate(profileKey);
+
+        var switcher = document.getElementById('prof-btn-asaad');
+        if (switcher && switcher.parentElement) switcher.parentElement.style.display = 'none';
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (window.lucide) lucide.createIcons();
+
+      } catch (err) {
+        console.error("Login rejected:", err);
+        if (errBox) {
+          errBox.innerText = err.message || "Invalid email or password.";
+          errBox.classList.remove('hidden');
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i data-lucide="lock" class="w-3.5 h-3.5"></i> Enter Sanctuary';
+          if (window.lucide) lucide.createIcons();
+        }
+      }
+      return false;
+    };
+
+    // Exit Sanctuary / Sign Out
+    window.brotherSignOut = async function() {
+      try {
+        var client = window.getSupaClient();
+        if (client) await client.auth.signOut();
+      } catch (e) {}
+      window.currentUserSession = null;
+
+      var landing = document.getElementById('landing-view');
+      var cockpit = document.getElementById('cockpit-view');
+      if (cockpit) cockpit.classList.add('hidden');
+      if (landing) landing.classList.remove('hidden');
+
+      var badge = document.getElementById('auth-user-badge');
+      if (badge) { badge.classList.add('hidden'); badge.classList.remove('flex'); }
+      var lBtn = document.getElementById('brother-login-btn');
+      if (lBtn) lBtn.classList.remove('hidden');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (window.lucide) lucide.createIcons();
+    };
+
+    // Password Reset Dispatch
+    window.handleSendResetEmail = async function(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      var emailInput = document.getElementById('reset-email-input');
+      var btn = document.getElementById('reset-submit-btn');
+      var msg = document.getElementById('reset-status-msg');
+
+      if (!emailInput) return false;
+      var email = emailInput.value.trim().toLowerCase();
+
+      if (msg) msg.className = 'hidden';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Dispatching...';
+      }
+
+      try {
+        var client = window.getSupaClient();
+        if (!client) throw new Error("Auth engine not loaded.");
+
+        var res = await client.auth.resetPasswordForEmail(email, {
+          redirectTo: window.location.origin + window.location.pathname
+        });
+        if (res.error) throw res.error;
+
+        if (msg) {
+          msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block';
+          msg.innerHTML = 'Reset link sent! Check your email inbox.';
+        }
+      } catch (err) {
+        if (msg) {
+          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
+          msg.innerText = err.message || 'Error sending reset email.';
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = 'Send Reset Instructions';
+        }
+      }
+      return false;
+    };
+
+    // Password Update
+    window.handleUpdatePassword = async function(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      var p1 = document.getElementById('new-password-input');
+      var p2 = document.getElementById('confirm-password-input');
+      var btn = document.getElementById('update-submit-btn');
+      var msg = document.getElementById('update-status-msg');
+
+      if (!p1 || !p2 || p1.value !== p2.value) {
+        if (msg) {
+          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
+          msg.innerText = 'Passwords do not match.';
+        }
+        return false;
+      }
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Saving...';
+      }
+
+      try {
+        var client = window.getSupaClient();
+        if (!client) throw new Error("Auth engine not loaded.");
+
+        var res = await client.auth.updateUser({ password: p1.value });
+        if (res.error) throw res.error;
+
+        if (msg) {
+          msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block';
+          msg.innerText = 'Password successfully updated!';
+        }
+        setTimeout(function() {
+          window.closePasswordModal();
+          window.location.hash = '';
+        }, 1200);
+      } catch (err) {
+        if (msg) {
+          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
+          msg.innerText = err.message || 'Failed to update password.';
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = 'Save New Password';
+        }
+      }
+      return false;
+    };
+
+    // Safe Telemetry Sync
+    window.syncBrotherStatusToCloud = async function(profileKey, data) {
+      try {
+        var client = window.getSupaClient();
+        if (!client) return;
+        await client.from('brotherhood_status').upsert({
+          brother: profileKey,
+          data: data,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'brother' });
+      } catch (err) {
+        console.warn("Telemetry sync bypass:", err.message || err);
+      }
+    };
+
+    // Auto-restore session on page load
+    window.addEventListener('DOMContentLoaded', async function() {
+      try {
+        var client = window.getSupaClient();
+        if (!client) return;
+
+        var res = await client.auth.getSession();
+        if (res.data && res.data.session && res.data.session.user) {
+          window.currentUserSession = res.data.session.user;
+          var email = (window.currentUserSession.email || '').toLowerCase();
+          var profileKey = BROTHER_EMAIL_MAP[email] || 'asaad';
+
+          var lBtn = document.getElementById('brother-login-btn');
+          if (lBtn) lBtn.classList.add('hidden');
+
+          var badge = document.getElementById('auth-user-badge');
+          var nameEl = document.getElementById('auth-user-name');
+          if (badge) {
+            badge.classList.remove('hidden');
+            badge.classList.add('flex');
+          }
+          if (nameEl && window.BROTHER_PROFILES_DATA && window.BROTHER_PROFILES_DATA[profileKey]) {
+            nameEl.innerText = window.BROTHER_PROFILES_DATA[profileKey].name;
+          }
+          if (typeof switchBrotherProfile === 'function') switchBrotherProfile(profileKey);
+          if (typeof enforceOmegaGate === 'function') enforceOmegaGate(profileKey);
+        }
+      } catch (err) {
+        console.warn("Session restore notice:", err);
+      }
+
+      if (window.location.hash.includes('type=recovery')) {
+        setTimeout(window.showChangePasswordModal, 500);
+      }
+    });
+  </script>
 </body>
 </html>
+
+
 
 
 
