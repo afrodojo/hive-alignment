@@ -107,10 +107,359 @@
             Integrate cognitive output, autonomic recovery, ethical grounding, and daily execution into a single, zero-friction operating cockpit.
           </p>
           <ul class="space-y-3 text-slate-300 text-sm">
-            <li class="flex items-center gap-3"><i data-lucide="check-c<div class="text-right font-serif text-2xl text-emerald-300 leading-loose dir-rtl mb-2" dir="rtl">&#1589;&#1616;&#1585;&#1614;&#1648;&#1591;&#1614; &#1649;&#1604;&#1617;&#1614;&#1584;&#1616;&#1610;&#1606;&#1614; &#1571;&#1614;&#1606;&#1618;&#1593;&#1614;&#1605;&#1618;&#1578;&#1614; &#1593;&#1614;&#1604;&#1614;&#1610;&#1618;&#1607;&#1616;&#1605;&#1618; &#1594;&#1614;&#1610;&#1618;&#1585;&#1616; &#1649;&#1604;&#1618;&#1605;&#1614;&#1594;&#1618;&#1590;&#1615;&#1608;&#1576;&#1616; &#1593;&#1614;&#1604;&#1614;&#1610;&#1618;&#1607;&#1616;&#1605;&#1618; &#1608;&#1614;&#1604;&#1614;&#1575; &#1649;&#1604;&#1590;&#1617;&#1614;&#1575;&#1644;&#1617;&#1616;&#1610;&#1606;&#1614;</div>
-              <p class="font-semibold text-slate-200 text-sm">&#7778;ir&#257;&#7789;a lladh&#299;na an&#699;amta &#699;alayhim, ghayri l-magh&#7693;&#363;bi &#699;alayhim wa la &#7693;-&#7693;&#257;ll&#299;n</p>
-              <p class="text-xs text-slate-400 italic mb-2">"The path of those upon whom You bestowed favor, not of those who earned anger, nor of those who are astray."</p>
-              <div class="text-[11px] text-emerald-400 font-mono">Roots: N-&#699;-M (Blessing/Favor) &bull; Gh-&#7693;-B (Anger) &bull; &#7692;-L-L (Astray)</div></div>
+            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> 5 Daily Prayer anchors & mindful emotional pauses</li>
+            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> Progressive physical conditioning, recovery targets &amp; strain cadence</li>
+            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> Seeker study modules & Cardinal Principle alignment</li>
+            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> Daily evening muhasabah and 30-min down-regulation</li>
+          </ul>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl space-y-6">
+          <h3 class="text-xl font-bold text-white">Enter the Operations Cockpit</h3>
+          <p class="text-sm text-slate-400">Access your live biometrics, daily spiritual checkpoints, focus timers, knowledge vault, and calendar sync.</p>
+          <button onclick="toggleCockpit(true)" class="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition flex items-center justify-center gap-2">
+            Launch Cockpit Tabs <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- COCKPIT DASHBOARD VIEW -->
+  <section id="cockpit-view" class="hidden flex-grow max-w-6xl mx-auto px-6 py-8 w-full space-y-6">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b border-slate-800 gap-4">
+      <div>
+        <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+          <i data-lucide="layout-dashboard" class="text-emerald-400"></i> Member Operations Cockpit
+        </h2>
+        <p class="text-xs text-slate-400 mt-1">Briefings &bull; Focus &bull; Telemetry &bull; Grounding &bull; Execution</p>
+      </div>
+      <button onclick="toggleCockpit(false)" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-lg text-sm text-slate-300 transition">
+        Return to Overview
+      </button>
+    </div>
+
+    <!-- Cockpit Navigation Tabs -->
+    <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-2">
+      <button onclick="switchTab('tab-briefings')" id="btn-tab-briefings" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold bg-emerald-500 text-slate-950 transition flex items-center gap-2">
+        <i data-lucide="check-square" class="w-4 h-4"></i> Daily Briefings
+      </button>
+            <button onclick="switchTab('tab-prayer-learning')" id="btn-tab-prayer-learning" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition flex items-center gap-2">
+        <i data-lucide="volume-2" class="w-4 h-4 text-emerald-400"></i> Prayer Recitation & Arabic
+      </button>
+      <button onclick="switchTab('tab-spiritual')" id="btn-tab-spiritual" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition flex items-center gap-2">
+        <i data-lucide="compass" class="w-4 h-4 text-emerald-400"></i> EQ & Spiritual Anchors
+      </button>
+      <button onclick="switchTab('tab-seeker')" id="btn-tab-seeker" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-amber-400 hover:text-amber-300 transition flex items-center gap-2">
+        <i data-lucide="award" class="w-4 h-4 text-amber-400"></i> Seeker Knowledge (Omega)
+      </button>
+      <button onclick="switchTab('tab-telemetry')" id="btn-tab-telemetry" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">
+        Biometrics & Recovery
+      </button>
+      <button onclick="switchTab('tab-crunch')" id="btn-tab-crunch" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">
+        Crunch Fitness <span class="text-xs text-slate-400 font-normal">(Monday - Friday)</span>
+      </button>
+      <button onclick="switchTab('tab-learning')" id="btn-tab-learning" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition flex items-center gap-2">
+        <i data-lucide="brain" class="w-4 h-4 text-emerald-400"></i> Focus & Knowledge Vault
+      </button>
+      <button onclick="switchTab('tab-reflection')" id="btn-tab-reflection" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">
+        Family & Reflection
+      </button>
+      <button onclick="switchTab('tab-calendar')" id="btn-tab-calendar" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">
+        Live Google Calendar
+      </button>
+    </div>
+
+    <!-- TAB 1: DAILY BRIEFINGS -->
+    <div id="tab-briefings" class="tab-content active space-y-6">
+    <!-- Autonomic Telemetry & Auto-Regulator Simulator Card -->
+    <div id="telemetry-simulator-card" class="bg-slate-900/90 border border-emerald-500/30 rounded-xl p-5 mb-6 shadow-lg shadow-black/40">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" id="sim-status-dot"></span>
+            <h3 class="text-sm font-semibold text-slate-100 uppercase tracking-wider">Autonomic Telemetry &amp; Auto-Regulator</h3>
+          </div>
+          <p class="text-xs text-slate-400 mt-1">Live sync or drag the recovery slider below to test dynamic workout prescription gating.</p>
+        </div>
+        <div>
+          <button type="button" id="toggle-sim-mode" onclick="toggleTelemetryMode()" class="px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors">
+            Mode: <span id="sim-mode-label" class="text-emerald-400 font-semibold">Live Telemetry</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
+        <div class="bg-slate-950/70 border border-slate-800 rounded-lg p-4">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-xs font-medium text-slate-400">Recovery Score</span>
+            <span id="sim-recovery-val" class="text-lg font-bold font-mono text-emerald-400">78%</span>
+          </div>
+          <input type="range" id="sim-recovery-slider" min="10" max="98" value="78" 
+                 oninput="updateSimulatedRecovery(this.value)" 
+                 class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+          <div class="flex justify-between text-[10px] text-slate-500 mt-1">
+            <span class="text-rose-400 font-medium">Red &lt;33%</span>
+            <span class="text-amber-400 font-medium">Yellow 34-65%</span>
+            <span class="text-emerald-400 font-medium">Green &gt;66%</span>
+          </div>
+        </div>
+
+        <div class="bg-slate-950/70 border border-slate-800 rounded-lg p-4 flex flex-col justify-center">
+          <div class="flex justify-between items-center py-1 border-b border-slate-900">
+            <span class="text-xs text-slate-400">Heart Rate Variability (rMSSD)</span>
+            <span id="sim-hrv-val" class="text-xs font-mono font-bold text-slate-200">58 ms</span>
+          </div>
+          <div class="flex justify-between items-center py-1">
+            <span class="text-xs text-slate-400">Resting Heart Rate (RHR)</span>
+            <span id="sim-rhr-val" class="text-xs font-mono font-bold text-slate-200">49 bpm</span>
+          </div>
+        </div>
+
+        <div id="sim-prescription-box" class="bg-emerald-950/30 border border-emerald-800/50 rounded-lg p-4 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between">
+              <span id="sim-gate-badge" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Green Gate (&gt;66%)</span>
+              <span class="text-[10px] text-slate-400 font-mono">ACWR: 0.95</span>
+            </div>
+            <p id="sim-action-text" class="text-xs text-slate-300 mt-2 font-medium">Full Tactical S&amp;C Volume (4 sets &times; 12-15 reps). Target RPE 7.5-8.0. +2.5% microcycle overload active.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+          <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+            <div class="flex items-center gap-2 text-emerald-400 font-bold text-sm">
+              <i data-lucide="sunrise" class="w-4 h-4"></i> Morning Primer & Fajr
+            </div>
+            <span class="text-[11px] text-slate-400">05:30 - 07:15</span>
+          </div>
+          <p class="text-xs text-slate-400">Spiritual anchoring and physiological baseline calibration.</p>
+          <div class="space-y-3 pt-1 text-xs">
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-m0" onchange="syncCheck('chk-m0')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Fajr prayer & morning adhkar recitation</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-m1" onchange="syncCheck('chk-m1')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">WHOOP recovery verification (&gt;66% Green target)</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-m2" onchange="syncCheck('chk-m2')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Men of Mars supplement + 24 oz hydration</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-m3" onchange="syncCheck('chk-m3')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Recite 4 Cardinal Principles & Founders from memory</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+          <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+            <div class="flex items-center gap-2 text-sky-400 font-bold text-sm">
+              <i data-lucide="sun" class="w-4 h-4"></i> Mid-Day Dhuhr & Recalibration
+            </div>
+            <span class="text-[11px] text-slate-400">12:30 - 13:15</span>
+          </div>
+          <p class="text-xs text-slate-400">Detachment from corporate friction and cognitive sprint.</p>
+          <div class="space-y-3 pt-1 text-xs">
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-d0" onchange="syncCheck('chk-d0')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Dhuhr prayer (mindful pause & mental recenter)</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-d1" onchange="syncCheck('chk-d1')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">20-min micro-learning sprint (Week 1: Epictetus)</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-d2" onchange="syncCheck('chk-d2')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Postural reset + 48 oz cumulative hydration</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-d3" onchange="syncCheck('chk-d3')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Confirm Crunch session lock (17:30 / 17:00 Fri)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+          <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+            <div class="flex items-center gap-2 text-purple-400 font-bold text-sm">
+              <i data-lucide="moon" class="w-4 h-4"></i> Isha, Muhasabah & Reset
+            </div>
+            <span class="text-[11px] text-slate-400">21:00 - 21:45</span>
+          </div>
+          <p class="text-xs text-slate-400">Spiritual closure, self-accounting, and somatic restoration.</p>
+          <div class="space-y-3 pt-1 text-xs">
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-e0" onchange="syncCheck('chk-e0')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Isha & Witr prayer</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-e1" onchange="syncCheck('chk-e1')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">30-min decompression (Thoracic, 90/90, Box breath)</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-e2" onchange="syncCheck('chk-e2')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Run Muhasabah (Self-accounting: Sabr & Conduct audit)</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-e3" onchange="syncCheck('chk-e3')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Screen shutdown & family alignment connection</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+            <!-- Live Nightly Synthesis Card (Generated via GitHub Actions) -->
+      <div id="reflection-card-container" class="bg-gradient-to-r from-slate-900 via-emerald-950/20 to-slate-900 border border-emerald-900/40 rounded-2xl p-6 space-y-3">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+            <i data-lucide="sparkles" class="w-4 h-4"></i> Automated Nightly Reflection Card
+          </span>
+          <span id="synthesis-status" class="text-[10px] bg-emerald-950 border border-emerald-800 text-emerald-300 px-2 py-0.5 rounded font-mono">Synchronized</span>
+        </div>
+        <p id="synthesis-summary" class="text-xs text-slate-300 leading-relaxed italic">
+          Loading daily synthesis card...
+        </p>
+        <ul id="synthesis-highlights" class="text-xs text-slate-400 space-y-1.5 list-disc list-inside pt-1">
+        </ul>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex justify-between items-center text-xs">
+        <span class="text-slate-400">Briefing checklist state is saved automatically to local browser storage.</span>
+        <button onclick="resetBriefings()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded font-medium transition">Reset Daily Checklist</button>
+      </div>
+    </div>
+
+        <!-- TAB: PRAYER RECITATION & ARABIC LEARNING -->
+    <div id="tab-prayer-learning" class="tab-content space-y-6">
+      
+      <!-- Top Overview Banner -->
+      <div class="bg-gradient-to-r from-emerald-950/40 via-sky-950/30 to-emerald-950/40 border border-emerald-800/40 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-400">Quranic Arabic & Salah Mastery</span>
+          <h3 class="text-2xl font-extrabold text-white mt-1">Prayer Recitation, Phonetics & Vocabulary</h3>
+          <p class="text-xs text-slate-300 mt-1">Hear the correct pronunciation, read word-by-word roots, and recite with full cognitive presence.</p>
+        </div>
+        <div class="flex items-center gap-2 bg-slate-950/80 border border-emerald-500/30 px-3.5 py-2 rounded-xl text-xs text-emerald-300">
+          <i data-lucide="headphones" class="w-4 h-4 text-emerald-400"></i>
+          <span>Audio: <strong>Mahmoud Khalil Al-Husary (Mu'allim)</strong></span>
+        </div>
+      </div>
+
+      <!-- Verse-by-Verse Recitation Player: Surah Al-Fatihah -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+          <div>
+            <h4 class="text-lg font-bold text-white flex items-center gap-2">
+              <i data-lucide="book-open" class="text-emerald-400 w-5 h-5"></i> Surah Al-Fatihah (The Opening)
+            </h4>
+            <p class="text-xs text-slate-400">Recited in every unit (Rak'ah) of prayer. Click the audio icon to listen and repeat.</p>
+          </div>
+          <span class="text-xs bg-emerald-950 border border-emerald-800 text-emerald-300 px-2.5 py-1 rounded-full font-medium">Pillar of Salah</span>
+        </div>
+
+        <div class="space-y-3 pt-2 text-sm">
+          
+          <!-- Verse 1 -->
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-2xl sm:text-3xl text-emerald-300 font-serif text-right leading-loose tracking-wide" dir="rtl">
+          &#1576;&#1616;&#1587;&#1618;&#1605;&#1610; &#1575;&#1604;&#1604;&#1617;&#1614;&#1607;&#1616; &#1575;&#1604;&#1585;&#1617;&#1614;&#1581;&#1618;&#1605;&#1614;&#1648;&#1606;&#1616; &#1575;&#1604;&#1585;&#1617;&#1614;&#1581;&#1616;&#1610;&#1605;&#1616;
+        </div>
+        <p class="text-sm text-slate-300 font-mono">Bismi-ll&#257;hi r-Ra&#7717;m&#257;ni r-Ra&#7717;&#299;m</p>
+        <p class="text-xs text-slate-400 italic">"In the Name of Allah, the Entirely Merciful, the Especially Merciful."</p>
+        <div class="text-xs text-slate-400 flex flex-wrap gap-2 pt-1">
+          <span class="text-sky-400 font-semibold">Roots:</span> Ism (Name) &bull; A-L-H (God) &bull; R-H-M (Mercy, Compassion)
+        </div></div>
+            </div>
+            <button onclick="playVerseAudio('001001')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+
+          <!-- Verse 2 -->
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-2xl sm:text-3xl text-emerald-300 font-serif text-right leading-loose tracking-wide" dir="rtl">
+          &#1575;&#1604;&#1618;&#1581;&#1614;&#1605;&#1618;&#1583;&#1615; &#1604;&#1616;&#1604;&#1617;&#1614;&#1607;&#1616; &#1585;&#1614;&#1576;&#1617;&#1616; &#1575;&#1604;&#1618;&#1593;&#1614;&#1575;&#1604;&#1614;&#1605;&#1616;&#1610;&#1606;&#1614;
+        </div>
+        <p class="text-sm text-slate-300 font-mono">Al-&#7717;amdu lill&#257;hi Rabbi l-&#703;&#257;lam&#299;n</p>
+        <p class="text-xs text-slate-400 italic">"All praise and gratitude is due to Allah, Lord of all creation."</p>
+        <div class="text-xs text-slate-400 flex flex-wrap gap-2 pt-1">
+          <span class="text-sky-400 font-semibold">Roots:</span> H-M-D (Praise/Thanks) &bull; R-B-B (Lord, Sustainer) &bull; &#703;-L-M (The World/Creation)
+        </div></div>
+            </div>
+            <button onclick="playVerseAudio('001002')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+
+          <!-- Verse 3 -->
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-2xl sm:text-3xl text-emerald-300 font-serif text-right leading-loose tracking-wide" dir="rtl">
+          &#1575;&#1604;&#1585;&#1617;&#1614;&#1581;&#1618;&#1605;&#1614;&#1648;&#1606;&#1616; &#1575;&#1604;&#1585;&#1617;&#1614;&#1581;&#1616;&#1610;&#1605;&#1616;
+        </div>
+        <p class="text-sm text-slate-300 font-mono">Ar-Ra&#7717;m&#257;ni r-Ra&#7717;&#299;m</p>
+        <p class="text-xs text-slate-400 italic">"The Entirely Merciful, the Especially Merciful."</p>
+        <div class="text-xs text-slate-400 flex flex-wrap gap-2 pt-1">
+          <span class="text-sky-400 font-semibold">Roots:</span> R-H-M (Universal grace) &bull; R-H-M (Enduring specific mercy)
+        </div></div>
+            </div>
+            <button onclick="playVerseAudio('001003')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+
+          <!-- Verse 4 -->
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-lg font-serif text-right text-emerald-400 tracking-wide font-medium"> ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚ƒ‚ &bull; ‚ ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; </div>
+              <div class="text-xs text-slate-300 font-mono">M ‚¬„‚ƒ‚ &bull; ‚ &bull; liki yawmi d-d ‚¬„‚ƒ‚ &bull; ‚ &bull; n</div>
+              <div class="text-xs text-slate-400">"Master and Sovereign of the Day of Judgment."</div>
+              <div class="text-[11px] text-sky-400 pt-0.5"><strong>Roots:</strong> M-L-K (Sovereignty/Ownership)  ‚¬„‚ &bull; ‚ &bull; Y-W-M (Day)  ‚¬„‚ &bull; ‚ &bull; D-Y-N (Judgment/Account)</div>
+            </div>
+            <button onclick="playVerseAudio('001004')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+
+          <!-- Verse 5 -->
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-lg font-serif text-right text-emerald-400 tracking-wide font-medium"> ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚ƒ‚ &bull; ‚ ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚ƒ‚ &bull; ‚ ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; </div>
+              <div class="text-xs text-slate-300 font-mono">Iyy ‚¬„‚ƒ‚ &bull; ‚ &bull; ka na'budu wa iyy ‚¬„‚ƒ‚ &bull; ‚ &bull; ka nasta' ‚¬„‚ƒ‚ &bull; ‚ &bull; n</div>
+              <div class="text-xs text-slate-400">"You alone we worship, and You alone we ask for help."</div>
+              <div class="text-[11px] text-sky-400 pt-0.5"><strong>Roots:</strong> '-B-D (Worship/Devotion)  ‚¬„‚ &bull; ‚ &bull; '-W-N (Help/Assistance)</div>
+            </div>
+            <button onclick="playVerseAudio('001005')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+
+          <!-- Verse 6 -->
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-lg font-serif text-right text-emerald-400 tracking-wide font-medium"> ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; </div>
+              <div class="text-xs text-slate-300 font-mono">Ihdin ‚¬„‚ƒ‚ &bull; ‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ir ‚¬„‚ƒ‚ &bull; ‚ &bull; ‚¬„‚ &bull; a l-mustaq ‚¬„‚ƒ‚ &bull; ‚ &bull; m</div>
+              <div class="text-xs text-slate-400">"Guide us to the straight and upright path."</div>
+              <div class="text-[11px] text-sky-400 pt-0.5"><strong>Roots:</strong> H-D-Y (Guidance)  ‚¬„‚ &bull; ‚ &bull; ‚¬„‚ &bull; R- ‚¬„‚ &bull; (Path)  ‚¬„‚ &bull; ‚ &bull; Q-W-M (Straight/Upright)</div>
+            </div>
+            <button onclick="playVerseAudio('001006')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+
+          <!-- Verse 7 -->
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-lg font-serif text-right text-emerald-400 tracking-wide font-medium"> ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; </div>
+              <div class="text-xs text-slate-300 font-mono"> ‚¬„‚ &bull; ir ‚¬„‚ƒ‚ &bull; ‚ &bull; ‚¬„‚ &bull; a lladh ‚¬„‚ƒ‚ &bull; ‚ &bull; na an'amta 'alayhim, ghayri l-magh ‚¬„‚ &bull; ‚¬„‚ƒ‚ &bull; ‚ &bull; bi 'alayhim wa la  ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ƒ‚ &bull; ‚ &bull; ll ‚¬„‚ƒ‚ &bull; ‚ &bull; n</div>
+              <div class="text-xs text-slate-400">"The path of those upon whom You bestowed favor, not of those who earned anger, nor of those who are astray."</div>
+              <div class="text-[11px] text-sky-400 pt-0.5"><strong>Roots:</strong> N-'-M (Blessing/Favor)  ‚¬„‚ &bull; ‚ &bull; Gh- ‚¬„‚ &bull; ‚ƒ‚ &bull; ‚-B (Anger)  ‚¬„‚ &bull; ‚ &bull; ‚¬„‚ &bull; ‚ƒ‚ &bull; ‚-L-L (Astray)</div>
             </div>
             <button onclick="playVerseAudio('001007')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
               <i data-lucide="volume-2" class="w-4 h-4"></i> Play
@@ -133,16 +482,29 @@
           <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
             <span class="font-bold text-emerald-400 text-sm">Ruku' (Bowing Position)</span>
             <p class="text-slate-300 font-serif text-base"> ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; </p>
-            <p class="font-mono text-slate-400"><div class="text-right font-serif text-xl text-emerald-300 leading-loose mb-1" dir="rtl">&#1587;&#1615;&#1576;&#1618;&#1581;&#1614;&#1575;&#1606;&#1614; &#1585;&#1614;&#1576;&#1617;&#1616;&#1610;&#1614; &#1649;&#1604;&#1618;&#1593;&#1614;&#1592;&#1616;&#1610;&#1605;&#1616;</div><p class="font-semibold text-slate-200 text-sm"><div class="text-right font-serif text-xl text-emerald-300 leading-loose mb-1" dir="rtl">&#1587;&#1615;&#1576;&#1618;&#1581;&#1614;&#1575;&#1606;&#1614; &#1585;&#1614;&#1576;&#1617;&#1616;&#1610;&#1614; &#1649;&#1604;&#1618;&#1571;&#1614;&#1593;&#1618;&#1604;&#1614;&#1648;</div><p class="font-semibold text-slate-200 text-sm">Sub&#7717;&#257;na Rabbiya l-A&#699;l&#257; (x3)</p></p>
+            <p class="font-mono text-slate-400">Sub ‚¬„‚ &bull; ‚¬„‚ƒ‚ &bull; ‚ &bull; na Rabbiya l-'A ‚¬„‚ &bull; ‚¬„‚ƒ‚ &bull; ‚ &bull; m (x3)</p>
+            <p class="text-slate-400">"Glory be to my Lord, the Magnificent."</p>
+          </div>
+
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+            <span class="font-bold text-sky-400 text-sm">Rising from Bowing</span>
+            <p class="text-slate-300 font-serif text-base"> ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚ƒ‚ &bull; ‚ ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; </p>
+            <p class="font-mono text-slate-400">Sami'a All ‚¬„‚ƒ‚ &bull; ‚ &bull; hu li-man  ‚¬„‚ &bull; amidah  ‚¬„‚ &bull; ‚ &bull; Rabban ‚¬„‚ƒ‚ &bull; ‚ &bull; wa laka l- ‚¬„‚ &bull; amd</p>
+            <p class="text-slate-400">"Allah hears whoever praises Him. Our Lord, to You belongs all praise."</p>
+          </div>
+
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+            <span class="font-bold text-emerald-400 text-sm">Sujud (Prostration)</span>
+            <p class="text-slate-300 font-serif text-base"> ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; </p>
+            <p class="font-mono text-slate-400">Sub ‚¬„‚ &bull; ‚¬„‚ƒ‚ &bull; ‚ &bull; na Rabbiya l-A'l ‚¬„‚ƒ‚ &bull; ‚ &bull; (x3)</p>
             <p class="text-slate-400">"Glory be to my Lord, the Most High."</p>
           </div>
 
           <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
             <span class="font-bold text-purple-400 text-sm">Sitting Between Prostrations</span>
             <p class="text-slate-300 font-serif text-base"> ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚‚ƒ‚ &bull; ‚ƒ‚ &bull; ‚  ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; …‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; ‚¬„‚ &bull; </p>
-            <p class="font-mono text-slate-400"><div class="text-right font-serif text-xl text-emerald-300 leading-loose mb-1" dir="rtl">&#1585;&#1614;&#1576;&#1617;&#1616; &#1649;&#1594;&#1618;&#1601;&#1616;&#1585;&#1618; &#1604;&#1616;&#1610; &bull; &#1585;&#1614;&#1576;&#1617;&#1616; &#1649;&#1594;&#1618;&#1601;&#1616;&#1585;&#1618; &#1604;&#1616;&#1610;</div>
-              <p class="font-semibold text-slate-200 text-sm">Rabbi-ghfir l&#299; &bull; Rabbi-ghfir l&#299;</p>
-              <p class="text-xs text-slate-400 italic mb-2">"My Lord, forgive me. My Lord, forgive me."</p></p>
+            <p class="font-mono text-slate-400">Rabbi-ghfir l ‚¬„‚ƒ‚ &bull; ‚ &bull; Rabbi-ghfir l ‚¬„‚ƒ‚ &bull; ‚ &bull; </p>
+            <p class="text-slate-400">"My Lord, forgive me. My Lord, forgive me."</p>
           </div>
 
         </div>
