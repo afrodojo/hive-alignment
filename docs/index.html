@@ -30,9 +30,15 @@
       <div class="flex items-center gap-4">
         <a href="#science" onclick="showLandingView()" class="text-sm text-slate-300 hover:text-white transition hidden md:block">Science & Studies</a>
         <a href="#benefits" onclick="showLandingView()" class="text-sm text-slate-300 hover:text-white transition hidden md:block">Core Benefits</a>
-        <button type="button" onclick="showLoginModal()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-emerald-500/40 text-emerald-300 hover:text-white font-bold rounded-lg text-sm transition flex items-center gap-2 shadow-sm">
+        <button type="button" id="brother-login-btn" onclick="showLoginModal()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-emerald-500/40 text-emerald-300 hover:text-white font-bold rounded-lg text-sm transition flex items-center gap-2 shadow-sm">
           <i data-lucide="lock" class="w-4 h-4 text-emerald-400"></i> Brother Login
         </button>
+        <div id="auth-user-badge" class="hidden items-center gap-2">
+          <span id="auth-user-name" class="px-3 py-1.5 rounded-lg bg-emerald-950/70 border border-emerald-800/40 text-emerald-300 text-xs font-semibold"></span>
+          <button type="button" onclick="brotherSignOut()" class="px-3 py-1.5 bg-rose-950/50 hover:bg-rose-900/60 border border-rose-800/50 text-rose-300 hover:text-rose-100 font-semibold rounded-lg text-xs transition flex items-center gap-1.5 shadow-sm" title="Exit Sanctuary">
+            <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Exit
+          </button>
+        </div>
          <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Member Cockpit</button>
       </div>
     </div>
@@ -3410,6 +3416,14 @@ ${muhasabah}
 
         // Update nav badge
         const badge = document.getElementById('auth-user-badge');
+        // Hide login button, reveal user badge with sign out
+        const lBtn = document.getElementById('brother-login-btn');
+        if (lBtn) lBtn.classList.add('hidden');
+        const badge = document.getElementById('auth-user-badge');
+        if (badge) {
+          badge.classList.remove('hidden');
+          badge.classList.add('flex');
+        }
         const nameEl = document.getElementById('auth-user-name');
         if (badge) {
           badge.classList.remove('hidden');
@@ -3441,8 +3455,42 @@ ${muhasabah}
       }
     };
   </script>
+  <script>
+    window.brotherSignOut = async function() {
+      try {
+        if (supaClient) {
+          await supaClient.auth.signOut();
+        }
+      } catch (err) {
+        console.warn("Sign out notice:", err);
+      }
+
+      currentUserSession = null;
+      localStorage.removeItem('sb-' + SUPA_URL.split('//')[1].split('.')[0] + '-auth-token');
+
+      // Return to landing page
+      const landing = document.getElementById('landing-view');
+      const cockpit = document.getElementById('cockpit-view');
+      if (cockpit) cockpit.classList.add('hidden');
+      if (landing) landing.classList.remove('hidden');
+
+      // Reset badges & buttons
+      const userBadge = document.getElementById('auth-user-badge');
+      if (userBadge) {
+        userBadge.classList.add('hidden');
+        userBadge.classList.remove('flex');
+      }
+
+      const loginBtn = document.getElementById('brother-login-btn');
+      if (loginBtn) loginBtn.classList.remove('hidden');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (window.lucide) lucide.createIcons();
+    };
+  </script>
 </body>
 </html>
+
 
 
 
