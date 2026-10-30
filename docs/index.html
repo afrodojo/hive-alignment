@@ -1450,6 +1450,10 @@ ${muhasabah}
     document.addEventListener('DOMContentLoaded', loadDailyReflectionCard);
 
     function toggleCockpit(show) {
+      if (show && !currentUserSession) {
+        showLoginModal();
+        return;
+      }
       const landing = document.getElementById('landing-view');
       const cockpit = document.getElementById('cockpit-view');
       if (show) {
@@ -3314,6 +3318,7 @@ ${muhasabah}
   </script>
 </body>
 </html>
+
 
 
 
