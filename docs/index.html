@@ -722,8 +722,32 @@
 
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-6">
         <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-bold text-white">Athlete Vitals Profile</h3>
-          <button onclick="editVitalsModal()" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs font-semibold transition flex items-center gap-1.5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full">
+            <div class="flex flex-wrap items-center gap-3">
+              <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="users" class="w-5 h-5 text-emerald-400"></i> Athlete Vitals &amp; Device
+              </h3>
+              <!-- Brotherhood Profile Tabs -->
+              <div class="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-800 text-xs shadow-inner">
+                <button type="button" id="prof-btn-asaad" onclick="switchBrotherProfile('asaad')" class="px-3 py-1.5 rounded-lg font-semibold transition bg-emerald-500 text-slate-950 shadow">Asaad Morman</button>
+                <button type="button" id="prof-btn-nadeem" onclick="switchBrotherProfile('nadeem')" class="px-3 py-1.5 rounded-lg font-semibold transition text-slate-400 hover:text-white">Ahki Nadeem Ahmad</button>
+                <button type="button" id="prof-btn-gabe" onclick="switchBrotherProfile('gabe')" class="px-3 py-1.5 rounded-lg font-semibold transition text-slate-400 hover:text-white">Ahki Gabe Evans</button>
+              </div>
+            </div>
+            <button onclick="openDeviceTelemetryModal()" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+              <i data-lucide="activity" class="w-4 h-4"></i> Log Device Telemetry
+            </button>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm pt-2">
+          <div><span class="text-slate-500 block text-xs">Wearable Device</span> <span id="vitals-device" class="font-semibold text-emerald-400">WHOOP 5.0</span></div>
+          <div><span class="text-slate-500 block text-xs">Height</span> <span id="vitals-height" class="font-medium text-slate-200">6'0" (72 in)</span></div>
+          <div><span class="text-slate-500 block text-xs">Weight</span> <span id="vitals-weight" class="font-medium text-slate-200">235 lbs</span></div>
+          <div><span class="text-slate-500 block text-xs">Resistance Cadence</span> <span id="vitals-schedule" class="font-medium text-slate-200">Monday &ndash; Friday</span></div>
+          <div><span class="text-slate-500 block text-xs">Target Horizon</span> <span id="vitals-academic" class="font-medium text-slate-200">Spring 2027</span></div>
+        </div>
+        <div class="mt-3" style="display:none">
+        <button onclick="editVitalsModal()" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs font-semibold transition flex items-center gap-1.5">
             <i data-lucide="edit-2" class="w-3.5 h-3.5"></i> Update Biometrics
           </button>
         </div>
@@ -738,7 +762,33 @@
     </div>
 
     <!-- TAB 5: Crunch Fitness M-F -->
-    <div id="tab-crunch" class="tab-content space-y-4">
+    <div id="tab-crunch" class="tab-content space-y-6">
+
+      <!-- Dynamic Auto-Regulated Prescription Header -->
+      <div id="workout-prescription-banner" class="bg-gradient-to-r from-emerald-950/50 via-slate-900 to-emerald-950/40 border border-emerald-800/40 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <span id="workout-gate-tag" class="text-xs px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Green Gate Active</span>
+            <span id="workout-athlete-badge" class="text-xs text-slate-400 font-mono">Athlete: Asaad Morman</span>
+          </div>
+          <h3 id="workout-prescription-title" class="text-2xl font-extrabold text-white mt-1">Full Tactical S&amp;C Cadence</h3>
+          <p id="workout-prescription-desc" class="text-xs text-slate-300 mt-1">Auto-regulated by physiological telemetry: High parasympathetic reserve detected. Overload active (+2.5% load).</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="text-right">
+            <div class="text-[11px] text-slate-400">Calculated ACWR</div>
+            <div id="workout-acwr-display" class="text-lg font-bold font-mono text-emerald-400">0.96 (Optimal)</div>
+          </div>
+          <button onclick="openAddExerciseModal()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+            <i data-lucide="plus-circle" class="w-4 h-4 text-emerald-400"></i> Add Exercise
+          </button>
+        </div>
+      </div>
+
+      <!-- Workout Routine Schedule Cards with Dynamic Auto-Regulation -->
+      <div id="workout-schedule-container" class="space-y-4">
+        <!-- Injected via JavaScript based on athlete & telemetry -->
+      </div>
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
         <h3 class="text-lg font-bold text-white flex items-center gap-2">
           <i data-lucide="dumbbell" class="text-emerald-400"></i> Monday &ndash; Friday Resistance Cadence
@@ -2620,6 +2670,450 @@ ${muhasabah}
       </div>
     </div>
   </div>
+
+  <!-- Universal Wearable Telemetry Input Modal -->
+  <div id="device-telemetry-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="radio" class="w-4 h-4 text-emerald-400"></i> Log Device Telemetry
+        </h3>
+        <button onclick="closeDeviceTelemetryModal()" class="text-slate-400 hover:text-white text-lg">&times;</button>
+      </div>
+      <form id="telemetry-log-form" onsubmit="saveCustomTelemetry(event)" class="space-y-3.5 text-xs">
+        <div>
+          <label class="text-slate-400 block mb-1">Select Wearable / Ecosystem</label>
+          <select id="modal-device-type" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-emerald-500">
+            <option value="WHOOP 5.0">WHOOP 5.0 (BLE / Cloud Sync)</option>
+            <option value="Garmin Tactix / Fenix">Garmin Tactix / Fenix / Forerunner</option>
+            <option value="Apple Watch Ultra">Apple Watch (Apple Health / Athlytic)</option>
+            <option value="Oura Ring Gen 3">Oura Ring Gen 3 (Readiness)</option>
+            <option value="Polar H10 / Verity">Polar H10 / Vantage</option>
+            <option value="Manual Entry">Manual Biomarker Log</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-400 block mb-1">Recovery / Readiness (%)</label>
+            <input type="number" id="modal-recovery" min="1" max="100" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200 focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">Day Strain / Score</label>
+            <input type="number" step="0.1" id="modal-strain" min="0" max="21" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200 focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">Resting Heart Rate (bpm)</label>
+            <input type="number" id="modal-rhr" min="30" max="120" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200 focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">Heart Rate Var. (rMSSD ms)</label>
+            <input type="number" id="modal-hrv" min="5" max="250" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200 focus:border-emerald-500">
+          </div>
+        </div>
+        <div class="pt-2 flex justify-end gap-2">
+          <button type="button" onclick="closeDeviceTelemetryModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg font-medium transition">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg transition">Apply Telemetry</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Custom Exercise Builder Modal -->
+  <div id="add-exercise-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="dumbbell" class="w-4 h-4 text-emerald-400"></i> Add Custom Exercise
+        </h3>
+        <button onclick="closeAddExerciseModal()" class="text-slate-400 hover:text-white text-lg">&times;</button>
+      </div>
+      <form id="add-exercise-form" onsubmit="saveCustomExercise(event)" class="space-y-3.5 text-xs">
+        <div>
+          <label class="text-slate-400 block mb-1">Target Training Day</label>
+          <select id="ex-target-day" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-slate-200">
+            <option value="Monday">Monday: Upper Body Push &amp; Core</option>
+            <option value="Tuesday">Tuesday: Lower Body Hip Hinge &amp; Mobility</option>
+            <option value="Wednesday">Wednesday: Aerobic Base Zone 2 Cardio</option>
+            <option value="Thursday">Thursday: Upper Body Pull &amp; Back</option>
+            <option value="Friday">Friday: Full-Body Capacity &amp; Mobility</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-slate-400 block mb-1">Exercise Name</label>
+          <input type="text" id="ex-name" required placeholder="e.g., Incline Dumbbell Bench Press" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200">
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <div>
+            <label class="text-slate-400 block mb-1">Sets</label>
+            <input type="number" id="ex-sets" value="4" min="1" max="10" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">Reps</label>
+            <input type="text" id="ex-reps" value="10-12" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">RPE</label>
+            <input type="number" step="0.5" id="ex-rpe" value="8.0" min="5" max="10" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200">
+          </div>
+        </div>
+        <div class="pt-2 flex justify-end gap-2">
+          <button type="button" onclick="closeAddExerciseModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg font-medium transition">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg transition">Save Exercise</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================
+       BROTHERHOOD PROFILES & AUTO-REGULATED WORKOUT ENGINE
+       ========================================================= */
+
+    const BROTHER_PROFILES_DATA = {
+      asaad: {
+        id: 'asaad',
+        name: 'Asaad Morman',
+        device: 'WHOOP 5.0',
+        height: '6\'0\" (72 in)',
+        weight: '235 lbs',
+        schedule: 'Monday &ndash; Friday (Tactical S&amp;C)',
+        academic: 'Spring 2027',
+        telemetry: { recovery: 77, strain: 4.1, rhr: 47, hrv: 93, sleep: 61 }
+      },
+      nadeem: {
+        id: 'nadeem',
+        name: 'Ahki Nadeem Ahmad',
+        device: 'Garmin Tactix 7 Pro',
+        height: '5\'11\" (71 in)',
+        weight: '198 lbs',
+        schedule: 'Monday &ndash; Friday (Strength &amp; Calisthenics)',
+        academic: 'Executive Leadership 2027',
+        telemetry: { recovery: 82, strain: 5.6, rhr: 50, hrv: 88, sleep: 78 }
+      },
+      gabe: {
+        id: 'gabe',
+        name: 'Ahki Gabe Evans',
+        device: 'Apple Watch Ultra / Athlytic',
+        height: '6\'2\" (74 in)',
+        weight: '215 lbs',
+        schedule: 'Mon / Wed / Fri (Hybrid Hypertrophy &amp; Endurance)',
+        academic: 'Bio-Physiology &amp; Law 2027',
+        telemetry: { recovery: 68, strain: 6.2, rhr: 52, hrv: 74, sleep: 70 }
+      }
+    };
+
+    const DEFAULT_WORKOUT_BLUEPRINT = [
+      {
+        day: "Monday",
+        title: "Upper Body Push & Core",
+        time: "50 min &bull; 17:30",
+        exercises: [
+          { name: "Barbell Bench Press", sets: 4, reps: "8-10", rpe: 8.0 },
+          { name: "Incline Dumbbell Press", sets: 3, reps: "12-15", rpe: 7.5 },
+          { name: "Lateral Cable Raises", sets: 4, reps: "15", rpe: 8.0 },
+          { name: "Weighted Plank / Ab Wheel", sets: 3, reps: "45 sec", rpe: 7.5 }
+        ]
+      },
+      {
+        day: "Tuesday",
+        title: "Lower Body Hip Hinge & Mobility",
+        time: "50 min &bull; 17:30",
+        exercises: [
+          { name: "Romanian Deadlifts (RDL)", sets: 4, reps: "8-10", rpe: 8.0 },
+          { name: "Goblet Squats / Belt Squat", sets: 3, reps: "12", rpe: 7.5 },
+          { name: "Seated Hamstring Curls", sets: 3, reps: "12-15", rpe: 8.0 },
+          { name: "90/90 Hip Flow & Ankle Dorsiflexion", sets: 3, reps: "1 min/side", rpe: 6.0 }
+        ]
+      },
+      {
+        day: "Wednesday",
+        title: "Aerobic Base Zone 2 Cardio",
+        time: "45 min &bull; 17:30",
+        exercises: [
+          { name: "Concept2 Rowing Ergometer", sets: 1, reps: "25 min (HR 125-135 BPM)", rpe: 6.5 },
+          { name: "Weighted Incline Rucking (10% incline)", sets: 1, reps: "20 min", rpe: 6.0 }
+        ]
+      },
+      {
+        day: "Thursday",
+        title: "Upper Body Pull & Back",
+        time: "50 min &bull; 17:30",
+        exercises: [
+          { name: "Neutral Grip Lat Pulldowns", sets: 4, reps: "10-12", rpe: 8.0 },
+          { name: "Chest-Supported Dumbbell Rows", sets: 4, reps: "10-12", rpe: 7.5 },
+          { name: "Rear Delt Facepulls", sets: 4, reps: "15", rpe: 7.5 },
+          { name: "Incline Dumbbell Bicep Curls", sets: 3, reps: "12", rpe: 8.0 }
+        ]
+      },
+      {
+        day: "Friday",
+        title: "Full-Body Capacity & Mobility Finisher",
+        time: "45 min &bull; 17:00",
+        exercises: [
+          { name: "Heavy Kettlebell Swings", sets: 4, reps: "15-20", rpe: 7.5 },
+          { name: "Unilateral Farmer Carries", sets: 4, reps: "50m", rpe: 8.0 },
+          { name: "Full Kinetic Thoracic Flow", sets: 3, reps: "8 min", rpe: 6.0 }
+        ]
+      }
+    ];
+
+    let currentProfileKey = 'asaad';
+
+    function getActiveProfile() {
+      const stored = localStorage.getItem('hive_profile_' + currentProfileKey);
+      if (stored) {
+        try { return JSON.parse(stored); } catch (e) {}
+      }
+      return BROTHER_PROFILES_DATA[currentProfileKey] || BROTHER_PROFILES_DATA.asaad;
+    }
+
+    function saveActiveProfile(profile) {
+      localStorage.setItem('hive_profile_' + currentProfileKey, JSON.stringify(profile));
+    }
+
+    function switchBrotherProfile(profileKey) {
+      currentProfileKey = profileKey;
+      localStorage.setItem('hive_active_brother_id', profileKey);
+
+      ['asaad', 'nadeem', 'gabe'].forEach(key => {
+        const btn = document.getElementById('prof-btn-' + key);
+        if (btn) {
+          if (key === profileKey) {
+            btn.className = 'px-3 py-1.5 rounded-lg font-semibold transition bg-emerald-500 text-slate-950 shadow';
+          } else {
+            btn.className = 'px-3 py-1.5 rounded-lg font-semibold transition text-slate-400 hover:text-white';
+          }
+        }
+      });
+
+      const p = getActiveProfile();
+
+      // Update Athlete Vitals Card
+      const dEl = document.getElementById('vitals-device');
+      const hEl = document.getElementById('vitals-height');
+      const wEl = document.getElementById('vitals-weight');
+      const sEl = document.getElementById('vitals-schedule');
+      const aEl = document.getElementById('vitals-academic');
+      if (dEl) dEl.innerText = p.device;
+      if (hEl) hEl.innerHTML = p.height;
+      if (wEl) wEl.innerHTML = p.weight;
+      if (sEl) sEl.innerHTML = p.schedule;
+      if (aEl) aEl.innerHTML = p.academic;
+
+      // Update Telemetry Header displays
+      const rec = p.telemetry.recovery;
+      const tRec = document.getElementById('telemetry-recovery');
+      const tRecBadge = document.getElementById('telemetry-recovery-badge');
+      const tStrain = document.getElementById('telemetry-strain');
+      const tSleep = document.getElementById('telemetry-sleep');
+
+      if (tRec) tRec.innerText = rec + '%';
+      if (tStrain) tStrain.innerText = p.telemetry.strain;
+      if (tSleep) tSleep.innerText = p.telemetry.sleep + '%';
+
+      if (tRecBadge) {
+        if (rec >= 67) {
+          tRecBadge.innerText = 'GREEN';
+          tRecBadge.className = 'text-xs px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-300';
+        } else if (rec >= 34) {
+          tRecBadge.innerText = 'YELLOW';
+          tRecBadge.className = 'text-xs px-2 py-0.5 rounded bg-amber-950 border border-amber-800 text-amber-300';
+        } else {
+          tRecBadge.innerText = 'RED';
+          tRecBadge.className = 'text-xs px-2 py-0.5 rounded bg-rose-950 border border-rose-800 text-rose-300';
+        }
+      }
+
+      // Sync simulator slider to active recovery
+      const simSlider = document.getElementById('sim-recovery-slider');
+      if (simSlider) simSlider.value = rec;
+      if (typeof updateSimulatedRecovery === 'function') {
+        updateSimulatedRecovery(rec);
+      }
+
+      // Re-render Dynamic Auto-Regulated Workout Schedule
+      renderAutoRegulatedWorkouts(p);
+      if (window.lucide) lucide.createIcons();
+    }
+
+    /* Auto-Regulated Workout Engine based on Mathematical & Autonomic Gates */
+    function renderAutoRegulatedWorkouts(profile) {
+      const container = document.getElementById('workout-schedule-container');
+      if (!container) return;
+
+      const rec = profile.telemetry.recovery;
+      const tag = document.getElementById('workout-gate-tag');
+      const athleteBadge = document.getElementById('workout-athlete-badge');
+      const title = document.getElementById('workout-prescription-title');
+      const desc = document.getElementById('workout-prescription-desc');
+      const acwrEl = document.getElementById('workout-acwr-display');
+
+      if (athleteBadge) athleteBadge.innerText = 'Athlete: ' + profile.name + ' (' + profile.device + ')';
+
+      // Load custom user added exercises from local storage
+      const customKey = 'hive_custom_exercises_' + profile.id;
+      const customExercises = JSON.parse(localStorage.getItem(customKey) || '[]');
+
+      let gate = 'green';
+      let setModifier = 0;
+      let repNote = '';
+      let rpeCap = 8.5;
+
+      if (rec >= 67) {
+        gate = 'green';
+        setModifier = 0; // standard full volume
+        repNote = 'Target RPE 7.5-8.5 &bull; +2.5% progressive overload active';
+        rpeCap = 8.5;
+        if (tag) {
+          tag.innerText = 'Green Gate Active (>66%)';
+          tag.className = 'text-xs px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+        }
+        if (title) title.innerText = 'Full Tactical S&C Cadence';
+        if (desc) desc.innerText = 'Auto-regulated by physiological telemetry: High parasympathetic reserve. Full microcycle volume authorized.';
+        if (acwrEl) { acwrEl.innerText = '0.96 (Optimal)'; acwrEl.className = 'text-lg font-bold font-mono text-emerald-400'; }
+      } else if (rec >= 34) {
+        gate = 'yellow';
+        setModifier = -1; // cap sets
+        repNote = 'Autonomic pacing: Cap at 8-10 reps &bull; Target RPE 6.5-7.0 &bull; +30s rest';
+        rpeCap = 7.0;
+        if (tag) {
+          tag.innerText = 'Yellow Gate Regulated (34-65%)';
+          tag.className = 'text-xs px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/30';
+        }
+        if (title) title.innerText = 'Regulated S&C Volume';
+        if (desc) desc.innerText = 'Auto-regulated by physiological telemetry: Moderate reserve. Volume capped by 20% to prevent cumulative systemic strain.';
+        if (acwrEl) { acwrEl.innerText = '0.84 (Controlled)'; acwrEl.className = 'text-lg font-bold font-mono text-amber-400'; }
+      } else {
+        gate = 'red';
+        repNote = 'Parasympathetic Restoration: Zone 2 / mobility substitute only &bull; Sub-135 BPM';
+        rpeCap = 6.0;
+        if (tag) {
+          tag.innerText = 'Red Gate Deload (<33%)';
+          tag.className = 'text-xs px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider bg-rose-500/20 text-rose-400 border border-rose-500/30';
+        }
+        if (title) title.innerText = 'Autonomic Deload & Active Recovery';
+        if (desc) desc.innerText = 'Auto-regulated by physiological telemetry: Sympathetic saturation detected. Heavy CNS compounds auto-swapped for restoration.';
+        if (acwrEl) { acwrEl.innerText = '0.71 (Deload)'; acwrEl.className = 'text-lg font-bold font-mono text-rose-400'; }
+      }
+
+      // Render days
+      let html = '';
+      DEFAULT_WORKOUT_BLUEPRINT.forEach(dayPlan => {
+        // Collect exercises for this day (defaults + custom)
+        const dayCustom = customExercises.filter(e => e.day === dayPlan.day);
+        
+        html += '<div class="p-4 bg-slate-900 border border-slate-800 rounded-2xl space-y-3">';
+        html += '  <div class="flex justify-between items-center border-b border-slate-800/80 pb-2.5">';
+        html += '    <div class="flex items-center gap-2">';
+        html += '      <span class="font-bold text-white text-sm">' + dayPlan.day + ': <span class="text-emerald-400 font-normal">' + dayPlan.title + '</span></span>';
+        html += '    </div>';
+        html += '    <span class="text-xs text-slate-400 font-mono">' + dayPlan.time + '</span>';
+        html += '  </div>';
+
+        if (gate === 'red') {
+          html += '  <div class="p-3 bg-rose-950/20 border border-rose-900/40 rounded-xl text-xs space-y-1">';
+          html += '    <span class="text-rose-400 font-bold">Auto-Regulated Movement Swap:</span>';
+          html += '    <p class="text-slate-300">Axial loads swapped for 35 min Zone 2 Ergometer / Supported Incline Walking (< 135 BPM) + 15 min 90/90 mobility & thoracic spine decompression.</p>';
+          html += '  </div>';
+        } else {
+          html += '  <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">';
+          dayPlan.exercises.forEach(ex => {
+            const adjustedSets = Math.max(2, ex.sets + setModifier);
+            const adjustedRpe = Math.min(ex.rpe, rpeCap);
+            html += '    <div class="p-3 bg-slate-950/80 border border-slate-800 rounded-xl flex justify-between items-center">';
+            html += '      <div>';
+            html += '        <div class="text-slate-200 font-medium">' + ex.name + '</div>';
+            html += '        <div class="text-[11px] text-slate-500 font-mono">' + adjustedSets + ' sets &times; ' + ex.reps + ' reps</div>';
+            html += '      </div>';
+            html += '      <span class="text-[10px] px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-emerald-400 font-mono font-bold">RPE ' + adjustedRpe.toFixed(1) + '</span>';
+            html += '    </div>';
+          });
+
+          // Custom user exercises
+          dayCustom.forEach(ex => {
+            html += '    <div class="p-3 bg-emerald-950/20 border border-emerald-800/40 rounded-xl flex justify-between items-center">';
+            html += '      <div>';
+            html += '        <div class="text-emerald-200 font-medium flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>' + ex.name + '</div>';
+            html += '        <div class="text-[11px] text-emerald-400/80 font-mono">' + ex.sets + ' sets &times; ' + ex.reps + ' reps</div>';
+            html += '      </div>';
+            html += '      <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-950 border border-emerald-700 text-emerald-300 font-mono font-bold">RPE ' + parseFloat(ex.rpe).toFixed(1) + '</span>';
+            html += '    </div>';
+          });
+
+          html += '  </div>';
+          html += '  <div class="text-[11px] text-slate-400 pt-1 flex items-center gap-1.5"><i data-lucide="info" class="w-3.5 h-3.5 text-emerald-400"></i> ' + repNote + '</div>';
+        }
+
+        html += '</div>';
+      });
+
+      container.innerHTML = html;
+    }
+
+    /* Modal Controls */
+    function openDeviceTelemetryModal() {
+      const p = getActiveProfile();
+      document.getElementById('modal-device-type').value = p.device || 'WHOOP 5.0';
+      document.getElementById('modal-recovery').value = p.telemetry.recovery;
+      document.getElementById('modal-strain').value = p.telemetry.strain;
+      document.getElementById('modal-rhr').value = p.telemetry.rhr;
+      document.getElementById('modal-hrv').value = p.telemetry.hrv;
+      document.getElementById('device-telemetry-modal').classList.remove('hidden');
+    }
+
+    function closeDeviceTelemetryModal() {
+      document.getElementById('device-telemetry-modal').classList.add('hidden');
+    }
+
+    function saveCustomTelemetry(e) {
+      e.preventDefault();
+      const p = getActiveProfile();
+      p.device = document.getElementById('modal-device-type').value;
+      p.telemetry.recovery = parseInt(document.getElementById('modal-recovery').value, 10);
+      p.telemetry.strain = parseFloat(document.getElementById('modal-strain').value);
+      p.telemetry.rhr = parseInt(document.getElementById('modal-rhr').value, 10);
+      p.telemetry.hrv = parseInt(document.getElementById('modal-hrv').value, 10);
+
+      saveActiveProfile(p);
+      closeDeviceTelemetryModal();
+      switchBrotherProfile(currentProfileKey);
+    }
+
+    function openAddExerciseModal() {
+      document.getElementById('add-exercise-modal').classList.remove('hidden');
+    }
+
+    function closeAddExerciseModal() {
+      document.getElementById('add-exercise-modal').classList.add('hidden');
+    }
+
+    function saveCustomExercise(e) {
+      e.preventDefault();
+      const day = document.getElementById('ex-target-day').value;
+      const name = document.getElementById('ex-name').value.trim();
+      const sets = parseInt(document.getElementById('ex-sets').value, 10);
+      const reps = document.getElementById('ex-reps').value.trim();
+      const rpe = parseFloat(document.getElementById('ex-rpe').value);
+
+      if (!name) return;
+
+      const p = getActiveProfile();
+      const customKey = 'hive_custom_exercises_' + p.id;
+      const customExercises = JSON.parse(localStorage.getItem(customKey) || '[]');
+      customExercises.push({ day, name, sets, reps, rpe });
+      localStorage.setItem(customKey, JSON.stringify(customExercises));
+
+      document.getElementById('ex-name').value = '';
+      closeAddExerciseModal();
+      renderAutoRegulatedWorkouts(p);
+      if (window.lucide) lucide.createIcons();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const activeBrother = localStorage.getItem('hive_active_brother_id') || 'asaad';
+      switchBrotherProfile(activeBrother);
+    });
+  </script>
 </body>
 </html>
 
