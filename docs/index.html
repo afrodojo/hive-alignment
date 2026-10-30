@@ -3808,8 +3808,58 @@ ${muhasabah}
       });
     })();
   </script>
+
+  <!-- Cockpit Interaction Handlers -->
+  <script>
+    // Ensure all cockpit controls are globally reachable
+    window.toggleArabicTab = window.toggleArabicTab || function(tabId) {
+      document.querySelectorAll('.arabic-tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.arabic-tab-btn').forEach(el => el.classList.remove('bg-emerald-600', 'text-white'));
+      const target = document.getElementById(tabId);
+      if (target) target.classList.remove('hidden');
+    };
+
+    window.loadDialogueScenario = window.loadDialogueScenario || function(scenarioKey) {
+      console.log("Loading dialogue scenario:", scenarioKey);
+    };
+
+    window.saveCustomArabicPhrase = window.saveCustomArabicPhrase || function() {
+      const input = document.getElementById('custom-phrase-input');
+      if (input && input.value) {
+        console.log("Saving phrase:", input.value);
+        input.value = '';
+      }
+    };
+
+    window.startPhysiologicalSigh = window.startPhysiologicalSigh || function() {
+      console.log("Starting physiological sigh protocol");
+    };
+
+    window.startTacticalPause = window.startTacticalPause || function() {
+      console.log("Starting tactical pause protocol");
+    };
+
+    window.openManualNoteModal = window.openManualNoteModal || function() {
+      const modal = document.getElementById('manual-note-modal');
+      if (modal) modal.classList.remove('hidden');
+    };
+
+    window.openWebIngestModal = window.openWebIngestModal || function() {
+      const modal = document.getElementById('web-ingest-modal');
+      if (modal) modal.classList.remove('hidden');
+    };
+
+    window.loadScenario = window.loadScenario || function(key) {
+      console.log("Loading scenario:", key);
+    };
+
+    window.saveAuditState = window.saveAuditState || function(el) {
+      if (el) console.log("Audit state updated:", el.checked);
+    };
+  </script>
 </body>
 </html>
+
 
 
 
