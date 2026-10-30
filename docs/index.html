@@ -3598,34 +3598,60 @@ ${muhasabah}
       if (window.lucide) lucide.createIcons();
     };
 
-    // Trigger Supabase Password Reset Email
+        // Trigger Supabase Password Reset Email (Fail-safe on-demand initialization)
     window.handleSendResetEmail = async function(e) {
       if (e) e.preventDefault();
+      
       const emailInput = document.getElementById('reset-email-input');
       const btn = document.getElementById('reset-submit-btn');
       const msg = document.getElementById('reset-status-msg');
 
-      if (!emailInput || !supaClient) return;
+      if (!emailInput) return;
       const email = emailInput.value.trim().toLowerCase();
 
-      btn.disabled = true;
-      btn.innerText = 'Sending...';
-      msg.className = 'hidden';
+      if (msg) {
+        msg.className = 'hidden';
+        msg.innerText = '';
+      }
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Dispatching Reset Email...';
+      }
 
       try {
-        const { error } = await supaClient.auth.resetPasswordForEmail(email, {
-          redirectTo: window.location.origin + window.location.pathname
+        // Ensure client is alive before sending
+        if (!supaClient && window.supabase) {
+          supaClient = window.supabase.createClient(SUPA_URL, SUPA_ANON_KEY);
+        }
+
+        if (!supaClient) {
+          throw new Error("Supabase client is not available. Please refresh the page.");
+        }
+
+        const redirectUrl = window.location.origin + window.location.pathname;
+
+        const { data, error } = await supaClient.auth.resetPasswordForEmail(email, {
+          redirectTo: redirectUrl
         });
+
         if (error) throw error;
 
-        msg.className = 'p-2.5 bg-emerald-950/60 border border-emerald-800/60 text-emerald-300 rounded-lg text-[11px] block';
-        msg.innerText = 'Reset link sent! Check your email inbox to update your password.';
+        if (msg) {
+          msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block leading-relaxed';
+          msg.innerHTML = '<strong>Reset email sent!</strong><br>Check <em>' + email + '</em> for the recovery link to set your new password.';
+        }
       } catch (err) {
-        msg.className = 'p-2.5 bg-rose-950/60 border border-rose-800/60 text-rose-300 rounded-lg text-[11px] block';
-        msg.innerText = err.message || 'Error requesting password reset.';
+        console.error("Password reset failure:", err);
+        if (msg) {
+          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block leading-relaxed';
+          msg.innerText = err.message || 'Unable to dispatch reset link. Verify your email address.';
+        }
       } finally {
-        btn.disabled = false;
-        btn.innerText = 'Send Reset Instructions';
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = 'Send Reset Instructions';
+        }
       }
     };
 
@@ -3681,6 +3707,7 @@ ${muhasabah}
   </script>
 </body>
 </html>
+
 
 
 
