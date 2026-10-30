@@ -16,6 +16,7 @@
     .flip-back { transform: rotateY(180deg); }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-slate-950 min-h-screen flex flex-col">
 
@@ -3316,8 +3317,133 @@ ${muhasabah}
       }
     };
   </script>
+  <script>
+    // Brotherhood Auth Engine & Supabase Gateway
+    const SUPA_URL = 'https://jsyooxahstzrhipbocss.supabase.co';
+    const SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeW9veGFoc3R6cmhpcGJvY3NzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAzODU4ODEsImV4cCI6MjA1NTk2MTg4MX0.s7rX40zBf-K3v6wM_fH6f6N7P0S5j7G1v9L8s_Z3aBc';
+
+    let supaClient = null;
+    let currentUserSession = null;
+
+    try {
+      if (window.supabase && typeof window.supabase.createClient === 'function') {
+        supaClient = window.supabase.createClient(SUPA_URL, SUPA_ANON_KEY);
+      }
+    } catch (e) {
+      console.warn("Supabase initialization error:", e);
+    }
+
+    const BROTHER_EMAIL_MAP = {
+      'cyberdojosensei@gmail.com': 'asaad',
+      'mrevans3571894@yahoo.com': 'gabe',
+      'nadeem.ahmad4790@gmail.com': 'nadeem'
+    };
+
+    window.handleBrotherLogin = async function(e) {
+      if (e) e.preventDefault();
+
+      const emailInput = document.getElementById('auth-email-input');
+      const passInput = document.getElementById('auth-password-input');
+      const btn = document.getElementById('auth-submit-btn');
+      const errBox = document.getElementById('auth-error-msg');
+
+      if (!emailInput || !passInput) return;
+
+      const email = emailInput.value.trim().toLowerCase();
+      const password = passInput.value;
+
+      if (errBox) {
+        errBox.classList.add('hidden');
+        errBox.innerText = '';
+      }
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Verifying Sanctuary Access...';
+      }
+
+      try {
+        if (!supaClient && window.supabase) {
+          supaClient = window.supabase.createClient(SUPA_URL, SUPA_ANON_KEY);
+        }
+
+        if (!supaClient) {
+          throw new Error("Unable to connect to authentication gateway. Please refresh and try again.");
+        }
+
+        const { data, error } = await supaClient.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+
+        if (error) throw error;
+
+        currentUserSession = data.user;
+        const profileKey = BROTHER_EMAIL_MAP[email] || 'asaad';
+
+        // Close auth modal
+        const modal = document.getElementById('brotherhood-auth-modal');
+        if (modal) {
+          modal.classList.add('hidden');
+          modal.style.display = 'none';
+        }
+
+        // Open Member Cockpit view
+        const landing = document.getElementById('landing-view');
+        const cockpit = document.getElementById('cockpit-view');
+        if (landing) landing.classList.add('hidden');
+        if (cockpit) cockpit.classList.remove('hidden');
+
+        // Switch to authenticated brother's private profile
+        if (typeof switchBrotherProfile === 'function') {
+          switchBrotherProfile(profileKey);
+        }
+
+        // Hide profile pills to lock them into their own sandbox
+        const switcher = document.getElementById('prof-btn-asaad')?.parentElement;
+        if (switcher) switcher.style.display = 'none';
+
+        // Enforce Omega gated access
+        if (typeof enforceOmegaGate === 'function') {
+          enforceOmegaGate(profileKey);
+        }
+
+        // Update nav badge
+        const badge = document.getElementById('auth-user-badge');
+        const nameEl = document.getElementById('auth-user-name');
+        if (badge) {
+          badge.classList.remove('hidden');
+          badge.classList.add('flex');
+        }
+        if (nameEl && window.BROTHER_PROFILES_DATA && window.BROTHER_PROFILES_DATA[profileKey]) {
+          nameEl.innerText = window.BROTHER_PROFILES_DATA[profileKey].name;
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (window.lucide) lucide.createIcons();
+
+      } catch (err) {
+        console.error("Authentication failed:", err);
+        if (errBox) {
+          let msg = err.message || "Invalid credentials. Please verify your email and password.";
+          if (msg.includes("Email not confirmed")) {
+            msg = "Email not confirmed in Supabase. Check your inbox or disable email confirmation in Supabase Auth settings.";
+          }
+          errBox.innerText = msg;
+          errBox.classList.remove('hidden');
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i data-lucide="lock" class="w-3.5 h-3.5"></i> Enter Sanctuary';
+          if (window.lucide) lucide.createIcons();
+        }
+      }
+    };
+  </script>
 </body>
 </html>
+
 
 
 
