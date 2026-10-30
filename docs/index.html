@@ -2871,6 +2871,26 @@ ${muhasabah}
       localStorage.setItem('hive_profile_' + currentProfileKey, JSON.stringify(profile));
     }
 
+    
+    async function syncBrotherStatusToCloud(profile) {
+      if (!supaClient) return;
+      try {
+        const rec = profile.telemetry.recovery;
+        const gate = rec >= 67 ? 'GREEN' : (rec >= 34 ? 'YELLOW' : 'RED');
+        await supaClient.from('brotherhood_status').upsert({
+          brother_id: profile.id,
+          brother_name: profile.name,
+          device: profile.device,
+          recovery: rec,
+          strain: profile.telemetry.strain,
+          gate: gate,
+          last_active: new Date().toISOString()
+        });
+      } catch (e) {
+        console.warn('Silent cloud status sync fallback:', e);
+      }
+    }
+
     function switchBrotherProfile(profileKey) {
       currentProfileKey = profileKey;
       localStorage.setItem('hive_active_brother_id', profileKey);
@@ -2933,6 +2953,7 @@ ${muhasabah}
 
       // Re-render Dynamic Auto-Regulated Workout Schedule
       renderAutoRegulatedWorkouts(p);
+      syncBrotherStatusToCloud(p);
       if (window.lucide) lucide.createIcons();
     }
 
