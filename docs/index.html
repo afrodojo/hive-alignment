@@ -1385,7 +1385,7 @@ ${muhasabah}
       }).catch(err => {
         console.error("Clipboard copy failed:", err);
         prompt("Copy your summary below:", markdown);
-      });
+}
     }
     /* Dynamic Telemetry & Vitals Sync */
     async function loadTelemetryData() {
@@ -1504,8 +1504,7 @@ ${muhasabah}
         } else {
           btn.classList.add('text-slate-400');
         }
-      });
-
+}
       const activeTab = document.getElementById(tabId);
       if (activeTab) activeTab.classList.add('active');
 
@@ -1533,7 +1532,7 @@ ${muhasabah}
       player.play().catch(e => {
         console.warn('Audio playback error:', e);
         alert('Could not stream audio. Please ensure you are connected to the internet.');
-      });
+}
     }
 
     /* Flashcard Answer Toggle */
@@ -1557,8 +1556,7 @@ ${muhasabah}
       if (el && localStorage.getItem('hive_' + id) === 'true') {
         el.checked = true;
       }
-    });
-
+}
     function syncCheck(id) {
       const el = document.getElementById(id);
       if (el) localStorage.setItem('hive_' + id, el.checked ? 'true' : 'false');
@@ -1571,7 +1569,7 @@ ${muhasabah}
           el.checked = false;
           localStorage.removeItem('hive_' + id);
         }
-      });
+}
     }
 
     /* Muhasabah Storage */
@@ -1798,7 +1796,7 @@ ${muhasabah}
       }).catch(err => {
         console.error("Clipboard copy failed:", err);
         prompt("Copy your summary below:", markdown);
-      });
+}
     }
     /* Dynamic Telemetry & Vitals Sync */
     async function loadTelemetryData() {
@@ -1964,7 +1962,7 @@ ${muhasabah}
       }).catch(err => {
         console.error("Clipboard copy failed:", err);
         prompt("Copy your summary below:", markdown);
-      });
+}
     }
     /* Dynamic Telemetry & Vitals Sync */
     async function loadTelemetryData() {
@@ -2042,7 +2040,7 @@ ${muhasabah}
         i.category.toLowerCase().includes(q) || 
         i.tag.toLowerCase().includes(q) ||
         i.summary.toLowerCase().includes(q)
-      );
+
       renderVault(filtered);
     }
 
@@ -2246,7 +2244,7 @@ ${muhasabah}
       }).catch(err => {
         console.error("Clipboard copy failed:", err);
         prompt("Copy your summary below:", markdown);
-      });
+}
     }
     /* Dynamic Telemetry & Vitals Sync */
     async function loadTelemetryData() {
@@ -2334,8 +2332,7 @@ ${muhasabah}
               statusText.innerText = `Extracting text... ${(m.progress * 100).toFixed(0)}%`;
             }
           }
-        });
-
+}
         const extracted = result.data.text.trim();
         rawTextArea.value = extracted;
         spinner.classList.add('hidden');
@@ -2415,7 +2412,7 @@ ${muhasabah}
         vaultData.unshift(...savedCards);
         renderVault(vaultData);
       }
-    });
+}
   </script>
   <!-- Manual Note Taker & Card Editor Modal -->
   <div id="manual-note-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
@@ -2899,22 +2896,17 @@ ${muhasabah}
     }
 
     
-        async function syncBrotherStatusToCloud(profileKey, data) {
+            async function syncBrotherStatusToCloud(profileKey, data) {
       try {
         const client = window.supaClient || (typeof getSupaClient === 'function' ? getSupaClient() : null);
         if (!client) return;
-        
         await client.from('brotherhood_status').upsert({
           brother: profileKey,
           data: data,
           updated_at: new Date().toISOString()
         }, { onConflict: 'brother' });
       } catch (err) {
-        console.warn("Telemetry cloud sync bypass (RLS or offline):", err.message || err);
-      }
-    });
-      } catch (e) {
-        console.warn('Silent cloud status sync fallback:', e);
+        console.warn("Telemetry cloud sync bypass:", err.message || err);
       }
     }
 
@@ -2931,8 +2923,7 @@ ${muhasabah}
             btn.className = 'px-3 py-1.5 rounded-lg font-semibold transition text-slate-400 hover:text-white';
           }
         }
-      });
-
+}
       const p = getActiveProfile();
 
       // Update Athlete Vitals Card
@@ -3075,8 +3066,7 @@ ${muhasabah}
             html += '      </div>';
             html += '      <span class="text-[10px] px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-emerald-400 font-mono font-bold">RPE ' + adjustedRpe.toFixed(1) + '</span>';
             html += '    </div>';
-          });
-
+}
           // Custom user exercises
           dayCustom.forEach(ex => {
             html += '    <div class="p-3 bg-emerald-950/20 border border-emerald-800/40 rounded-xl flex justify-between items-center">';
@@ -3086,15 +3076,13 @@ ${muhasabah}
             html += '      </div>';
             html += '      <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-950 border border-emerald-700 text-emerald-300 font-mono font-bold">RPE ' + parseFloat(ex.rpe).toFixed(1) + '</span>';
             html += '    </div>';
-          });
-
+}
           html += '  </div>';
           html += '  <div class="text-[11px] text-slate-400 pt-1 flex items-center gap-1.5"><i data-lucide="info" class="w-3.5 h-3.5 text-emerald-400"></i> ' + repNote + '</div>';
         }
 
         html += '</div>';
-      });
-
+}
       container.innerHTML = html;
     }
 
@@ -3160,7 +3148,7 @@ ${muhasabah}
     document.addEventListener('DOMContentLoaded', () => {
       const activeBrother = localStorage.getItem('hive_active_brother_id') || 'asaad';
       switchBrotherProfile(activeBrother);
-    });
+}
   </script>
 
   <!-- Create Custom Workflow Modal -->
@@ -3654,7 +3642,7 @@ ${muhasabah}
 
           const { error } = await client.auth.resetPasswordForEmail(email, {
             redirectTo: window.location.origin + window.location.pathname
-          });
+}
           if (error) throw error;
 
           if (msg) {
@@ -3759,11 +3747,12 @@ ${muhasabah}
         if (window.location.hash.includes('type=recovery')) {
           setTimeout(window.showChangePasswordModal, 500);
         }
-      });
+}
     })();
   </script>
 </body>
 </html>
+
 
 
 
