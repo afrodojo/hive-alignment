@@ -3135,6 +3135,47 @@ ${muhasabah}
       switchBrotherProfile(activeBrother);
     });
   </script>
+
+  <!-- Create Custom Workflow Modal -->
+  <div id="create-workflow-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="git-branch" class="w-4 h-4 text-emerald-400"></i> Create Focus Workflow
+        </h3>
+        <button onclick="closeCreateWorkflowModal()" class="text-slate-400 hover:text-white text-lg">&times;</button>
+      </div>
+      <form id="create-workflow-form" onsubmit="saveCustomWorkflow(event)" class="space-y-3.5 text-xs">
+        <div>
+          <label class="text-slate-400 block mb-1">Workflow Title</label>
+          <input type="text" id="wf-title" required placeholder="e.g., 90-Min Deep Work Cognitive Sprint" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-slate-200 focus:border-emerald-500">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-400 block mb-1">Domain / Field</label>
+            <input type="text" id="wf-domain" required placeholder="e.g., Executive Strategy / Systems" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">Cadence / Duration</label>
+            <input type="text" id="wf-cadence" required placeholder="e.g., Daily &bull; 90 min" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200">
+          </div>
+        </div>
+        <div>
+          <label class="text-slate-400 block mb-1">Objective / Thesis</label>
+          <input type="text" id="wf-desc" required placeholder="Core intent or deliverable of this workflow..." class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200">
+        </div>
+        <div>
+          <label class="text-slate-400 block mb-1">Workflow Steps (One per line)</label>
+          <textarea id="wf-steps" rows="4" required placeholder="Phase 1: Zero distraction isolation & phone lockdown&#10;Phase 2: High-friction paper reading & margin annotations&#10;Phase 3: Synthesize core principles into 3 bullet points" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-slate-200 font-mono"></textarea>
+        </div>
+        <div class="pt-2 flex justify-end gap-2">
+          <button type="button" onclick="closeCreateWorkflowModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg font-medium transition">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg transition">Save Workflow</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 </body>
 </html>
 
