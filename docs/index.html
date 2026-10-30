@@ -17,6 +17,21 @@
   </style>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // Universal Global Supabase Instance Declaration
+    var SUPA_URL = 'https://jsyooxahstzrhipbocss.supabase.co';
+    var SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeW9veGFoc3R6cmhpcGJvY3NzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzODU1MTcsImV4cCI6MjEwODk2MTUxN30.BJXbrkrO-2IwRQHX38-YvWGkiFC7ONcfrq6fbY4OkNI';
+    var supaClient = null;
+
+    try {
+      if (window.supabase && typeof window.supabase.createClient === 'function') {
+        supaClient = window.supabase.createClient(SUPA_URL, SUPA_ANON_KEY);
+        window.supaClient = supaClient;
+      }
+    } catch (e) {
+      console.warn("Global supaClient initialisation:", e);
+    }
+  </script>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-slate-950 min-h-screen flex flex-col">
 
@@ -2884,20 +2899,20 @@ ${muhasabah}
     }
 
     
-    async function syncBrotherStatusToCloud(profile) {
-      if (!supaClient) return;
+        async function syncBrotherStatusToCloud(profileKey, data) {
       try {
-        const rec = profile.telemetry.recovery;
-        const gate = rec >= 67 ? 'GREEN' : (rec >= 34 ? 'YELLOW' : 'RED');
-        await supaClient.from('brotherhood_status').upsert({
-          brother_id: profile.id,
-          brother_name: profile.name,
-          device: profile.device,
-          recovery: rec,
-          strain: profile.telemetry.strain,
-          gate: gate,
-          last_active: new Date().toISOString()
-        });
+        const client = window.supaClient || (typeof getSupaClient === 'function' ? getSupaClient() : null);
+        if (!client) return;
+        
+        await client.from('brotherhood_status').upsert({
+          brother: profileKey,
+          data: data,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'brother' });
+      } catch (err) {
+        console.warn("Telemetry cloud sync bypass (RLS or offline):", err.message || err);
+      }
+    });
       } catch (e) {
         console.warn('Silent cloud status sync fallback:', e);
       }
@@ -3749,6 +3764,7 @@ ${muhasabah}
   </script>
 </body>
 </html>
+
 
 
 
