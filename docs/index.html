@@ -3655,44 +3655,73 @@ ${muhasabah}
       }
     };
 
-    // Handle Setting New Password in Supabase
+        // Handle Setting New Password in Supabase (Global client safe)
     window.handleUpdatePassword = async function(e) {
       if (e) e.preventDefault();
-      const newPass = document.getElementById('new-password-input').value;
-      const confirmPass = document.getElementById('confirm-password-input').value;
+      const newPassEl = document.getElementById('new-password-input');
+      const confirmPassEl = document.getElementById('confirm-password-input');
       const btn = document.getElementById('update-submit-btn');
       const msg = document.getElementById('update-status-msg');
 
+      if (!newPassEl || !confirmPassEl) return;
+      const newPass = newPassEl.value;
+      const confirmPass = confirmPassEl.value;
+
+      if (msg) {
+        msg.className = 'hidden';
+        msg.innerText = '';
+      }
+
       if (newPass !== confirmPass) {
-        msg.className = 'p-2.5 bg-rose-950/60 border border-rose-800/60 text-rose-300 rounded-lg text-[11px] block';
-        msg.innerText = 'Passwords do not match.';
+        if (msg) {
+          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block leading-relaxed';
+          msg.innerText = 'Passwords do not match.';
+        }
         return;
       }
 
-      btn.disabled = true;
-      btn.innerText = 'Updating Password...';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Updating Password...';
+      }
 
       try {
-        const { data, error } = await supaClient.auth.updateUser({
+        const client = (typeof window.getSupaClient === 'function') ? window.getSupaClient() : window.supaClient;
+        if (!client) {
+          throw new Error("Supabase auth engine not available. Please refresh the page.");
+        }
+
+        const { data, error } = await client.auth.updateUser({
           password: newPass
         });
         if (error) throw error;
 
-        msg.className = 'p-2.5 bg-emerald-950/60 border border-emerald-800/60 text-emerald-300 rounded-lg text-[11px] block';
-        msg.innerText = 'Sanctuary password successfully updated! Returning...';
+        if (msg) {
+          msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block leading-relaxed';
+          msg.innerText = 'Sanctuary password successfully updated! Entering cockpit...';
+        }
 
         setTimeout(() => {
-          closePasswordModal();
-          if (data && data.user) {
+          if (typeof closePasswordModal === 'function') closePasswordModal();
+          if (data && data.user && typeof handleAuthenticatedUser === 'function') {
             handleAuthenticatedUser(data.user);
+          } else {
+            window.location.hash = '';
+            window.location.reload();
           }
-        }, 1500);
+        }, 1200);
+
       } catch (err) {
-        msg.className = 'p-2.5 bg-rose-950/60 border border-rose-800/60 text-rose-300 rounded-lg text-[11px] block';
-        msg.innerText = err.message || 'Failed to update password.';
+        console.error("Password update error:", err);
+        if (msg) {
+          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block leading-relaxed';
+          msg.innerText = err.message || 'Failed to update password.';
+        }
       } finally {
-        btn.disabled = false;
-        btn.innerText = 'Save New Password';
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = 'Save New Password';
+        }
       }
     };
 
@@ -3774,6 +3803,7 @@ ${muhasabah}
   </script>
 </body>
 </html>
+
 
 
 
