@@ -29,7 +29,10 @@
       <div class="flex items-center gap-4">
         <a href="#science" onclick="showLandingView()" class="text-sm text-slate-300 hover:text-white transition hidden md:block">Science & Studies</a>
         <a href="#benefits" onclick="showLandingView()" class="text-sm text-slate-300 hover:text-white transition hidden md:block">Core Benefits</a>
-        <button onclick="toggleCockpit(true)" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg text-sm transition flex items-center gap-2">
+        <button type="button" onclick="showLoginModal()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-emerald-500/40 text-emerald-300 hover:text-white font-bold rounded-lg text-sm transition flex items-center gap-2 shadow-sm">
+          <i data-lucide="lock" class="w-4 h-4 text-emerald-400"></i> Brother Login
+        </button>
+         hover:bg-emerald-400 text-slate-950 font-bold rounded-lg text-sm transition flex items-center gap-2">
           <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Member Cockpit
         </button>
       </div>
@@ -3297,6 +3300,7 @@ ${muhasabah}
 
 </body>
 </html>
+
 
 
 
