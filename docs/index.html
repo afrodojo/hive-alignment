@@ -3705,8 +3705,76 @@ ${muhasabah}
       }
     });
   </script>
+  <script>
+    // Global Sanctuary Supabase Gateway
+    window.SUPA_URL = 'https://jsyooxahstzrhipbocss.supabase.co';
+    window.SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeW9veGFoc3R6cmhpcGJvY3NzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzODU1MTcsImV4cCI6MjEwODk2MTUxN30.BJXbrkrO-2IwRQHX38-YvWGkiFC7ONcfrq6fbY4OkNI';
+
+    window.getSupaClient = function() {
+      if (window.supaClient) return window.supaClient;
+      if (window.supabase && typeof window.supabase.createClient === 'function') {
+        window.supaClient = window.supabase.createClient(window.SUPA_URL, window.SUPA_ANON_KEY);
+        return window.supaClient;
+      }
+      return null;
+    };
+
+    // Trigger Supabase Password Reset Email
+    window.handleSendResetEmail = async function(e) {
+      if (e) e.preventDefault();
+      
+      const emailInput = document.getElementById('reset-email-input');
+      const btn = document.getElementById('reset-submit-btn');
+      const msg = document.getElementById('reset-status-msg');
+
+      if (!emailInput) return;
+      const email = emailInput.value.trim().toLowerCase();
+
+      if (msg) {
+        msg.className = 'hidden';
+        msg.innerText = '';
+      }
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Dispatching Reset Email...';
+      }
+
+      try {
+        const client = window.getSupaClient();
+        if (!client) {
+          throw new Error("Supabase auth engine not loaded. Please refresh the page.");
+        }
+
+        const redirectUrl = window.location.origin + window.location.pathname;
+
+        const { data, error } = await client.auth.resetPasswordForEmail(email, {
+          redirectTo: redirectUrl
+        });
+
+        if (error) throw error;
+
+        if (msg) {
+          msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block leading-relaxed';
+          msg.innerHTML = '<strong>Reset email sent!</strong><br>Check <em>' + email + '</em> for the recovery link to set your new password.';
+        }
+      } catch (err) {
+        console.error("Password reset failure:", err);
+        if (msg) {
+          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block leading-relaxed';
+          msg.innerText = err.message || 'Unable to dispatch reset link. Verify your email address.';
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = 'Send Reset Instructions';
+        }
+      }
+    };
+  </script>
 </body>
 </html>
+
 
 
 
