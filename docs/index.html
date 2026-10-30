@@ -17,21 +17,6 @@
   </style>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    // Universal Global Supabase Instance Declaration
-    var SUPA_URL = 'https://jsyooxahstzrhipbocss.supabase.co';
-    var SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeW9veGFoc3R6cmhpcGJvY3NzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzODU1MTcsImV4cCI6MjEwODk2MTUxN30.BJXbrkrO-2IwRQHX38-YvWGkiFC7ONcfrq6fbY4OkNI';
-    var supaClient = null;
-
-    try {
-      if (window.supabase && typeof window.supabase.createClient === 'function') {
-        supaClient = window.supabase.createClient(SUPA_URL, SUPA_ANON_KEY);
-        window.supaClient = supaClient;
-      }
-    } catch (e) {
-      console.warn("Global supaClient initialisation:", e);
-    }
-  </script>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-slate-950 min-h-screen flex flex-col">
 
@@ -45,15 +30,9 @@
       <div class="flex items-center gap-4">
         <a href="#science" onclick="showLandingView()" class="text-sm text-slate-300 hover:text-white transition hidden md:block">Science & Studies</a>
         <a href="#benefits" onclick="showLandingView()" class="text-sm text-slate-300 hover:text-white transition hidden md:block">Core Benefits</a>
-        <button type="button" id="brother-login-btn" onclick="showLoginModal()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-emerald-500/40 text-emerald-300 hover:text-white font-bold rounded-lg text-sm transition flex items-center gap-2 shadow-sm">
+        <button type="button" onclick="showLoginModal()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-emerald-500/40 text-emerald-300 hover:text-white font-bold rounded-lg text-sm transition flex items-center gap-2 shadow-sm">
           <i data-lucide="lock" class="w-4 h-4 text-emerald-400"></i> Brother Login
         </button>
-        <div id="auth-user-badge" class="hidden items-center gap-2">
-          <span id="auth-user-name" class="px-3 py-1.5 rounded-lg bg-emerald-950/70 border border-emerald-800/40 text-emerald-300 text-xs font-semibold"></span>
-          <button type="button" onclick="brotherSignOut()" class="px-3 py-1.5 bg-rose-950/50 hover:bg-rose-900/60 border border-rose-800/50 text-rose-300 hover:text-rose-100 font-semibold rounded-lg text-xs transition flex items-center gap-1.5 shadow-sm" title="Exit Sanctuary">
-            <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Exit
-          </button>
-        </div>
          <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Member Cockpit</button>
       </div>
     </div>
@@ -1385,7 +1364,7 @@ ${muhasabah}
       }).catch(err => {
         console.error("Clipboard copy failed:", err);
         prompt("Copy your summary below:", markdown);
-}
+      });
     }
     /* Dynamic Telemetry & Vitals Sync */
     async function loadTelemetryData() {
@@ -1504,7 +1483,8 @@ ${muhasabah}
         } else {
           btn.classList.add('text-slate-400');
         }
-}
+      });
+
       const activeTab = document.getElementById(tabId);
       if (activeTab) activeTab.classList.add('active');
 
@@ -1532,7 +1512,7 @@ ${muhasabah}
       player.play().catch(e => {
         console.warn('Audio playback error:', e);
         alert('Could not stream audio. Please ensure you are connected to the internet.');
-}
+      });
     }
 
     /* Flashcard Answer Toggle */
@@ -1556,7 +1536,8 @@ ${muhasabah}
       if (el && localStorage.getItem('hive_' + id) === 'true') {
         el.checked = true;
       }
-}
+    });
+
     function syncCheck(id) {
       const el = document.getElementById(id);
       if (el) localStorage.setItem('hive_' + id, el.checked ? 'true' : 'false');
@@ -1569,7 +1550,7 @@ ${muhasabah}
           el.checked = false;
           localStorage.removeItem('hive_' + id);
         }
-}
+      });
     }
 
     /* Muhasabah Storage */
@@ -1796,7 +1777,7 @@ ${muhasabah}
       }).catch(err => {
         console.error("Clipboard copy failed:", err);
         prompt("Copy your summary below:", markdown);
-}
+      });
     }
     /* Dynamic Telemetry & Vitals Sync */
     async function loadTelemetryData() {
@@ -1962,7 +1943,7 @@ ${muhasabah}
       }).catch(err => {
         console.error("Clipboard copy failed:", err);
         prompt("Copy your summary below:", markdown);
-}
+      });
     }
     /* Dynamic Telemetry & Vitals Sync */
     async function loadTelemetryData() {
@@ -2040,7 +2021,7 @@ ${muhasabah}
         i.category.toLowerCase().includes(q) || 
         i.tag.toLowerCase().includes(q) ||
         i.summary.toLowerCase().includes(q)
-
+      );
       renderVault(filtered);
     }
 
@@ -2244,7 +2225,7 @@ ${muhasabah}
       }).catch(err => {
         console.error("Clipboard copy failed:", err);
         prompt("Copy your summary below:", markdown);
-}
+      });
     }
     /* Dynamic Telemetry & Vitals Sync */
     async function loadTelemetryData() {
@@ -2332,7 +2313,8 @@ ${muhasabah}
               statusText.innerText = `Extracting text... ${(m.progress * 100).toFixed(0)}%`;
             }
           }
-}
+        });
+
         const extracted = result.data.text.trim();
         rawTextArea.value = extracted;
         spinner.classList.add('hidden');
@@ -2412,7 +2394,7 @@ ${muhasabah}
         vaultData.unshift(...savedCards);
         renderVault(vaultData);
       }
-}
+    });
   </script>
   <!-- Manual Note Taker & Card Editor Modal -->
   <div id="manual-note-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
@@ -2896,17 +2878,22 @@ ${muhasabah}
     }
 
     
-            async function syncBrotherStatusToCloud(profileKey, data) {
+    async function syncBrotherStatusToCloud(profile) {
+      if (!supaClient) return;
       try {
-        const client = window.supaClient || (typeof getSupaClient === 'function' ? getSupaClient() : null);
-        if (!client) return;
-        await client.from('brotherhood_status').upsert({
-          brother: profileKey,
-          data: data,
-          updated_at: new Date().toISOString()
-        }, { onConflict: 'brother' });
-      } catch (err) {
-        console.warn("Telemetry cloud sync bypass:", err.message || err);
+        const rec = profile.telemetry.recovery;
+        const gate = rec >= 67 ? 'GREEN' : (rec >= 34 ? 'YELLOW' : 'RED');
+        await supaClient.from('brotherhood_status').upsert({
+          brother_id: profile.id,
+          brother_name: profile.name,
+          device: profile.device,
+          recovery: rec,
+          strain: profile.telemetry.strain,
+          gate: gate,
+          last_active: new Date().toISOString()
+        });
+      } catch (e) {
+        console.warn('Silent cloud status sync fallback:', e);
       }
     }
 
@@ -2923,7 +2910,8 @@ ${muhasabah}
             btn.className = 'px-3 py-1.5 rounded-lg font-semibold transition text-slate-400 hover:text-white';
           }
         }
-}
+      });
+
       const p = getActiveProfile();
 
       // Update Athlete Vitals Card
@@ -3066,7 +3054,8 @@ ${muhasabah}
             html += '      </div>';
             html += '      <span class="text-[10px] px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-emerald-400 font-mono font-bold">RPE ' + adjustedRpe.toFixed(1) + '</span>';
             html += '    </div>';
-}
+          });
+
           // Custom user exercises
           dayCustom.forEach(ex => {
             html += '    <div class="p-3 bg-emerald-950/20 border border-emerald-800/40 rounded-xl flex justify-between items-center">';
@@ -3076,13 +3065,15 @@ ${muhasabah}
             html += '      </div>';
             html += '      <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-950 border border-emerald-700 text-emerald-300 font-mono font-bold">RPE ' + parseFloat(ex.rpe).toFixed(1) + '</span>';
             html += '    </div>';
-}
+          });
+
           html += '  </div>';
           html += '  <div class="text-[11px] text-slate-400 pt-1 flex items-center gap-1.5"><i data-lucide="info" class="w-3.5 h-3.5 text-emerald-400"></i> ' + repNote + '</div>';
         }
 
         html += '</div>';
-}
+      });
+
       container.innerHTML = html;
     }
 
@@ -3148,7 +3139,7 @@ ${muhasabah}
     document.addEventListener('DOMContentLoaded', () => {
       const activeBrother = localStorage.getItem('hive_active_brother_id') || 'asaad';
       switchBrotherProfile(activeBrother);
-}
+    });
   </script>
 
   <!-- Create Custom Workflow Modal -->
@@ -3204,7 +3195,7 @@ ${muhasabah}
         <p class="text-xs text-slate-400">Brotherhood Operations &bull; Private Access</p>
       </div>
 
-      <form id="brother-login-form" onsubmit="handleBrotherLogin(event); return false;" class="space-y-4 text-xs">
+      <form id="brother-login-form" onsubmit="handleBrotherLogin(event)" class="space-y-4 text-xs">
         <div>
           <label class="text-slate-400 block mb-1 font-medium">Brotherhood Email</label>
           <input type="email" id="auth-email-input" required placeholder="name@domain.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-emerald-500 text-xs">
@@ -3214,11 +3205,7 @@ ${muhasabah}
           <input type="password" id="auth-password-input" required placeholder="��������" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-emerald-500 text-xs">
         </div>
 
-                <div class="flex items-center justify-between text-[11px] pt-1">
-          <button type="button" onclick="showForgotPasswordView()" class="text-emerald-400 hover:text-emerald-300 underline underline-offset-2 transition">
-            Forgot password / Reset link
-          </button>
-        </div>
+        <div class="flex items-center justify-between text-[11px] pt-1"><button type="button" onclick="showForgotPasswordView()" class="text-emerald-400 hover:text-emerald-300 underline underline-offset-2 transition">Forgot password / Reset link</button></div>
         <div id="auth-error-msg" class="hidden p-2.5 bg-rose-950/50 border border-rose-900/50 rounded-lg text-rose-300 text-[11px] leading-tight"></div>
 
         <button type="submit" id="auth-submit-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl transition flex items-center justify-center gap-2 shadow-lg">
@@ -3331,56 +3318,144 @@ ${muhasabah}
       }
     };
   </script>
-  
   <script>
-    window.brotherSignOut = async function() {
+    // Brotherhood Auth Engine & Supabase Gateway
+    const SUPA_URL = 'https://jsyooxahstzrhipbocss.supabase.co';
+    const SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeW9veGFoc3R6cmhpcGJvY3NzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzODU1MTcsImV4cCI6MjEwODk2MTUxN30.BJXbrkrO-2IwRQHX38-YvWGkiFC7ONcfrq6fbY4OkNI';
+
+    let supaClient = null;
+    let currentUserSession = null;
+
+    try {
+      if (window.supabase && typeof window.supabase.createClient === 'function') {
+        supaClient = window.supabase.createClient(SUPA_URL, SUPA_ANON_KEY);
+      }
+    } catch (e) {
+      console.warn("Supabase initialization error:", e);
+    }
+
+    const BROTHER_EMAIL_MAP = {
+      'cyberdojosensei@gmail.com': 'asaad',
+      'mrevans3571894@yahoo.com': 'gabe',
+      'nadeem.ahmad4790@gmail.com': 'nadeem'
+    };
+
+    window.handleBrotherLogin = async function(e) {
+      if (e) e.preventDefault();
+
+      const emailInput = document.getElementById('auth-email-input');
+      const passInput = document.getElementById('auth-password-input');
+      const btn = document.getElementById('auth-submit-btn');
+      const errBox = document.getElementById('auth-error-msg');
+
+      if (!emailInput || !passInput) return;
+
+      const email = emailInput.value.trim().toLowerCase();
+      const password = passInput.value;
+
+      if (errBox) {
+        errBox.classList.add('hidden');
+        errBox.innerText = '';
+      }
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Verifying Sanctuary Access...';
+      }
+
       try {
-        if (supaClient) {
-          await supaClient.auth.signOut();
+        if (!supaClient && window.supabase) {
+          supaClient = window.supabase.createClient(SUPA_URL, SUPA_ANON_KEY);
         }
+
+        if (!supaClient) {
+          throw new Error("Unable to connect to authentication gateway. Please refresh and try again.");
+        }
+
+        const { data, error } = await supaClient.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+
+        if (error) throw error;
+
+        currentUserSession = data.user;
+        const profileKey = BROTHER_EMAIL_MAP[email] || 'asaad';
+
+        // Close auth modal
+        const modal = document.getElementById('brotherhood-auth-modal');
+        if (modal) {
+          modal.classList.add('hidden');
+          modal.style.display = 'none';
+        }
+
+        // Open Member Cockpit view
+        const landing = document.getElementById('landing-view');
+        const cockpit = document.getElementById('cockpit-view');
+        if (landing) landing.classList.add('hidden');
+        if (cockpit) cockpit.classList.remove('hidden');
+
+        // Switch to authenticated brother's private profile
+        if (typeof switchBrotherProfile === 'function') {
+          switchBrotherProfile(profileKey);
+        }
+
+        // Hide profile pills to lock them into their own sandbox
+        const switcher = document.getElementById('prof-btn-asaad')?.parentElement;
+        if (switcher) switcher.style.display = 'none';
+
+        // Enforce Omega gated access
+        if (typeof enforceOmegaGate === 'function') {
+          enforceOmegaGate(profileKey);
+        }
+
+        // Update nav badge
+        const badge = document.getElementById('auth-user-badge');
+        const nameEl = document.getElementById('auth-user-name');
+        if (badge) {
+          badge.classList.remove('hidden');
+          badge.classList.add('flex');
+        }
+        if (nameEl && window.BROTHER_PROFILES_DATA && window.BROTHER_PROFILES_DATA[profileKey]) {
+          nameEl.innerText = window.BROTHER_PROFILES_DATA[profileKey].name;
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (window.lucide) lucide.createIcons();
+
       } catch (err) {
-        console.warn("Sign out notice:", err);
+        console.error("Authentication failed:", err);
+        if (errBox) {
+          let msg = err.message || "Invalid credentials. Please verify your email and password.";
+          if (msg.includes("Email not confirmed")) {
+            msg = "Email not confirmed in Supabase. Check your inbox or disable email confirmation in Supabase Auth settings.";
+          }
+          errBox.innerText = msg;
+          errBox.classList.remove('hidden');
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i data-lucide="lock" class="w-3.5 h-3.5"></i> Enter Sanctuary';
+          if (window.lucide) lucide.createIcons();
+        }
       }
-
-      currentUserSession = null;
-      localStorage.removeItem('sb-' + SUPA_URL.split('//')[1].split('.')[0] + '-auth-token');
-
-      // Return to landing page
-      const landing = document.getElementById('landing-view');
-      const cockpit = document.getElementById('cockpit-view');
-      if (cockpit) cockpit.classList.add('hidden');
-      if (landing) landing.classList.remove('hidden');
-
-      // Reset badges & buttons
-      const userBadge = document.getElementById('auth-user-badge');
-      if (userBadge) {
-        userBadge.classList.add('hidden');
-        userBadge.classList.remove('flex');
-      }
-
-      const loginBtn = document.getElementById('brother-login-btn');
-      if (loginBtn) loginBtn.classList.remove('hidden');
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      if (window.lucide) lucide.createIcons();
     };
   </script>
 
-  <!-- Dedicated Password Reset / Update Modal -->
+  <!-- Hive Alignment Brotherhood Auth & Gateway Engine -->
   <div id="brotherhood-password-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[99999] hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-emerald-900/40 rounded-2xl max-w-sm w-full p-6 space-y-5 shadow-2xl relative">
       <button type="button" onclick="closePasswordModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition text-xl leading-none">&times;</button>
       
-      <!-- View 1: Send Password Reset Link -->
       <div id="pw-reset-request-view" class="space-y-4">
         <div class="text-center space-y-1">
           <div class="inline-flex p-3 rounded-2xl bg-emerald-950/70 border border-emerald-800/40 text-emerald-400 mb-1">
             <i data-lucide="key-round" class="w-6 h-6"></i>
           </div>
           <h3 class="text-lg font-bold text-white tracking-tight">Reset Password</h3>
-          <p class="text-xs text-slate-400">Receive a secure reset token or temporary login link</p>
+          <p class="text-xs text-slate-400">Receive a secure reset token</p>
         </div>
-
         <form id="forgot-password-form" onsubmit="handleSendResetEmail(event); return false;" class="space-y-3 text-xs">
           <div>
             <label class="text-slate-400 block mb-1 font-medium">Brotherhood Email</label>
@@ -3396,7 +3471,6 @@ ${muhasabah}
         </form>
       </div>
 
-      <!-- View 2: Set New Permanent Password -->
       <div id="pw-update-view" class="space-y-4 hidden">
         <div class="text-center space-y-1">
           <div class="inline-flex p-3 rounded-2xl bg-emerald-950/70 border border-emerald-800/40 text-emerald-400 mb-1">
@@ -3405,7 +3479,6 @@ ${muhasabah}
           <h3 class="text-lg font-bold text-white tracking-tight">Set New Password</h3>
           <p class="text-xs text-slate-400">Update temporary or forgotten credentials</p>
         </div>
-
         <form id="update-password-form" onsubmit="handleUpdatePassword(event); return false;" class="space-y-3 text-xs">
           <div>
             <label class="text-slate-400 block mb-1 font-medium">New Password</label>
@@ -3421,22 +3494,14 @@ ${muhasabah}
           </button>
         </form>
       </div>
-
     </div>
   </div>
 
-  
-  
-
-  
   <script>
-    // Unified Brotherhood Auth & Gateway Engine
     (function() {
       window.SUPA_URL = 'https://jsyooxahstzrhipbocss.supabase.co';
       window.SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeW9veGFoc3R6cmhpcGJvY3NzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzODU1MTcsImV4cCI6MjEwODk2MTUxN30.BJXbrkrO-2IwRQHX38-YvWGkiFC7ONcfrq6fbY4OkNI';
       
-      window.currentUserSession = null;
-
       window.getSupaClient = function() {
         if (window.supaClient) return window.supaClient;
         if (window.supabase && typeof window.supabase.createClient === 'function') {
@@ -3446,49 +3511,38 @@ ${muhasabah}
         return null;
       };
 
-      const EMAIL_MAP = {
+      try { window.getSupaClient(); } catch (e) {}
+
+      var EMAIL_MAP = {
         'cyberdojosensei@gmail.com': 'asaad',
         'mrevans3571894@yahoo.com': 'gabe',
         'nadeem.ahmad4790@gmail.com': 'nadeem'
       };
 
-      // Modal Triggers
       window.showLoginModal = function() {
-        const modal = document.getElementById('brotherhood-auth-modal');
-        if (modal) {
-          modal.classList.remove('hidden');
-          modal.style.display = 'flex';
-        }
+        var m = document.getElementById('brotherhood-auth-modal');
+        if (m) { m.classList.remove('hidden'); m.style.display = 'flex'; }
       };
 
       window.hideLoginModal = function() {
-        const modal = document.getElementById('brotherhood-auth-modal');
-        if (modal) {
-          modal.classList.add('hidden');
-          modal.style.display = 'none';
-        }
+        var m = document.getElementById('brotherhood-auth-modal');
+        if (m) { m.classList.add('hidden'); m.style.display = 'none'; }
       };
 
       window.showForgotPasswordView = function() {
         window.hideLoginModal();
-        const pwModal = document.getElementById('brotherhood-password-modal');
-        const resetView = document.getElementById('pw-reset-request-view');
-        const updateView = document.getElementById('pw-update-view');
-        if (pwModal) {
-          pwModal.classList.remove('hidden');
-          pwModal.style.display = 'flex';
-        }
-        if (resetView) resetView.classList.remove('hidden');
-        if (updateView) updateView.classList.add('hidden');
+        var pw = document.getElementById('brotherhood-password-modal');
+        var rView = document.getElementById('pw-reset-request-view');
+        var uView = document.getElementById('pw-update-view');
+        if (pw) { pw.classList.remove('hidden'); pw.style.display = 'flex'; }
+        if (rView) rView.classList.remove('hidden');
+        if (uView) uView.classList.add('hidden');
         if (window.lucide) lucide.createIcons();
       };
 
       window.closePasswordModal = function() {
-        const pwModal = document.getElementById('brotherhood-password-modal');
-        if (pwModal) {
-          pwModal.classList.add('hidden');
-          pwModal.style.display = 'none';
-        }
+        var pw = document.getElementById('brotherhood-password-modal');
+        if (pw) { pw.classList.add('hidden'); pw.style.display = 'none'; }
       };
 
       window.returnToLoginModal = function() {
@@ -3497,82 +3551,84 @@ ${muhasabah}
       };
 
       window.showChangePasswordModal = function() {
-        const pwModal = document.getElementById('brotherhood-password-modal');
-        const resetView = document.getElementById('pw-reset-request-view');
-        const updateView = document.getElementById('pw-update-view');
-        if (pwModal) {
-          pwModal.classList.remove('hidden');
-          pwModal.style.display = 'flex';
-        }
-        if (resetView) resetView.classList.add('hidden');
-        if (updateView) updateView.classList.remove('hidden');
+        var pw = document.getElementById('brotherhood-password-modal');
+        var rView = document.getElementById('pw-reset-request-view');
+        var uView = document.getElementById('pw-update-view');
+        if (pw) { pw.classList.remove('hidden'); pw.style.display = 'flex'; }
+        if (rView) rView.classList.add('hidden');
+        if (uView) uView.classList.remove('hidden');
         if (window.lucide) lucide.createIcons();
       };
 
-      // Handle Brother Login Submission
+      window.toggleCockpit = function(show) {
+        if (show && !window.currentUserSession) {
+          window.showLoginModal();
+          return;
+        }
+        var landing = document.getElementById('landing-view');
+        var cockpit = document.getElementById('cockpit-view');
+        if (show) {
+          if (landing) landing.classList.add('hidden');
+          if (cockpit) cockpit.classList.remove('hidden');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          if (cockpit) cockpit.classList.add('hidden');
+          if (landing) landing.classList.remove('hidden');
+        }
+        if (window.lucide) lucide.createIcons();
+      };
+
       window.handleBrotherLogin = async function(e) {
         if (e && e.preventDefault) e.preventDefault();
 
-        const emailInput = document.getElementById('auth-email-input');
-        const passInput = document.getElementById('auth-password-input');
-        const btn = document.getElementById('auth-submit-btn');
-        const errBox = document.getElementById('auth-error-msg');
+        var emailInput = document.getElementById('auth-email-input');
+        var passInput = document.getElementById('auth-password-input');
+        var btn = document.getElementById('auth-submit-btn');
+        var errBox = document.getElementById('auth-error-msg');
 
         if (!emailInput || !passInput) return false;
 
-        const email = emailInput.value.trim().toLowerCase();
-        const password = passInput.value;
+        var email = emailInput.value.trim().toLowerCase();
+        var password = passInput.value;
 
-        if (errBox) {
-          errBox.classList.add('hidden');
-          errBox.innerText = '';
-        }
-
+        if (errBox) { errBox.classList.add('hidden'); errBox.innerText = ''; }
         if (btn) {
           btn.disabled = true;
-          btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Verifying Credentials...';
+          btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Verifying...';
         }
 
         try {
-          const client = window.getSupaClient();
-          if (!client) {
-            throw new Error("Supabase auth engine not loaded. Please refresh.");
-          }
+          var client = window.getSupaClient();
+          if (!client) throw new Error("Auth service unavailable.");
 
-          const { data, error } = await client.auth.signInWithPassword({ email, password });
-          if (error) throw error;
+          var res = await client.auth.signInWithPassword({ email: email, password: password });
+          if (res.error) throw res.error;
 
-          window.currentUserSession = data.user;
-          const profileKey = EMAIL_MAP[email] || 'asaad';
+          window.currentUserSession = res.data.user;
+          var profileKey = EMAIL_MAP[email] || 'asaad';
 
           window.hideLoginModal();
 
-          // Unlock Member Cockpit
-          const landing = document.getElementById('landing-view');
-          const cockpit = document.getElementById('cockpit-view');
+          var landing = document.getElementById('landing-view');
+          var cockpit = document.getElementById('cockpit-view');
           if (landing) landing.classList.add('hidden');
           if (cockpit) cockpit.classList.remove('hidden');
 
-          // Header Badges
-          const lBtn = document.getElementById('brother-login-btn');
+          var lBtn = document.getElementById('brother-login-btn');
           if (lBtn) lBtn.classList.add('hidden');
 
-          const badge = document.getElementById('auth-user-badge');
-          const nameEl = document.getElementById('auth-user-name');
-          if (badge) {
-            badge.classList.remove('hidden');
-            badge.classList.add('flex');
-          }
+          var badge = document.getElementById('auth-user-badge');
+          var nameEl = document.getElementById('auth-user-name');
+          if (badge) { badge.classList.remove('hidden'); badge.classList.add('flex'); }
           if (nameEl && window.BROTHER_PROFILES_DATA && window.BROTHER_PROFILES_DATA[profileKey]) {
             nameEl.innerText = window.BROTHER_PROFILES_DATA[profileKey].name;
           }
 
-          // Lock profile & omega gates
           if (typeof switchBrotherProfile === 'function') switchBrotherProfile(profileKey);
           if (typeof enforceOmegaGate === 'function') enforceOmegaGate(profileKey);
 
-          const switcher = document.getElementById('prof-btn-asaad')?.parentElement;
-          if (switcher) switcher.style.display = 'none';
+          var switcher = document.getElementById('prof-btn-asaad');
+          if (switcher && switcher.parentElement) switcher.parentElement.style.display = 'none';
 
           window.scrollTo({ top: 0, behavior: 'smooth' });
           if (window.lucide) lucide.createIcons();
@@ -3593,42 +3649,35 @@ ${muhasabah}
         return false;
       };
 
-      // Handle Sign Out
       window.brotherSignOut = async function() {
         try {
-          const client = window.getSupaClient();
+          var client = window.getSupaClient();
           if (client) await client.auth.signOut();
-        } catch (err) {
-          console.warn("Sign out err:", err);
-        }
+        } catch (e) {}
         window.currentUserSession = null;
 
-        const landing = document.getElementById('landing-view');
-        const cockpit = document.getElementById('cockpit-view');
+        var landing = document.getElementById('landing-view');
+        var cockpit = document.getElementById('cockpit-view');
         if (cockpit) cockpit.classList.add('hidden');
         if (landing) landing.classList.remove('hidden');
 
-        const badge = document.getElementById('auth-user-badge');
-        if (badge) {
-          badge.classList.add('hidden');
-          badge.classList.remove('flex');
-        }
-        const lBtn = document.getElementById('brother-login-btn');
+        var badge = document.getElementById('auth-user-badge');
+        if (badge) { badge.classList.add('hidden'); badge.classList.remove('flex'); }
+        var lBtn = document.getElementById('brother-login-btn');
         if (lBtn) lBtn.classList.remove('hidden');
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
         if (window.lucide) lucide.createIcons();
       };
 
-      // Handle Send Reset Email
       window.handleSendResetEmail = async function(e) {
         if (e && e.preventDefault) e.preventDefault();
-        const emailInput = document.getElementById('reset-email-input');
-        const btn = document.getElementById('reset-submit-btn');
-        const msg = document.getElementById('reset-status-msg');
+        var emailInput = document.getElementById('reset-email-input');
+        var btn = document.getElementById('reset-submit-btn');
+        var msg = document.getElementById('reset-status-msg');
 
         if (!emailInput) return false;
-        const email = emailInput.value.trim().toLowerCase();
+        var email = emailInput.value.trim().toLowerCase();
 
         if (msg) msg.className = 'hidden';
         if (btn) {
@@ -3637,13 +3686,13 @@ ${muhasabah}
         }
 
         try {
-          const client = window.getSupaClient();
+          var client = window.getSupaClient();
           if (!client) throw new Error("Auth engine not loaded.");
 
-          const { error } = await client.auth.resetPasswordForEmail(email, {
+          var res = await client.auth.resetPasswordForEmail(email, {
             redirectTo: window.location.origin + window.location.pathname
-}
-          if (error) throw error;
+          });
+          if (res.error) throw res.error;
 
           if (msg) {
             msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block';
@@ -3657,21 +3706,20 @@ ${muhasabah}
         } finally {
           if (btn) {
             btn.disabled = false;
-            btn.innerText = 'Send Reset Instructions';
+            btn.innerHTML = 'Send Reset Instructions';
           }
         }
         return false;
       };
 
-      // Handle Update Password
       window.handleUpdatePassword = async function(e) {
         if (e && e.preventDefault) e.preventDefault();
-        const p1 = document.getElementById('new-password-input')?.value;
-        const p2 = document.getElementById('confirm-password-input')?.value;
-        const btn = document.getElementById('update-submit-btn');
-        const msg = document.getElementById('update-status-msg');
+        var p1 = document.getElementById('new-password-input');
+        var p2 = document.getElementById('confirm-password-input');
+        var btn = document.getElementById('update-submit-btn');
+        var msg = document.getElementById('update-status-msg');
 
-        if (p1 !== p2) {
+        if (!p1 || !p2 || p1.value !== p2.value) {
           if (msg) {
             msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
             msg.innerText = 'Passwords do not match.';
@@ -3681,21 +3729,21 @@ ${muhasabah}
 
         if (btn) {
           btn.disabled = true;
-          btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Updating...';
+          btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Saving...';
         }
 
         try {
-          const client = window.getSupaClient();
+          var client = window.getSupaClient();
           if (!client) throw new Error("Auth engine not loaded.");
 
-          const { data, error } = await client.auth.updateUser({ password: p1 });
-          if (error) throw error;
+          var res = await client.auth.updateUser({ password: p1.value });
+          if (res.error) throw res.error;
 
           if (msg) {
             msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block';
             msg.innerText = 'Password successfully updated!';
           }
-          setTimeout(() => {
+          setTimeout(function() {
             window.closePasswordModal();
             window.location.hash = '';
           }, 1200);
@@ -3707,33 +3755,43 @@ ${muhasabah}
         } finally {
           if (btn) {
             btn.disabled = false;
-            btn.innerText = 'Save New Password';
+            btn.innerHTML = 'Save New Password';
           }
         }
         return false;
       };
 
-      // Auto-restore session on page load
-      window.addEventListener('DOMContentLoaded', async () => {
+      window.syncBrotherStatusToCloud = async function(profileKey, data) {
         try {
-          const client = window.getSupaClient();
+          var client = window.getSupaClient();
+          if (!client) return;
+          await client.from('brotherhood_status').upsert({
+            brother: profileKey,
+            data: data,
+            updated_at: new Date().toISOString()
+          }, { onConflict: 'brother' });
+        } catch (err) {
+          console.warn("Telemetry sync bypass:", err.message || err);
+        }
+      };
+
+      window.addEventListener('DOMContentLoaded', async function() {
+        try {
+          var client = window.getSupaClient();
           if (!client) return;
 
-          const { data: { session } } = await client.auth.getSession();
-          if (session && session.user) {
-            window.currentUserSession = session.user;
-            const email = (session.user.email || '').toLowerCase();
-            const profileKey = EMAIL_MAP[email] || 'asaad';
+          var res = await client.auth.getSession();
+          if (res.data && res.data.session && res.data.session.user) {
+            window.currentUserSession = res.data.session.user;
+            var email = (window.currentUserSession.email || '').toLowerCase();
+            var profileKey = EMAIL_MAP[email] || 'asaad';
 
-            const lBtn = document.getElementById('brother-login-btn');
+            var lBtn = document.getElementById('brother-login-btn');
             if (lBtn) lBtn.classList.add('hidden');
 
-            const badge = document.getElementById('auth-user-badge');
-            const nameEl = document.getElementById('auth-user-name');
-            if (badge) {
-              badge.classList.remove('hidden');
-              badge.classList.add('flex');
-            }
+            var badge = document.getElementById('auth-user-badge');
+            var nameEl = document.getElementById('auth-user-name');
+            if (badge) { badge.classList.remove('hidden'); badge.classList.add('flex'); }
             if (nameEl && window.BROTHER_PROFILES_DATA && window.BROTHER_PROFILES_DATA[profileKey]) {
               nameEl.innerText = window.BROTHER_PROFILES_DATA[profileKey].name;
             }
@@ -3741,677 +3799,17 @@ ${muhasabah}
             if (typeof enforceOmegaGate === 'function') enforceOmegaGate(profileKey);
           }
         } catch (err) {
-          console.warn("Session restore check:", err);
+          console.warn("Session restore notice:", err);
         }
 
         if (window.location.hash.includes('type=recovery')) {
           setTimeout(window.showChangePasswordModal, 500);
         }
-}
+      });
     })();
-  </script>
-
-  <!-- Unified Sanctuary Gateway & Auth Controller -->
-  <script>
-    window.SUPA_URL = 'https://jsyooxahstzrhipbocss.supabase.co';
-    window.SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeW9veGFoc3R6cmhpcGJvY3NzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzODU1MTcsImV4cCI6MjEwODk2MTUxN30.BJXbrkrO-2IwRQHX38-YvWGkiFC7ONcfrq6fbY4OkNI';
-    window.supaClient = null;
-    window.currentUserSession = null;
-
-    window.getSupaClient = function() {
-      if (window.supaClient) return window.supaClient;
-      if (window.supabase && typeof window.supabase.createClient === 'function') {
-        window.supaClient = window.supabase.createClient(window.SUPA_URL, window.SUPA_ANON_KEY);
-        return window.supaClient;
-      }
-      return null;
-    };
-
-    try {
-      window.getSupaClient();
-    } catch(e) {}
-
-    var BROTHER_EMAIL_MAP = {
-      'cyberdojosensei@gmail.com': 'asaad',
-      'mrevans3571894@yahoo.com': 'gabe',
-      'nadeem.ahmad4790@gmail.com': 'nadeem'
-    };
-
-    window.showLoginModal = function() {
-      var m = document.getElementById('brotherhood-auth-modal');
-      if (m) { m.classList.remove('hidden'); m.style.display = 'flex'; }
-    };
-
-    window.hideLoginModal = function() {
-      var m = document.getElementById('brotherhood-auth-modal');
-      if (m) { m.classList.add('hidden'); m.style.display = 'none'; }
-    };
-
-    window.showForgotPasswordView = function() {
-      window.hideLoginModal();
-      var pw = document.getElementById('brotherhood-password-modal');
-      var rView = document.getElementById('pw-reset-request-view');
-      var uView = document.getElementById('pw-update-view');
-      if (pw) { pw.classList.remove('hidden'); pw.style.display = 'flex'; }
-      if (rView) rView.classList.remove('hidden');
-      if (uView) uView.classList.add('hidden');
-      if (window.lucide) lucide.createIcons();
-    };
-
-    window.closePasswordModal = function() {
-      var pw = document.getElementById('brotherhood-password-modal');
-      if (pw) { pw.classList.add('hidden'); pw.style.display = 'none'; }
-    };
-
-    window.returnToLoginModal = function() {
-      window.closePasswordModal();
-      window.showLoginModal();
-    };
-
-    window.showChangePasswordModal = function() {
-      var pw = document.getElementById('brotherhood-password-modal');
-      var rView = document.getElementById('pw-reset-request-view');
-      var uView = document.getElementById('pw-update-view');
-      if (pw) { pw.classList.remove('hidden'); pw.style.display = 'flex'; }
-      if (rView) rView.classList.add('hidden');
-      if (uView) uView.classList.remove('hidden');
-      if (window.lucide) lucide.createIcons();
-    };
-
-    // Gate cockpit behind active login session
-    window.toggleCockpit = function(show) {
-      if (show && !window.currentUserSession) {
-        window.showLoginModal();
-        return;
-      }
-      var landing = document.getElementById('landing-view');
-      var cockpit = document.getElementById('cockpit-view');
-      if (show) {
-        if (landing) landing.classList.add('hidden');
-        if (cockpit) cockpit.classList.remove('hidden');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        if (cockpit) cockpit.classList.add('hidden');
-        if (landing) landing.classList.remove('hidden');
-      }
-      if (window.lucide) lucide.createIcons();
-    };
-
-    // Process Brother Login
-    window.handleBrotherLogin = async function(e) {
-      if (e && e.preventDefault) e.preventDefault();
-
-      var emailInput = document.getElementById('auth-email-input');
-      var passInput = document.getElementById('auth-password-input');
-      var btn = document.getElementById('auth-submit-btn');
-      var errBox = document.getElementById('auth-error-msg');
-
-      if (!emailInput || !passInput) return false;
-
-      var email = emailInput.value.trim().toLowerCase();
-      var password = passInput.value;
-
-      if (errBox) { errBox.classList.add('hidden'); errBox.innerText = ''; }
-      if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Verifying...';
-      }
-
-      try {
-        var client = window.getSupaClient();
-        if (!client) throw new Error("Auth gateway unavailable. Please reload.");
-
-        var res = await client.auth.signInWithPassword({ email: email, password: password });
-        if (res.error) throw res.error;
-
-        window.currentUserSession = res.data.user;
-        var profileKey = BROTHER_EMAIL_MAP[email] || 'asaad';
-
-        window.hideLoginModal();
-
-        var landing = document.getElementById('landing-view');
-        var cockpit = document.getElementById('cockpit-view');
-        if (landing) landing.classList.add('hidden');
-        if (cockpit) cockpit.classList.remove('hidden');
-
-        var lBtn = document.getElementById('brother-login-btn');
-        if (lBtn) lBtn.classList.add('hidden');
-
-        var badge = document.getElementById('auth-user-badge');
-        var nameEl = document.getElementById('auth-user-name');
-        if (badge) { badge.classList.remove('hidden'); badge.classList.add('flex'); }
-        if (nameEl && window.BROTHER_PROFILES_DATA && window.BROTHER_PROFILES_DATA[profileKey]) {
-          nameEl.innerText = window.BROTHER_PROFILES_DATA[profileKey].name;
-        }
-
-        if (typeof switchBrotherProfile === 'function') switchBrotherProfile(profileKey);
-        if (typeof enforceOmegaGate === 'function') enforceOmegaGate(profileKey);
-
-        var switcher = document.getElementById('prof-btn-asaad');
-        if (switcher && switcher.parentElement) switcher.parentElement.style.display = 'none';
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        if (window.lucide) lucide.createIcons();
-
-      } catch (err) {
-        console.error("Login rejected:", err);
-        if (errBox) {
-          errBox.innerText = err.message || "Invalid email or password.";
-          errBox.classList.remove('hidden');
-        }
-      } finally {
-        if (btn) {
-          btn.disabled = false;
-          btn.innerHTML = '<i data-lucide="lock" class="w-3.5 h-3.5"></i> Enter Sanctuary';
-          if (window.lucide) lucide.createIcons();
-        }
-      }
-      return false;
-    };
-
-    // Exit Sanctuary / Sign Out
-    window.brotherSignOut = async function() {
-      try {
-        var client = window.getSupaClient();
-        if (client) await client.auth.signOut();
-      } catch (e) {}
-      window.currentUserSession = null;
-
-      var landing = document.getElementById('landing-view');
-      var cockpit = document.getElementById('cockpit-view');
-      if (cockpit) cockpit.classList.add('hidden');
-      if (landing) landing.classList.remove('hidden');
-
-      var badge = document.getElementById('auth-user-badge');
-      if (badge) { badge.classList.add('hidden'); badge.classList.remove('flex'); }
-      var lBtn = document.getElementById('brother-login-btn');
-      if (lBtn) lBtn.classList.remove('hidden');
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      if (window.lucide) lucide.createIcons();
-    };
-
-    // Password Reset Dispatch
-    window.handleSendResetEmail = async function(e) {
-      if (e && e.preventDefault) e.preventDefault();
-      var emailInput = document.getElementById('reset-email-input');
-      var btn = document.getElementById('reset-submit-btn');
-      var msg = document.getElementById('reset-status-msg');
-
-      if (!emailInput) return false;
-      var email = emailInput.value.trim().toLowerCase();
-
-      if (msg) msg.className = 'hidden';
-      if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Dispatching...';
-      }
-
-      try {
-        var client = window.getSupaClient();
-        if (!client) throw new Error("Auth engine not loaded.");
-
-        var res = await client.auth.resetPasswordForEmail(email, {
-          redirectTo: window.location.origin + window.location.pathname
-        });
-        if (res.error) throw res.error;
-
-        if (msg) {
-          msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block';
-          msg.innerHTML = 'Reset link sent! Check your email inbox.';
-        }
-      } catch (err) {
-        if (msg) {
-          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
-          msg.innerText = err.message || 'Error sending reset email.';
-        }
-      } finally {
-        if (btn) {
-          btn.disabled = false;
-          btn.innerHTML = 'Send Reset Instructions';
-        }
-      }
-      return false;
-    };
-
-    // Password Update
-    window.handleUpdatePassword = async function(e) {
-      if (e && e.preventDefault) e.preventDefault();
-      var p1 = document.getElementById('new-password-input');
-      var p2 = document.getElementById('confirm-password-input');
-      var btn = document.getElementById('update-submit-btn');
-      var msg = document.getElementById('update-status-msg');
-
-      if (!p1 || !p2 || p1.value !== p2.value) {
-        if (msg) {
-          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
-          msg.innerText = 'Passwords do not match.';
-        }
-        return false;
-      }
-
-      if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Saving...';
-      }
-
-      try {
-        var client = window.getSupaClient();
-        if (!client) throw new Error("Auth engine not loaded.");
-
-        var res = await client.auth.updateUser({ password: p1.value });
-        if (res.error) throw res.error;
-
-        if (msg) {
-          msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block';
-          msg.innerText = 'Password successfully updated!';
-        }
-        setTimeout(function() {
-          window.closePasswordModal();
-          window.location.hash = '';
-        }, 1200);
-      } catch (err) {
-        if (msg) {
-          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
-          msg.innerText = err.message || 'Failed to update password.';
-        }
-      } finally {
-        if (btn) {
-          btn.disabled = false;
-          btn.innerHTML = 'Save New Password';
-        }
-      }
-      return false;
-    };
-
-    // Safe Telemetry Sync
-    window.syncBrotherStatusToCloud = async function(profileKey, data) {
-      try {
-        var client = window.getSupaClient();
-        if (!client) return;
-        await client.from('brotherhood_status').upsert({
-          brother: profileKey,
-          data: data,
-          updated_at: new Date().toISOString()
-        }, { onConflict: 'brother' });
-      } catch (err) {
-        console.warn("Telemetry sync bypass:", err.message || err);
-      }
-    };
-
-    // Auto-restore session on page load
-    window.addEventListener('DOMContentLoaded', async function() {
-      try {
-        var client = window.getSupaClient();
-        if (!client) return;
-
-        var res = await client.auth.getSession();
-        if (res.data && res.data.session && res.data.session.user) {
-          window.currentUserSession = res.data.session.user;
-          var email = (window.currentUserSession.email || '').toLowerCase();
-          var profileKey = BROTHER_EMAIL_MAP[email] || 'asaad';
-
-          var lBtn = document.getElementById('brother-login-btn');
-          if (lBtn) lBtn.classList.add('hidden');
-
-          var badge = document.getElementById('auth-user-badge');
-          var nameEl = document.getElementById('auth-user-name');
-          if (badge) {
-            badge.classList.remove('hidden');
-            badge.classList.add('flex');
-          }
-          if (nameEl && window.BROTHER_PROFILES_DATA && window.BROTHER_PROFILES_DATA[profileKey]) {
-            nameEl.innerText = window.BROTHER_PROFILES_DATA[profileKey].name;
-          }
-          if (typeof switchBrotherProfile === 'function') switchBrotherProfile(profileKey);
-          if (typeof enforceOmegaGate === 'function') enforceOmegaGate(profileKey);
-        }
-      } catch (err) {
-        console.warn("Session restore notice:", err);
-      }
-
-      if (window.location.hash.includes('type=recovery')) {
-        setTimeout(window.showChangePasswordModal, 500);
-      }
-    });
-  </script>
-
-  <!-- Unified Sanctuary Gateway & Auth Controller -->
-  <script>
-    window.SUPA_URL = 'https://jsyooxahstzrhipbocss.supabase.co';
-    window.SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeW9veGFoc3R6cmhpcGJvY3NzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzODU1MTcsImV4cCI6MjEwODk2MTUxN30.BJXbrkrO-2IwRQHX38-YvWGkiFC7ONcfrq6fbY4OkNI';
-    window.supaClient = null;
-    window.currentUserSession = null;
-
-    window.getSupaClient = function() {
-      if (window.supaClient) return window.supaClient;
-      if (window.supabase && typeof window.supabase.createClient === 'function') {
-        window.supaClient = window.supabase.createClient(window.SUPA_URL, window.SUPA_ANON_KEY);
-        return window.supaClient;
-      }
-      return null;
-    };
-
-    try {
-      window.getSupaClient();
-    } catch(e) {}
-
-    var BROTHER_EMAIL_MAP = {
-      'cyberdojosensei@gmail.com': 'asaad',
-      'mrevans3571894@yahoo.com': 'gabe',
-      'nadeem.ahmad4790@gmail.com': 'nadeem'
-    };
-
-    window.showLoginModal = function() {
-      var m = document.getElementById('brotherhood-auth-modal');
-      if (m) { m.classList.remove('hidden'); m.style.display = 'flex'; }
-    };
-
-    window.hideLoginModal = function() {
-      var m = document.getElementById('brotherhood-auth-modal');
-      if (m) { m.classList.add('hidden'); m.style.display = 'none'; }
-    };
-
-    window.showForgotPasswordView = function() {
-      window.hideLoginModal();
-      var pw = document.getElementById('brotherhood-password-modal');
-      var rView = document.getElementById('pw-reset-request-view');
-      var uView = document.getElementById('pw-update-view');
-      if (pw) { pw.classList.remove('hidden'); pw.style.display = 'flex'; }
-      if (rView) rView.classList.remove('hidden');
-      if (uView) uView.classList.add('hidden');
-      if (window.lucide) lucide.createIcons();
-    };
-
-    window.closePasswordModal = function() {
-      var pw = document.getElementById('brotherhood-password-modal');
-      if (pw) { pw.classList.add('hidden'); pw.style.display = 'none'; }
-    };
-
-    window.returnToLoginModal = function() {
-      window.closePasswordModal();
-      window.showLoginModal();
-    };
-
-    window.showChangePasswordModal = function() {
-      var pw = document.getElementById('brotherhood-password-modal');
-      var rView = document.getElementById('pw-reset-request-view');
-      var uView = document.getElementById('pw-update-view');
-      if (pw) { pw.classList.remove('hidden'); pw.style.display = 'flex'; }
-      if (rView) rView.classList.add('hidden');
-      if (uView) uView.classList.remove('hidden');
-      if (window.lucide) lucide.createIcons();
-    };
-
-    // Gate cockpit behind active login session
-    window.toggleCockpit = function(show) {
-      if (show && !window.currentUserSession) {
-        window.showLoginModal();
-        return;
-      }
-      var landing = document.getElementById('landing-view');
-      var cockpit = document.getElementById('cockpit-view');
-      if (show) {
-        if (landing) landing.classList.add('hidden');
-        if (cockpit) cockpit.classList.remove('hidden');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        if (cockpit) cockpit.classList.add('hidden');
-        if (landing) landing.classList.remove('hidden');
-      }
-      if (window.lucide) lucide.createIcons();
-    };
-
-    // Process Brother Login
-    window.handleBrotherLogin = async function(e) {
-      if (e && e.preventDefault) e.preventDefault();
-
-      var emailInput = document.getElementById('auth-email-input');
-      var passInput = document.getElementById('auth-password-input');
-      var btn = document.getElementById('auth-submit-btn');
-      var errBox = document.getElementById('auth-error-msg');
-
-      if (!emailInput || !passInput) return false;
-
-      var email = emailInput.value.trim().toLowerCase();
-      var password = passInput.value;
-
-      if (errBox) { errBox.classList.add('hidden'); errBox.innerText = ''; }
-      if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Verifying...';
-      }
-
-      try {
-        var client = window.getSupaClient();
-        if (!client) throw new Error("Auth gateway unavailable. Please reload.");
-
-        var res = await client.auth.signInWithPassword({ email: email, password: password });
-        if (res.error) throw res.error;
-
-        window.currentUserSession = res.data.user;
-        var profileKey = BROTHER_EMAIL_MAP[email] || 'asaad';
-
-        window.hideLoginModal();
-
-        var landing = document.getElementById('landing-view');
-        var cockpit = document.getElementById('cockpit-view');
-        if (landing) landing.classList.add('hidden');
-        if (cockpit) cockpit.classList.remove('hidden');
-
-        var lBtn = document.getElementById('brother-login-btn');
-        if (lBtn) lBtn.classList.add('hidden');
-
-        var badge = document.getElementById('auth-user-badge');
-        var nameEl = document.getElementById('auth-user-name');
-        if (badge) { badge.classList.remove('hidden'); badge.classList.add('flex'); }
-        if (nameEl && window.BROTHER_PROFILES_DATA && window.BROTHER_PROFILES_DATA[profileKey]) {
-          nameEl.innerText = window.BROTHER_PROFILES_DATA[profileKey].name;
-        }
-
-        if (typeof switchBrotherProfile === 'function') switchBrotherProfile(profileKey);
-        if (typeof enforceOmegaGate === 'function') enforceOmegaGate(profileKey);
-
-        var switcher = document.getElementById('prof-btn-asaad');
-        if (switcher && switcher.parentElement) switcher.parentElement.style.display = 'none';
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        if (window.lucide) lucide.createIcons();
-
-      } catch (err) {
-        console.error("Login rejected:", err);
-        if (errBox) {
-          errBox.innerText = err.message || "Invalid email or password.";
-          errBox.classList.remove('hidden');
-        }
-      } finally {
-        if (btn) {
-          btn.disabled = false;
-          btn.innerHTML = '<i data-lucide="lock" class="w-3.5 h-3.5"></i> Enter Sanctuary';
-          if (window.lucide) lucide.createIcons();
-        }
-      }
-      return false;
-    };
-
-    // Exit Sanctuary / Sign Out
-    window.brotherSignOut = async function() {
-      try {
-        var client = window.getSupaClient();
-        if (client) await client.auth.signOut();
-      } catch (e) {}
-      window.currentUserSession = null;
-
-      var landing = document.getElementById('landing-view');
-      var cockpit = document.getElementById('cockpit-view');
-      if (cockpit) cockpit.classList.add('hidden');
-      if (landing) landing.classList.remove('hidden');
-
-      var badge = document.getElementById('auth-user-badge');
-      if (badge) { badge.classList.add('hidden'); badge.classList.remove('flex'); }
-      var lBtn = document.getElementById('brother-login-btn');
-      if (lBtn) lBtn.classList.remove('hidden');
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      if (window.lucide) lucide.createIcons();
-    };
-
-    // Password Reset Dispatch
-    window.handleSendResetEmail = async function(e) {
-      if (e && e.preventDefault) e.preventDefault();
-      var emailInput = document.getElementById('reset-email-input');
-      var btn = document.getElementById('reset-submit-btn');
-      var msg = document.getElementById('reset-status-msg');
-
-      if (!emailInput) return false;
-      var email = emailInput.value.trim().toLowerCase();
-
-      if (msg) msg.className = 'hidden';
-      if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Dispatching...';
-      }
-
-      try {
-        var client = window.getSupaClient();
-        if (!client) throw new Error("Auth engine not loaded.");
-
-        var res = await client.auth.resetPasswordForEmail(email, {
-          redirectTo: window.location.origin + window.location.pathname
-        });
-        if (res.error) throw res.error;
-
-        if (msg) {
-          msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block';
-          msg.innerHTML = 'Reset link sent! Check your email inbox.';
-        }
-      } catch (err) {
-        if (msg) {
-          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
-          msg.innerText = err.message || 'Error sending reset email.';
-        }
-      } finally {
-        if (btn) {
-          btn.disabled = false;
-          btn.innerHTML = 'Send Reset Instructions';
-        }
-      }
-      return false;
-    };
-
-    // Password Update
-    window.handleUpdatePassword = async function(e) {
-      if (e && e.preventDefault) e.preventDefault();
-      var p1 = document.getElementById('new-password-input');
-      var p2 = document.getElementById('confirm-password-input');
-      var btn = document.getElementById('update-submit-btn');
-      var msg = document.getElementById('update-status-msg');
-
-      if (!p1 || !p2 || p1.value !== p2.value) {
-        if (msg) {
-          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
-          msg.innerText = 'Passwords do not match.';
-        }
-        return false;
-      }
-
-      if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Saving...';
-      }
-
-      try {
-        var client = window.getSupaClient();
-        if (!client) throw new Error("Auth engine not loaded.");
-
-        var res = await client.auth.updateUser({ password: p1.value });
-        if (res.error) throw res.error;
-
-        if (msg) {
-          msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block';
-          msg.innerText = 'Password successfully updated!';
-        }
-        setTimeout(function() {
-          window.closePasswordModal();
-          window.location.hash = '';
-        }, 1200);
-      } catch (err) {
-        if (msg) {
-          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
-          msg.innerText = err.message || 'Failed to update password.';
-        }
-      } finally {
-        if (btn) {
-          btn.disabled = false;
-          btn.innerHTML = 'Save New Password';
-        }
-      }
-      return false;
-    };
-
-    // Safe Telemetry Sync
-    window.syncBrotherStatusToCloud = async function(profileKey, data) {
-      try {
-        var client = window.getSupaClient();
-        if (!client) return;
-        await client.from('brotherhood_status').upsert({
-          brother: profileKey,
-          data: data,
-          updated_at: new Date().toISOString()
-        }, { onConflict: 'brother' });
-      } catch (err) {
-        console.warn("Telemetry sync bypass:", err.message || err);
-      }
-    };
-
-    // Auto-restore session on page load
-    window.addEventListener('DOMContentLoaded', async function() {
-      try {
-        var client = window.getSupaClient();
-        if (!client) return;
-
-        var res = await client.auth.getSession();
-        if (res.data && res.data.session && res.data.session.user) {
-          window.currentUserSession = res.data.session.user;
-          var email = (window.currentUserSession.email || '').toLowerCase();
-          var profileKey = BROTHER_EMAIL_MAP[email] || 'asaad';
-
-          var lBtn = document.getElementById('brother-login-btn');
-          if (lBtn) lBtn.classList.add('hidden');
-
-          var badge = document.getElementById('auth-user-badge');
-          var nameEl = document.getElementById('auth-user-name');
-          if (badge) {
-            badge.classList.remove('hidden');
-            badge.classList.add('flex');
-          }
-          if (nameEl && window.BROTHER_PROFILES_DATA && window.BROTHER_PROFILES_DATA[profileKey]) {
-            nameEl.innerText = window.BROTHER_PROFILES_DATA[profileKey].name;
-          }
-          if (typeof switchBrotherProfile === 'function') switchBrotherProfile(profileKey);
-          if (typeof enforceOmegaGate === 'function') enforceOmegaGate(profileKey);
-        }
-      } catch (err) {
-        console.warn("Session restore notice:", err);
-      }
-
-      if (window.location.hash.includes('type=recovery')) {
-        setTimeout(window.showChangePasswordModal, 500);
-      }
-    });
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
 
 
 
