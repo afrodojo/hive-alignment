@@ -3176,6 +3176,41 @@ ${muhasabah}
     </div>
   </div>
 
+
+  <!-- Dedicated Brotherhood Authentication Overlay -->
+  <div id="brotherhood-auth-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[100] flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-emerald-900/40 rounded-2xl max-w-sm w-full p-6 space-y-5 shadow-2xl relative">
+      <div class="text-center space-y-1">
+        <div class="inline-flex p-3 rounded-2xl bg-emerald-950/70 border border-emerald-800/40 text-emerald-400 mb-2">
+          <i data-lucide="shield" class="w-7 h-7"></i>
+        </div>
+        <h3 class="text-xl font-extrabold text-white tracking-tight">Hive Alignment Sanctuary</h3>
+        <p class="text-xs text-slate-400">Brotherhood Operations &bull; Private Access</p>
+      </div>
+
+      <form id="brother-login-form" onsubmit="handleBrotherLogin(event)" class="space-y-4 text-xs">
+        <div>
+          <label class="text-slate-400 block mb-1 font-medium">Brotherhood Email</label>
+          <input type="email" id="auth-email-input" required placeholder="name@domain.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-emerald-500 text-xs">
+        </div>
+        <div>
+          <label class="text-slate-400 block mb-1 font-medium">Password</label>
+          <input type="password" id="auth-password-input" required placeholder="��������" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-emerald-500 text-xs">
+        </div>
+
+        <div id="auth-error-msg" class="hidden p-2.5 bg-rose-950/50 border border-rose-900/50 rounded-lg text-rose-300 text-[11px] leading-tight"></div>
+
+        <button type="submit" id="auth-submit-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl transition flex items-center justify-center gap-2 shadow-lg">
+          <i data-lucide="lock" class="w-3.5 h-3.5"></i> Enter Sanctuary
+        </button>
+      </form>
+
+      <div class="text-center text-[11px] text-slate-500 font-mono">
+        Tawasi bil-Haqq &bull; Tawasi bis-Sabr
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
 
