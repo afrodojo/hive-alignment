@@ -3328,138 +3328,7 @@ ${muhasabah}
       }
     };
   </script>
-  <script>
-    // Brotherhood Auth Engine & Supabase Gateway
-    const SUPA_URL = 'https://jsyooxahstzrhipbocss.supabase.co';
-    const SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeW9veGFoc3R6cmhpcGJvY3NzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzODU1MTcsImV4cCI6MjEwODk2MTUxN30.BJXbrkrO-2IwRQHX38-YvWGkiFC7ONcfrq6fbY4OkNI';
-
-    let supaClient = null;
-    let currentUserSession = null;
-
-    try {
-      if (window.supabase && typeof window.supabase.createClient === 'function') {
-        supaClient = window.supabase.createClient(SUPA_URL, SUPA_ANON_KEY);
-      }
-    } catch (e) {
-      console.warn("Supabase initialization error:", e);
-    }
-
-    const BROTHER_EMAIL_MAP = {
-      'cyberdojosensei@gmail.com': 'asaad',
-      'mrevans3571894@yahoo.com': 'gabe',
-      'nadeem.ahmad4790@gmail.com': 'nadeem'
-    };
-
-    window.handleBrotherLogin = async function(e) {
-      if (e) e.preventDefault();
-
-      const emailInput = document.getElementById('auth-email-input');
-      const passInput = document.getElementById('auth-password-input');
-      const btn = document.getElementById('auth-submit-btn');
-      const errBox = document.getElementById('auth-error-msg');
-
-      if (!emailInput || !passInput) return;
-
-      const email = emailInput.value.trim().toLowerCase();
-      const password = passInput.value;
-
-      if (errBox) {
-        errBox.classList.add('hidden');
-        errBox.innerText = '';
-      }
-
-      if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Verifying Sanctuary Access...';
-      }
-
-      try {
-        if (!supaClient && window.supabase) {
-          supaClient = window.supabase.createClient(SUPA_URL, SUPA_ANON_KEY);
-        }
-
-        if (!supaClient) {
-          throw new Error("Unable to connect to authentication gateway. Please refresh and try again.");
-        }
-
-        const { data, error } = await supaClient.auth.signInWithPassword({
-          email: email,
-          password: password
-        });
-
-        if (error) throw error;
-
-        currentUserSession = data.user;
-        const profileKey = BROTHER_EMAIL_MAP[email] || 'asaad';
-
-        // Close auth modal
-        const modal = document.getElementById('brotherhood-auth-modal');
-        if (modal) {
-          modal.classList.add('hidden');
-          modal.style.display = 'none';
-        }
-
-        // Open Member Cockpit view
-        const landing = document.getElementById('landing-view');
-        const cockpit = document.getElementById('cockpit-view');
-        if (landing) landing.classList.add('hidden');
-        if (cockpit) cockpit.classList.remove('hidden');
-
-        // Switch to authenticated brother's private profile
-        if (typeof switchBrotherProfile === 'function') {
-          switchBrotherProfile(profileKey);
-        }
-
-        // Hide profile pills to lock them into their own sandbox
-        const switcher = document.getElementById('prof-btn-asaad')?.parentElement;
-        if (switcher) switcher.style.display = 'none';
-
-        // Enforce Omega gated access
-        if (typeof enforceOmegaGate === 'function') {
-          enforceOmegaGate(profileKey);
-        }
-
-        // Update nav badge
-        const badge = document.getElementById('auth-user-badge');
-        // Hide login button, reveal user badge with sign out
-        const lBtn = document.getElementById('brother-login-btn');
-        if (lBtn) lBtn.classList.add('hidden');
-        const badge = document.getElementById('auth-user-badge');
-        if (badge) {
-          badge.classList.remove('hidden');
-          badge.classList.add('flex');
-        }
-        const nameEl = document.getElementById('auth-user-name');
-        if (badge) {
-          badge.classList.remove('hidden');
-          badge.classList.add('flex');
-        }
-        if (nameEl && window.BROTHER_PROFILES_DATA && window.BROTHER_PROFILES_DATA[profileKey]) {
-          nameEl.innerText = window.BROTHER_PROFILES_DATA[profileKey].name;
-        }
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        if (window.lucide) lucide.createIcons();
-
-      } catch (err) {
-        console.error("Authentication failed:", err);
-        if (errBox) {
-          let msg = err.message || "Invalid credentials. Please verify your email and password.";
-          if (msg.includes("Email not confirmed")) {
-            msg = "Email not confirmed in Supabase. Check your inbox or disable email confirmation in Supabase Auth settings.";
-          }
-          errBox.innerText = msg;
-          errBox.classList.remove('hidden');
-        }
-      } finally {
-        if (btn) {
-          btn.disabled = false;
-          btn.innerHTML = '<i data-lucide="lock" class="w-3.5 h-3.5"></i> Enter Sanctuary';
-          if (window.lucide) lucide.createIcons();
-        }
-      }
-    };
-  </script>
+  
   <script>
     window.brotherSignOut = async function() {
       try {
@@ -3553,269 +3422,135 @@ ${muhasabah}
     </div>
   </div>
 
+  
+  
+
+  
   <script>
-    // Password Recovery & Management Logic
-    window.showForgotPasswordView = function() {
-      const loginModal = document.getElementById('brotherhood-auth-modal');
-      const pwModal = document.getElementById('brotherhood-password-modal');
-      const resetView = document.getElementById('pw-reset-request-view');
-      const updateView = document.getElementById('pw-update-view');
-
-      if (loginModal) loginModal.classList.add('hidden');
-      if (pwModal) {
-        pwModal.classList.remove('hidden');
-        pwModal.style.display = 'flex';
-      }
-      if (resetView) resetView.classList.remove('hidden');
-      if (updateView) updateView.classList.add('hidden');
-      if (window.lucide) lucide.createIcons();
-    };
-
-    window.returnToLoginModal = function() {
-      closePasswordModal();
-      showLoginModal();
-    };
-
-    window.closePasswordModal = function() {
-      const pwModal = document.getElementById('brotherhood-password-modal');
-      if (pwModal) {
-        pwModal.classList.add('hidden');
-        pwModal.style.display = 'none';
-      }
-    };
-
-    window.showChangePasswordModal = function() {
-      const pwModal = document.getElementById('brotherhood-password-modal');
-      const resetView = document.getElementById('pw-reset-request-view');
-      const updateView = document.getElementById('pw-update-view');
-
-      if (pwModal) {
-        pwModal.classList.remove('hidden');
-        pwModal.style.display = 'flex';
-      }
-      if (resetView) resetView.classList.add('hidden');
-      if (updateView) updateView.classList.remove('hidden');
-      if (window.lucide) lucide.createIcons();
-    };
-
-        // Trigger Supabase Password Reset Email (Fail-safe on-demand initialization)
-    window.handleSendResetEmail = async function(e) {
-      if (e) e.preventDefault();
+    // Unified Brotherhood Auth & Gateway Engine
+    (function() {
+      window.SUPA_URL = 'https://jsyooxahstzrhipbocss.supabase.co';
+      window.SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeW9veGFoc3R6cmhpcGJvY3NzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzODU1MTcsImV4cCI6MjEwODk2MTUxN30.BJXbrkrO-2IwRQHX38-YvWGkiFC7ONcfrq6fbY4OkNI';
       
-      const emailInput = document.getElementById('reset-email-input');
-      const btn = document.getElementById('reset-submit-btn');
-      const msg = document.getElementById('reset-status-msg');
+      window.currentUserSession = null;
 
-      if (!emailInput) return;
-      const email = emailInput.value.trim().toLowerCase();
+      window.getSupaClient = function() {
+        if (window.supaClient) return window.supaClient;
+        if (window.supabase && typeof window.supabase.createClient === 'function') {
+          window.supaClient = window.supabase.createClient(window.SUPA_URL, window.SUPA_ANON_KEY);
+          return window.supaClient;
+        }
+        return null;
+      };
 
-      if (msg) {
-        msg.className = 'hidden';
-        msg.innerText = '';
-      }
+      const EMAIL_MAP = {
+        'cyberdojosensei@gmail.com': 'asaad',
+        'mrevans3571894@yahoo.com': 'gabe',
+        'nadeem.ahmad4790@gmail.com': 'nadeem'
+      };
 
-      if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Dispatching Reset Email...';
-      }
+      // Modal Triggers
+      window.showLoginModal = function() {
+        const modal = document.getElementById('brotherhood-auth-modal');
+        if (modal) {
+          modal.classList.remove('hidden');
+          modal.style.display = 'flex';
+        }
+      };
 
-      try {
-        // Ensure client is alive before sending
-        if (!supaClient && window.supabase) {
-          supaClient = window.supabase.createClient(SUPA_URL, SUPA_ANON_KEY);
+      window.hideLoginModal = function() {
+        const modal = document.getElementById('brotherhood-auth-modal');
+        if (modal) {
+          modal.classList.add('hidden');
+          modal.style.display = 'none';
+        }
+      };
+
+      window.showForgotPasswordView = function() {
+        window.hideLoginModal();
+        const pwModal = document.getElementById('brotherhood-password-modal');
+        const resetView = document.getElementById('pw-reset-request-view');
+        const updateView = document.getElementById('pw-update-view');
+        if (pwModal) {
+          pwModal.classList.remove('hidden');
+          pwModal.style.display = 'flex';
+        }
+        if (resetView) resetView.classList.remove('hidden');
+        if (updateView) updateView.classList.add('hidden');
+        if (window.lucide) lucide.createIcons();
+      };
+
+      window.closePasswordModal = function() {
+        const pwModal = document.getElementById('brotherhood-password-modal');
+        if (pwModal) {
+          pwModal.classList.add('hidden');
+          pwModal.style.display = 'none';
+        }
+      };
+
+      window.returnToLoginModal = function() {
+        window.closePasswordModal();
+        window.showLoginModal();
+      };
+
+      window.showChangePasswordModal = function() {
+        const pwModal = document.getElementById('brotherhood-password-modal');
+        const resetView = document.getElementById('pw-reset-request-view');
+        const updateView = document.getElementById('pw-update-view');
+        if (pwModal) {
+          pwModal.classList.remove('hidden');
+          pwModal.style.display = 'flex';
+        }
+        if (resetView) resetView.classList.add('hidden');
+        if (updateView) updateView.classList.remove('hidden');
+        if (window.lucide) lucide.createIcons();
+      };
+
+      // Handle Brother Login Submission
+      window.handleBrotherLogin = async function(e) {
+        if (e && e.preventDefault) e.preventDefault();
+
+        const emailInput = document.getElementById('auth-email-input');
+        const passInput = document.getElementById('auth-password-input');
+        const btn = document.getElementById('auth-submit-btn');
+        const errBox = document.getElementById('auth-error-msg');
+
+        if (!emailInput || !passInput) return false;
+
+        const email = emailInput.value.trim().toLowerCase();
+        const password = passInput.value;
+
+        if (errBox) {
+          errBox.classList.add('hidden');
+          errBox.innerText = '';
         }
 
-        if (!supaClient) {
-          throw new Error("Supabase client is not available. Please refresh the page.");
-        }
-
-        const redirectUrl = window.location.origin + window.location.pathname;
-
-        const { data, error } = await supaClient.auth.resetPasswordForEmail(email, {
-          redirectTo: redirectUrl
-        });
-
-        if (error) throw error;
-
-        if (msg) {
-          msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block leading-relaxed';
-          msg.innerHTML = '<strong>Reset email sent!</strong><br>Check <em>' + email + '</em> for the recovery link to set your new password.';
-        }
-      } catch (err) {
-        console.error("Password reset failure:", err);
-        if (msg) {
-          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block leading-relaxed';
-          msg.innerText = err.message || 'Unable to dispatch reset link. Verify your email address.';
-        }
-      } finally {
         if (btn) {
-          btn.disabled = false;
-          btn.innerHTML = 'Send Reset Instructions';
-        }
-      }
-    };
-
-        // Handle Setting New Password in Supabase (Global client safe)
-    window.handleUpdatePassword = async function(e) {
-      if (e) e.preventDefault();
-      const newPassEl = document.getElementById('new-password-input');
-      const confirmPassEl = document.getElementById('confirm-password-input');
-      const btn = document.getElementById('update-submit-btn');
-      const msg = document.getElementById('update-status-msg');
-
-      if (!newPassEl || !confirmPassEl) return;
-      const newPass = newPassEl.value;
-      const confirmPass = confirmPassEl.value;
-
-      if (msg) {
-        msg.className = 'hidden';
-        msg.innerText = '';
-      }
-
-      if (newPass !== confirmPass) {
-        if (msg) {
-          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block leading-relaxed';
-          msg.innerText = 'Passwords do not match.';
-        }
-        return;
-      }
-
-      if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Updating Password...';
-      }
-
-      try {
-        const client = (typeof window.getSupaClient === 'function') ? window.getSupaClient() : window.supaClient;
-        if (!client) {
-          throw new Error("Supabase auth engine not available. Please refresh the page.");
+          btn.disabled = true;
+          btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Verifying Credentials...';
         }
 
-        const { data, error } = await client.auth.updateUser({
-          password: newPass
-        });
-        if (error) throw error;
-
-        if (msg) {
-          msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block leading-relaxed';
-          msg.innerText = 'Sanctuary password successfully updated! Entering cockpit...';
-        }
-
-        setTimeout(() => {
-          if (typeof closePasswordModal === 'function') closePasswordModal();
-          if (data && data.user && typeof handleAuthenticatedUser === 'function') {
-            handleAuthenticatedUser(data.user);
-          } else {
-            window.location.hash = '';
-            window.location.reload();
+        try {
+          const client = window.getSupaClient();
+          if (!client) {
+            throw new Error("Supabase auth engine not loaded. Please refresh.");
           }
-        }, 1200);
 
-      } catch (err) {
-        console.error("Password update error:", err);
-        if (msg) {
-          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block leading-relaxed';
-          msg.innerText = err.message || 'Failed to update password.';
-        }
-      } finally {
-        if (btn) {
-          btn.disabled = false;
-          btn.innerHTML = 'Save New Password';
-        }
-      }
-    };
+          const { data, error } = await client.auth.signInWithPassword({ email, password });
+          if (error) throw error;
 
-    // Auto-detect Password Recovery Tokens from Email Links
-    window.addEventListener('DOMContentLoaded', () => {
-      if (window.location.hash.includes('type=recovery')) {
-        setTimeout(() => {
-          showChangePasswordModal();
-        }, 600);
-      }
-    });
-  </script>
-  <script>
-    // Global Sanctuary Supabase Gateway
-    window.SUPA_URL = 'https://jsyooxahstzrhipbocss.supabase.co';
-    window.SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeW9veGFoc3R6cmhpcGJvY3NzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzODU1MTcsImV4cCI6MjEwODk2MTUxN30.BJXbrkrO-2IwRQHX38-YvWGkiFC7ONcfrq6fbY4OkNI';
+          window.currentUserSession = data.user;
+          const profileKey = EMAIL_MAP[email] || 'asaad';
 
-    window.getSupaClient = function() {
-      if (window.supaClient) return window.supaClient;
-      if (window.supabase && typeof window.supabase.createClient === 'function') {
-        window.supaClient = window.supabase.createClient(window.SUPA_URL, window.SUPA_ANON_KEY);
-        return window.supaClient;
-      }
-      return null;
-    };
+          window.hideLoginModal();
 
-    // Trigger Supabase Password Reset Email
-    window.handleSendResetEmail = async function(e) {
-      if (e) e.preventDefault();
-      
-      const emailInput = document.getElementById('reset-email-input');
-      const btn = document.getElementById('reset-submit-btn');
-      const msg = document.getElementById('reset-status-msg');
+          // Unlock Member Cockpit
+          const landing = document.getElementById('landing-view');
+          const cockpit = document.getElementById('cockpit-view');
+          if (landing) landing.classList.add('hidden');
+          if (cockpit) cockpit.classList.remove('hidden');
 
-      if (!emailInput) return;
-      const email = emailInput.value.trim().toLowerCase();
-
-      if (msg) {
-        msg.className = 'hidden';
-        msg.innerText = '';
-      }
-
-      if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Dispatching Reset Email...';
-      }
-
-      try {
-        const client = window.getSupaClient();
-        if (!client) {
-          throw new Error("Supabase auth engine not loaded. Please refresh the page.");
-        }
-
-        const redirectUrl = window.location.origin + window.location.pathname;
-
-        const { data, error } = await client.auth.resetPasswordForEmail(email, {
-          redirectTo: redirectUrl
-        });
-
-        if (error) throw error;
-
-        if (msg) {
-          msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block leading-relaxed';
-          msg.innerHTML = '<strong>Reset email sent!</strong><br>Check <em>' + email + '</em> for the recovery link to set your new password.';
-        }
-      } catch (err) {
-        console.error("Password reset failure:", err);
-        if (msg) {
-          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block leading-relaxed';
-          msg.innerText = err.message || 'Unable to dispatch reset link. Verify your email address.';
-        }
-      } finally {
-        if (btn) {
-          btn.disabled = false;
-          btn.innerHTML = 'Send Reset Instructions';
-        }
-      }
-    };
-  </script>
-
-  <script>
-    // Restore authenticated brother session on page load & listen for auth state changes
-    window.addEventListener('DOMContentLoaded', async () => {
-      try {
-        const client = window.getSupaClient ? window.getSupaClient() : window.supaClient;
-        if (!client) return;
-
-        const { data: { session } } = await client.auth.getSession();
-        if (session && session.user) {
-          currentUserSession = session.user;
-          const email = (session.user.email || '').toLowerCase();
-          const profileKey = (window.BROTHER_EMAIL_MAP && window.BROTHER_EMAIL_MAP[email]) || 'asaad';
-
-          // Update header badges
+          // Header Badges
           const lBtn = document.getElementById('brother-login-btn');
           if (lBtn) lBtn.classList.add('hidden');
 
@@ -3829,20 +3564,192 @@ ${muhasabah}
             nameEl.innerText = window.BROTHER_PROFILES_DATA[profileKey].name;
           }
 
-          if (typeof switchBrotherProfile === 'function') {
-            switchBrotherProfile(profileKey);
+          // Lock profile & omega gates
+          if (typeof switchBrotherProfile === 'function') switchBrotherProfile(profileKey);
+          if (typeof enforceOmegaGate === 'function') enforceOmegaGate(profileKey);
+
+          const switcher = document.getElementById('prof-btn-asaad')?.parentElement;
+          if (switcher) switcher.style.display = 'none';
+
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          if (window.lucide) lucide.createIcons();
+
+        } catch (err) {
+          console.error("Login rejected:", err);
+          if (errBox) {
+            errBox.innerText = err.message || "Invalid credentials.";
+            errBox.classList.remove('hidden');
           }
-          if (typeof enforceOmegaGate === 'function') {
-            enforceOmegaGate(profileKey);
+        } finally {
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '<i data-lucide="lock" class="w-3.5 h-3.5"></i> Enter Sanctuary';
+            if (window.lucide) lucide.createIcons();
           }
         }
-      } catch (err) {
-        console.warn("Session auto-restore check:", err);
-      }
-    });
+        return false;
+      };
+
+      // Handle Sign Out
+      window.brotherSignOut = async function() {
+        try {
+          const client = window.getSupaClient();
+          if (client) await client.auth.signOut();
+        } catch (err) {
+          console.warn("Sign out err:", err);
+        }
+        window.currentUserSession = null;
+
+        const landing = document.getElementById('landing-view');
+        const cockpit = document.getElementById('cockpit-view');
+        if (cockpit) cockpit.classList.add('hidden');
+        if (landing) landing.classList.remove('hidden');
+
+        const badge = document.getElementById('auth-user-badge');
+        if (badge) {
+          badge.classList.add('hidden');
+          badge.classList.remove('flex');
+        }
+        const lBtn = document.getElementById('brother-login-btn');
+        if (lBtn) lBtn.classList.remove('hidden');
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (window.lucide) lucide.createIcons();
+      };
+
+      // Handle Send Reset Email
+      window.handleSendResetEmail = async function(e) {
+        if (e && e.preventDefault) e.preventDefault();
+        const emailInput = document.getElementById('reset-email-input');
+        const btn = document.getElementById('reset-submit-btn');
+        const msg = document.getElementById('reset-status-msg');
+
+        if (!emailInput) return false;
+        const email = emailInput.value.trim().toLowerCase();
+
+        if (msg) msg.className = 'hidden';
+        if (btn) {
+          btn.disabled = true;
+          btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Dispatching...';
+        }
+
+        try {
+          const client = window.getSupaClient();
+          if (!client) throw new Error("Auth engine not loaded.");
+
+          const { error } = await client.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + window.location.pathname
+          });
+          if (error) throw error;
+
+          if (msg) {
+            msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block';
+            msg.innerHTML = 'Reset link sent! Check your email inbox.';
+          }
+        } catch (err) {
+          if (msg) {
+            msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
+            msg.innerText = err.message || 'Error sending reset email.';
+          }
+        } finally {
+          if (btn) {
+            btn.disabled = false;
+            btn.innerText = 'Send Reset Instructions';
+          }
+        }
+        return false;
+      };
+
+      // Handle Update Password
+      window.handleUpdatePassword = async function(e) {
+        if (e && e.preventDefault) e.preventDefault();
+        const p1 = document.getElementById('new-password-input')?.value;
+        const p2 = document.getElementById('confirm-password-input')?.value;
+        const btn = document.getElementById('update-submit-btn');
+        const msg = document.getElementById('update-status-msg');
+
+        if (p1 !== p2) {
+          if (msg) {
+            msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
+            msg.innerText = 'Passwords do not match.';
+          }
+          return false;
+        }
+
+        if (btn) {
+          btn.disabled = true;
+          btn.innerHTML = '<span class="inline-block animate-spin mr-2">&#9696;</span> Updating...';
+        }
+
+        try {
+          const client = window.getSupaClient();
+          if (!client) throw new Error("Auth engine not loaded.");
+
+          const { data, error } = await client.auth.updateUser({ password: p1 });
+          if (error) throw error;
+
+          if (msg) {
+            msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block';
+            msg.innerText = 'Password successfully updated!';
+          }
+          setTimeout(() => {
+            window.closePasswordModal();
+            window.location.hash = '';
+          }, 1200);
+        } catch (err) {
+          if (msg) {
+            msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
+            msg.innerText = err.message || 'Failed to update password.';
+          }
+        } finally {
+          if (btn) {
+            btn.disabled = false;
+            btn.innerText = 'Save New Password';
+          }
+        }
+        return false;
+      };
+
+      // Auto-restore session on page load
+      window.addEventListener('DOMContentLoaded', async () => {
+        try {
+          const client = window.getSupaClient();
+          if (!client) return;
+
+          const { data: { session } } = await client.auth.getSession();
+          if (session && session.user) {
+            window.currentUserSession = session.user;
+            const email = (session.user.email || '').toLowerCase();
+            const profileKey = EMAIL_MAP[email] || 'asaad';
+
+            const lBtn = document.getElementById('brother-login-btn');
+            if (lBtn) lBtn.classList.add('hidden');
+
+            const badge = document.getElementById('auth-user-badge');
+            const nameEl = document.getElementById('auth-user-name');
+            if (badge) {
+              badge.classList.remove('hidden');
+              badge.classList.add('flex');
+            }
+            if (nameEl && window.BROTHER_PROFILES_DATA && window.BROTHER_PROFILES_DATA[profileKey]) {
+              nameEl.innerText = window.BROTHER_PROFILES_DATA[profileKey].name;
+            }
+            if (typeof switchBrotherProfile === 'function') switchBrotherProfile(profileKey);
+            if (typeof enforceOmegaGate === 'function') enforceOmegaGate(profileKey);
+          }
+        } catch (err) {
+          console.warn("Session restore check:", err);
+        }
+
+        if (window.location.hash.includes('type=recovery')) {
+          setTimeout(window.showChangePasswordModal, 500);
+        }
+      });
+    })();
   </script>
 </body>
 </html>
+
 
 
 
