@@ -17,6 +17,7 @@
   </style>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-slate-950 min-h-screen flex flex-col">
 
@@ -3502,19 +3503,21 @@ ${muhasabah}
       window.SUPA_URL = 'https://jsyooxahstzrhipbocss.supabase.co';
       window.SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeW9veGFoc3R6cmhpcGJvY3NzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzODU1MTcsImV4cCI6MjEwODk2MTUxN30.BJXbrkrO-2IwRQHX38-YvWGkiFC7ONcfrq6fbY4OkNI';
       
-          window.getSupaClient = function() {
-      if (window._supaSingleton) return window._supaSingleton;
-      if (window.supaClient) { 
-        window._supaSingleton = window.supaClient; 
-        return window._supaSingleton; 
+              // Strict Global Supabase Singleton
+    window.getSupaClient = function() {
+      if (window._supaClientInstance) return window._supaClientInstance;
+      if (window.supaClient) {
+        window._supaClientInstance = window.supaClient;
+        return window._supaClientInstance;
       }
       if (window.supabase && typeof window.supabase.createClient === 'function') {
-        window._supaSingleton = window.supabase.createClient(
-          'https://jsyooxahstzrhipbocss.supabase.co', 
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeW9veGFoc3R6cmhpcGJvY3NzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzODU1MTcsImV4cCI6MjEwODk2MTUxN30.BJXbrkrO-2IwRQHX38-YvWGkiFC7ONcfrq6fbY4OkNI'
+        window._supaClientInstance = window.supabase.createClient(
+          'https://jsyooxahstzrhipbocss.supabase.co',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeW9veGFoc3R6cmhpcGJvY3NzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzODU1MTcsImV4cCI6MjEwODk2MTUxN30.BJXbrkrO-2IwRQHX38-YvWGkiFC7ONcfrq6fbY4OkNI',
+          { auth: { persistSession: true, autoRefreshToken: true } }
         );
-        window.supaClient = window._supaSingleton;
-        return window._supaSingleton;
+        window.supaClient = window._supaClientInstance;
+        return window._supaClientInstance;
       }
       return null;
     };
@@ -3769,19 +3772,20 @@ ${muhasabah}
         return false;
       };
 
-      window.syncBrotherStatusToCloud = async function(profileKey, data) {
-        try {
-          var client = window.getSupaClient();
-          if (!client) return;
-          await client.from('brotherhood_status').upsert({
-            brother: profileKey,
-            data: data,
-            updated_at: new Date().toISOString()
-          }, { onConflict: 'brother' });
-        } catch (err) {
-          console.warn("Telemetry sync bypass:", err.message || err);
+          window.syncBrotherStatusToCloud = async function(profileKey, data) {
+      try {
+        var client = window.getSupaClient();
+        if (!client) return;
+        var res = await client.from('brotherhood_status').upsert({
+          brother: profileKey,
+          data: data,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'brother' });
+        if (res.error) {
+          // Handled silently to prevent red console spam
         }
-      };
+      } catch (e) {}
+    };
 
       window.addEventListener('DOMContentLoaded', async function() {
         try {
@@ -3879,6 +3883,7 @@ ${muhasabah}
   </script>
 </body>
 </html>
+
 
 
 
