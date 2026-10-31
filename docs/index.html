@@ -3857,8 +3857,21 @@ ${muhasabah}
       if (el) console.log("Audit state updated:", el.checked);
     };
   </script>
+  <!-- Modal Closers and Safe Client Access -->
+  <script>
+    window.closeWebIngestModal = window.closeWebIngestModal || function() {
+      const modal = document.getElementById('web-ingest-modal');
+      if (modal) modal.classList.add('hidden');
+    };
+
+    window.closeManualNoteModal = window.closeManualNoteModal || function() {
+      const modal = document.getElementById('manual-note-modal');
+      if (modal) modal.classList.add('hidden');
+    };
+  </script>
 </body>
 </html>
+
 
 
 
