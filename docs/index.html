@@ -1,11 +1,156 @@
-$filePath = Join-Path (Get-Location) "docs\index.html"
-$content = Get-Content -Raw -Encoding UTF8 $filePath
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <title>Hive Alignment | Executive Performance & Personal Operating System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .flip-card { perspective: 1000px; }
+    .flip-inner { transition: transform 0.5s; transform-style: preserve-3d; }
+    .flip-inner.flipped { transform: rotateY(180deg); }
+    .flip-front, .flip-back { backface-visibility: hidden; }
+    .flip-back { transform: rotateY(180deg); }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-slate-950 min-h-screen flex flex-col">
 
-# 1. Update the nav button to neutral "Member Login" / "Sanctuary Login"
-$content = $content -replace '(?i)<i data-lucide="lock" class="w-4 h-4 text-emerald-400"><\/i>\s*Brother Login', '<i data-lucide="lock" class="w-4 h-4 text-emerald-400"></i> Member Login'
+  <!-- Top Navigation -->
+  <nav class="sticky top-0 w-full z-40 bg-slate-950/90 backdrop-blur-md border-b border-slate-900">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3 cursor-pointer" onclick="showLandingView()">
+        <i data-lucide="shield-check" class="text-emerald-400 w-6 h-6"></i>
+        <span class="font-bold text-lg tracking-tight text-white">Hive Alignment</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="#science" onclick="showLandingView()" class="text-sm text-slate-300 hover:text-white transition hidden md:block">Science & Studies</a>
+        <a href="#benefits" onclick="showLandingView()" class="text-sm text-slate-300 hover:text-white transition hidden md:block">Core Benefits</a>
+        
+        <div id="auth-user-badge" class="hidden items-center gap-2">
+          <span id="auth-user-name" class="px-3 py-1.5 rounded-lg bg-emerald-950/70 border border-emerald-800/40 text-emerald-300 text-xs font-semibold"></span>
+          <button type="button" onclick="showChangePasswordModal()" class="px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700/60 text-slate-300 hover:text-white font-semibold rounded-lg text-xs transition flex items-center gap-1 shadow-sm" title="Change Password">
+            <i data-lucide="key" class="w-3 h-3 text-slate-400"></i> Key
+          </button>
+          <button type="button" onclick="brotherSignOut()" class="px-3 py-1.5 bg-rose-950/50 hover:bg-rose-900/60 border border-rose-800/50 text-rose-300 hover:text-rose-100 font-semibold rounded-lg text-xs transition flex items-center gap-1.5 shadow-sm" title="Exit Sanctuary">
+            <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Exit
+          </button>
+        </div>
 
-# 2. Inject the Fellowship & Spiritual Path Selector Bar right above the Cockpit Navigation Tabs
-$pathSelectorHtml = @'
+        <button type="button" id="brother-login-btn" onclick="showLoginModal()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-emerald-500/40 text-emerald-300 hover:text-white font-bold rounded-lg text-sm transition flex items-center gap-2 shadow-sm">
+          <i data-lucide="lock" class="w-4 h-4 text-emerald-400"></i> Member Login
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PUBLIC LANDING VIEW -->
+  <main id="landing-view" class="flex-grow">
+    <section class="pt-20 pb-16 px-6 max-w-5xl mx-auto text-center space-y-6">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950 border border-emerald-800 text-emerald-300 text-xs font-medium">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Biometric Auto-Regulation Active
+      </div>
+      <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white leading-tight">
+        Harmonize Faith, Career, Family, & <span class="text-emerald-400">Athletic Vitality</span>
+      </h1>
+      <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">
+        A personal wellness operating system syncing wearable physiological telemetry, sacred contemplative anchors, structured resistance cycles, and protected family reflection rituals.
+      </p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
+        <button onclick="toggleCockpit(true)" class="px-8 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-emerald-500/10 transition flex items-center justify-center gap-2">
+          Open Member Cockpit <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+        <a href="#science" class="px-8 py-3.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 font-semibold rounded-xl transition">
+          Explore the Science
+        </a>
+      </div>
+    </section>
+
+    <!-- Science Section -->
+    <section id="science" class="py-16 px-6 max-w-6xl mx-auto border-t border-slate-900">
+      <div class="text-center max-w-2xl mx-auto space-y-3 mb-12">
+        <h2 class="text-3xl font-bold tracking-tight text-white">Backed by Physiology, Faith, & Autonomic Science</h2>
+        <p class="text-slate-400">Translating raw biometric telemetry into sustainable lifestyle pacing models.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+          <div class="w-10 h-10 rounded-xl bg-emerald-950 border border-emerald-800 flex items-center justify-center text-emerald-400">
+            <i data-lucide="activity"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white">HRV & Autonomic Tone</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Monitors rMSSD heart rate variability thresholds to identify autonomic nervous system fatigue early and prevent cumulative overtraining.
+          </p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+          <div class="w-10 h-10 rounded-xl bg-sky-950 border border-sky-800 flex items-center justify-center text-sky-400">
+            <i data-lucide="zap"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white">Vitality Micronutrient Protocol</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Targeted daily micronutrient supplementation to counter cognitive fatigue, support cellular recovery, and maintain stable daytime energy.
+          </p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+          <div class="w-10 h-10 rounded-xl bg-purple-950 border border-purple-800 flex items-center justify-center text-purple-400">
+            <i data-lucide="trending-up"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white">Workload Auto-Regulation</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Dynamically shifts training volume between 0.80 and 1.10 acute-to-chronic ratios, ensuring continuous adaptation without systemic exhaustion.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="benefits" class="py-16 px-6 max-w-6xl mx-auto border-t border-slate-900">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+        <div class="space-y-6">
+          <h2 class="text-3xl font-bold tracking-tight text-white">Engineered for Purpose, Focus & High Performance</h2>
+          <p class="text-slate-400 leading-relaxed">
+            Integrate cognitive output, autonomic recovery, ethical grounding, and daily execution into a single, zero-friction operating cockpit.
+          </p>
+          <ul class="space-y-3 text-slate-300 text-sm">
+            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> Sacred contemplative anchors & mindful emotional pauses</li>
+            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> Progressive physical conditioning, recovery targets & strain cadence</li>
+            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> Seeker study modules & Cardinal Principle alignment</li>
+            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i> Daily evening self-accounting and 30-min down-regulation</li>
+          </ul>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl space-y-6">
+          <h3 class="text-xl font-bold text-white">Enter the Operations Cockpit</h3>
+          <p class="text-sm text-slate-400">Access your live biometrics, daily spiritual checkpoints, focus timers, knowledge vault, and calendar sync.</p>
+          <button onclick="toggleCockpit(true)" class="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition flex items-center justify-center gap-2">
+            Launch Cockpit Tabs <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- COCKPIT DASHBOARD VIEW -->
+  <section id="cockpit-view" class="hidden flex-grow max-w-6xl mx-auto px-6 py-8 w-full space-y-6">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b border-slate-800 gap-4">
+      <div>
+        <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+          <i data-lucide="layout-dashboard" class="text-emerald-400"></i> Member Operations Cockpit
+        </h2>
+        <p class="text-xs text-slate-400 mt-1">Briefings • Focus • Telemetry • Grounding • Execution</p>
+      </div>
+      <button onclick="toggleCockpit(false)" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-lg text-sm text-slate-300 transition">
+        Return to Overview
+      </button>
+    </div>
+
     <!-- Dynamic Fellowship & Faith Path Selection Header -->
     <div id="sanctuary-path-selector-bar" class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 backdrop-blur-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
       <div class="flex items-center gap-3">
@@ -33,7 +178,7 @@ $pathSelectorHtml = @'
           </button>
         </div>
 
-        <!-- Spiritual Path Dropdown/Pills -->
+        <!-- Spiritual Path Pills -->
         <div class="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-800 text-xs">
           <button type="button" id="path-btn-islam" onclick="setSanctuaryPath('islam')" class="px-3 py-1.5 rounded-lg font-semibold transition bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 flex items-center gap-1">
             <span>☪</span> Islam
@@ -47,16 +192,1792 @@ $pathSelectorHtml = @'
         </div>
       </div>
     </div>
-'@
 
-# Inject above Cockpit Navigation Tabs
-if ($content -notmatch 'id="sanctuary-path-selector-bar"') {
-    $content = $content -replace '(?i)(<!--\s*Cockpit Navigation Tabs\s*-->)', "$pathSelectorHtml`n`n    `$1"
-}
+    <!-- Cockpit Navigation Tabs -->
+    <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-2">
+      <button onclick="switchTab('tab-briefings')" id="btn-tab-briefings" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold bg-emerald-500 text-slate-950 transition flex items-center gap-2">
+        <i data-lucide="check-square" class="w-4 h-4"></i> Daily Briefings
+      </button>
+      <button onclick="switchTab('tab-prayer-learning')" id="btn-tab-prayer-learning" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition flex items-center gap-2">
+        <i data-lucide="volume-2" class="w-4 h-4 text-emerald-400"></i> Recitation & Sacred Text
+      </button>
+      <button onclick="switchTab('tab-spiritual')" id="btn-tab-spiritual" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition flex items-center gap-2">
+        <i data-lucide="compass" class="w-4 h-4 text-emerald-400"></i> EQ & Spiritual Anchors
+      </button>
+      <button onclick="switchTab('tab-seeker')" id="btn-tab-seeker" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-amber-400 hover:text-amber-300 transition flex items-center gap-2">
+        <i data-lucide="award" class="w-4 h-4 text-amber-400"></i> Seeker Knowledge (Omega)
+      </button>
+      <button onclick="switchTab('tab-telemetry')" id="btn-tab-telemetry" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">
+        Biometrics & Recovery
+      </button>
+      <button onclick="switchTab('tab-crunch')" id="btn-tab-crunch" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">
+        Tactical Fitness <span class="text-xs text-slate-400 font-normal">(Mon – Fri)</span>
+      </button>
+      <button onclick="switchTab('tab-learning')" id="btn-tab-learning" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition flex items-center gap-2">
+        <i data-lucide="brain" class="w-4 h-4 text-emerald-400"></i> Focus & Knowledge Vault
+      </button>
+      <button onclick="switchTab('tab-reflection')" id="btn-tab-reflection" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">
+        Family & Reflection
+      </button>
+      <button onclick="switchTab('tab-calendar')" id="btn-tab-calendar" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">
+        Live Calendar
+      </button>
+    </div>
 
-# 3. Inject the Universal Abrahamic Spiritual & Fellowship Engine before </body>
-$universalFaithScript = @'
-  <!-- Universal Abrahamic Spiritual & Fellowship Engine -->
+    <!-- TAB 1: DAILY BRIEFINGS -->
+    <div id="tab-briefings" class="tab-content active space-y-6">
+      <div id="telemetry-simulator-card" class="bg-slate-900/90 border border-emerald-500/30 rounded-xl p-5 mb-6 shadow-lg shadow-black/40">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" id="sim-status-dot"></span>
+              <h3 class="text-sm font-semibold text-slate-100 uppercase tracking-wider">Autonomic Telemetry & Auto-Regulator</h3>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">Live sync or drag the recovery slider below to test dynamic workout prescription gating.</p>
+          </div>
+          <div>
+            <button type="button" id="toggle-sim-mode" onclick="toggleTelemetryMode()" class="px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors">
+              Mode: <span id="sim-mode-label" class="text-emerald-400 font-semibold">Live Telemetry</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
+          <div class="bg-slate-950/70 border border-slate-800 rounded-lg p-4">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-xs font-medium text-slate-400">Recovery Score</span>
+              <span id="sim-recovery-val" class="text-lg font-bold font-mono text-emerald-400">78%</span>
+            </div>
+            <input type="range" id="sim-recovery-slider" min="10" max="98" value="78" 
+                   oninput="updateSimulatedRecovery(this.value)" 
+                   class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+            <div class="flex justify-between text-[10px] text-slate-500 mt-1">
+              <span class="text-rose-400 font-medium">Red <33%</span>
+              <span class="text-amber-400 font-medium">Yellow 34-65%</span>
+              <span class="text-emerald-400 font-medium">Green >66%</span>
+            </div>
+          </div>
+
+          <div class="bg-slate-950/70 border border-slate-800 rounded-lg p-4 flex flex-col justify-center">
+            <div class="flex justify-between items-center py-1 border-b border-slate-900">
+              <span class="text-xs text-slate-400">Heart Rate Variability (rMSSD)</span>
+              <span id="sim-hrv-val" class="text-xs font-mono font-bold text-slate-200">58 ms</span>
+            </div>
+            <div class="flex justify-between items-center py-1">
+              <span class="text-xs text-slate-400">Resting Heart Rate (RHR)</span>
+              <span id="sim-rhr-val" class="text-xs font-mono font-bold text-slate-200">49 bpm</span>
+            </div>
+          </div>
+
+          <div id="sim-prescription-box" class="bg-emerald-950/30 border border-emerald-800/50 rounded-lg p-4 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between">
+                <span id="sim-gate-badge" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Green Gate (>66%)</span>
+                <span class="text-[10px] text-slate-400 font-mono">ACWR: 0.95</span>
+              </div>
+              <p id="sim-action-text" class="text-xs text-slate-300 mt-2 font-medium">Full Tactical S&C Volume (4 sets × 12-15 reps). Target RPE 7.5-8.0. +2.5% microcycle overload active.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+          <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+            <div class="flex items-center gap-2 text-emerald-400 font-bold text-sm">
+              <i data-lucide="sunrise" class="w-4 h-4"></i> Morning Primer & Awakening
+            </div>
+            <span class="text-[11px] text-slate-400">05:30 - 07:15</span>
+          </div>
+          <p class="text-xs text-slate-400">Spiritual anchoring and physiological baseline calibration.</p>
+          <div class="space-y-3 pt-1 text-xs">
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-m0" onchange="syncCheck('chk-m0')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Morning devotional anchor / prayer recitation</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-m1" onchange="syncCheck('chk-m1')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Wearable recovery verification (>66% Green target)</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-m2" onchange="syncCheck('chk-m2')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Cellular micronutrients + 24 oz hydration</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-m3" onchange="syncCheck('chk-m3')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Recite Core Cardinal Principles from memory</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+          <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+            <div class="flex items-center gap-2 text-sky-400 font-bold text-sm">
+              <i data-lucide="sun" class="w-4 h-4"></i> Mid-Day Recalibration
+            </div>
+            <span class="text-[11px] text-slate-400">12:30 - 13:15</span>
+          </div>
+          <p class="text-xs text-slate-400">Detachment from corporate friction and cognitive sprint.</p>
+          <div class="space-y-3 pt-1 text-xs">
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-d0" onchange="syncCheck('chk-d0')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Mid-day prayer / mindful contemplation pause</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-d1" onchange="syncCheck('chk-d1')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">20-min micro-learning sprint (Feynman summary)</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-d2" onchange="syncCheck('chk-d2')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Postural reset + 48 oz cumulative hydration</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-d3" onchange="syncCheck('chk-d3')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Confirm evening training session schedule</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+          <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+            <div class="flex items-center gap-2 text-purple-400 font-bold text-sm">
+              <i data-lucide="moon" class="w-4 h-4"></i> Evening Accounting & Reset
+            </div>
+            <span class="text-[11px] text-slate-400">21:00 - 21:45</span>
+          </div>
+          <p class="text-xs text-slate-400">Spiritual closure, self-accounting, and somatic restoration.</p>
+          <div class="space-y-3 pt-1 text-xs">
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-e0" onchange="syncCheck('chk-e0')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Night prayer & gratitude review</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-e1" onchange="syncCheck('chk-e1')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">30-min decompression (Thoracic, 90/90, Box breath)</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-e2" onchange="syncCheck('chk-e2')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Run Self-Accounting (Muhasabah / Examen audit)</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-e3" onchange="syncCheck('chk-e3')" class="mt-0.5 rounded border-slate-700 text-emerald-500 focus:ring-0 bg-slate-950">
+              <span class="text-slate-300">Screen shutdown & protected family connection</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div id="reflection-card-container" class="bg-gradient-to-r from-slate-900 via-emerald-950/20 to-slate-900 border border-emerald-900/40 rounded-2xl p-6 space-y-3">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+            <i data-lucide="sparkles" class="w-4 h-4"></i> Automated Nightly Reflection Card
+          </span>
+          <span id="synthesis-status" class="text-[10px] bg-emerald-950 border border-emerald-800 text-emerald-300 px-2 py-0.5 rounded font-mono">Synchronized</span>
+        </div>
+        <p id="synthesis-summary" class="text-xs text-slate-300 leading-relaxed italic">
+          Loading daily synthesis card...
+        </p>
+        <ul id="synthesis-highlights" class="text-xs text-slate-400 space-y-1.5 list-disc list-inside pt-1"></ul>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex justify-between items-center text-xs">
+        <span class="text-slate-400">Briefing checklist state is saved automatically to local browser storage.</span>
+        <button onclick="resetBriefings()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded font-medium transition">Reset Daily Checklist</button>
+      </div>
+    </div>
+
+    <!-- TAB: PRAYER RECITATION & SACRED TEXT -->
+    <div id="tab-prayer-learning" class="tab-content space-y-6">
+      <div class="bg-gradient-to-r from-emerald-950/40 via-sky-950/30 to-emerald-950/40 border border-emerald-800/40 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-400">Sacred Text & Salah Recitation</span>
+          <h3 class="text-2xl font-extrabold text-white mt-1">Recitation, Phonetics & Vocabulary</h3>
+          <p class="text-xs text-slate-300 mt-1">Hear the correct pronunciation, read roots, and recite with full cognitive presence.</p>
+        </div>
+        <div class="flex items-center gap-2 bg-slate-950/80 border border-emerald-500/30 px-3.5 py-2 rounded-xl text-xs text-emerald-300">
+          <i data-lucide="headphones" class="w-4 h-4 text-emerald-400"></i>
+          <span>Audio: <strong>Mahmoud Khalil Al-Husary (Mu'allim)</strong></span>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+          <div>
+            <h4 class="text-lg font-bold text-white flex items-center gap-2">
+              <i data-lucide="book-open" class="text-emerald-400 w-5 h-5"></i> Surah Al-Fatihah (The Opening)
+            </h4>
+            <p class="text-xs text-slate-400">Recited in every unit (Rak'ah) of prayer. Click play to listen and repeat.</p>
+          </div>
+          <span class="text-xs bg-emerald-950 border border-emerald-800 text-emerald-300 px-2.5 py-1 rounded-full font-medium">Pillar of Salah</span>
+        </div>
+
+        <div class="space-y-3 pt-2 text-sm">
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-lg font-serif text-right text-emerald-400 tracking-wide font-medium" dir="rtl">بِسْمِ ٱللّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+              <p class="text-sm text-slate-300 font-mono">Bismi Llāhi r-Raḥmāni r-Raḥīm</p>
+              <p class="text-xs text-slate-400 italic">"In the name of Allah, the Entirely Merciful, the Especially Merciful."</p>
+            </div>
+            <button onclick="playVerseAudio('001001')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-lg font-serif text-right text-emerald-400 tracking-wide font-medium" dir="rtl">ٱلْحَمْدُ لِلّٰهِ رَبِّ ٱلْعَٰلَمِينَ</div>
+              <p class="text-sm text-slate-300 font-mono">Al-ḥamdu li-Llāhi Rabbi l-ʻālamīn</p>
+              <p class="text-xs text-slate-400 italic">"All praise is due to Allah, Lord of all the worlds."</p>
+            </div>
+            <button onclick="playVerseAudio('001002')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <div class="text-lg font-serif text-right text-emerald-400 tracking-wide font-medium" dir="rtl">ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+              <p class="text-sm text-slate-300 font-mono">Ar-Raḥmāni r-Raḥīm</p>
+              <p class="text-xs text-slate-400 italic">"The Entirely Merciful, the Especially Merciful."</p>
+            </div>
+            <button onclick="playVerseAudio('001003')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <audio id="prayer-audio-player" class="hidden"></audio>
+    </div>
+
+    <!-- TAB 2: EQ & SPIRITUAL ANCHORS -->
+    <div id="tab-spiritual" class="tab-content space-y-6">
+      <div class="bg-gradient-to-r from-emerald-950/40 via-sky-950/30 to-emerald-950/40 border border-emerald-800/40 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-400" id="spiritual-compass-tag">Spiritual Compass & Governance</span>
+          <h3 id="spiritual-banner-title" class="text-2xl font-extrabold text-white mt-1">Faith, Emotional Intelligence & Discipline</h3>
+          <p id="spiritual-banner-subtitle" class="text-xs text-slate-300 mt-1">Anchoring daily executive strain in prayer, patience (Sabr), emotional restraint, and continuous self-accounting.</p>
+        </div>
+        <div class="flex items-center gap-2 bg-slate-950/80 border border-emerald-500/30 px-3.5 py-2 rounded-xl text-xs text-emerald-300">
+          <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+          <span>Maxim: <strong id="spiritual-maxim-label">Respond with Reason, Never Reaction</strong></span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+          <div class="flex items-center gap-2 text-emerald-400 font-bold text-sm">
+            <i data-lucide="shield" class="w-4 h-4"></i> Emotional Regulation
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Composure is not passive waiting; it is active emotional discipline during sudden stress. Whenever encountering friction, pause for 3 full seconds before speaking.
+          </p>
+          <div class="p-2.5 bg-slate-950 rounded border border-slate-800 text-[11px] text-slate-400">
+            <strong class="text-emerald-400">Core Maxim:</strong> "The strong one is not the one who physically overpowers, but the one who controls anger."
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+          <div class="flex items-center gap-2 text-sky-400 font-bold text-sm">
+            <i data-lucide="clock" class="w-4 h-4"></i> Sacred Autonomic Anchors
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Daily prayer breaks function as parasympathetic resets throughout the day. Ablution physically calms the nervous system and prostration grounds cognitive racing.
+          </p>
+          <div class="p-2.5 bg-slate-950 rounded border border-slate-800 text-[11px] text-slate-400">
+            <strong class="text-sky-400">Protocol:</strong> Protect mid-day devotional times as non-negotiable boundaries from corporate noise.
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+          <div class="flex items-center gap-2 text-purple-400 font-bold text-sm">
+            <i data-lucide="clipboard-check" class="w-4 h-4"></i> Nightly Accounting
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Rigorous daily self-examination before sleep. Review conduct, speech, family attentiveness, and intellectual rigor. Release grievances before closing your eyes.
+          </p>
+          <div class="p-2.5 bg-slate-950 rounded border border-slate-800 text-[11px] text-slate-400">
+            <strong class="text-purple-400">Principle:</strong> "Bring yourselves to account before you are brought to account."
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="pen-tool" class="text-emerald-400 w-4 h-4"></i> Daily Self-Accountability & Accounting Log
+        </h3>
+        <p class="text-xs text-slate-400">Reflect on your emotional regulation, prayers, and leadership today. Persists in your local browser cache.</p>
+        <textarea id="muhasabah-notes" rows="3" placeholder="1. Where did I exercise patience today? 2. How did I uplift my circle? 3. What will I refine tomorrow?" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"></textarea>
+        <div class="flex justify-between items-center pt-1">
+          <span id="muhasabah-status" class="text-[11px] text-slate-500">Auto-saved to local browser cache</span>
+          <button onclick="saveMuhasabah()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition">Save Log</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: SEEKER KNOWLEDGE & HERITAGE (OMEGA) -->
+    <div id="tab-seeker" class="tab-content space-y-6">
+      <div class="bg-gradient-to-r from-purple-950/40 via-amber-950/30 to-purple-950/40 border border-amber-900/40 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-amber-400">Aspirant Knowledge Portal</span>
+          <h3 class="text-2xl font-extrabold text-white mt-1">Omega Psi Phi Heritage & Drill Engine</h3>
+          <p class="text-xs text-slate-300 mt-1">"Friendship is Essential to the Soul" • Manhood • Scholarship • Perseverance • Uplift</p>
+        </div>
+        <div class="flex items-center gap-2 bg-slate-950/80 border border-amber-500/30 px-3.5 py-2 rounded-xl text-xs text-amber-300">
+          <i data-lucide="shield" class="w-4 h-4 text-amber-400"></i>
+          <span>Discipline: <strong>100% Precision</strong></span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-amber-400 font-bold uppercase tracking-wider text-[10px]">Principles</span>
+              <span class="text-slate-500 text-[10px]">#01</span>
+            </div>
+            <h4 class="font-bold text-white text-base mt-2">The 4 Cardinal Principles</h4>
+            <div id="ans-card-1" class="hidden mt-3 text-xs text-slate-300 space-y-1.5 p-3 bg-slate-950 rounded-lg border border-slate-800">
+              <p><strong class="text-amber-400">1. Manhood:</strong> Moral character & courage.</p>
+              <p><strong class="text-amber-400">2. Scholarship:</strong> Rigorous intellectual inquiry.</p>
+              <p><strong class="text-amber-400">3. Perseverance:</strong> Steadfast endurance.</p>
+              <p><strong class="text-amber-400">4. Uplift:</strong> Elevation of community & society.</p>
+            </div>
+          </div>
+          <button onclick="toggleAnswer('ans-card-1', this)" class="w-full py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-lg text-xs font-semibold text-slate-300 transition">
+            Reveal Answer
+          </button>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-amber-400 font-bold uppercase tracking-wider text-[10px]">Origins</span>
+              <span class="text-slate-500 text-[10px]">#02</span>
+            </div>
+            <h4 class="font-bold text-white text-base mt-2">Founding Date & Place</h4>
+            <div id="ans-card-2" class="hidden mt-3 text-xs text-slate-300 space-y-1.5 p-3 bg-slate-950 rounded-lg border border-slate-800">
+              <p><strong class="text-amber-400">Date:</strong> Friday evening, November 17, 1911.</p>
+              <p><strong class="text-amber-400">Location:</strong> Science Building (Thirkield Hall), Howard University, Washington, D.C.</p>
+              <p><strong class="text-amber-400">Incorporation:</strong> October 28, 1914.</p>
+            </div>
+          </div>
+          <button onclick="toggleAnswer('ans-card-2', this)" class="w-full py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-lg text-xs font-semibold text-slate-300 transition">
+            Reveal Answer
+          </button>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-amber-400 font-bold uppercase tracking-wider text-[10px]">Founders</span>
+              <span class="text-slate-500 text-[10px]">#03</span>
+            </div>
+            <h4 class="font-bold text-white text-base mt-2">The Four Founders</h4>
+            <div id="ans-card-3" class="hidden mt-3 text-xs text-slate-300 space-y-1.5 p-3 bg-slate-950 rounded-lg border border-slate-800">
+              <p><strong class="text-amber-400">1. Dr. Ernest Everett Just</strong> (Biologist)</p>
+              <p><strong class="text-amber-400">2. Prof. Frank Coleman</strong> (Physicist)</p>
+              <p><strong class="text-amber-400">3. Dr. Oscar James Cooper</strong> (Physician)</p>
+              <p><strong class="text-amber-400">4. Bishop Edgar Amos Love</strong> (Bishop)</p>
+            </div>
+          </div>
+          <button onclick="toggleAnswer('ans-card-3', this)" class="w-full py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-lg text-xs font-semibold text-slate-300 transition">
+            Reveal Answer
+          </button>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-amber-400 font-bold uppercase tracking-wider text-[10px]">Leadership</span>
+              <span class="text-slate-500 text-[10px]">#04</span>
+            </div>
+            <h4 class="font-bold text-white text-base mt-2">First Grand Basilei</h4>
+            <div id="ans-card-4" class="hidden mt-3 text-xs text-slate-300 space-y-1.5 p-3 bg-slate-950 rounded-lg border border-slate-800">
+              <p><strong class="text-amber-400">1.</strong> Edgar A. Love • <strong class="text-amber-400">2.</strong> Oscar J. Cooper</p>
+              <p><strong class="text-amber-400">3.</strong> Edgar A. Love • <strong class="text-amber-400">4.</strong> George A. Hall</p>
+              <p><strong class="text-amber-400">5.</strong> James C. McMorris</p>
+            </div>
+          </div>
+          <button onclick="toggleAnswer('ans-card-4', this)" class="w-full py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-lg text-xs font-semibold text-slate-300 transition">
+            Reveal Answer
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: Biometrics & Telemetry -->
+    <div id="tab-telemetry" class="tab-content space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <span class="text-xs text-slate-400 uppercase font-medium">Recovery Score</span>
+          <div class="text-2xl font-bold text-emerald-400 mt-1 flex items-center gap-2">
+            <span id="telemetry-recovery">66%</span> <span id="telemetry-recovery-badge" class="text-xs px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-300">GREEN</span>
+          </div>
+          <p class="text-xs text-slate-500 mt-2">Parasympathetic Reserve</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <span class="text-xs text-slate-400 uppercase font-medium">Sleep Performance</span>
+          <div class="text-2xl font-bold text-sky-400 mt-1 flex items-center gap-2">
+            <span id="telemetry-sleep">61%</span> <span class="text-xs px-2 py-0.5 rounded bg-sky-950 border border-sky-800 text-sky-300">WEARABLE</span>
+          </div>
+          <p class="text-xs text-slate-500 mt-2">Restorative Sleep Efficiency</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <span class="text-xs text-slate-400 uppercase font-medium">Day Strain</span>
+          <div class="text-2xl font-bold text-amber-400 mt-1">
+            <span id="telemetry-strain">4.1</span> / 21
+          </div>
+          <p class="text-xs text-slate-500 mt-2">Target Budget: 14.0 – 17.5</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <span class="text-xs text-slate-400 uppercase font-medium">Autonomic HRV</span>
+          <div class="text-2xl font-bold text-purple-400 mt-1">
+            <span id="telemetry-hrv">92.9</span> ms
+          </div>
+          <p class="text-xs text-slate-500 mt-2">rMSSD Autonomic Baseline</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <span class="text-xs text-slate-400 uppercase font-medium">Daily Water</span>
+          <div class="text-2xl font-bold text-emerald-300 mt-1">
+            <span id="hydration-count">0</span> oz
+          </div>
+          <div class="flex gap-1 mt-2">
+            <button onclick="addWater(12)" class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-200 rounded">+12oz</button>
+            <button onclick="addWater(24)" class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-200 rounded">+24oz</button>
+            <button onclick="resetWater()" class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-400 rounded">Reset</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-6">
+        <div class="flex justify-between items-center mb-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full">
+            <div class="flex flex-wrap items-center gap-3">
+              <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="users" class="w-5 h-5 text-emerald-400"></i> Member Profile & Device
+              </h3>
+              <div class="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-800 text-xs shadow-inner">
+                <button type="button" id="prof-btn-asaad" onclick="switchBrotherProfile('asaad')" class="px-3 py-1.5 rounded-lg font-semibold transition bg-emerald-500 text-slate-950 shadow">Asaad Morman</button>
+                <button type="button" id="prof-btn-nadeem" onclick="switchBrotherProfile('nadeem')" class="px-3 py-1.5 rounded-lg font-semibold transition text-slate-400 hover:text-white">Ahki Nadeem Ahmad</button>
+                <button type="button" id="prof-btn-gabe" onclick="switchBrotherProfile('gabe')" class="px-3 py-1.5 rounded-lg font-semibold transition text-slate-400 hover:text-white">Ahki Gabe Evans</button>
+              </div>
+            </div>
+            <button onclick="openDeviceTelemetryModal()" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+              <i data-lucide="activity" class="w-4 h-4"></i> Log Device Telemetry
+            </button>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm pt-2">
+          <div><span class="text-slate-500 block text-xs">Wearable Ecosystem</span> <span id="vitals-device" class="font-semibold text-emerald-400">WHOOP 5.0</span></div>
+          <div><span class="text-slate-500 block text-xs">Height</span> <span id="vitals-height" class="font-medium text-slate-200">6'0" (72 in)</span></div>
+          <div><span class="text-slate-500 block text-xs">Weight</span> <span id="vitals-weight" class="font-medium text-slate-200">235 lbs</span></div>
+          <div><span class="text-slate-500 block text-xs">Training Split</span> <span id="vitals-schedule" class="font-medium text-slate-200">Monday – Friday</span></div>
+          <div><span class="text-slate-500 block text-xs">Horizon</span> <span id="vitals-academic" class="font-medium text-slate-200">Spring 2027</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: Tactical Fitness M-F -->
+    <div id="tab-crunch" class="tab-content space-y-6">
+      <div id="workout-prescription-banner" class="bg-gradient-to-r from-emerald-950/50 via-slate-900 to-emerald-950/40 border border-emerald-800/40 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <span id="workout-gate-tag" class="text-xs px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Green Gate Active</span>
+            <span id="workout-athlete-badge" class="text-xs text-slate-400 font-mono">Athlete: Asaad Morman</span>
+          </div>
+          <h3 id="workout-prescription-title" class="text-2xl font-extrabold text-white mt-1">Full Tactical S&C Cadence</h3>
+          <p id="workout-prescription-desc" class="text-xs text-slate-300 mt-1">Auto-regulated by physiological telemetry: High parasympathetic reserve. Overload active (+2.5% load).</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="text-right">
+            <div class="text-[11px] text-slate-400">Calculated ACWR</div>
+            <div id="workout-acwr-display" class="text-lg font-bold font-mono text-emerald-400">0.96 (Optimal)</div>
+          </div>
+          <button onclick="openAddExerciseModal()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+            <i data-lucide="plus-circle" class="w-4 h-4 text-emerald-400"></i> Add Exercise
+          </button>
+        </div>
+      </div>
+
+      <div id="workout-schedule-container" class="space-y-4"></div>
+    </div>
+
+    <!-- TAB 6: FOCUS & KNOWLEDGE VAULT -->
+    <div id="tab-learning" class="tab-content space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-1 bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col items-center justify-center text-center space-y-4">
+          <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-emerald-400">
+            <i data-lucide="timer" class="w-4 h-4"></i> Focus Engine
+          </div>
+
+          <div id="timer-display" class="text-5xl font-mono font-extrabold text-white tracking-tight my-2">
+            25:00
+          </div>
+          <span id="timer-label" class="text-xs text-slate-400 uppercase font-semibold">Micro-Learning Sprint</span>
+
+          <div class="flex gap-2 w-full pt-1">
+            <button onclick="setTimerMode(20, 'Micro-Sprint')" class="flex-1 py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-lg text-xs font-medium text-slate-300">20m Sprint</button>
+            <button onclick="setTimerMode(25, 'Standard Focus')" class="flex-1 py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-lg text-xs font-medium text-slate-300">25m Focus</button>
+            <button onclick="setTimerMode(5, 'Mental Reset')" class="flex-1 py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-lg text-xs font-medium text-slate-300">5m Reset</button>
+          </div>
+
+          <div class="flex gap-3 w-full">
+            <button id="start-btn" onclick="startTimer()" class="flex-1 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-sm transition">
+              Start Focus
+            </button>
+            <button onclick="pauseTimer()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl text-sm transition">
+              Pause
+            </button>
+            <button onclick="resetTimer()" class="px-4 py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-400 font-semibold rounded-xl text-sm transition">
+              Reset
+            </button>
+          </div>
+        </div>
+
+        <div class="lg:col-span-2 bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+          <div class="flex justify-between items-center">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <i data-lucide="shield" class="text-sky-400 w-5 h-5"></i> Cognitive Shielding & Alignment
+            </h3>
+            <span class="text-xs bg-sky-950 border border-sky-800 text-sky-300 px-2.5 py-0.5 rounded-full">Deep Work Protection</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+              <span class="font-bold text-emerald-400 flex items-center gap-1.5">
+                <i data-lucide="sun" class="w-3.5 h-3.5"></i> High-Energy Window
+              </span>
+              <p class="text-slate-400 leading-relaxed">
+                <strong class="text-slate-200">06:30 – 07:45 AM:</strong> Pre-work window. Peak cortisol and zero inbound messages. Ideal for dense academic literature, synthesis, or core strategy.
+              </p>
+            </div>
+
+            <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+              <span class="font-bold text-amber-400 flex items-center gap-1.5">
+                <i data-lucide="coffee" class="w-3.5 h-3.5"></i> Micro-Sprint Window
+              </span>
+              <p class="text-slate-400 leading-relaxed">
+                <strong class="text-slate-200">12:30 – 13:00 PM:</strong> Post-lunch recovery slot. Restrict to one 20-minute conceptual sprint using the Feynman 3-sentence summary method.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conversational & Scriptural Roots Lab -->
+      <div class="bg-gradient-to-br from-slate-900 via-slate-900/90 to-slate-950 border border-slate-800 rounded-2xl p-6 space-y-6">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400">
+              <i data-lucide="languages" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-white flex items-center gap-2">
+                Contemplative Language & Dialogue Scenarios
+              </h3>
+              <p class="text-xs text-slate-400">Speech composure, scriptural roots, and de-escalation dialogue models.</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="toggleArabicTab('dialogue')" id="tab-btn-dialogue" class="px-3 py-1 bg-teal-600 text-slate-950 font-bold rounded-lg text-xs transition">Daily Dialogue</button>
+            <button onclick="toggleArabicTab('roots')" id="tab-btn-roots" class="px-3 py-1 bg-slate-800 text-slate-300 font-semibold rounded-lg text-xs hover:bg-slate-700 transition">Roots Matrix</button>
+          </div>
+        </div>
+
+        <div id="arabic-dialogue-view" class="space-y-4">
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-slate-300 font-bold uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="message-square" class="w-3.5 h-3.5 text-teal-400"></i> Active Dialogue Scenarios
+            </span>
+            <div class="flex gap-1">
+              <button onclick="loadDialogueScenario('greeting')" class="px-2.5 py-1 bg-slate-950 border border-slate-800 rounded text-[11px] text-slate-300 hover:border-teal-500 transition">Greeting</button>
+              <button onclick="loadDialogueScenario('meeting')" class="px-2.5 py-1 bg-slate-950 border border-slate-800 rounded text-[11px] text-slate-300 hover:border-teal-500 transition">Work & Time</button>
+              <button onclick="loadDialogueScenario('character')" class="px-2.5 py-1 bg-slate-950 border border-slate-800 rounded text-[11px] text-slate-300 hover:border-teal-500 transition">Virtue & Composure</button>
+            </div>
+          </div>
+          <div id="dialogue-container" class="space-y-3 bg-slate-950 p-4 rounded-xl border border-slate-800/80 text-xs text-slate-300">
+            Select a dialogue scenario above to load active rehearsal cues.
+          </div>
+        </div>
+
+        <div id="arabic-roots-view" class="hidden space-y-4">
+          <p class="text-xs text-slate-400">Learn 1 root family → unlock 10+ operational words across classical wisdom and modern conversational contexts.</p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="roots-matrix-container">
+            <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+              <div class="text-emerald-400 font-bold font-mono">S-L-M</div>
+              <div class="text-xs text-slate-300 mt-1">Peace, Wholeness, Surrender (Salam, Islam, Taslim)</div>
+            </div>
+            <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+              <div class="text-emerald-400 font-bold font-mono">Ṣ-B-R</div>
+              <div class="text-xs text-slate-300 mt-1">Patience, Endurance, Restraint (Sabr, Sabur)</div>
+            </div>
+            <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+              <div class="text-emerald-400 font-bold font-mono">Ḥ-S-N</div>
+              <div class="text-xs text-slate-300 mt-1">Beauty, Excellence, Virtue (Ihsan, Hasan, Muhsin)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Executive Presence & High Stakes Pressure Cockpit -->
+      <div class="bg-gradient-to-br from-slate-900 via-slate-900/90 to-slate-950 border border-slate-800 rounded-2xl p-6 space-y-6">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+              <i data-lucide="shield-alert" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-white flex items-center gap-2">
+                Executive Presence & High-Stakes Pressure Cockpit
+              </h3>
+              <p class="text-xs text-slate-400">Tactical composure, autonomic down-regulation, and high-status communication protocols.</p>
+            </div>
+          </div>
+          <span class="text-[11px] bg-amber-950/60 border border-amber-800/60 text-amber-300 font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider">Active Drills</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-slate-950/80 border border-slate-800/80 rounded-xl p-4 flex flex-col justify-between space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <i data-lucide="mic-off" class="w-4 h-4 text-sky-400"></i>
+                <span class="text-xs font-bold text-white uppercase tracking-wider">3-Second Tactical Pause</span>
+              </div>
+              <span id="tactical-timer-display" class="text-xs font-mono font-bold text-slate-400">Ready</span>
+            </div>
+            <p class="text-xs text-slate-400">Defuse amygdala hijacking. Count 3 full seconds of steady composure before delivering your conclusion.</p>
+            <button onclick="startTacticalPause()" id="pause-btn" class="w-full py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm">
+              <i data-lucide="play" class="w-3.5 h-3.5"></i> Run 3s Silence Cadence
+            </button>
+          </div>
+
+          <div class="bg-slate-950/80 border border-slate-800/80 rounded-xl p-4 flex flex-col justify-between space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <i data-lucide="wind" class="w-4 h-4 text-emerald-400"></i>
+                <span class="text-xs font-bold text-white uppercase tracking-wider">Physiological Sigh</span>
+              </div>
+              <span id="sigh-guide-display" class="text-xs font-mono font-bold text-slate-400">Standby</span>
+            </div>
+            <p class="text-xs text-slate-400">Quiet double-inhale through nose, slow unforced mouth exhale. Lowers heart rate in <4 seconds.</p>
+            <button onclick="startPhysiologicalSigh()" id="sigh-btn" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm">
+              <i data-lucide="activity" class="w-3.5 h-3.5"></i> Initiate 4s Vagal Reset
+            </button>
+          </div>
+        </div>
+
+        <div class="space-y-3 pt-1">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <button onclick="loadScenario('interrupted')" class="scenario-btn p-2.5 rounded-lg border border-slate-800 bg-slate-950 hover:border-amber-500/50 text-left transition">
+              <span class="text-xs font-bold text-white block">Interrupted</span>
+              <span class="text-[10px] text-slate-500 block truncate">Talking over you</span>
+            </button>
+            <button onclick="loadScenario('blindsided')" class="scenario-btn p-2.5 rounded-lg border border-slate-800 bg-slate-950 hover:border-amber-500/50 text-left transition">
+              <span class="text-xs font-bold text-white block">Blindsided</span>
+              <span class="text-[10px] text-slate-500 block truncate">Hostile inquiry</span>
+            </button>
+            <button onclick="loadScenario('raised')" class="scenario-btn p-2.5 rounded-lg border border-slate-800 bg-slate-950 hover:border-amber-500/50 text-left transition">
+              <span class="text-xs font-bold text-white block">Raised Voice</span>
+              <span class="text-[10px] text-slate-500 block truncate">Emotional yelling</span>
+            </button>
+            <button onclick="loadScenario('demand')" class="scenario-btn p-2.5 rounded-lg border border-slate-800 bg-slate-950 hover:border-amber-500/50 text-left transition">
+              <span class="text-xs font-bold text-white block">Bad Demand</span>
+              <span class="text-[10px] text-slate-500 block truncate">Boundary breach</span>
+            </button>
+          </div>
+
+          <div id="scenario-detail-box" class="bg-slate-950 border border-slate-800/90 rounded-xl p-4 space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-800/60 pb-2">
+              <span id="scen-title" class="text-xs font-bold text-amber-400 uppercase">Scenario: Interrupted Mid-Sentence</span>
+              <span class="text-[10px] text-slate-500 font-mono">Standard Response</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+              <div class="p-3 bg-rose-950/20 border border-rose-900/30 rounded-lg">
+                <span class="text-rose-400 font-bold block mb-1">Eliminate Instinct:</span>
+                <p id="scen-eliminate" class="text-slate-300">Rushing to talk over them, speeding up cadence, or shrinking back silently.</p>
+              </div>
+              <div class="p-3 bg-emerald-950/20 border border-emerald-900/30 rounded-lg">
+                <span class="text-emerald-400 font-bold block mb-1">Executive Execution:</span>
+                <p id="scen-execute" class="text-slate-300">Hold steady eye contact. Pause cleanly until they finish. State: "Returning to my point," and continue with downward pitch.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ingested Knowledge & Literature Vault -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-4">
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <i data-lucide="library" class="text-emerald-400"></i> Ingested Knowledge & Literature Vault
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">Synthesized studies, textbooks, and teachings feeding your continuous development.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="openWebIngestModal()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg text-xs transition flex items-center gap-1.5 shadow-sm">
+              <i data-lucide="globe" class="w-4 h-4"></i> Web Ingest
+            </button>
+            <button onclick="openManualNoteModal()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-lg text-xs transition flex items-center gap-1.5 shadow-sm">
+              <i data-lucide="plus-circle" class="w-4 h-4"></i> New Note
+            </button>
+            <label for="camera-input" class="cursor-pointer px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1.5 shadow-sm">
+              <i data-lucide="camera" class="w-4 h-4"></i> Scan Page
+            </label>
+            <input type="file" id="camera-input" accept="image/*" capture="environment" class="hidden" onchange="handleImageScan(event)">
+          </div>
+        </div>
+
+        <div id="vault-container" class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+          <p class="text-xs text-slate-500">Loading knowledge records...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 7: Family & Reflection -->
+    <div id="tab-reflection" class="tab-content space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-rose-950/20 border border-rose-900/40 rounded-xl p-6 space-y-4">
+          <div class="flex justify-between items-center">
+            <h3 class="text-lg font-bold text-rose-300 flex items-center gap-2">
+              <i data-lucide="heart-handshake" class="text-rose-400"></i> Weekly Alignment Ritual
+            </h3>
+            <span class="text-xs bg-rose-900/40 text-rose-300 px-2.5 py-1 rounded">Sunday 20:00</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Protected weekly alignment conversation with family and loved ones in a screen-free space.
+          </p>
+          <div class="space-y-2 mt-4 text-xs text-slate-300">
+            <div class="p-2.5 bg-slate-950/60 rounded border border-rose-900/30">1. What went exceptionally well this week?</div>
+            <div class="p-2.5 bg-slate-950/60 rounded border border-rose-900/30">2. Where did we feel stretched or fatigued?</div>
+            <div class="p-2.5 bg-slate-950/60 rounded border border-rose-900/30">3. How can I best support you this upcoming week?</div>
+            <div class="p-2.5 bg-slate-950/60 rounded border border-rose-900/30">4. Schedule, bandwidth, and upcoming commitments check-in.</div>
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+          <h3 class="text-lg font-bold text-white flex items-center gap-2">
+            <i data-lucide="moon" class="text-sky-400"></i> Daily 30-Min Evening Restoration
+          </h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Reverse seated posture and signal parasympathetic down-regulation before sleep.
+          </p>
+          <ul class="text-xs text-slate-300 space-y-2.5 mt-2">
+            <li class="p-2.5 bg-slate-950 rounded border border-slate-800">
+              <strong class="text-emerald-400">10 min:</strong> Thoracic Thread & Cat-Cow Decompression
+            </li>
+            <li class="p-2.5 bg-slate-950 rounded border border-slate-800">
+              <strong class="text-emerald-400">10 min:</strong> 90/90 Hip Flow & Elevated Pigeon
+            </li>
+            <li class="p-2.5 bg-slate-950 rounded border border-slate-800">
+              <strong class="text-emerald-400">10 min:</strong> 4-4-4-4 Box Breathing & Body Scan
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 8: Live Calendar -->
+    <div id="tab-calendar" class="tab-content space-y-4">
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i data-lucide="calendar" class="text-emerald-400"></i> Integrated Schedule & Routines
+        </h3>
+        <div class="w-full h-[500px] rounded-lg overflow-hidden border border-slate-800 bg-slate-950 flex items-center justify-center text-xs text-slate-400">
+          <iframe src="https://calendar.google.com/calendar/embed?src=32058af897d9533fbc91beaa2b20d3cfea0b44d1b17839893c0f99570ffc5f69%40group.calendar.google.com&ctz=America%2FNew_York" style="border: 0" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="py-8 px-6 text-center text-xs text-slate-500 border-t border-slate-900 mt-auto">
+    <p class="text-xs text-slate-600 text-center py-6">© 2026 Hive Alignment. Open-source health & performance architecture.</p>
+  </footer>
+
+  <!-- AUTHENTICATION MODAL -->
+  <div id="brotherhood-auth-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[999] hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-emerald-900/40 rounded-2xl max-w-sm w-full p-6 space-y-5 shadow-2xl relative">
+      <div class="text-center space-y-1">
+        <div class="inline-flex p-3 rounded-2xl bg-emerald-950/70 border border-emerald-800/40 text-emerald-400 mb-2">
+          <i data-lucide="shield" class="w-7 h-7"></i>
+        </div>
+        <button type="button" onclick="hideLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition text-xl">×</button>
+        <h3 class="text-xl font-extrabold text-white tracking-tight">Hive Alignment Sanctuary</h3>
+        <p class="text-xs text-slate-400">Sanctuary Operations • Member Access</p>
+      </div>
+
+      <form id="brother-login-form" onsubmit="handleBrotherLogin(event)" class="space-y-4 text-xs">
+        <div>
+          <label class="text-slate-400 block mb-1 font-medium">Account Email</label>
+          <input type="email" id="auth-email-input" required placeholder="name@domain.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-emerald-500 text-xs">
+        </div>
+        <div>
+          <label class="text-slate-400 block mb-1 font-medium">Password</label>
+          <input type="password" id="auth-password-input" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-emerald-500 text-xs">
+        </div>
+
+        <div class="flex items-center justify-between text-[11px] pt-1">
+          <button type="button" onclick="showForgotPasswordView()" class="text-emerald-400 hover:text-emerald-300 underline underline-offset-2 transition">
+            Forgot password / Reset link
+          </button>
+        </div>
+        <div id="auth-error-msg" class="hidden p-2.5 bg-rose-950/50 border border-rose-900/50 rounded-lg text-rose-300 text-[11px] leading-tight"></div>
+
+        <button type="submit" id="auth-submit-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl transition flex items-center justify-center gap-2 shadow-lg">
+          <i data-lucide="lock" class="w-3.5 h-3.5"></i> Enter Sanctuary
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- PASSWORD RECOVERY MODAL -->
+  <div id="brotherhood-password-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[99999] hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-emerald-900/40 rounded-2xl max-w-sm w-full p-6 space-y-5 shadow-2xl relative">
+      <button type="button" onclick="closePasswordModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition text-xl leading-none">×</button>
+      
+      <div id="pw-reset-request-view" class="space-y-4">
+        <div class="text-center space-y-1">
+          <div class="inline-flex p-3 rounded-2xl bg-emerald-950/70 border border-emerald-800/40 text-emerald-400 mb-1">
+            <i data-lucide="key-round" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white tracking-tight">Reset Password</h3>
+          <p class="text-xs text-slate-400">Receive a secure reset link</p>
+        </div>
+        <form id="forgot-password-form" onsubmit="handleSendResetEmail(event); return false;" class="space-y-3 text-xs">
+          <div>
+            <label class="text-slate-400 block mb-1 font-medium">Email Address</label>
+            <input type="email" id="reset-email-input" required placeholder="name@domain.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-emerald-500 text-xs">
+          </div>
+          <div id="reset-status-msg" class="hidden p-2.5 rounded-lg text-[11px] leading-tight"></div>
+          <button type="submit" id="reset-submit-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl transition flex items-center justify-center gap-2 shadow-lg">
+            Send Reset Instructions
+          </button>
+          <button type="button" onclick="returnToLoginModal()" class="w-full text-center text-slate-400 hover:text-white text-[11px] pt-1">
+            ← Back to Login
+          </button>
+        </form>
+      </div>
+
+      <div id="pw-update-view" class="space-y-4 hidden">
+        <div class="text-center space-y-1">
+          <div class="inline-flex p-3 rounded-2xl bg-emerald-950/70 border border-emerald-800/40 text-emerald-400 mb-1">
+            <i data-lucide="shield-check" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white tracking-tight">Set New Password</h3>
+          <p class="text-xs text-slate-400">Update your account credentials</p>
+        </div>
+        <form id="update-password-form" onsubmit="handleUpdatePassword(event); return false;" class="space-y-3 text-xs">
+          <div>
+            <label class="text-slate-400 block mb-1 font-medium">New Password</label>
+            <input type="password" id="new-password-input" minlength="6" required placeholder="At least 6 characters" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-emerald-500 text-xs">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1 font-medium">Confirm New Password</label>
+            <input type="password" id="confirm-password-input" minlength="6" required placeholder="Confirm new password" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-emerald-500 text-xs">
+          </div>
+          <div id="update-status-msg" class="hidden p-2.5 rounded-lg text-[11px] leading-tight"></div>
+          <button type="submit" id="update-submit-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl transition flex items-center justify-center gap-2 shadow-lg">
+            Save New Password
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEVICE TELEMETRY MODAL -->
+  <div id="device-telemetry-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="radio" class="w-4 h-4 text-emerald-400"></i> Log Device Telemetry
+        </h3>
+        <button onclick="closeDeviceTelemetryModal()" class="text-slate-400 hover:text-white text-lg">×</button>
+      </div>
+      <form id="telemetry-log-form" onsubmit="saveCustomTelemetry(event)" class="space-y-3.5 text-xs">
+        <div>
+          <label class="text-slate-400 block mb-1">Select Wearable / Ecosystem</label>
+          <select id="modal-device-type" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-emerald-500">
+            <option value="WHOOP 5.0">WHOOP 5.0</option>
+            <option value="Garmin Tactix 7 Pro">Garmin Tactix 7 Pro</option>
+            <option value="Apple Watch Ultra">Apple Watch Ultra</option>
+            <option value="Oura Ring Gen 3">Oura Ring Gen 3</option>
+            <option value="Manual Entry">Manual Biomarker Log</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-400 block mb-1">Recovery (%)</label>
+            <input type="number" id="modal-recovery" min="1" max="100" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">Day Strain (0-21)</label>
+            <input type="number" step="0.1" id="modal-strain" min="0" max="21" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">Resting Heart Rate (bpm)</label>
+            <input type="number" id="modal-rhr" min="30" max="120" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">Heart Rate Var. (rMSSD ms)</label>
+            <input type="number" id="modal-hrv" min="5" max="250" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200">
+          </div>
+        </div>
+        <div class="pt-2 flex justify-end gap-2">
+          <button type="button" onclick="closeDeviceTelemetryModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg font-medium transition">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg transition">Apply Telemetry</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODALS: Add Exercise, Manual Note, Web Ingest, OCR -->
+  <div id="add-exercise-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="dumbbell" class="w-4 h-4 text-emerald-400"></i> Add Custom Exercise
+        </h3>
+        <button onclick="closeAddExerciseModal()" class="text-slate-400 hover:text-white text-lg">×</button>
+      </div>
+      <form id="add-exercise-form" onsubmit="saveCustomExercise(event)" class="space-y-3.5 text-xs">
+        <div>
+          <label class="text-slate-400 block mb-1">Target Training Day</label>
+          <select id="ex-target-day" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-slate-200">
+            <option value="Monday">Monday: Upper Body Push & Core</option>
+            <option value="Tuesday">Tuesday: Lower Body Hip Hinge & Mobility</option>
+            <option value="Wednesday">Wednesday: Aerobic Base Zone 2 Cardio</option>
+            <option value="Thursday">Thursday: Upper Body Pull & Back</option>
+            <option value="Friday">Friday: Full-Body Capacity & Mobility</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-slate-400 block mb-1">Exercise Name</label>
+          <input type="text" id="ex-name" required placeholder="e.g., Incline Dumbbell Bench Press" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200">
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <div>
+            <label class="text-slate-400 block mb-1">Sets</label>
+            <input type="number" id="ex-sets" value="4" min="1" max="10" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">Reps</label>
+            <input type="text" id="ex-reps" value="10-12" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">RPE</label>
+            <input type="number" step="0.5" id="ex-rpe" value="8.0" min="5" max="10" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200">
+          </div>
+        </div>
+        <div class="pt-2 flex justify-end gap-2">
+          <button type="button" onclick="closeAddExerciseModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg font-medium transition">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg transition">Save Exercise</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="manual-note-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="file-edit" class="text-sky-400 w-5 h-5"></i> Create Note / Knowledge Card
+        </h3>
+        <button onclick="closeManualNoteModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="text-slate-400 block mb-1">Card Title</label>
+          <input type="text" id="manual-title" placeholder="e.g., Deep Work Blocking" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-white">
+        </div>
+        <div>
+          <label class="text-slate-400 block mb-1">Key Takeaway</label>
+          <input type="text" id="manual-takeaway" placeholder="Core actionable insight" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-white">
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button onclick="closeManualNoteModal()" class="px-3 py-1.5 bg-slate-800 text-slate-300 rounded-lg">Cancel</button>
+          <button onclick="saveManualNote()" class="px-4 py-1.5 bg-emerald-500 text-slate-950 font-bold rounded-lg">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="web-ingest-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="globe" class="text-indigo-400 w-5 h-5"></i> Web Article & Cloud Ingest
+        </h3>
+        <button onclick="closeWebIngestModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <input type="url" id="web-url-input" placeholder="https://example.com/article" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200">
+        <div class="flex justify-end gap-2 pt-2">
+          <button onclick="closeWebIngestModal()" class="px-3 py-1.5 bg-slate-800 text-slate-300 rounded-lg">Cancel</button>
+          <button onclick="closeWebIngestModal()" class="px-4 py-1.5 bg-indigo-600 text-white font-bold rounded-lg">Fetch</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CORE JAVASCRIPT LOGIC & SUPABASE SINGLETON GATEWAY -->
+  <script>
+    window.SUPA_URL = 'https://jsyooxahstzrhipbocss.supabase.co';
+    window.SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeW9veGFoc3R6cmhpcGJvY3NzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzODU1MTcsImV4cCI6MjEwODk2MTUxN30.BJXbrkrO-2IwRQHX38-YvWGkiFC7ONcfrq6fbY4OkNI';
+    window.currentUserSession = null;
+
+    // Strict Supabase Singleton to eliminate duplicate GoTrueClient instances
+    window.getSupaClient = function() {
+      if (window._supaClientInstance) return window._supaClientInstance;
+      if (window.supaClient) {
+        window._supaClientInstance = window.supaClient;
+        return window._supaClientInstance;
+      }
+      if (window.supabase && typeof window.supabase.createClient === 'function') {
+        window._supaClientInstance = window.supabase.createClient(
+          window.SUPA_URL,
+          window.SUPA_ANON_KEY,
+          { auth: { persistSession: true, autoRefreshToken: true } }
+        );
+        window.supaClient = window._supaClientInstance;
+        return window._supaClientInstance;
+      }
+      return null;
+    };
+
+    try { window.getSupaClient(); } catch(e) {}
+
+    var BROTHER_EMAIL_MAP = {
+      'cyberdojosensei@gmail.com': 'asaad',
+      'mrevans3571894@yahoo.com': 'gabe',
+      'nadeem.ahmad4790@gmail.com': 'nadeem'
+    };
+
+    var BROTHER_PROFILES_DATA = {
+      asaad: {
+        id: 'asaad',
+        name: 'Asaad Morman',
+        device: 'WHOOP 5.0',
+        height: "6'0\" (72 in)",
+        weight: '235 lbs',
+        schedule: 'Monday – Friday (Tactical S&C)',
+        academic: 'Spring 2027',
+        telemetry: { recovery: 77, strain: 4.1, rhr: 47, hrv: 93, sleep: 61 }
+      },
+      nadeem: {
+        id: 'nadeem',
+        name: 'Ahki Nadeem Ahmad',
+        device: 'Garmin Tactix 7 Pro',
+        height: "5'11\" (71 in)",
+        weight: '198 lbs',
+        schedule: 'Monday – Friday (Strength & Calisthenics)',
+        academic: 'Executive Leadership 2027',
+        telemetry: { recovery: 82, strain: 5.6, rhr: 50, hrv: 88, sleep: 78 }
+      },
+      gabe: {
+        id: 'gabe',
+        name: 'Ahki Gabe Evans',
+        device: 'Apple Watch Ultra / Athlytic',
+        height: "6'2\" (74 in)",
+        weight: '215 lbs',
+        schedule: 'Mon / Wed / Fri (Hybrid Hypertrophy & Endurance)',
+        academic: 'Bio-Physiology & Law 2027',
+        telemetry: { recovery: 68, strain: 6.2, rhr: 52, hrv: 74, sleep: 70 }
+      }
+    };
+
+    var currentProfileKey = 'asaad';
+
+    window.showLoginModal = function() {
+      var m = document.getElementById('brotherhood-auth-modal');
+      if (m) { m.classList.remove('hidden'); m.style.display = 'flex'; }
+    };
+
+    window.hideLoginModal = function() {
+      var m = document.getElementById('brotherhood-auth-modal');
+      if (m) { m.classList.add('hidden'); m.style.display = 'none'; }
+    };
+
+    window.showForgotPasswordView = function() {
+      window.hideLoginModal();
+      var pw = document.getElementById('brotherhood-password-modal');
+      var rView = document.getElementById('pw-reset-request-view');
+      var uView = document.getElementById('pw-update-view');
+      if (pw) { pw.classList.remove('hidden'); pw.style.display = 'flex'; }
+      if (rView) rView.classList.remove('hidden');
+      if (uView) uView.classList.add('hidden');
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.closePasswordModal = function() {
+      var pw = document.getElementById('brotherhood-password-modal');
+      if (pw) { pw.classList.add('hidden'); pw.style.display = 'none'; }
+    };
+
+    window.returnToLoginModal = function() {
+      window.closePasswordModal();
+      window.showLoginModal();
+    };
+
+    window.showChangePasswordModal = function() {
+      var pw = document.getElementById('brotherhood-password-modal');
+      var rView = document.getElementById('pw-reset-request-view');
+      var uView = document.getElementById('pw-update-view');
+      if (pw) { pw.classList.remove('hidden'); pw.style.display = 'flex'; }
+      if (rView) rView.classList.add('hidden');
+      if (uView) uView.classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.toggleCockpit = function(show) {
+      if (show && !window.currentUserSession) {
+        window.showLoginModal();
+        return;
+      }
+      var landing = document.getElementById('landing-view');
+      var cockpit = document.getElementById('cockpit-view');
+      if (show) {
+        if (landing) landing.classList.add('hidden');
+        if (cockpit) cockpit.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        if (cockpit) cockpit.classList.add('hidden');
+        if (landing) landing.classList.remove('hidden');
+      }
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.showLandingView = function() {
+      window.toggleCockpit(false);
+    };
+
+    window.handleBrotherLogin = async function(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      var emailInput = document.getElementById('auth-email-input');
+      var passInput = document.getElementById('auth-password-input');
+      var btn = document.getElementById('auth-submit-btn');
+      var errBox = document.getElementById('auth-error-msg');
+
+      if (!emailInput || !passInput) return false;
+      var email = emailInput.value.trim().toLowerCase();
+      var password = passInput.value;
+
+      if (errBox) { errBox.classList.add('hidden'); errBox.innerText = ''; }
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="inline-block animate-spin mr-2">◠</span> Verifying...';
+      }
+
+      try {
+        var client = window.getSupaClient();
+        if (!client) throw new Error("Auth service unavailable.");
+
+        var res = await client.auth.signInWithPassword({ email: email, password: password });
+        if (res.error) throw res.error;
+
+        window.currentUserSession = res.data.user;
+        var profileKey = BROTHER_EMAIL_MAP[email] || 'asaad';
+
+        window.hideLoginModal();
+
+        var landing = document.getElementById('landing-view');
+        var cockpit = document.getElementById('cockpit-view');
+        if (landing) landing.classList.add('hidden');
+        if (cockpit) cockpit.classList.remove('hidden');
+
+        var lBtn = document.getElementById('brother-login-btn');
+        if (lBtn) lBtn.classList.add('hidden');
+
+        var badge = document.getElementById('auth-user-badge');
+        var nameEl = document.getElementById('auth-user-name');
+        if (badge) { badge.classList.remove('hidden'); badge.classList.add('flex'); }
+        if (nameEl && BROTHER_PROFILES_DATA[profileKey]) {
+          nameEl.innerText = BROTHER_PROFILES_DATA[profileKey].name;
+        }
+
+        switchBrotherProfile(profileKey);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (window.lucide) lucide.createIcons();
+
+      } catch (err) {
+        console.error("Login rejected:", err);
+        if (errBox) {
+          errBox.innerText = err.message || "Invalid credentials.";
+          errBox.classList.remove('hidden');
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i data-lucide="lock" class="w-3.5 h-3.5"></i> Enter Sanctuary';
+          if (window.lucide) lucide.createIcons();
+        }
+      }
+      return false;
+    };
+
+    window.brotherSignOut = async function() {
+      try {
+        var client = window.getSupaClient();
+        if (client) await client.auth.signOut();
+      } catch (e) {}
+      window.currentUserSession = null;
+
+      var landing = document.getElementById('landing-view');
+      var cockpit = document.getElementById('cockpit-view');
+      if (cockpit) cockpit.classList.add('hidden');
+      if (landing) landing.classList.remove('hidden');
+
+      var badge = document.getElementById('auth-user-badge');
+      if (badge) { badge.classList.add('hidden'); badge.classList.remove('flex'); }
+      var lBtn = document.getElementById('brother-login-btn');
+      if (lBtn) lBtn.classList.remove('hidden');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.handleSendResetEmail = async function(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      var emailInput = document.getElementById('reset-email-input');
+      var btn = document.getElementById('reset-submit-btn');
+      var msg = document.getElementById('reset-status-msg');
+
+      if (!emailInput) return false;
+      var email = emailInput.value.trim().toLowerCase();
+
+      if (msg) msg.className = 'hidden';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="inline-block animate-spin mr-2">◠</span> Dispatching...';
+      }
+
+      try {
+        var client = window.getSupaClient();
+        if (!client) throw new Error("Auth engine not loaded.");
+
+        var res = await client.auth.resetPasswordForEmail(email, {
+          redirectTo: window.location.origin + window.location.pathname
+        });
+        if (res.error) throw res.error;
+
+        if (msg) {
+          msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block';
+          msg.innerHTML = 'Reset link sent! Check your email inbox.';
+        }
+      } catch (err) {
+        if (msg) {
+          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
+          msg.innerText = err.message || 'Error sending reset email.';
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = 'Send Reset Instructions';
+        }
+      }
+      return false;
+    };
+
+    window.handleUpdatePassword = async function(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      var p1 = document.getElementById('new-password-input');
+      var p2 = document.getElementById('confirm-password-input');
+      var btn = document.getElementById('update-submit-btn');
+      var msg = document.getElementById('update-status-msg');
+
+      if (!p1 || !p2 || p1.value !== p2.value) {
+        if (msg) {
+          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
+          msg.innerText = 'Passwords do not match.';
+        }
+        return false;
+      }
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="inline-block animate-spin mr-2">◠</span> Saving...';
+      }
+
+      try {
+        var client = window.getSupaClient();
+        if (!client) throw new Error("Auth engine not loaded.");
+
+        var res = await client.auth.updateUser({ password: p1.value });
+        if (res.error) throw res.error;
+
+        if (msg) {
+          msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block';
+          msg.innerText = 'Password successfully updated!';
+        }
+        setTimeout(function() {
+          window.closePasswordModal();
+          window.location.hash = '';
+        }, 1200);
+      } catch (err) {
+        if (msg) {
+          msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
+          msg.innerText = err.message || 'Failed to update password.';
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = 'Save New Password';
+        }
+      }
+      return false;
+    };
+
+    // Telemetry Sync
+    window.syncBrotherStatusToCloud = async function(profileKey, data) {
+      try {
+        var client = window.getSupaClient();
+        if (!client) return;
+        await client.from('brotherhood_status').upsert({
+          brother: profileKey,
+          data: data,
+          fellowship_circle: window.currentCircle || 'brothers',
+          spiritual_path: window.currentPath || 'islam',
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'brother' });
+      } catch (e) {}
+    };
+
+    // Profile Switcher
+    function switchBrotherProfile(profileKey) {
+      currentProfileKey = profileKey;
+      localStorage.setItem('hive_active_brother_id', profileKey);
+
+      ['asaad', 'nadeem', 'gabe'].forEach(key => {
+        var btn = document.getElementById('prof-btn-' + key);
+        if (btn) {
+          if (key === profileKey) {
+            btn.className = 'px-3 py-1.5 rounded-lg font-semibold transition bg-emerald-500 text-slate-950 shadow';
+          } else {
+            btn.className = 'px-3 py-1.5 rounded-lg font-semibold transition text-slate-400 hover:text-white';
+          }
+        }
+      });
+
+      var p = BROTHER_PROFILES_DATA[profileKey] || BROTHER_PROFILES_DATA.asaad;
+      var dEl = document.getElementById('vitals-device');
+      var hEl = document.getElementById('vitals-height');
+      var wEl = document.getElementById('vitals-weight');
+      var sEl = document.getElementById('vitals-schedule');
+      var aEl = document.getElementById('vitals-academic');
+      if (dEl) dEl.innerText = p.device;
+      if (hEl) hEl.innerHTML = p.height;
+      if (wEl) wEl.innerHTML = p.weight;
+      if (sEl) sEl.innerHTML = p.schedule;
+      if (aEl) aEl.innerHTML = p.academic;
+
+      var rec = p.telemetry.recovery;
+      var tRec = document.getElementById('telemetry-recovery');
+      var tStrain = document.getElementById('telemetry-strain');
+      var tSleep = document.getElementById('telemetry-sleep');
+      var tHrv = document.getElementById('telemetry-hrv');
+
+      if (tRec) tRec.innerText = rec + '%';
+      if (tStrain) tStrain.innerText = p.telemetry.strain;
+      if (tSleep) tSleep.innerText = p.telemetry.sleep + '%';
+      if (tHrv) tHrv.innerText = p.telemetry.hrv + ' ms';
+
+      var simSlider = document.getElementById('sim-recovery-slider');
+      if (simSlider) simSlider.value = rec;
+      if (typeof updateSimulatedRecovery === 'function') updateSimulatedRecovery(rec);
+
+      window.syncBrotherStatusToCloud(profileKey, p.telemetry);
+    }
+
+    // Tabs Switcher
+    window.switchTab = function(tabId) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-emerald-500', 'text-slate-950', 'bg-amber-500');
+        if (btn.id === 'btn-tab-seeker') {
+          btn.classList.add('text-amber-400');
+        } else if (btn.id === 'btn-tab-spiritual' || btn.id === 'btn-tab-prayer-learning') {
+          btn.classList.add('text-emerald-400');
+        } else {
+          btn.classList.add('text-slate-400');
+        }
+      });
+
+      var activeTab = document.getElementById(tabId);
+      if (activeTab) activeTab.classList.add('active');
+
+      var activeBtn = document.getElementById('btn-' + tabId);
+      if (activeBtn) {
+        if (tabId === 'tab-seeker') {
+          activeBtn.classList.add('bg-amber-500', 'text-slate-950');
+          activeBtn.classList.remove('text-amber-400');
+        } else {
+          activeBtn.classList.add('bg-emerald-500', 'text-slate-950');
+          activeBtn.classList.remove('text-slate-400', 'text-emerald-400');
+        }
+      }
+      if (window.lucide) lucide.createIcons();
+    };
+
+    // Hydration Counter
+    let dailyWater = parseInt(localStorage.getItem('hive_daily_water') || '0', 10);
+    function updateWaterDisplay() {
+      var el = document.getElementById('hydration-count');
+      if (el) el.innerText = dailyWater;
+      localStorage.setItem('hive_daily_water', dailyWater);
+    }
+    window.addWater = function(oz) {
+      dailyWater += oz;
+      updateWaterDisplay();
+    };
+    window.resetWater = function() {
+      dailyWater = 0;
+      updateWaterDisplay();
+    };
+
+    // Checkboxes Persistence
+    const checkIds = ['chk-m0', 'chk-m1', 'chk-m2', 'chk-m3', 'chk-d0', 'chk-d1', 'chk-d2', 'chk-d3', 'chk-e0', 'chk-e1', 'chk-e2', 'chk-e3'];
+    window.syncCheck = function(id) {
+      var el = document.getElementById(id);
+      if (el) localStorage.setItem('hive_' + id, el.checked ? 'true' : 'false');
+    };
+    window.resetBriefings = function() {
+      checkIds.forEach(id => {
+        var el = document.getElementById(id);
+        if (el) {
+          el.checked = false;
+          localStorage.removeItem('hive_' + id);
+        }
+      });
+    };
+
+    // Muhasabah Notes
+    window.saveMuhasabah = function() {
+      var input = document.getElementById('muhasabah-notes');
+      if (!input) return;
+      localStorage.setItem('hive_muhasabah_notes', input.value);
+      var status = document.getElementById('muhasabah-status');
+      if (status) {
+        status.innerText = 'Saved to browser cache at ' + new Date().toLocaleTimeString();
+        status.classList.add('text-emerald-400');
+        setTimeout(() => {
+          status.classList.remove('text-emerald-400');
+          status.innerText = 'Auto-saved to local browser cache';
+        }, 3000);
+      }
+    };
+
+    // Pomodoro Timer
+    let timerRemaining = 25 * 60;
+    let timerInterval = null;
+    let isRunning = false;
+
+    function updateTimerDisplay() {
+      var mins = Math.floor(timerRemaining / 60);
+      var secs = timerRemaining % 60;
+      var el = document.getElementById('timer-display');
+      if (el) el.innerText = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    window.setTimerMode = function(minutes, label) {
+      window.pauseTimer();
+      timerRemaining = minutes * 60;
+      var l = document.getElementById('timer-label');
+      if (l) l.innerText = label;
+      updateTimerDisplay();
+    };
+
+    window.startTimer = function() {
+      if (isRunning) return;
+      isRunning = true;
+      var b = document.getElementById('start-btn');
+      if (b) b.innerText = 'Running...';
+      timerInterval = setInterval(() => {
+        if (timerRemaining > 0) {
+          timerRemaining--;
+          updateTimerDisplay();
+        } else {
+          clearInterval(timerInterval);
+          isRunning = false;
+          if (b) b.innerText = 'Start Focus';
+        }
+      }, 1000);
+    };
+
+    window.pauseTimer = function() {
+      clearInterval(timerInterval);
+      isRunning = false;
+      var b = document.getElementById('start-btn');
+      if (b) b.innerText = 'Start Focus';
+    };
+
+    window.resetTimer = function() {
+      window.pauseTimer();
+      timerRemaining = 25 * 60;
+      updateTimerDisplay();
+    };
+
+    // Flashcard Toggle
+    window.toggleAnswer = function(cardId, btn) {
+      var card = document.getElementById(cardId);
+      if (!card) return;
+      if (card.classList.contains('hidden')) {
+        card.classList.remove('hidden');
+        btn.innerText = 'Hide Answer';
+        btn.classList.add('text-amber-400');
+      } else {
+        card.classList.add('hidden');
+        btn.innerText = 'Reveal Answer';
+        btn.classList.remove('text-amber-400');
+      }
+    };
+
+    // Recitation Player
+    window.playVerseAudio = function(ayahKey) {
+      var player = document.getElementById('prayer-audio-player');
+      if (!player) return;
+      player.src = `https://everyayah.com/data/Husary_128kbps/${ayahKey}.mp3`;
+      player.play().catch(e => console.warn('Audio playback error:', e));
+    };
+
+    // Simulator Auto-Regulator
+    window.updateSimulatedRecovery = function(val) {
+      var recVal = document.getElementById('sim-recovery-val');
+      var badge = document.getElementById('sim-gate-badge');
+      var action = document.getElementById('sim-action-text');
+      if (recVal) recVal.innerText = val + '%';
+      if (val >= 67) {
+        if (badge) {
+          badge.innerText = 'Green Gate (>66%)';
+          badge.className = 'px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+        }
+        if (action) action.innerText = 'Full Tactical S&C Volume (4 sets × 10-12 reps). Overload active (+2.5%).';
+      } else if (val >= 34) {
+        if (badge) {
+          badge.innerText = 'Yellow Gate (34-65%)';
+          badge.className = 'px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/30';
+        }
+        if (action) action.innerText = 'Controlled Volume (3 sets × 8-10 reps). Capped intensity.';
+      } else {
+        if (badge) {
+          badge.innerText = 'Red Gate (<34%)';
+          badge.className = 'px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-rose-500/20 text-rose-400 border border-rose-500/30';
+        }
+        if (action) action.innerText = 'Autonomic Deload: Low-intensity Zone 2 cardio & mobility flow.';
+      }
+    };
+
+    window.toggleTelemetryMode = function() {
+      var label = document.getElementById('sim-mode-label');
+      if (!label) return;
+      if (label.innerText.includes('Live')) {
+        label.innerText = 'Manual Simulator';
+        label.className = 'text-amber-400 font-semibold';
+      } else {
+        label.innerText = 'Live Telemetry';
+        label.className = 'text-emerald-400 font-semibold';
+      }
+    };
+
+    // Tactical Drills & Modals
+    window.toggleArabicTab = function(tabId) {
+      var dView = document.getElementById('arabic-dialogue-view');
+      var rView = document.getElementById('arabic-roots-view');
+      var dBtn = document.getElementById('tab-btn-dialogue');
+      var rBtn = document.getElementById('tab-btn-roots');
+      if (tabId === 'dialogue') {
+        if (dView) dView.classList.remove('hidden');
+        if (rView) rView.classList.add('hidden');
+        if (dBtn) dBtn.className = "px-3 py-1 bg-teal-600 text-slate-950 font-bold rounded-lg text-xs transition";
+        if (rBtn) rBtn.className = "px-3 py-1 bg-slate-800 text-slate-300 font-semibold rounded-lg text-xs hover:bg-slate-700 transition";
+      } else {
+        if (dView) dView.classList.add('hidden');
+        if (rView) rView.classList.remove('hidden');
+        if (rBtn) rBtn.className = "px-3 py-1 bg-teal-600 text-slate-950 font-bold rounded-lg text-xs transition";
+        if (dBtn) dBtn.className = "px-3 py-1 bg-slate-800 text-slate-300 font-semibold rounded-lg text-xs hover:bg-slate-700 transition";
+      }
+    };
+
+    window.loadDialogueScenario = function(key) {
+      var box = document.getElementById('dialogue-container');
+      if (!box) return;
+      if (key === 'greeting') {
+        box.innerHTML = '<strong>Greeting & Dignity:</strong> "As-salamu alaykum wa rahmatullah" • Eye contact maintained • Clear vocal tone • Firm handshake.';
+      } else if (key === 'meeting') {
+        box.innerHTML = '<strong>Work & Time:</strong> "In the interest of our objective..." • Conclusion first (BLUF) • Set clear boundaries • Protect prayer appointments.';
+      } else {
+        box.innerHTML = '<strong>Virtue & Composure:</strong> Guarding speech during provocation • "Allahumma inni sa\'im" / "Returning to my point" with downward inflection.';
+      }
+    };
+
+    window.startTacticalPause = function() {
+      var display = document.getElementById('tactical-timer-display');
+      if (!display) return;
+      var sec = 3;
+      display.innerText = sec + 's';
+      display.classList.add('text-sky-400');
+      var timer = setInterval(function() {
+        sec--;
+        if (sec > 0) {
+          display.innerText = sec + 's';
+        } else {
+          clearInterval(timer);
+          display.innerText = 'Deliver BLUF';
+          setTimeout(() => {
+            display.innerText = 'Ready';
+            display.classList.remove('text-sky-400');
+          }, 2000);
+        }
+      }, 1000);
+    };
+
+    window.startPhysiologicalSigh = function() {
+      var display = document.getElementById('sigh-guide-display');
+      if (!display) return;
+      display.innerText = 'Inhale...';
+      display.classList.add('text-emerald-400');
+      setTimeout(() => { display.innerText = 'Top off inhale...'; }, 1500);
+      setTimeout(() => { display.innerText = 'Slow exhale through mouth...'; }, 2500);
+      setTimeout(() => {
+        display.innerText = 'Standby';
+        display.classList.remove('text-emerald-400');
+      }, 5500);
+    };
+
+    window.loadScenario = function(key) {
+      var title = document.getElementById('scen-title');
+      var elim = document.getElementById('scen-eliminate');
+      var exec = document.getElementById('scen-execute');
+      if (key === 'interrupted') {
+        if (title) title.innerText = 'Scenario: Interrupted Mid-Sentence';
+        if (elim) elim.innerText = 'Rushing to talk over them, speeding up cadence, or shrinking back silently.';
+        if (exec) exec.innerText = 'Hold steady eye contact. Pause cleanly until they finish. State: "Returning to my point," and continue with downward pitch.';
+      } else if (key === 'blindsided') {
+        if (title) title.innerText = 'Scenario: Blindsided / Hostile Inquiry';
+        if (elim) elim.innerText = 'Immediate defensive justification or visible somatic tension.';
+        if (exec) exec.innerText = 'Execute 3-second tactical silence. Clarify intent: "What specific metric are you asking about?"';
+      } else if (key === 'raised') {
+        if (title) title.innerText = 'Scenario: Raised Voice / Provocation';
+        if (elim) elim.innerText = 'Mirroring their volume, tightening jaw, or defensive arguing.';
+        if (exec) exec.innerText = 'Lower volume and vocal speed. "Let us focus strictly on the deliverables at hand."';
+      } else if (key === 'demand') {
+        if (title) title.innerText = 'Scenario: Boundary Breach';
+        if (elim) elim.innerText = 'Saying yes impulsively or feeling guilty about non-negotiable boundaries.';
+        if (exec) exec.innerText = '"I have protected time reserved. I can provide the brief tomorrow by 10 AM."';
+      }
+    };
+
+    window.openDeviceTelemetryModal = function() {
+      var m = document.getElementById('device-telemetry-modal');
+      if (m) m.classList.remove('hidden');
+    };
+    window.closeDeviceTelemetryModal = function() {
+      var m = document.getElementById('device-telemetry-modal');
+      if (m) m.classList.add('hidden');
+    };
+    window.saveCustomTelemetry = function(e) {
+      if (e) e.preventDefault();
+      var rec = parseInt(document.getElementById('modal-recovery').value, 10);
+      var str = parseFloat(document.getElementById('modal-strain').value);
+      var rhr = parseInt(document.getElementById('modal-rhr').value, 10);
+      var hrv = parseInt(document.getElementById('modal-hrv').value, 10);
+      var dev = document.getElementById('modal-device-type').value;
+
+      var p = BROTHER_PROFILES_DATA[currentProfileKey] || BROTHER_PROFILES_DATA.asaad;
+      p.telemetry.recovery = rec;
+      p.telemetry.strain = str;
+      p.telemetry.rhr = rhr;
+      p.telemetry.hrv = hrv;
+      p.device = dev;
+
+      closeDeviceTelemetryModal();
+      switchBrotherProfile(currentProfileKey);
+    };
+
+    window.openAddExerciseModal = function() {
+      var m = document.getElementById('add-exercise-modal');
+      if (m) m.classList.remove('hidden');
+    };
+    window.closeAddExerciseModal = function() {
+      var m = document.getElementById('add-exercise-modal');
+      if (m) m.classList.add('hidden');
+    };
+    window.saveCustomExercise = function(e) {
+      if (e) e.preventDefault();
+      closeAddExerciseModal();
+    };
+
+    window.openManualNoteModal = function() {
+      var m = document.getElementById('manual-note-modal');
+      if (m) m.classList.remove('hidden');
+    };
+    window.closeManualNoteModal = function() {
+      var m = document.getElementById('manual-note-modal');
+      if (m) m.classList.add('hidden');
+    };
+    window.saveManualNote = function() {
+      closeManualNoteModal();
+    };
+
+    window.openWebIngestModal = function() {
+      var m = document.getElementById('web-ingest-modal');
+      if (m) m.classList.remove('hidden');
+    };
+    window.closeWebIngestModal = function() {
+      var m = document.getElementById('web-ingest-modal');
+      if (m) m.classList.add('hidden');
+    };
+
+    // Auto-restore session and checkboxes on load
+    window.addEventListener('DOMContentLoaded', async function() {
+      updateWaterDisplay();
+
+      checkIds.forEach(id => {
+        var el = document.getElementById(id);
+        if (el && localStorage.getItem('hive_' + id) === 'true') {
+          el.checked = true;
+        }
+      });
+
+      var mNotes = document.getElementById('muhasabah-notes');
+      if (mNotes && localStorage.getItem('hive_muhasabah_notes')) {
+        mNotes.value = localStorage.getItem('hive_muhasabah_notes');
+      }
+
+      try {
+        var client = window.getSupaClient();
+        if (!client) return;
+
+        var res = await client.auth.getSession();
+        if (res.data && res.data.session && res.data.session.user) {
+          window.currentUserSession = res.data.session.user;
+          var email = (window.currentUserSession.email || '').toLowerCase();
+          var profileKey = BROTHER_EMAIL_MAP[email] || 'asaad';
+
+          var lBtn = document.getElementById('brother-login-btn');
+          if (lBtn) lBtn.classList.add('hidden');
+
+          var badge = document.getElementById('auth-user-badge');
+          var nameEl = document.getElementById('auth-user-name');
+          if (badge) { badge.classList.remove('hidden'); badge.classList.add('flex'); }
+          if (nameEl && BROTHER_PROFILES_DATA[profileKey]) {
+            nameEl.innerText = BROTHER_PROFILES_DATA[profileKey].name;
+          }
+          switchBrotherProfile(profileKey);
+        }
+      } catch (err) {}
+
+      if (window.location.hash.includes('type=recovery')) {
+        setTimeout(window.showChangePasswordModal, 500);
+      }
+      if (window.lucide) lucide.createIcons();
+    });
+  </script>
+
+  <!-- MULTI-TRADITION (ISLAM, CHRISTIANITY, JUDAISM) & FELLOWSHIP CIRCLE ENGINE -->
   <script>
     window.SANCTUARY_TRADITIONS = {
       islam: {
@@ -65,13 +1986,7 @@ $universalFaithScript = @'
         bannerTitle: "Faith, Emotional Intelligence & Discipline",
         bannerSubtitle: "Anchoring daily executive strain in prayer, patience (Sabr), emotional restraint, and continuous self-accounting.",
         coreMaxim: "The strong man is the one who controls himself when angry.",
-        anchorTitle: "Prayer as Autonomic Anchors",
-        anchorDesc: "The five daily prayers act as parasympathetic resets throughout the day. Wudu physically cools the nervous system, and Sujood grounds cognitive overthinking.",
-        auditTitle: "Nightly Muhasabah (Self-Accounting)",
-        auditDesc: "Review conduct, speech, family attentiveness, and intellectual rigor before sleep. Forgive others before closing your eyes.",
-        auditQuote: "Bring yourselves to account before you are brought to account. — Umar ibn al-Khattab",
-        tabLabel: "EQ & Spiritual Anchors (Islam)",
-        scriptureLabel: "Quranic & Hadith Wisdom"
+        tabLabel: "EQ & Spiritual Anchors (Islam)"
       },
       christianity: {
         name: "Christian Path",
@@ -79,13 +1994,7 @@ $universalFaithScript = @'
         bannerTitle: "Grace, Agape & Contemplative Composure",
         bannerSubtitle: "Grounding high-stakes leadership in servant humility, prayer of the heart (Hesychia), and steadfast endurance.",
         coreMaxim: "A soft answer turns away wrath, but a harsh word stirs up anger. — Proverbs 15:1",
-        anchorTitle: "Morning & Evening Liturgy of the Hours",
-        anchorDesc: "Sacred stillness and Lectio Divina (prayerful reading) ground executive decision-making in divine providence rather than anxiety.",
-        auditTitle: "Nightly Examen of Conscience",
-        auditDesc: "St. Ignatius Examen: Review moments of gratitude, recognize where ego or reactiveness took over, and pray for tomorrow's renewal.",
-        auditQuote: "Do not let the sun go down on your anger, and give no opportunity to the adversary. — Ephesians 4:26",
-        tabLabel: "Grace & Contemplation (Christianity)",
-        scriptureLabel: "Biblical & Patristic Wisdom"
+        tabLabel: "Grace & Contemplation (Christianity)"
       },
       judaism: {
         name: "Jewish Path",
@@ -93,13 +2002,7 @@ $universalFaithScript = @'
         bannerTitle: "Kavannah, Chesed & Ethical Rigor",
         bannerSubtitle: "Integrating daily discipline with intentionality (Kavannah), loving-kindness (Chesed), and cosmic repair (Tikkun Olam).",
         coreMaxim: "Who is strong? He who subdues his evil inclination. — Pirkei Avot 4:1",
-        anchorTitle: "Tefillah & Three Daily Anchors",
-        anchorDesc: "Shacharit, Mincha, and Maariv frame the working day into distinct ethical boundaries, detaching cognitive strain from sacred trust (Bitachon).",
-        auditTitle: "Cheshbon Ha-Nefesh (Accounting of the Soul)",
-        auditDesc: "The Mussar practice of charting virtues: Humility (Anavah), Order (Seder), Patience (Savlanut), and Trust (Bitachon).",
-        auditQuote: "In a place where there are no men, strive to be a man of virtue. — Hillel (Pirkei Avot 2:5)",
-        tabLabel: "Mussar & Ethical Rigor (Judaism)",
-        scriptureLabel: "Torah & Mussar Wisdom"
+        tabLabel: "Mussar & Ethical Rigor (Judaism)"
       }
     };
 
@@ -121,20 +2024,20 @@ $universalFaithScript = @'
     };
 
     function applySanctuaryTheme() {
-      const circle = window.currentCircle;
-      const pathKey = window.currentPath;
-      const trad = window.SANCTUARY_TRADITIONS[pathKey] || window.SANCTUARY_TRADITIONS.islam;
+      var circle = window.currentCircle;
+      var pathKey = window.currentPath;
+      var trad = window.SANCTUARY_TRADITIONS[pathKey] || window.SANCTUARY_TRADITIONS.islam;
 
-      // 1. Update Circle Button styling
-      const bBtn = document.getElementById('circle-btn-brothers');
-      const sBtn = document.getElementById('circle-btn-sisters');
-      const cIcon = document.getElementById('circle-icon');
-      const cBadge = document.getElementById('circle-indicator-badge');
+      // Circle Button Styling
+      var bBtn = document.getElementById('circle-btn-brothers');
+      var sBtn = document.getElementById('circle-btn-sisters');
+      var cIcon = document.getElementById('circle-icon');
+      var cBadge = document.getElementById('circle-indicator-badge');
 
       if (circle === 'sisters') {
         if (sBtn) sBtn.className = "px-3 py-1.5 rounded-lg font-semibold transition bg-teal-500 text-slate-950 shadow flex items-center gap-1.5";
         if (bBtn) bBtn.className = "px-3 py-1.5 rounded-lg font-semibold transition text-slate-400 hover:text-white flex items-center gap-1.5";
-        if (cIcon) cIcon.setAttribute('data-lucide', 'flower');
+        if (cIcon) cIcon.setAttribute('data-lucide', 'sparkles');
         if (cBadge) cBadge.className = "w-10 h-10 rounded-xl bg-teal-950/80 border border-teal-800/60 flex items-center justify-center text-teal-400";
       } else {
         if (bBtn) bBtn.className = "px-3 py-1.5 rounded-lg font-semibold transition bg-emerald-500 text-slate-950 shadow flex items-center gap-1.5";
@@ -143,9 +2046,9 @@ $universalFaithScript = @'
         if (cBadge) cBadge.className = "w-10 h-10 rounded-xl bg-emerald-950/80 border border-emerald-800/60 flex items-center justify-center text-emerald-400";
       }
 
-      // 2. Update Path Button styling
+      // Path Button Styling
       ['islam', 'christianity', 'judaism'].forEach(k => {
-        const btn = document.getElementById('path-btn-' + k);
+        var btn = document.getElementById('path-btn-' + k);
         if (btn) {
           if (k === pathKey) {
             btn.className = "px-3 py-1.5 rounded-lg font-semibold transition bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 flex items-center gap-1";
@@ -155,27 +2058,25 @@ $universalFaithScript = @'
         }
       });
 
-      // 3. Update Heading Title
-      const hEl = document.getElementById('sanctuary-active-heading');
+      // Active Header Title
+      var hEl = document.getElementById('sanctuary-active-heading');
       if (hEl) {
-        const circleName = circle === 'sisters' ? 'Sisters Circle' : 'Brotherhood Majlis';
+        var circleName = circle === 'sisters' ? 'Sisters Circle' : 'Brotherhood Majlis';
         hEl.innerHTML = `${circleName} • ${trad.name} <span class="text-emerald-400 font-mono text-sm">${trad.symbol}</span>`;
       }
 
-      // 4. Update Tab 2 Label
-      const spiritualBtn = document.getElementById('btn-tab-spiritual');
+      // Tab Label & Banner Headers
+      var spiritualBtn = document.getElementById('btn-tab-spiritual');
       if (spiritualBtn) {
         spiritualBtn.innerHTML = `<i data-lucide="compass" class="w-4 h-4 text-emerald-400"></i> ${trad.tabLabel}`;
       }
 
-      // 5. Update Tab 2 Spiritual Anchors & Muhasabah texts dynamically
-      const cardContainer = document.getElementById('tab-spiritual');
-      if (cardContainer) {
-        const titleEl = cardContainer.querySelector('h3');
-        if (titleEl) titleEl.innerText = trad.bannerTitle;
-        const subEl = cardContainer.querySelector('p.text-xs');
-        if (subEl) subEl.innerText = trad.bannerSubtitle;
-      }
+      var bTitle = document.getElementById('spiritual-banner-title');
+      var bSub = document.getElementById('spiritual-banner-subtitle');
+      var mLabel = document.getElementById('spiritual-maxim-label');
+      if (bTitle) bTitle.innerText = trad.bannerTitle;
+      if (bSub) bSub.innerText = trad.bannerSubtitle;
+      if (mLabel) mLabel.innerText = trad.coreMaxim;
 
       if (window.lucide) lucide.createIcons();
     }
@@ -185,7 +2086,7 @@ $universalFaithScript = @'
         var client = window.getSupaClient();
         if (!client || !window.currentUserSession) return;
         var email = (window.currentUserSession.email || '').toLowerCase();
-        var profileKey = (window.BROTHER_EMAIL_MAP && window.BROTHER_EMAIL_MAP[email]) || 'asaad';
+        var profileKey = BROTHER_EMAIL_MAP[email] || 'asaad';
 
         await client.from('brotherhood_status').upsert({
           brother: profileKey,
@@ -193,21 +2094,12 @@ $universalFaithScript = @'
           spiritual_path: window.currentPath,
           updated_at: new Date().toISOString()
         }, { onConflict: 'brother' });
-      } catch (e) {
-        console.warn("Silent preference sync note:", e);
-      }
+      } catch (e) {}
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      setTimeout(applySanctuaryTheme, 100);
+      setTimeout(applySanctuaryTheme, 150);
     });
   </script>
-'@
-
-# Append script if not already present
-if ($content -notmatch 'window\.SANCTUARY_TRADITIONS') {
-    $content = $content.Replace('</body>', "$universalFaithScript`n</body>")
-}
-
-Set-Content -Path $filePath -Value $content -Encoding UTF8
-Write-Host "MULTIPLE RELIGIONS & SISTERS CIRCLE ADDED CLEANLY."
+</body>
+</html>
