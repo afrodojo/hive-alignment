@@ -59,7 +59,7 @@
         Harmonize Faith, Career, Family, & <span class="text-emerald-400">Athletic Vitality</span>
       </h1>
       <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">
-        A personal wellness operating system syncing wearable physiological telemetry, sacred contemplative anchors, structured resistance cycles, and protected family reflection rituals.
+        A personal operating system syncing wearable physiological telemetry, sacred contemplative anchors, structured resistance cycles, and protected family reflection rituals.
       </p>
       <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
         <button onclick="toggleCockpit(true)" class="px-8 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-emerald-500/10 transition flex items-center justify-center gap-2">
@@ -146,9 +146,14 @@
         </h2>
         <p class="text-xs text-slate-400 mt-1">Briefings • Focus • Telemetry • Grounding • Execution</p>
       </div>
-      <button onclick="toggleCockpit(false)" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-lg text-sm text-slate-300 transition">
-        Return to Overview
-      </button>
+      <div class="flex items-center gap-2">
+        <button onclick="openOnboardingModal()" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+          <i data-lucide="sliders" class="w-3.5 h-3.5 text-emerald-400"></i> Tailor Path
+        </button>
+        <button onclick="toggleCockpit(false)" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-lg text-sm text-slate-300 transition">
+          Return to Overview
+        </button>
+      </div>
     </div>
 
     <!-- Dynamic Fellowship & Faith Path Selection Header -->
@@ -191,6 +196,79 @@
           </button>
         </div>
       </div>
+    </div>
+
+    <!-- DYNAMIC PERSONA & SPIRITUAL ALIGNMENT ROW -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+      <!-- CARD 1: Quote of the Day & Contemplative Anchor -->
+      <div class="bg-gradient-to-br from-slate-900 via-slate-900/90 to-slate-950 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between space-y-4 shadow-lg">
+        <div>
+          <div class="flex justify-between items-center border-b border-slate-800/80 pb-2.5">
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+              <i data-lucide="quote" class="w-3.5 h-3.5"></i> Daily Sacred Maxim
+            </span>
+            <span id="active-virtue-tag" class="text-[10px] px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-300 font-mono">Sabr</span>
+          </div>
+          <p id="active-quote-text" class="text-sm text-slate-200 italic mt-3 leading-relaxed">
+            "The strong one is not the one who physically overpowers, but the one who controls anger under provocation."
+          </p>
+        </div>
+        <div class="pt-2 border-t border-slate-800/60 flex justify-between items-center text-xs">
+          <span id="active-quote-source" class="text-slate-400">Prophetic Tradition</span>
+          <button onclick="openOnboardingModal()" class="text-[11px] text-emerald-400 hover:text-emerald-300 flex items-center gap-1">
+            <i data-lucide="sliders" class="w-3 h-3"></i> Edit Path
+          </button>
+        </div>
+      </div>
+
+      <!-- CARD 2: Tailored Micro-Learning Sprint -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between space-y-4 shadow-lg">
+        <div>
+          <div class="flex justify-between items-center border-b border-slate-800/80 pb-2.5">
+            <span class="text-xs font-bold uppercase tracking-wider text-sky-400 flex items-center gap-1.5">
+              <i data-lucide="book-open" class="w-3.5 h-3.5"></i> Daily Micro-Sprint
+            </span>
+            <span id="active-micro-time" class="text-[10px] text-slate-400 font-mono">20-Min Sprint</span>
+          </div>
+          <h4 id="active-micro-title" class="font-bold text-white text-sm mt-3">
+            Tadabbur: Cognitive Self-Regulation through Ihsan
+          </h4>
+          <div id="active-micro-steps" class="mt-2 space-y-1.5 text-xs text-slate-300">
+            <p>1. Notice the physiological trigger.</p>
+            <p>2. Execute immediate 5-second silence.</p>
+            <p>3. Reframe response with intentional excellence.</p>
+          </div>
+        </div>
+        <div class="pt-2 border-t border-slate-800/60 flex justify-between items-center">
+          <span id="active-micro-domain" class="text-[11px] text-slate-400">Spiritual Physiology</span>
+          <button onclick="switchTab('tab-learning')" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold transition">
+            Open Vault →
+          </button>
+        </div>
+      </div>
+
+      <!-- CARD 3: Path-Aligned AI Spiritual Twin -->
+      <div class="bg-gradient-to-br from-slate-900 via-emerald-950/20 to-slate-900 border border-emerald-900/40 rounded-2xl p-6 flex flex-col justify-between space-y-3 shadow-lg">
+        <div>
+          <div class="flex justify-between items-center border-b border-slate-800/80 pb-2.5">
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+              <i data-lucide="bot" class="w-3.5 h-3.5"></i> AI Spiritual Twin
+            </span>
+            <span id="active-twin-persona" class="text-[10px] bg-emerald-950 border border-emerald-800 text-emerald-300 px-2 py-0.5 rounded font-mono">Hakim</span>
+          </div>
+          <p id="active-twin-welcome" class="text-xs text-slate-300 mt-2.5 leading-relaxed">
+            Peace upon you. I am here to help you harmonize your biometric reserve, protected prayers, and daily leadership.
+          </p>
+        </div>
+        <div class="space-y-2 pt-2">
+          <input type="text" id="ai-twin-input" placeholder="Ask your AI Twin..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+          <button onclick="consultAiTwin()" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl text-xs transition flex items-center justify-center gap-1.5">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Seek Counsel
+          </button>
+        </div>
+      </div>
+
     </div>
 
     <!-- Cockpit Navigation Tabs -->
@@ -503,10 +581,10 @@
       </div>
 
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
-        <h3 class="text-base font-bold text-white flex items-center gap-2">
+        <h3 id="journal-heading-label" class="text-base font-bold text-white flex items-center gap-2">
           <i data-lucide="pen-tool" class="text-emerald-400 w-4 h-4"></i> Daily Self-Accountability & Accounting Log
         </h3>
-        <p class="text-xs text-slate-400">Reflect on your emotional regulation, prayers, and leadership today. Persists in your local browser cache.</p>
+        <p id="journal-sub-label" class="text-xs text-slate-400">Reflect on your emotional regulation, prayers, and leadership today. Persists in your local browser cache.</p>
         <textarea id="muhasabah-notes" rows="3" placeholder="1. Where did I exercise patience today? 2. How did I uplift my circle? 3. What will I refine tomorrow?" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"></textarea>
         <div class="flex justify-between items-center pt-1">
           <span id="muhasabah-status" class="text-[11px] text-slate-500">Auto-saved to local browser cache</span>
@@ -999,6 +1077,154 @@
     <p class="text-xs text-slate-600 text-center py-6">© 2026 Hive Alignment. Open-source health & performance architecture.</p>
   </footer>
 
+  <!-- ONBOARDING WIZARD MODAL (Step-by-step path selection) -->
+  <div id="onboarding-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[1000] hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 space-y-6 shadow-2xl relative my-8">
+      
+      <!-- Progress Indicator -->
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span id="onboarding-step-label" class="text-xs font-bold uppercase tracking-wider text-emerald-400">Step 1 of 3: Identity & Fellowship</span>
+        </div>
+        <button type="button" onclick="closeOnboardingModal()" class="text-slate-400 hover:text-white transition text-xs">Skip to Cockpit →</button>
+      </div>
+
+      <!-- STEP 1: Circle & Name -->
+      <div id="onboarding-step-1" class="space-y-5">
+        <div class="space-y-1">
+          <h3 class="text-xl font-extrabold text-white">Welcome to Hive Alignment</h3>
+          <p class="text-xs text-slate-400">Let's set your foundation. How should the platform address you, and which fellowship circle are you joining?</p>
+        </div>
+
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="text-slate-300 font-semibold block mb-1">Your Name / Call-Sign</label>
+            <input type="text" id="onboard-name" placeholder="e.g. Asaad / Brother / Sister" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-slate-200 focus:outline-none focus:border-emerald-500">
+          </div>
+
+          <div>
+            <label class="text-slate-300 font-semibold block mb-1">Fellowship Circle</label>
+            <div class="grid grid-cols-2 gap-3 pt-1">
+              <button type="button" onclick="selectOnboardCircle('brothers')" id="onboard-circle-brothers" class="p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-950/30 text-left transition space-y-1">
+                <i data-lucide="shield" class="w-5 h-5 text-emerald-400"></i>
+                <div class="font-bold text-white text-sm">Brotherhood</div>
+                <div class="text-[11px] text-slate-400">Men's fraternity, athletic vitality & leadership majlis</div>
+              </button>
+              <button type="button" onclick="selectOnboardCircle('sisters')" id="onboard-circle-sisters" class="p-4 rounded-2xl border border-slate-800 bg-slate-950 text-left transition space-y-1 hover:border-slate-700">
+                <i data-lucide="sparkles" class="w-5 h-5 text-teal-400"></i>
+                <div class="font-bold text-white text-sm">Sisters Circle</div>
+                <div class="text-[11px] text-slate-400">Women's sanctuary, holistic health & sisterhood</div>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end pt-2">
+          <button type="button" onclick="nextOnboardingStep(2)" class="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-2">
+            Continue to Spiritual Path <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 2: Spiritual Tradition Path -->
+      <div id="onboarding-step-2" class="space-y-5 hidden">
+        <div class="space-y-1">
+          <h3 class="text-xl font-extrabold text-white">Select Your Spiritual Path</h3>
+          <p class="text-xs text-slate-400">Align your dashboard with your faith tradition. This tailors your daily quotes, prayer anchors, reflection journal, and AI mentor.</p>
+        </div>
+
+        <div class="space-y-3 text-xs">
+          <button type="button" onclick="selectOnboardPath('islam')" id="onboard-path-islam" class="w-full p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-950/30 text-left transition flex items-start gap-3.5">
+            <span class="text-2xl">☪</span>
+            <div>
+              <div class="font-bold text-white text-sm">Islam</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">5 Daily prayer anchors, Sabr (fortitude), Prophetic emotional governance, Quranic Arabic lab & Muhasabah.</div>
+            </div>
+          </button>
+
+          <button type="button" onclick="selectOnboardPath('christianity')" id="onboard-path-christianity" class="w-full p-4 rounded-2xl border border-slate-800 bg-slate-950 text-left transition flex items-start gap-3.5 hover:border-slate-700">
+            <span class="text-2xl">✝</span>
+            <div>
+              <div class="font-bold text-white text-sm">Christianity</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Liturgy of the hours, Hesychia (prayer of the heart), Proverbs on composure, and the St. Ignatius Daily Examen.</div>
+            </div>
+          </button>
+
+          <button type="button" onclick="selectOnboardPath('judaism')" id="onboard-path-judaism" class="w-full p-4 rounded-2xl border border-slate-800 bg-slate-950 text-left transition flex items-start gap-3.5 hover:border-slate-700">
+            <span class="text-2xl">✡</span>
+            <div>
+              <div class="font-bold text-white text-sm">Judaism</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Tefillah boundary anchors, Mussar ethical discipline, Kavannah (intentionality), and Cheshbon Ha-Nefesh.</div>
+            </div>
+          </button>
+        </div>
+
+        <div class="flex justify-between items-center pt-2">
+          <button type="button" onclick="nextOnboardingStep(1)" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl text-xs font-semibold">← Back</button>
+          <button type="button" onclick="nextOnboardingStep(3)" class="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-2">
+            Set Lifestyle Goals <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 3: Goals & Telemetry Targets -->
+      <div id="onboarding-step-3" class="space-y-5 hidden">
+        <div class="space-y-1">
+          <h3 class="text-xl font-extrabold text-white">Daily Vitality & Focus Targets</h3>
+          <p class="text-xs text-slate-400">Configure your baseline biometrics and life focus priorities. You can adjust these at any time via "Tailor Path".</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 text-xs">
+          <div>
+            <label class="text-slate-400 block mb-1">Wearable / Tracker</label>
+            <select id="onboard-device" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
+              <option value="WHOOP 5.0">WHOOP 5.0</option>
+              <option value="Garmin Tactix 7 Pro">Garmin</option>
+              <option value="Apple Watch Ultra">Apple Watch Ultra</option>
+              <option value="Oura Ring Gen 3">Oura Ring</option>
+              <option value="Manual Tracker">Manual / Other</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">Primary North Star Goal</label>
+            <input type="text" id="onboard-goal" placeholder="e.g. Master Composure & Vitality" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
+          </div>
+        </div>
+
+        <div class="space-y-2 pt-1 text-xs">
+          <span class="text-slate-300 font-semibold block">Active Cockpit Focuses</span>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="p-2.5 rounded-xl border border-slate-800 bg-slate-950 flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="onboard-pillar-spirit" checked class="rounded bg-slate-900 border-slate-700 text-emerald-500">
+              <span class="text-slate-300">Faith & Inner Peace</span>
+            </label>
+            <label class="p-2.5 rounded-xl border border-slate-800 bg-slate-950 flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="onboard-pillar-health" checked class="rounded bg-slate-900 border-slate-700 text-emerald-500">
+              <span class="text-slate-300">Physical Conditioning</span>
+            </label>
+            <label class="p-2.5 rounded-xl border border-slate-800 bg-slate-950 flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="onboard-pillar-mental" checked class="rounded bg-slate-900 border-slate-700 text-emerald-500">
+              <span class="text-slate-300">Deep Work & Learning</span>
+            </label>
+            <label class="p-2.5 rounded-xl border border-slate-800 bg-slate-950 flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="onboard-pillar-family" checked class="rounded bg-slate-900 border-slate-700 text-emerald-500">
+              <span class="text-slate-300">Family & Relationships</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center pt-3 border-t border-slate-800">
+          <button type="button" onclick="nextOnboardingStep(2)" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl text-xs font-semibold">← Back</button>
+          <button type="button" onclick="completeOnboarding()" class="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-2 shadow-lg">
+            <i data-lucide="check" class="w-4 h-4"></i> Launch My Tailored Cockpit
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- AUTHENTICATION MODAL -->
   <div id="brotherhood-auth-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[999] hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-emerald-900/40 rounded-2xl max-w-sm w-full p-6 space-y-5 shadow-2xl relative">
@@ -1135,7 +1361,7 @@
     </div>
   </div>
 
-  <!-- MODALS: Add Exercise, Manual Note, Web Ingest, OCR -->
+  <!-- AUXILIARY MODALS -->
   <div id="add-exercise-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
       <div class="flex justify-between items-center border-b border-slate-800 pb-3">
@@ -1224,13 +1450,325 @@
     </div>
   </div>
 
-  <!-- CORE JAVASCRIPT LOGIC & SUPABASE SINGLETON GATEWAY -->
+  <!-- MULTI-TRADITION REGISTRY (ISLAM, CHRISTIANITY, JUDAISM) -->
+  <script>
+    window.SANCTUARY_PATHS = {
+      islam: {
+        name: "Islamic Path",
+        symbol: "☪",
+        circleLabels: {
+          brothers: "Brotherhood Majlis",
+          sisters: "Sisters Halaqa"
+        },
+        quote: {
+          text: "The strong one is not the one who physically overpowers, but the one who controls anger under provocation.",
+          source: "Prophetic Guidance (Sahih al-Bukhari)",
+          virtue: "Sabr (Active Composure)"
+        },
+        microLearning: {
+          title: "Tadabbur: Cognitive Self-Regulation through Ihsan",
+          domain: "Spiritual Physiology & Virtue",
+          time: "20-Min Sprint",
+          steps: [
+            "1. Notice the somatic trigger (elevated HR, jaw tightening).",
+            "2. Execute immediate 3-5 second silence to disengage the ego (Nafs).",
+            "3. Reframe response with intentional excellence (Ihsan) before speaking."
+          ]
+        },
+        aiTwin: {
+          persona: "Hakim (Wise Mentor)",
+          welcome: "Peace upon you. I am here to help you harmonize your biometric reserve, protected prayer boundaries, and daily execution.",
+          promptPlaceholder: "Ask Hakim about balancing high-stakes stress, prayer windows, or autonomic recovery..."
+        },
+        journal: {
+          title: "Daily Muhasabah (Self-Accounting)",
+          sub: "Reflect on emotional regulation, prayer cadence, and virtue stewardship today.",
+          prompt1: "Where did I maintain Sabr (emotional composure) under friction today?",
+          prompt2: "Did I protect my sacred prayer boundaries from corporate bleed?",
+          prompt3: "How did I uplift my circle or family with concrete service?"
+        }
+      },
+      christianity: {
+        name: "Christian Path",
+        symbol: "✝",
+        circleLabels: {
+          brothers: "Men of Valor Fellowship",
+          sisters: "Daughters of Grace Circle"
+        },
+        quote: {
+          text: "A soft answer turns away wrath, but a harsh word stirs up anger.",
+          source: "Proverbs 15:1 (Wisdom Literature)",
+          virtue: "Agape & Gentle Restraint"
+        },
+        microLearning: {
+          title: "Hesychia: The Practice of Interior Stillness & Centering",
+          domain: "Contemplative Discernment",
+          time: "20-Min Sprint",
+          steps: [
+            "1. Silence all notifications; pause for 2 full minutes of quiet breath.",
+            "2. Practice Lectio Divina: Read scripture slowly, meditate, and listen.",
+            "3. Commit to one unheralded act of servant leadership today."
+          ]
+        },
+        aiTwin: {
+          persona: "Barnabas (Encourager & Sage)",
+          welcome: "Grace and peace to you. Let us align your physical vigor, quiet contemplation, and faithful leadership today.",
+          promptPlaceholder: "Ask Barnabas about leading under pressure with humility, patience, or scripture reflection..."
+        },
+        journal: {
+          title: "The Daily Examen of Conscience",
+          sub: "Review moments of grace, where self-will took over, and pray for tomorrow's renewal.",
+          prompt1: "Where did I experience gratitude and peace in my responsibilities today?",
+          prompt2: "Where did self-will, reactivity, or pride compromise my witness?",
+          prompt3: "How will I walk with deeper humility and love tomorrow?"
+        }
+      },
+      judaism: {
+        name: "Jewish Path",
+        symbol: "✡",
+        circleLabels: {
+          brothers: "Chaverim Circle",
+          sisters: "Sisterhood Havurah"
+        },
+        quote: {
+          text: "Who is strong? He who subdues his evil inclination and masters his passions.",
+          source: "Pirkei Avot 4:1 (Ethics of the Fathers)",
+          virtue: "Kavannah & Moral Mastery"
+        },
+        microLearning: {
+          title: "Mussar Practice: Developing Anavah (Rightful Humility)",
+          domain: "Ethical Character Refinement",
+          time: "20-Min Sprint",
+          steps: [
+            "1. Remember Rav Kook's principle: Take up no more space than is yours, but no less.",
+            "2. Listen completely without interrupting before giving your perspective.",
+            "3. Pair every action with clear spiritual intention (Kavannah)."
+          ]
+        },
+        aiTwin: {
+          persona: "Chaver (Thought Partner & Sage)",
+          welcome: "Shalom. I am your partner in sharpening your mind, guarding your vitality, and repairing your world (Tikkun Olam).",
+          promptPlaceholder: "Ask Chaver about Mussar character traits, ethical dilemmas, or balancing strain with Shabbat rest..."
+        },
+        journal: {
+          title: "Cheshbon Ha-Nefesh (Accounting of the Soul)",
+          sub: "Chart your traits: Humility (Anavah), Order (Seder), Patience (Savlanut), and Trust.",
+          prompt1: "Which character trait (Middah) was tested today?",
+          prompt2: "Did I conduct my conversations and transactions with uncompromising integrity (Emet)?",
+          prompt3: "What concrete act of loving-kindness (Chesed) did I provide?"
+        }
+      }
+    };
+  </script>
+
+  <!-- ONBOARDING ENGINE & DYNAMIC DASHBOARD CONTROLLER -->
+  <script>
+    window.tempOnboard = {
+      circle: localStorage.getItem('sanctuary_circle') || 'brothers',
+      path: localStorage.getItem('sanctuary_path') || 'islam'
+    };
+
+    window.openOnboardingModal = function() {
+      var m = document.getElementById('onboarding-modal');
+      if (m) {
+        m.classList.remove('hidden');
+        nextOnboardingStep(1);
+        if (window.lucide) lucide.createIcons();
+      }
+    };
+
+    window.closeOnboardingModal = function() {
+      var m = document.getElementById('onboarding-modal');
+      if (m) m.classList.add('hidden');
+    };
+
+    window.nextOnboardingStep = function(stepNum) {
+      [1, 2, 3].forEach(n => {
+        var el = document.getElementById('onboarding-step-' + n);
+        if (el) el.classList.add('hidden');
+      });
+      var target = document.getElementById('onboarding-step-' + stepNum);
+      if (target) target.classList.remove('hidden');
+
+      var label = document.getElementById('onboarding-step-label');
+      if (label) {
+        if (stepNum === 1) label.innerText = "Step 1 of 3: Identity & Fellowship";
+        if (stepNum === 2) label.innerText = "Step 2 of 3: Spiritual Path";
+        if (stepNum === 3) label.innerText = "Step 3 of 3: Daily Vitality & Focus";
+      }
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.selectOnboardCircle = function(circleKey) {
+      window.tempOnboard.circle = circleKey;
+      var b = document.getElementById('onboard-circle-brothers');
+      var s = document.getElementById('onboard-circle-sisters');
+      if (circleKey === 'brothers') {
+        if (b) b.className = "p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-950/30 text-left transition space-y-1";
+        if (s) s.className = "p-4 rounded-2xl border border-slate-800 bg-slate-950 text-left transition space-y-1 hover:border-slate-700";
+      } else {
+        if (s) s.className = "p-4 rounded-2xl border-2 border-teal-500 bg-teal-950/30 text-left transition space-y-1";
+        if (b) b.className = "p-4 rounded-2xl border border-slate-800 bg-slate-950 text-left transition space-y-1 hover:border-slate-700";
+      }
+    };
+
+    window.selectOnboardPath = function(pathKey) {
+      window.tempOnboard.path = pathKey;
+      ['islam', 'christianity', 'judaism'].forEach(k => {
+        var btn = document.getElementById('onboard-path-' + k);
+        if (btn) {
+          if (k === pathKey) {
+            btn.className = "w-full p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-950/30 text-left transition flex items-start gap-3.5";
+          } else {
+            btn.className = "w-full p-4 rounded-2xl border border-slate-800 bg-slate-950 text-left transition flex items-start gap-3.5 hover:border-slate-700";
+          }
+        }
+      });
+    };
+
+    window.completeOnboarding = function() {
+      var name = document.getElementById('onboard-name').value.trim() || 'Member';
+      var dev = document.getElementById('onboard-device').value;
+      var goal = document.getElementById('onboard-goal').value.trim();
+
+      localStorage.setItem('sanctuary_user_name', name);
+      localStorage.setItem('sanctuary_circle', window.tempOnboard.circle);
+      localStorage.setItem('sanctuary_path', window.tempOnboard.path);
+      localStorage.setItem('sanctuary_onboarded', 'true');
+      if (goal) localStorage.setItem('sanctuary_user_goal', goal);
+
+      window.currentCircle = window.tempOnboard.circle;
+      window.currentPath = window.tempOnboard.path;
+
+      applyFullSanctuaryAlignment();
+      saveSanctuaryPreferencesToCloud();
+      closeOnboardingModal();
+    };
+
+    window.setSanctuaryCircle = function(circleKey) {
+      window.currentCircle = circleKey;
+      window.tempOnboard.circle = circleKey;
+      localStorage.setItem('sanctuary_circle', circleKey);
+      applyFullSanctuaryAlignment();
+      saveSanctuaryPreferencesToCloud();
+    };
+
+    window.setSanctuaryPath = function(pathKey) {
+      window.currentPath = pathKey;
+      window.tempOnboard.path = pathKey;
+      localStorage.setItem('sanctuary_path', pathKey);
+      applyFullSanctuaryAlignment();
+      saveSanctuaryPreferencesToCloud();
+    };
+
+    function applyFullSanctuaryAlignment() {
+      var pathKey = window.currentPath || localStorage.getItem('sanctuary_path') || 'islam';
+      var circleKey = window.currentCircle || localStorage.getItem('sanctuary_circle') || 'brothers';
+      var cfg = window.SANCTUARY_PATHS[pathKey] || window.SANCTUARY_PATHS.islam;
+
+      // 1. Circle & Path Buttons
+      var bBtn = document.getElementById('circle-btn-brothers');
+      var sBtn = document.getElementById('circle-btn-sisters');
+      var cIcon = document.getElementById('circle-icon');
+      var cBadge = document.getElementById('circle-indicator-badge');
+
+      if (circleKey === 'sisters') {
+        if (sBtn) sBtn.className = "px-3 py-1.5 rounded-lg font-semibold transition bg-teal-500 text-slate-950 shadow flex items-center gap-1.5";
+        if (bBtn) bBtn.className = "px-3 py-1.5 rounded-lg font-semibold transition text-slate-400 hover:text-white flex items-center gap-1.5";
+        if (cIcon) cIcon.setAttribute('data-lucide', 'sparkles');
+        if (cBadge) cBadge.className = "w-10 h-10 rounded-xl bg-teal-950/80 border border-teal-800/60 flex items-center justify-center text-teal-400";
+      } else {
+        if (bBtn) bBtn.className = "px-3 py-1.5 rounded-lg font-semibold transition bg-emerald-500 text-slate-950 shadow flex items-center gap-1.5";
+        if (sBtn) sBtn.className = "px-3 py-1.5 rounded-lg font-semibold transition text-slate-400 hover:text-white flex items-center gap-1.5";
+        if (cIcon) cIcon.setAttribute('data-lucide', 'shield');
+        if (cBadge) cBadge.className = "w-10 h-10 rounded-xl bg-emerald-950/80 border border-emerald-800/60 flex items-center justify-center text-emerald-400";
+      }
+
+      ['islam', 'christianity', 'judaism'].forEach(k => {
+        var btn = document.getElementById('path-btn-' + k);
+        if (btn) {
+          if (k === pathKey) {
+            btn.className = "px-3 py-1.5 rounded-lg font-semibold transition bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 flex items-center gap-1";
+          } else {
+            btn.className = "px-3 py-1.5 rounded-lg font-semibold transition text-slate-400 hover:text-white flex items-center gap-1";
+          }
+        }
+      });
+
+      // 2. Active Sanctuary Heading
+      var heading = document.getElementById('sanctuary-active-heading');
+      if (heading) {
+        var cLabel = cfg.circleLabels[circleKey] || "Sanctuary Circle";
+        heading.innerHTML = `${cLabel} • ${cfg.name} <span class="text-emerald-400 font-mono text-sm">${cfg.symbol}</span>`;
+      }
+
+      // 3. Maxim / Quote Card
+      var qText = document.getElementById('active-quote-text');
+      var qSource = document.getElementById('active-quote-source');
+      var qVirtue = document.getElementById('active-virtue-tag');
+      if (qText) qText.innerText = `"${cfg.quote.text}"`;
+      if (qSource) qSource.innerText = cfg.quote.source;
+      if (qVirtue) qVirtue.innerText = cfg.quote.virtue;
+
+      // 4. Micro-Learning Sprint Card
+      var mTitle = document.getElementById('active-micro-title');
+      var mDomain = document.getElementById('active-micro-domain');
+      var mTime = document.getElementById('active-micro-time');
+      var mSteps = document.getElementById('active-micro-steps');
+      if (mTitle) mTitle.innerText = cfg.microLearning.title;
+      if (mDomain) mDomain.innerText = cfg.microLearning.domain;
+      if (mTime) mTime.innerText = cfg.microLearning.time;
+      if (mSteps) {
+        mSteps.innerHTML = cfg.microLearning.steps.map(s => `<p>${s}</p>`).join('');
+      }
+
+      // 5. AI Twin Persona Card
+      var tPersona = document.getElementById('active-twin-persona');
+      var tWelcome = document.getElementById('active-twin-welcome');
+      var tInput = document.getElementById('ai-twin-input');
+      if (tPersona) tPersona.innerText = cfg.aiTwin.persona;
+      if (tWelcome) tWelcome.innerText = cfg.aiTwin.welcome;
+      if (tInput) tInput.placeholder = cfg.aiTwin.promptPlaceholder;
+
+      // 6. Tab 2 Navigation & Reflection Journal
+      var spiritualBtn = document.getElementById('btn-tab-spiritual');
+      if (spiritualBtn) {
+        spiritualBtn.innerHTML = `<i data-lucide="compass" class="w-4 h-4 text-emerald-400"></i> EQ & ${cfg.name}`;
+      }
+
+      var jHeading = document.getElementById('journal-heading-label');
+      var jSub = document.getElementById('journal-sub-label');
+      var jArea = document.getElementById('muhasabah-notes');
+      if (jHeading) jHeading.innerHTML = `<i data-lucide="pen-tool" class="text-emerald-400 w-4 h-4"></i> ${cfg.journal.title}`;
+      if (jSub) jSub.innerText = cfg.journal.sub;
+      if (jArea && !jArea.value) {
+        jArea.placeholder = `1. ${cfg.journal.prompt1}\n2. ${cfg.journal.prompt2}\n3. ${cfg.journal.prompt3}`;
+      }
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    window.consultAiTwin = function() {
+      var input = document.getElementById('ai-twin-input');
+      var box = document.getElementById('active-twin-welcome');
+      if (!input || !box || !input.value.trim()) return;
+
+      var q = input.value.trim();
+      var pathKey = window.currentPath || 'islam';
+      var cfg = window.SANCTUARY_PATHS[pathKey] || window.SANCTUARY_PATHS.islam;
+
+      box.innerText = `Counseling on: "${q}"... Hold your 3-second pause. Direct intentionality (Kavannah / Niyyah) before taking action.`;
+      input.value = '';
+    };
+  </script>
+
+  <!-- SUPABASE SINGLETON & CORE LOGIC -->
   <script>
     window.SUPA_URL = 'https://jsyooxahstzrhipbocss.supabase.co';
     window.SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeW9veGFoc3R6cmhpcGJvY3NzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzODU1MTcsImV4cCI6MjEwODk2MTUxN30.BJXbrkrO-2IwRQHX38-YvWGkiFC7ONcfrq6fbY4OkNI';
     window.currentUserSession = null;
 
-    // Strict Supabase Singleton to eliminate duplicate GoTrueClient instances
+    // Strict Supabase Singleton
     window.getSupaClient = function() {
       if (window._supaClientInstance) return window._supaClientInstance;
       if (window.supaClient) {
@@ -1531,7 +2069,7 @@
       return false;
     };
 
-    // Telemetry Sync
+    // Telemetry and Preferences Sync to Supabase
     window.syncBrotherStatusToCloud = async function(profileKey, data) {
       try {
         var client = window.getSupaClient();
@@ -1546,7 +2084,22 @@
       } catch (e) {}
     };
 
-    // Profile Switcher
+    async function saveSanctuaryPreferencesToCloud() {
+      try {
+        var client = window.getSupaClient();
+        if (!client || !window.currentUserSession) return;
+        var email = (window.currentUserSession.email || '').toLowerCase();
+        var profileKey = BROTHER_EMAIL_MAP[email] || 'asaad';
+
+        await client.from('brotherhood_status').upsert({
+          brother: profileKey,
+          fellowship_circle: window.currentCircle || 'brothers',
+          spiritual_path: window.currentPath || 'islam',
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'brother' });
+      } catch (e) {}
+    }
+
     function switchBrotherProfile(profileKey) {
       currentProfileKey = profileKey;
       localStorage.setItem('hive_active_brother_id', profileKey);
@@ -1592,7 +2145,6 @@
       window.syncBrotherStatusToCloud(profileKey, p.telemetry);
     }
 
-    // Tabs Switcher
     window.switchTab = function(tabId) {
       document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -1622,7 +2174,7 @@
       if (window.lucide) lucide.createIcons();
     };
 
-    // Hydration Counter
+    // Hydration
     let dailyWater = parseInt(localStorage.getItem('hive_daily_water') || '0', 10);
     function updateWaterDisplay() {
       var el = document.getElementById('hydration-count');
@@ -1638,7 +2190,7 @@
       updateWaterDisplay();
     };
 
-    // Checkboxes Persistence
+    // Briefing Checkboxes
     const checkIds = ['chk-m0', 'chk-m1', 'chk-m2', 'chk-m3', 'chk-d0', 'chk-d1', 'chk-d2', 'chk-d3', 'chk-e0', 'chk-e1', 'chk-e2', 'chk-e3'];
     window.syncCheck = function(id) {
       var el = document.getElementById(id);
@@ -1654,7 +2206,7 @@
       });
     };
 
-    // Muhasabah Notes
+    // Journal Storage
     window.saveMuhasabah = function() {
       var input = document.getElementById('muhasabah-notes');
       if (!input) return;
@@ -1782,7 +2334,7 @@
       }
     };
 
-    // Tactical Drills & Modals
+    // Tactical Drills & Tabs
     window.toggleArabicTab = function(tabId) {
       var dView = document.getElementById('arabic-dialogue-view');
       var rView = document.getElementById('arabic-roots-view');
@@ -1805,11 +2357,11 @@
       var box = document.getElementById('dialogue-container');
       if (!box) return;
       if (key === 'greeting') {
-        box.innerHTML = '<strong>Greeting & Dignity:</strong> "As-salamu alaykum wa rahmatullah" • Eye contact maintained • Clear vocal tone • Firm handshake.';
+        box.innerHTML = '<strong>Greeting & Dignity:</strong> "Peace upon you" • Eye contact maintained • Clear vocal tone • Firm greeting.';
       } else if (key === 'meeting') {
-        box.innerHTML = '<strong>Work & Time:</strong> "In the interest of our objective..." • Conclusion first (BLUF) • Set clear boundaries • Protect prayer appointments.';
+        box.innerHTML = '<strong>Work & Time:</strong> "In the interest of our core objective..." • Deliver conclusions first (BLUF) • Protect sacred schedule appointments.';
       } else {
-        box.innerHTML = '<strong>Virtue & Composure:</strong> Guarding speech during provocation • "Allahumma inni sa\'im" / "Returning to my point" with downward inflection.';
+        box.innerHTML = '<strong>Virtue & Composure:</strong> Guarding speech during provocation • Pause 3 full seconds • "Returning to my point" with downward inflection.';
       }
     };
 
@@ -1931,7 +2483,7 @@
       if (m) m.classList.add('hidden');
     };
 
-    // Auto-restore session and checkboxes on load
+    // Auto-restore session and load on startup
     window.addEventListener('DOMContentLoaded', async function() {
       updateWaterDisplay();
 
@@ -1947,158 +2499,42 @@
         mNotes.value = localStorage.getItem('hive_muhasabah_notes');
       }
 
+      // Restore Supabase Session
       try {
         var client = window.getSupaClient();
-        if (!client) return;
+        if (client) {
+          var res = await client.auth.getSession();
+          if (res.data && res.data.session && res.data.session.user) {
+            window.currentUserSession = res.data.session.user;
+            var email = (window.currentUserSession.email || '').toLowerCase();
+            var profileKey = BROTHER_EMAIL_MAP[email] || 'asaad';
 
-        var res = await client.auth.getSession();
-        if (res.data && res.data.session && res.data.session.user) {
-          window.currentUserSession = res.data.session.user;
-          var email = (window.currentUserSession.email || '').toLowerCase();
-          var profileKey = BROTHER_EMAIL_MAP[email] || 'asaad';
+            var lBtn = document.getElementById('brother-login-btn');
+            if (lBtn) lBtn.classList.add('hidden');
 
-          var lBtn = document.getElementById('brother-login-btn');
-          if (lBtn) lBtn.classList.add('hidden');
-
-          var badge = document.getElementById('auth-user-badge');
-          var nameEl = document.getElementById('auth-user-name');
-          if (badge) { badge.classList.remove('hidden'); badge.classList.add('flex'); }
-          if (nameEl && BROTHER_PROFILES_DATA[profileKey]) {
-            nameEl.innerText = BROTHER_PROFILES_DATA[profileKey].name;
+            var badge = document.getElementById('auth-user-badge');
+            var nameEl = document.getElementById('auth-user-name');
+            if (badge) { badge.classList.remove('hidden'); badge.classList.add('flex'); }
+            if (nameEl && BROTHER_PROFILES_DATA[profileKey]) {
+              nameEl.innerText = BROTHER_PROFILES_DATA[profileKey].name;
+            }
+            switchBrotherProfile(profileKey);
           }
-          switchBrotherProfile(profileKey);
         }
       } catch (err) {}
+
+      // Check onboarding state: prompt if first time, else apply saved alignment
+      var hasOnboarded = localStorage.getItem('sanctuary_onboarded');
+      if (!hasOnboarded) {
+        setTimeout(window.openOnboardingModal, 400);
+      } else {
+        setTimeout(applyFullSanctuaryAlignment, 100);
+      }
 
       if (window.location.hash.includes('type=recovery')) {
         setTimeout(window.showChangePasswordModal, 500);
       }
       if (window.lucide) lucide.createIcons();
-    });
-  </script>
-
-  <!-- MULTI-TRADITION (ISLAM, CHRISTIANITY, JUDAISM) & FELLOWSHIP CIRCLE ENGINE -->
-  <script>
-    window.SANCTUARY_TRADITIONS = {
-      islam: {
-        name: "Islamic Path",
-        symbol: "☪",
-        bannerTitle: "Faith, Emotional Intelligence & Discipline",
-        bannerSubtitle: "Anchoring daily executive strain in prayer, patience (Sabr), emotional restraint, and continuous self-accounting.",
-        coreMaxim: "The strong man is the one who controls himself when angry.",
-        tabLabel: "EQ & Spiritual Anchors (Islam)"
-      },
-      christianity: {
-        name: "Christian Path",
-        symbol: "✝",
-        bannerTitle: "Grace, Agape & Contemplative Composure",
-        bannerSubtitle: "Grounding high-stakes leadership in servant humility, prayer of the heart (Hesychia), and steadfast endurance.",
-        coreMaxim: "A soft answer turns away wrath, but a harsh word stirs up anger. — Proverbs 15:1",
-        tabLabel: "Grace & Contemplation (Christianity)"
-      },
-      judaism: {
-        name: "Jewish Path",
-        symbol: "✡",
-        bannerTitle: "Kavannah, Chesed & Ethical Rigor",
-        bannerSubtitle: "Integrating daily discipline with intentionality (Kavannah), loving-kindness (Chesed), and cosmic repair (Tikkun Olam).",
-        coreMaxim: "Who is strong? He who subdues his evil inclination. — Pirkei Avot 4:1",
-        tabLabel: "Mussar & Ethical Rigor (Judaism)"
-      }
-    };
-
-    window.currentCircle = localStorage.getItem('sanctuary_circle') || 'brothers';
-    window.currentPath = localStorage.getItem('sanctuary_path') || 'islam';
-
-    window.setSanctuaryCircle = function(circleKey) {
-      window.currentCircle = circleKey;
-      localStorage.setItem('sanctuary_circle', circleKey);
-      applySanctuaryTheme();
-      saveSanctuaryPreferencesToCloud();
-    };
-
-    window.setSanctuaryPath = function(pathKey) {
-      window.currentPath = pathKey;
-      localStorage.setItem('sanctuary_path', pathKey);
-      applySanctuaryTheme();
-      saveSanctuaryPreferencesToCloud();
-    };
-
-    function applySanctuaryTheme() {
-      var circle = window.currentCircle;
-      var pathKey = window.currentPath;
-      var trad = window.SANCTUARY_TRADITIONS[pathKey] || window.SANCTUARY_TRADITIONS.islam;
-
-      // Circle Button Styling
-      var bBtn = document.getElementById('circle-btn-brothers');
-      var sBtn = document.getElementById('circle-btn-sisters');
-      var cIcon = document.getElementById('circle-icon');
-      var cBadge = document.getElementById('circle-indicator-badge');
-
-      if (circle === 'sisters') {
-        if (sBtn) sBtn.className = "px-3 py-1.5 rounded-lg font-semibold transition bg-teal-500 text-slate-950 shadow flex items-center gap-1.5";
-        if (bBtn) bBtn.className = "px-3 py-1.5 rounded-lg font-semibold transition text-slate-400 hover:text-white flex items-center gap-1.5";
-        if (cIcon) cIcon.setAttribute('data-lucide', 'sparkles');
-        if (cBadge) cBadge.className = "w-10 h-10 rounded-xl bg-teal-950/80 border border-teal-800/60 flex items-center justify-center text-teal-400";
-      } else {
-        if (bBtn) bBtn.className = "px-3 py-1.5 rounded-lg font-semibold transition bg-emerald-500 text-slate-950 shadow flex items-center gap-1.5";
-        if (sBtn) sBtn.className = "px-3 py-1.5 rounded-lg font-semibold transition text-slate-400 hover:text-white flex items-center gap-1.5";
-        if (cIcon) cIcon.setAttribute('data-lucide', 'shield');
-        if (cBadge) cBadge.className = "w-10 h-10 rounded-xl bg-emerald-950/80 border border-emerald-800/60 flex items-center justify-center text-emerald-400";
-      }
-
-      // Path Button Styling
-      ['islam', 'christianity', 'judaism'].forEach(k => {
-        var btn = document.getElementById('path-btn-' + k);
-        if (btn) {
-          if (k === pathKey) {
-            btn.className = "px-3 py-1.5 rounded-lg font-semibold transition bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 flex items-center gap-1";
-          } else {
-            btn.className = "px-3 py-1.5 rounded-lg font-semibold transition text-slate-400 hover:text-white flex items-center gap-1";
-          }
-        }
-      });
-
-      // Active Header Title
-      var hEl = document.getElementById('sanctuary-active-heading');
-      if (hEl) {
-        var circleName = circle === 'sisters' ? 'Sisters Circle' : 'Brotherhood Majlis';
-        hEl.innerHTML = `${circleName} • ${trad.name} <span class="text-emerald-400 font-mono text-sm">${trad.symbol}</span>`;
-      }
-
-      // Tab Label & Banner Headers
-      var spiritualBtn = document.getElementById('btn-tab-spiritual');
-      if (spiritualBtn) {
-        spiritualBtn.innerHTML = `<i data-lucide="compass" class="w-4 h-4 text-emerald-400"></i> ${trad.tabLabel}`;
-      }
-
-      var bTitle = document.getElementById('spiritual-banner-title');
-      var bSub = document.getElementById('spiritual-banner-subtitle');
-      var mLabel = document.getElementById('spiritual-maxim-label');
-      if (bTitle) bTitle.innerText = trad.bannerTitle;
-      if (bSub) bSub.innerText = trad.bannerSubtitle;
-      if (mLabel) mLabel.innerText = trad.coreMaxim;
-
-      if (window.lucide) lucide.createIcons();
-    }
-
-    async function saveSanctuaryPreferencesToCloud() {
-      try {
-        var client = window.getSupaClient();
-        if (!client || !window.currentUserSession) return;
-        var email = (window.currentUserSession.email || '').toLowerCase();
-        var profileKey = BROTHER_EMAIL_MAP[email] || 'asaad';
-
-        await client.from('brotherhood_status').upsert({
-          brother: profileKey,
-          fellowship_circle: window.currentCircle,
-          spiritual_path: window.currentPath,
-          updated_at: new Date().toISOString()
-        }, { onConflict: 'brother' });
-      } catch (e) {}
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      setTimeout(applySanctuaryTheme, 150);
     });
   </script>
 </body>
