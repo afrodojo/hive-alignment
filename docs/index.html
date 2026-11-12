@@ -1471,3 +1471,430 @@
       const modal = document.getElementById('ingest-knowledge-modal');
       if (modal) modal.classList.add('hidden');
     };
+
+    window.fetchUrlIntoIngest = async function() {
+      const url = document.getElementById('ingest-url-input').value.trim();
+      const btn = document.getElementById('ingest-fetch-btn');
+      const status = document.getElementById('ingest-status-text');
+      if (!url) return;
+
+      btn.disabled = true;
+      btn.innerText = 'Pulling...';
+      status.classList.remove('hidden');
+      status.innerText = 'Extracting clean article text and auto-distilling key takeaway...';
+
+      try {
+        const res = await fetch(`https://r.jina.ai/${url}`);
+        if (!res.ok) throw new Error('Could not automatically fetch URL.');
+        const text = await res.text();
+        const lines = text.split('\n').filter(l => l.trim().length > 0);
+        const autoTitle = lines.length > 0 ? lines[0].replace(/^#+\s*/, '').slice(0, 65) : 'Ingested Web Article';
+        if (!document.getElementById('ingest-title-input').value) {
+          document.getElementById('ingest-title-input').value = autoTitle;
+        }
+        document.getElementById('ingest-content-input').value = text.slice(0, 4000);
+        const distilled = distillTextToMicroSession(autoTitle, text.slice(0, 2000));
+        if (!document.getElementById('ingest-takeaway-input').value) {
+          document.getElementById('ingest-takeaway-input').value = distilled.takeaway;
+        }
+        status.innerText = 'Article pulled and distilled! Click "Distill & Build 3Q Quiz" below.';
+      } catch (err) {
+        status.innerText = 'Site blocked automatic reader fetch. Paste the text directly below.';
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Auto-Pull';
+      }
+    };
+
+    // Multi-Page PDF, Image OCR, and Plaintext File Ingestion Handler
+    window.handleVaultFileIngest = async function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      openIngestModal('paper');
+      const status = document.getElementById('ingest-status-text');
+      status.classList.remove('hidden');
+      const cleanName = file.name.replace(/\.[^/.]+$/, '');
+      document.getElementById('ingest-title-input').value = cleanName;
+
+      if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
+        document.getElementById('ingest-type-input').value = 'PDF Paper';
+        status.innerText = 'Parsing multi-page PDF locally in browser (PDF.js)...';
+        try {
+          const { text, pageCount } = await extractTextFromPdfFile(file, (curr, total) => {
+            status.innerText = `Extracting text from PDF page ${curr} of ${total}...`;
+          });
+          if (!text || text.replace(/--- Page \d+ ---/g, '').trim().length < 20) {
+            status.innerText = 'PDF appears to be a scanned image without selectable text. Upload a page screenshot for OCR or paste text.';
+            return;
+          }
+          document.getElementById('ingest-content-input').value = text.slice(0, 8000);
+          document.getElementById('ingest-takeaway-input').value = distillTextToMicroSession(cleanName, text.slice(0, 3000)).takeaway;
+          status.innerText = `Extracted ${pageCount} PDF page(s) and distilled core thesis! Click "Distill & Build 3Q Quiz".`;
+        } catch (err) {
+          status.innerText = 'PDF extraction error: ' + (err.message || 'Could not parse file.');
+        }
+      } else if (file.type.startsWith('image/')) {
+        document.getElementById('ingest-type-input').value = 'OCR Scan';
+        status.innerText = 'Running local browser OCR (Tesseract)...';
+        try {
+          const res = await Tesseract.recognize(file, 'eng');
+          const extracted = res.data.text.trim();
+          document.getElementById('ingest-content-input').value = extracted;
+          document.getElementById('ingest-takeaway-input').value = distillTextToMicroSession(cleanName, extracted).takeaway;
+          status.innerText = 'OCR extraction complete! Click "Distill & Build 3Q Quiz".';
+        } catch (err) {
+          status.innerText = 'OCR failed. Type or paste notes manually.';
+        }
+      } else {
+        const reader = new FileReader();
+        reader.onload = ev => {
+          const txt = ev.target.result.slice(0, 6000);
+          document.getElementById('ingest-content-input').value = txt;
+          document.getElementById('ingest-takeaway-input').value = distillTextToMicroSession(cleanName, txt).takeaway;
+          status.innerText = 'Document loaded! Click "Distill & Build 3Q Quiz".';
+        };
+        reader.readAsText(file);
+      }
+      e.target.value = '';
+    };
+
+    window.handleSaveIngestedItem = function(e) {
+      if (e) e.preventDefault();
+      const title = document.getElementById('ingest-title-input').value.trim();
+      const type = document.getElementById('ingest-type-input').value;
+      const takeaway = document.getElementById('ingest-takeaway-input').value.trim();
+      const content = document.getElementById('ingest-content-input').value.trim();
+      const distilled = distillTextToMicroSession(title, content);
+
+      window.userAppState.knowledgeVault = window.userAppState.knowledgeVault || [];
+      window.userAppState.knowledgeVault.unshift({
+        id: 'kv_' + Date.now(),
+        title,
+        type,
+        takeaway: takeaway || distilled.takeaway,
+        content,
+        microSteps: distilled.microSteps,
+        quiz: distilled.quiz,
+        quizScore: null,
+        date: new Date().toISOString().split('T')[0]
+      });
+
+      document.getElementById('ingest-title-input').value = '';
+      document.getElementById('ingest-takeaway-input').value = '';
+      document.getElementById('ingest-content-input').value = '';
+      document.getElementById('ingest-url-input').value = '';
+
+      renderAllUI();
+      pushCloudUserData();
+      closeIngestModal();
+    };
+
+    window.deleteVaultItem = function(id) {
+      window.userAppState.knowledgeVault = (window.userAppState.knowledgeVault || []).filter(item => item.id !== id);
+      renderAllUI();
+      pushCloudUserData();
+    };
+
+    window.generateWorkflowFromVault = function() {
+      const vault = window.userAppState.knowledgeVault || [];
+      if (!vault.length) {
+        alert('Upload a PDF or auto-pull a topic into your Knowledge Vault first.');
+        return;
+      }
+      const latest = vault[0];
+      const steps = (latest.microSteps && latest.microSteps.length)
+        ? latest.microSteps.join('\n')
+        : `1. Read & annotate "${latest.title}" (${latest.type})\n2. Core focus: ${latest.takeaway}\n3. Complete 3-question recall quiz`;
+
+      window.userAppState.customWorkflows = window.userAppState.customWorkflows || [];
+      window.userAppState.customWorkflows.unshift({
+        id: 'wf_' + Date.now(),
+        title: `Micro-Learning Sprint: ${latest.title}`,
+        steps
+      });
+      renderAllUI();
+      pushCloudUserData();
+      alert(`Agent generated a tailored micro-learning workflow around "${latest.title}"!`);
+    };
+
+    // Alignment & UI Renders
+    window.setSanctuaryCircle = function(c) {
+      window.userAppState.circle = c;
+      renderAllUI();
+      pushCloudUserData();
+    };
+    window.setSanctuaryPath = function(p) {
+      window.userAppState.path = p;
+      renderAllUI();
+      pushCloudUserData();
+    };
+
+    function renderAllUI() {
+      const p = window.userAppState.path || 'islam';
+      const c = window.userAppState.circle || 'brothers';
+      const cfg = window.SANCTUARY_PATHS[p] || window.SANCTUARY_PATHS.islam;
+      const vault = window.userAppState.knowledgeVault || [];
+
+      document.getElementById('sanctuary-active-heading').innerHTML = `${cfg.circleLabels[c]} • ${cfg.name} ${cfg.symbol}`;
+      document.getElementById('active-quote-text').innerText = `"${cfg.quote.text}"`;
+      document.getElementById('active-quote-source').innerText = cfg.quote.source;
+      document.getElementById('active-virtue-tag').innerText = cfg.quote.virtue;
+
+      if (vault.length > 0) {
+        const activeStudy = vault[0];
+        const steps = activeStudy.microSteps || distillTextToMicroSession(activeStudy.title, activeStudy.content).microSteps;
+        document.getElementById('active-micro-title').innerText = activeStudy.title;
+        document.getElementById('active-micro-domain').innerText = activeStudy.quizScore ? `${activeStudy.type} (${activeStudy.quizScore})` : activeStudy.type;
+        document.getElementById('active-micro-steps').innerHTML = steps.map(s => `<p>${s}</p>`).join('');
+      } else {
+        document.getElementById('active-micro-title').innerText = cfg.microLearning.title;
+        document.getElementById('active-micro-domain').innerText = cfg.microLearning.domain;
+        document.getElementById('active-micro-steps').innerHTML = cfg.microLearning.steps.map(s => `<p>${s}</p>`).join('');
+      }
+
+      document.getElementById('active-twin-persona').innerText = cfg.aiTwin.persona;
+      document.getElementById('active-twin-welcome').innerText = cfg.aiTwin.welcome;
+
+      const map = { work: "Work Friction", mental: "Mental Health", family: "Family Dynamics", edu: "Academic Focus" };
+      document.getElementById('active-battles-labels').innerText = (window.userAppState.battles || []).map(b => map[b] || b).join(" • ");
+
+      Object.keys(window.userAppState.checks || {}).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.checked = !!window.userAppState.checks[id];
+      });
+
+      const j = document.getElementById('muhasabah-notes');
+      if (j && window.userAppState.muhasabah) j.value = window.userAppState.muhasabah;
+
+      const kvGrid = document.getElementById('knowledge-vault-grid');
+      if (kvGrid) {
+        kvGrid.innerHTML = vault.map((item, idx) => {
+          const steps = item.microSteps || distillTextToMicroSession(item.title, item.content).microSteps;
+          return `
+            <div class="bg-slate-900 border ${idx === 0 ? 'border-sky-500/50' : 'border-slate-800'} rounded-2xl p-5 flex flex-col justify-between space-y-3">
+              <div class="space-y-2">
+                <div class="flex justify-between items-center gap-2">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-800">${item.type}</span>
+                    ${item.quizScore ? `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">${item.quizScore}</span>` : ''}
+                  </div>
+                  <button type="button" onclick="deleteVaultItem('${item.id}')" class="text-slate-500 hover:text-rose-400 text-sm">×</button>
+                </div>
+                <h4 class="font-bold text-white text-sm">${item.title}</h4>
+                <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800/90 space-y-1 text-[11px] text-slate-300">
+                  <span class="text-[10px] font-bold uppercase text-emerald-400 block">Distilled Micro-Session:</span>
+                  ${steps.map(st => `<p>${st}</p>`).join('')}
+                </div>
+              </div>
+              <div class="flex justify-between items-center gap-2 pt-2 border-t border-slate-800/60">
+                <button type="button" onclick="openRecallQuiz('${item.id}')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-slate-950 rounded-lg text-[11px] font-bold flex items-center gap-1">
+                  <i data-lucide="help-circle" class="w-3 h-3"></i> Quiz (3Q)
+                </button>
+                <button type="button" onclick="activateMicroSession('${item.id}')" class="px-2.5 py-1 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 rounded-lg text-[11px] font-semibold">
+                  ${idx === 0 ? 'Active Sprint' : 'Set Active Sprint'}
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('') || '<p class="text-xs text-slate-500 col-span-3">Upload a PDF paper, click "Auto-Pull for Active Battles", or enter a topic above.</p>';
+      }
+
+      const tCont = document.getElementById('tasks-list-container');
+      if (tCont) {
+        tCont.innerHTML = (window.userAppState.tasks || []).map(t => `
+          <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 flex justify-between items-center">
+            <span class="${t.completed ? 'line-through text-slate-500' : 'text-slate-200'}">${t.title}</span>
+            <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTask('${t.id}')">
+          </div>
+        `).join('') || '<p class="text-slate-500">No duties added yet.</p>';
+      }
+
+      const cCont = document.getElementById('calendar-events-list');
+      if (cCont) {
+        cCont.innerHTML = (window.userAppState.calendarEvents || []).map(ev => `
+          <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 flex justify-between">
+            <span class="text-slate-200">${ev.title}</span>
+            <span class="text-emerald-400 font-mono">${ev.time}</span>
+          </div>
+        `).join('');
+      }
+
+      const wCont = document.getElementById('custom-workflows-container');
+      if (wCont) {
+        wCont.innerHTML = (window.userAppState.customWorkflows || []).map(w => `
+          <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl space-y-2">
+            <h4 class="font-bold text-white">${w.title}</h4>
+            <pre class="text-xs text-slate-400 font-mono whitespace-pre-wrap">${w.steps}</pre>
+          </div>
+        `).join('');
+      }
+
+      const email = (window.currentUserSession?.email || '').toLowerCase();
+      const unlocked = window.SEEKER_AUTHORIZED_EMAILS.includes(email) || window.userAppState.seekerUnlocked;
+      document.getElementById('seeker-locked-banner').classList.toggle('hidden', unlocked);
+      document.getElementById('seeker-unlocked-content').classList.toggle('hidden', !unlocked);
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    // Interactive Actions
+    window.syncCheck = function(id) {
+      window.userAppState.checks[id] = document.getElementById(id).checked;
+      pushCloudUserData();
+    };
+    window.saveMuhasabah = function() {
+      window.userAppState.muhasabah = document.getElementById('muhasabah-notes').value;
+      pushCloudUserData();
+      document.getElementById('muhasabah-status').innerText = "Encrypted & saved at " + new Date().toLocaleTimeString();
+    };
+    window.consultAiTwin = function() {
+      const inp = document.getElementById('ai-twin-input');
+      const box = document.getElementById('active-twin-welcome');
+      if (!inp.value.trim()) return;
+      const latestStudy = (window.userAppState.knowledgeVault || [])[0];
+      const studyContext = latestStudy ? ` Apply your active micro-learning focus ("${latestStudy.title}": ${latestStudy.takeaway})` : '';
+      box.innerText = `Counsel on "${inp.value}": Hold a 3-second tactical pause, anchor your intention, and protect your recovery reserve.${studyContext}`;
+      inp.value = '';
+    };
+
+    // Knowledge-Aware AI Day Architect
+    window.runAiDayStructure = function() {
+      const container = document.getElementById('ai-structured-schedule');
+      const vault = window.userAppState.knowledgeVault || [];
+      const tasks = (window.userAppState.tasks || []).filter(t => !t.completed);
+      const studyBlockTitle = vault.length ? `Micro-Study: ${vault[0].title}` : 'Sacred Anchor & Deep Work';
+      const studyBlockDesc = vault.length ? `Distilled Focus: ${vault[0].takeaway}` : 'Morning devotional primer & zero-distraction output.';
+      const dutyBlockTitle = tasks.length ? `Execute: ${tasks[0].title}` : 'Mid-Day Anchor & Micro-Sprint';
+
+      if (container) {
+        container.innerHTML = `
+          <div class="p-3 bg-slate-950 rounded-xl border border-indigo-500/50 space-y-1">
+            <span class="text-indigo-400 font-mono text-[11px] font-bold">06:00 – 08:00 AM</span>
+            <p class="font-semibold text-white">${studyBlockTitle}</p>
+            <p class="text-[10px] text-slate-400">${studyBlockDesc}</p>
+          </div>
+          <div class="p-3 bg-slate-950 rounded-xl border border-sky-500/50 space-y-1">
+            <span class="text-sky-400 font-mono text-[11px] font-bold">12:30 – 13:30 PM</span>
+            <p class="font-semibold text-white">${dutyBlockTitle}</p>
+            <p class="text-[10px] text-slate-400">Mid-day prayer anchor, vagal reset & priority execution.</p>
+          </div>
+          <div class="p-3 bg-slate-950 rounded-xl border border-amber-500/50 space-y-1">
+            <span class="text-amber-400 font-mono text-[11px] font-bold">17:30 – 18:45 PM</span>
+            <p class="font-semibold text-white">Tactical S&C Cadence</p>
+            <p class="text-[10px] text-slate-400">Autoregulated resistance training session.</p>
+          </div>
+          <div class="p-3 bg-slate-950 rounded-xl border border-purple-500/50 space-y-1">
+            <span class="text-purple-400 font-mono text-[11px] font-bold">21:00 – 22:00 PM</span>
+            <p class="font-semibold text-white">3Q Active Recall & Shutdown</p>
+            <p class="text-[10px] text-slate-400">Complete 3-question quiz, nightly accounting & screen shutdown.</p>
+          </div>
+        `;
+      }
+      pushCloudUserData();
+    };
+
+    // Modals Helpers
+    window.openOnboardingModal = () => document.getElementById('onboarding-modal').classList.remove('hidden');
+    window.closeOnboardingModal = () => document.getElementById('onboarding-modal').classList.add('hidden');
+    window.completeOnboarding = function() {
+      const b = [];
+      if (document.getElementById('battle-chk-work').checked) b.push('work');
+      if (document.getElementById('battle-chk-mental').checked) b.push('mental');
+      if (document.getElementById('battle-chk-family').checked) b.push('family');
+      if (document.getElementById('battle-chk-edu').checked) b.push('edu');
+      window.userAppState.battles = b;
+      window.userAppState.path = document.getElementById('onboard-path-select').value;
+      renderAllUI();
+      pushCloudUserData();
+      closeOnboardingModal();
+    };
+
+    window.openAddTaskModal = () => document.getElementById('add-task-modal').classList.remove('hidden');
+    window.closeAddTaskModal = () => document.getElementById('add-task-modal').classList.add('hidden');
+    window.handleCreateTask = function(e) {
+      e.preventDefault();
+      window.userAppState.tasks.push({ id: 't_' + Date.now(), title: document.getElementById('task-title-input').value, completed: false });
+      document.getElementById('task-title-input').value = '';
+      renderAllUI();
+      pushCloudUserData();
+      closeAddTaskModal();
+    };
+    window.toggleTask = function(id) {
+      window.userAppState.tasks.forEach(t => { if (t.id === id) t.completed = !t.completed; });
+      renderAllUI();
+      pushCloudUserData();
+    };
+
+    window.openAddEventModal = () => document.getElementById('add-event-modal').classList.remove('hidden');
+    window.closeAddEventModal = () => document.getElementById('add-event-modal').classList.add('hidden');
+    window.handleCreateCalendarEvent = function(e) {
+      e.preventDefault();
+      window.userAppState.calendarEvents.push({ id: 'e_' + Date.now(), title: document.getElementById('ev-title').value, time: document.getElementById('ev-time').value });
+      document.getElementById('ev-title').value = '';
+      document.getElementById('ev-time').value = '';
+      renderAllUI();
+      pushCloudUserData();
+      closeAddEventModal();
+    };
+
+    window.openCreateCustomWorkflowModal = () => document.getElementById('create-agent-wf-modal').classList.remove('hidden');
+    window.closeCreateAgentWfModal = () => document.getElementById('create-agent-wf-modal').classList.add('hidden');
+    window.handleSaveCustomAgentWorkflow = function(e) {
+      e.preventDefault();
+      window.userAppState.customWorkflows.push({ id: 'w_' + Date.now(), title: document.getElementById('wf-title').value, steps: document.getElementById('wf-steps').value });
+      document.getElementById('wf-title').value = '';
+      document.getElementById('wf-steps').value = '';
+      renderAllUI();
+      pushCloudUserData();
+      closeCreateAgentWfModal();
+    };
+
+    window.openSeekerInviteModal = () => document.getElementById('seeker-invite-modal').classList.remove('hidden');
+    window.closeSeekerInviteModal = () => document.getElementById('seeker-invite-modal').classList.add('hidden');
+    window.handleUnlockSeeker = function(e) {
+      e.preventDefault();
+      const code = document.getElementById('seeker-code-input').value.trim();
+      if (code === 'OMEGA-1911' || code === 'TAU-RHO-1964') {
+        window.userAppState.seekerUnlocked = true;
+        renderAllUI();
+        pushCloudUserData();
+        closeSeekerInviteModal();
+      } else {
+        alert("Invalid invitation code.");
+      }
+    };
+
+    // Initialize Icons, Session & Recovery Link Detection on Load
+    window.addEventListener('DOMContentLoaded', async () => {
+      if (window.lucide) lucide.createIcons();
+      const cached = localStorage.getItem('sanctuary_user_state');
+      if (cached) {
+        try { window.userAppState = Object.assign(window.userAppState, JSON.parse(cached)); } catch (e) {}
+      }
+      const client = window.getSupaClient();
+      if (client) {
+        client.auth.onAuthStateChange((event) => {
+          if (event === 'PASSWORD_RECOVERY') {
+            window.showChangePasswordModal();
+          }
+        });
+
+        const { data } = await client.auth.getSession();
+        if (data?.session?.user) {
+          window.currentUserSession = data.session.user;
+          document.getElementById('brother-login-btn').classList.add('hidden');
+          const badge = document.getElementById('auth-user-badge');
+          badge.classList.remove('hidden');
+          badge.classList.add('flex');
+          document.getElementById('auth-user-name').innerText = window.currentUserSession.email.split('@')[0];
+          await pullCloudUserData();
+        }
+      }
+      if (window.location.hash.includes('type=recovery')) {
+        setTimeout(window.showChangePasswordModal, 400);
+      }
+      renderAllUI();
+    });
+  </script>
+</body>
+</html>
