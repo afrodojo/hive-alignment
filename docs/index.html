@@ -55,7 +55,7 @@
         Master Your Battles: Faith, Duties, Strategy &amp; <span class="text-emerald-400">Athletic Vitality</span>
       </h1>
       <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">
-        A client-side encrypted personal operating system that automatically pulls knowledge on your chosen topics and distills it into tailored micro-learning sprints.
+        A client-side encrypted personal operating system that automatically pulls knowledge tailored to your active battles and distills it into micro-learning sprints.
       </p>
       <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
         <button type="button" onclick="toggleCockpit(true)" class="px-8 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-emerald-500/10 transition flex items-center justify-center gap-2">
@@ -89,9 +89,9 @@
           <div class="w-10 h-10 rounded-xl bg-sky-950 border border-sky-800 flex items-center justify-center text-sky-400">
             <i data-lucide="sparkles"></i>
           </div>
-          <h3 class="text-xl font-bold text-white">Auto-Pull &amp; Micro-Learning Agent</h3>
+          <h3 class="text-xl font-bold text-white">Battle-Tailored Auto-Study</h3>
           <p class="text-sm text-slate-400 leading-relaxed">
-            Enter any topic or URL—the agent pulls verified summaries, extracts key principles, and distills them into 20-minute micro-learning sessions.
+            One click pulls verified research tailored to your active battles—whether workplace friction, anxiety, family strain, or academic overload.
           </p>
         </div>
 
@@ -133,7 +133,7 @@
       </div>
     </div>
 
-    <!-- Active Battles Bar -->
+    <!-- Active Battles Bar with Direct Study Auto-Pull -->
     <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl bg-rose-950/80 border border-rose-800/60 flex items-center justify-center text-rose-400">
@@ -146,9 +146,14 @@
           <p class="text-xs text-slate-400">Tactical drills, auto-pulled topics, and AI guidance are tailored to support these active challenges.</p>
         </div>
       </div>
-      <button type="button" onclick="openOnboardingModal()" class="px-3 py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-300 rounded-lg text-xs font-semibold">
-        Change Battles
-      </button>
+      <div class="flex flex-wrap items-center gap-2">
+        <button type="button" id="battle-autopull-top-btn" onclick="autoPullForActiveBattles()" class="px-3.5 py-1.5 bg-rose-950 hover:bg-rose-900 border border-rose-800/70 text-rose-200 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-rose-400"></i> Pull Battle-Tailored Study
+        </button>
+        <button type="button" onclick="openOnboardingModal()" class="px-3 py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-300 rounded-lg text-xs font-semibold">
+          Change Battles
+        </button>
+      </div>
     </div>
 
     <!-- Fellowship & Spiritual Path Selector -->
@@ -329,16 +334,18 @@
 
     <!-- TAB: KNOWLEDGE INGESTION & MICRO-LEARNING AGENT -->
     <div id="tab-knowledge" class="tab-content space-y-6">
-      <!-- Auto-Pull Topic Bar -->
       <div class="bg-gradient-to-r from-slate-900 via-sky-950/20 to-slate-900 border border-sky-900/50 rounded-2xl p-6 space-y-4">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h3 class="text-lg font-bold text-white flex items-center gap-2">
               <i data-lucide="sparkles" class="text-sky-400 w-5 h-5"></i> Autonomous Topic Auto-Pull &amp; Micro-Learning Distiller
             </h3>
-            <p class="text-xs text-slate-400 mt-1">Type any topic you want to learn or improve on—the agent automatically pulls verified research summaries and structures a 20-minute micro-learning session.</p>
+            <p class="text-xs text-slate-400 mt-1">Pull targeted research automatically from your Active Battles or enter any topic/URL to build a 20-minute micro-learning session.</p>
           </div>
           <div class="flex flex-wrap gap-2">
+            <button type="button" id="battle-autopull-tab-btn" onclick="autoPullForActiveBattles()" class="px-3.5 py-1.5 bg-rose-950 hover:bg-rose-900 border border-rose-800 text-rose-200 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm">
+              <i data-lucide="swords" class="w-3.5 h-3.5 text-rose-400"></i> Auto-Pull for Active Battles
+            </button>
             <button type="button" onclick="openIngestModal('url')" class="px-3 py-1.5 bg-indigo-950 hover:bg-indigo-900 border border-indigo-800 text-indigo-300 font-semibold rounded-xl text-xs transition flex items-center gap-1.5">
               <i data-lucide="globe" class="w-3.5 h-3.5"></i> Ingest Web URL
             </button>
@@ -363,9 +370,7 @@
       </div>
 
       <!-- Ingested & Distilled Cards Grid -->
-      <div id="knowledge-vault-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Populated dynamically from userAppState.knowledgeVault -->
-      </div>
+      <div id="knowledge-vault-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </div>
 
     <!-- TAB 2: CALENDAR SYNC -->
@@ -489,6 +494,7 @@
             <select id="ingest-type-input" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
               <option value="Research Paper">Research Paper</option>
               <option value="Website / Article">Website / Article</option>
+              <option value="Battle-Tailored Study">Battle-Tailored Study</option>
               <option value="Topic Auto-Pull">Topic Auto-Pull</option>
               <option value="Study Notes / Book">Study Notes / Book</option>
               <option value="OCR Scan">OCR Page Scan</option>
@@ -698,6 +704,13 @@
       'cyberdojosensei@gmail.com',
       'mrevans3571894@yahoo.com'
     ];
+
+    window.BATTLE_TOPIC_LIBRARY = {
+      work: ['Negotiation', 'Emotional intelligence', 'Decision-making', 'Stoicism', 'Time management'],
+      mental: ['Heart rate variability', 'Cognitive behavioral therapy', 'Autonomic nervous system', 'Mindfulness', 'Stress management'],
+      family: ['Active listening', 'Nonviolent Communication', 'Attachment theory', 'Empathy', 'Conflict resolution'],
+      edu: ['Spaced repetition', 'Testing effect', 'Metacognition', 'Feynman Technique', 'Deep work']
+    };
 
     window.SANCTUARY_PATHS = {
       islam: {
@@ -1097,7 +1110,107 @@
       alert("Encrypted with AES-GCM-256 and saved to your zero-knowledge vault.");
     };
 
-    // Autonomous Topic Auto-Pull (Pulls summary + builds 20-min micro-learning session)
+    // Reusable Topic Pull & Distill Helper
+    async function pullAndDistillTopic(topic, sourceTypeLabel) {
+      const slug = encodeURIComponent(topic.replace(/\s+/g, '_'));
+      const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${slug}`);
+      let title = topic;
+      let extract = '';
+
+      if (res.ok) {
+        const data = await res.json();
+        title = data.title || topic;
+        extract = data.extract || '';
+      }
+
+      if (!extract) {
+        const searchRes = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(topic)}&format=json&origin=*`);
+        const searchJson = await searchRes.json();
+        const topHit = searchJson?.query?.search?.[0];
+        if (topHit) {
+          title = topHit.title;
+          const sumRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title.replace(/\s+/g, '_'))}`);
+          if (sumRes.ok) {
+            const sumData = await sumRes.json();
+            extract = sumData.extract || topHit.snippet.replace(/<[^>]+>/g, '');
+          }
+        }
+      }
+
+      if (!extract) {
+        extract = `Foundational study framework for ${topic}. Break down core principles, identify practical applications, and test retention using active recall.`;
+      }
+
+      const distilled = distillTextToMicroSession(title, extract);
+      window.userAppState.knowledgeVault = window.userAppState.knowledgeVault || [];
+      window.userAppState.knowledgeVault.unshift({
+        id: 'kv_' + Date.now(),
+        title: title,
+        type: sourceTypeLabel || 'Topic Auto-Pull',
+        takeaway: distilled.takeaway,
+        content: extract,
+        microSteps: distilled.microSteps,
+        date: new Date().toISOString().split('T')[0]
+      });
+
+      return title;
+    }
+
+    // One-Click Battle-Tailored Study Auto-Pull
+    window.autoPullForActiveBattles = async function() {
+      const battles = (window.userAppState.battles && window.userAppState.battles.length)
+        ? window.userAppState.battles
+        : ['work', 'mental'];
+
+      const candidateTopics = [];
+      battles.forEach(b => {
+        (window.BATTLE_TOPIC_LIBRARY[b] || []).forEach(t => candidateTopics.push({ battle: b, topic: t }));
+      });
+
+      const existingTitles = new Set((window.userAppState.knowledgeVault || []).map(v => v.title.toLowerCase()));
+      const freshCandidates = candidateTopics.filter(c => !existingTitles.has(c.topic.toLowerCase()));
+      const pool = freshCandidates.length ? freshCandidates : candidateTopics;
+      const chosen = pool[Math.floor(Math.random() * pool.length)];
+
+      const topBtn = document.getElementById('battle-autopull-top-btn');
+      const tabBtn = document.getElementById('battle-autopull-tab-btn');
+      const status = document.getElementById('auto-topic-status');
+
+      if (topBtn) { topBtn.disabled = true; topBtn.innerText = 'Pulling Battle Study...'; }
+      if (tabBtn) { tabBtn.disabled = true; tabBtn.innerText = 'Pulling Battle Study...'; }
+      if (status) {
+        status.classList.remove('hidden');
+        status.innerText = `Agent pulling study material for your "${chosen.battle.toUpperCase()}" battle arena: "${chosen.topic}"...`;
+      }
+
+      try {
+        const battleNames = { work: 'Work Friction', mental: 'Mental Health', family: 'Family Dynamics', edu: 'Academic Focus' };
+        const badgeLabel = `Battle: ${battleNames[chosen.battle] || chosen.battle}`;
+        const pulledTitle = await pullAndDistillTopic(chosen.topic, badgeLabel);
+
+        renderAllUI();
+        await pushCloudUserData();
+        switchTab('tab-knowledge');
+
+        if (status) {
+          status.innerText = `Pulled "${pulledTitle}" (${badgeLabel}) and distilled it into your active 20-minute micro-learning session!`;
+        }
+      } catch (err) {
+        if (status) status.innerText = 'Network error pulling topic. Try again or paste an article URL.';
+      } finally {
+        if (topBtn) {
+          topBtn.disabled = false;
+          topBtn.innerHTML = '<i data-lucide="sparkles" class="w-3.5 h-3.5 text-rose-400"></i> Pull Battle-Tailored Study';
+        }
+        if (tabBtn) {
+          tabBtn.disabled = false;
+          tabBtn.innerHTML = '<i data-lucide="swords" class="w-3.5 h-3.5 text-rose-400"></i> Auto-Pull for Active Battles';
+        }
+        if (window.lucide) lucide.createIcons();
+      }
+    };
+
+    // Autonomous Topic Auto-Pull Form Handler
     window.handleAutoPullTopic = async function(e) {
       if (e) e.preventDefault();
       const input = document.getElementById('auto-topic-input');
@@ -1112,48 +1225,7 @@
       status.innerText = `Agent searching & synthesizing knowledge on "${topic}"...`;
 
       try {
-        const slug = encodeURIComponent(topic.replace(/\s+/g, '_'));
-        const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${slug}`);
-        let title = topic;
-        let extract = '';
-
-        if (res.ok) {
-          const data = await res.json();
-          title = data.title || topic;
-          extract = data.extract || '';
-        }
-
-        if (!extract) {
-          // Fallback search API if exact title didn't match
-          const searchRes = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(topic)}&format=json&origin=*`);
-          const searchJson = await searchRes.json();
-          const topHit = searchJson?.query?.search?.[0];
-          if (topHit) {
-            title = topHit.title;
-            const sumRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title.replace(/\s+/g, '_'))}`);
-            if (sumRes.ok) {
-              const sumData = await sumRes.json();
-              extract = sumData.extract || topHit.snippet.replace(/<[^>]+>/g, '');
-            }
-          }
-        }
-
-        if (!extract) {
-          extract = `Foundational study framework for ${topic}. Break down core principles, identify practical applications, and test retention using active recall.`;
-        }
-
-        const distilled = distillTextToMicroSession(title, extract);
-        window.userAppState.knowledgeVault = window.userAppState.knowledgeVault || [];
-        window.userAppState.knowledgeVault.unshift({
-          id: 'kv_' + Date.now(),
-          title: title,
-          type: 'Topic Auto-Pull',
-          takeaway: distilled.takeaway,
-          content: extract,
-          microSteps: distilled.microSteps,
-          date: new Date().toISOString().split('T')[0]
-        });
-
+        const title = await pullAndDistillTopic(topic, 'Topic Auto-Pull');
         input.value = '';
         status.innerText = `Synthesized "${title}" into a 20-minute micro-learning session and saved to your encrypted vault!`;
         renderAllUI();
@@ -1353,7 +1425,6 @@
       document.getElementById('active-quote-source').innerText = cfg.quote.source;
       document.getElementById('active-virtue-tag').innerText = cfg.quote.virtue;
 
-      // Render top Tailored Micro-Learning Session card from latest ingested/distilled item
       if (vault.length > 0) {
         const activeStudy = vault[0];
         const steps = activeStudy.microSteps || distillTextToMicroSession(activeStudy.title, activeStudy.content).microSteps;
@@ -1380,7 +1451,6 @@
       const j = document.getElementById('muhasabah-notes');
       if (j && window.userAppState.muhasabah) j.value = window.userAppState.muhasabah;
 
-      // Render Knowledge & Micro-Learning Grid
       const kvGrid = document.getElementById('knowledge-vault-grid');
       if (kvGrid) {
         kvGrid.innerHTML = vault.map((item, idx) => {
@@ -1406,7 +1476,7 @@
               </div>
             </div>
           `;
-        }).join('') || '<p class="text-xs text-slate-500 col-span-3">Type a topic above and click Auto-Pull to generate your first tailored micro-learning session.</p>';
+        }).join('') || '<p class="text-xs text-slate-500 col-span-3">Click "Auto-Pull for Active Battles" or enter a topic above to generate your first micro-learning session.</p>';
       }
 
       const tCont = document.getElementById('tasks-list-container');
