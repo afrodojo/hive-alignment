@@ -49,13 +49,13 @@
   <main id="landing-view" class="flex-grow">
     <section class="pt-20 pb-16 px-6 max-w-5xl mx-auto text-center space-y-6">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950 border border-emerald-800 text-emerald-300 text-xs font-medium">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Zero-Knowledge E2EE &amp; AI Knowledge Architect Active
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Zero-Knowledge E2EE &amp; AI Micro-Learning Agent Active
       </div>
       <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white leading-tight">
         Master Your Battles: Faith, Duties, Strategy &amp; <span class="text-emerald-400">Athletic Vitality</span>
       </h1>
       <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">
-        A client-side encrypted personal operating system that ingests your papers, websites, and study material to architect your daily execution.
+        A client-side encrypted personal operating system that automatically pulls knowledge on your chosen topics and distills it into tailored micro-learning sprints.
       </p>
       <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
         <button type="button" onclick="toggleCockpit(true)" class="px-8 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-emerald-500/10 transition flex items-center justify-center gap-2">
@@ -71,7 +71,7 @@
     <section id="science" class="py-16 px-6 max-w-6xl mx-auto border-t border-slate-900">
       <div class="text-center max-w-2xl mx-auto space-y-3 mb-12">
         <h2 class="text-3xl font-bold tracking-tight text-white">Backed by Autonomic Science, Strategy &amp; Privacy</h2>
-        <p class="text-slate-400">Structured daily execution engineered around your ingested knowledge and active battles.</p>
+        <p class="text-slate-400">Structured daily execution engineered around automatically synthesized knowledge and active battles.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -87,11 +87,11 @@
 
         <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
           <div class="w-10 h-10 rounded-xl bg-sky-950 border border-sky-800 flex items-center justify-center text-sky-400">
-            <i data-lucide="library"></i>
+            <i data-lucide="sparkles"></i>
           </div>
-          <h3 class="text-xl font-bold text-white">Personal Knowledge Ingestion</h3>
+          <h3 class="text-xl font-bold text-white">Auto-Pull &amp; Micro-Learning Agent</h3>
           <p class="text-sm text-slate-400 leading-relaxed">
-            Ingest web articles, academic papers, notes, and OCR book scans so your AI Day Architect builds study sprints around your exact material.
+            Enter any topic or URL—the agent pulls verified summaries, extracts key principles, and distills them into 20-minute micro-learning sessions.
           </p>
         </div>
 
@@ -101,7 +101,7 @@
           </div>
           <h3 class="text-xl font-bold text-white">Agentic Day Structuring</h3>
           <p class="text-sm text-slate-400 leading-relaxed">
-            Automatically converts your ingested study sources, duties, and battle arenas into time-blocked focus windows.
+            Automatically converts your distilled micro-learning sessions, duties, and battle arenas into time-blocked focus windows.
           </p>
         </div>
       </div>
@@ -115,11 +115,11 @@
         <h2 class="text-2xl font-bold text-white flex items-center gap-2">
           <i data-lucide="layout-dashboard" class="text-emerald-400"></i> Member Operations Cockpit
         </h2>
-        <p class="text-xs text-slate-400 mt-1">Encrypted Day Architect &bull; Knowledge Ingestion &bull; Battles &bull; Tasks &bull; Vaults</p>
+        <p class="text-xs text-slate-400 mt-1">Encrypted Day Architect &bull; Auto-Knowledge &amp; Micro-Learning &bull; Battles &bull; Tasks</p>
       </div>
       <div class="flex flex-wrap items-center gap-2">
-        <button type="button" onclick="openIngestModal()" class="px-3 py-1.5 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
-          <i data-lucide="file-plus-2" class="w-3.5 h-3.5"></i> Ingest Study / URL
+        <button type="button" onclick="openIngestModal('topic')" class="px-3 py-1.5 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Auto-Pull Topic / URL
         </button>
         <button type="button" onclick="openOnboardingModal()" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
           <i data-lucide="sliders" class="w-3.5 h-3.5 text-emerald-400"></i> Tailor Battles &amp; Path
@@ -143,7 +143,7 @@
           <h3 class="text-sm font-bold text-white">
             Active Battle Arenas: <span id="active-battles-labels" class="text-rose-400 font-medium">Work Friction &bull; Mental Health</span>
           </h3>
-          <p class="text-xs text-slate-400">Tactical drills and AI guidance are tailored to support these active challenges.</p>
+          <p class="text-xs text-slate-400">Tactical drills, auto-pulled topics, and AI guidance are tailored to support these active challenges.</p>
         </div>
       </div>
       <button type="button" onclick="openOnboardingModal()" class="px-3 py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-300 rounded-lg text-xs font-semibold">
@@ -184,7 +184,7 @@
           <h3 class="text-base font-bold text-white flex items-center gap-2">
             Autonomous AI Day Architect <span class="text-[10px] bg-indigo-950 text-indigo-300 border border-indigo-800 px-2 py-0.5 rounded uppercase">Knowledge-Aware Agent</span>
           </h3>
-          <p class="text-xs text-slate-400">Synthesizes your ingested papers, websites, study notes, battles, and duties into a daily execution plan.</p>
+          <p class="text-xs text-slate-400">Synthesizes your auto-pulled topics, papers, micro-learning sprints, and duties into a daily execution plan.</p>
         </div>
         <button type="button" onclick="runAiDayStructure()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-2">
           <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Architect My Day
@@ -199,7 +199,7 @@
         <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
           <span class="text-sky-400 font-mono text-[11px] font-bold">12:30 - 13:30 PM</span>
           <p class="font-semibold text-slate-200">Mid-Day Anchor &amp; Micro-Sprint</p>
-          <p class="text-[10px] text-slate-400">Parasympathetic reset, posture &amp; 48oz hydration.</p>
+          <p class="text-[10px] text-slate-400">20-min distilled micro-learning session &amp; 48oz hydration.</p>
         </div>
         <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
           <span class="text-amber-400 font-mono text-[11px] font-bold">17:30 - 18:45 PM</span>
@@ -232,22 +232,25 @@
         </div>
       </div>
 
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between space-y-4 shadow-lg">
+      <!-- Tailored Micro-Learning Session Card -->
+      <div class="bg-slate-900 border border-sky-900/50 rounded-2xl p-6 flex flex-col justify-between space-y-4 shadow-lg">
         <div>
           <div class="flex justify-between items-center border-b border-slate-800 pb-2.5">
-            <span class="text-xs font-bold uppercase tracking-wider text-sky-400">Active Study Focus</span>
-            <span id="active-micro-time" class="text-[10px] text-slate-400 font-mono">20-Min Sprint</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-sky-400 flex items-center gap-1.5">
+              <i data-lucide="graduation-cap" class="w-3.5 h-3.5"></i> Tailored Micro-Learning
+            </span>
+            <span id="active-micro-time" class="text-[10px] text-sky-300 bg-sky-950 border border-sky-800 px-2 py-0.5 rounded font-mono">20-Min Session</span>
           </div>
           <h4 id="active-micro-title" class="font-bold text-white text-sm mt-3">Tadabbur: Cognitive Self-Regulation</h4>
           <div id="active-micro-steps" class="mt-2 space-y-1.5 text-xs text-slate-300">
-            <p>1. Notice somatic triggers.</p>
-            <p>2. Execute 3-5s silence.</p>
-            <p>3. Reframe response with excellence.</p>
+            <p>1. Core Principle: Notice somatic triggers early.</p>
+            <p>2. Tactical Drill: Execute 3-5s silence before reply.</p>
+            <p>3. Active Recall: Write 1-line summary in Journal.</p>
           </div>
         </div>
         <div class="pt-2 border-t border-slate-800 flex justify-between items-center">
           <span id="active-micro-domain" class="text-[11px] text-slate-400">Spiritual Physiology</span>
-          <button type="button" onclick="switchTab('tab-knowledge')" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold">Knowledge Vault &rarr;</button>
+          <button type="button" onclick="switchTab('tab-knowledge')" class="px-3 py-1 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 rounded-lg text-xs font-semibold">Knowledge Vault &rarr;</button>
         </div>
       </div>
 
@@ -258,7 +261,7 @@
             <span id="active-twin-persona" class="text-[10px] bg-emerald-950 border border-emerald-800 text-emerald-300 px-2 py-0.5 rounded font-mono">Hakim</span>
           </div>
           <p id="active-twin-welcome" class="text-xs text-slate-300 mt-2.5 leading-relaxed">
-            Peace upon you. Ask me to synthesize your ingested papers or align your daily duties.
+            Peace upon you. Ask me to distill your ingested papers into micro-learning or align your daily duties.
           </p>
         </div>
         <div class="space-y-2 pt-2">
@@ -271,7 +274,7 @@
     <!-- COCKPIT NAVIGATION TABS -->
     <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-2">
       <button type="button" onclick="switchTab('tab-briefings')" id="btn-tab-briefings" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold bg-emerald-500 text-slate-950 transition">Briefings</button>
-      <button type="button" onclick="switchTab('tab-knowledge')" id="btn-tab-knowledge" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-sky-400 hover:text-sky-300 transition">Knowledge &amp; Ingestion Vault</button>
+      <button type="button" onclick="switchTab('tab-knowledge')" id="btn-tab-knowledge" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-sky-400 hover:text-sky-300 transition">Knowledge &amp; Micro-Learning</button>
       <button type="button" onclick="switchTab('tab-calendar')" id="btn-tab-calendar" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">Calendar Sync</button>
       <button type="button" onclick="switchTab('tab-duties')" id="btn-tab-duties" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">Duties &amp; Tasks</button>
       <button type="button" onclick="switchTab('tab-workflows')" id="btn-tab-workflows" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">Agent Workflows</button>
@@ -304,7 +307,7 @@
             </label>
             <label class="flex items-start gap-2.5 cursor-pointer">
               <input type="checkbox" id="chk-d1" onchange="syncCheck('chk-d1')" class="mt-0.5 rounded bg-slate-950 text-emerald-500">
-              <span class="text-slate-300">20-min micro-learning sprint</span>
+              <span class="text-slate-300">20-min tailored micro-learning session</span>
             </label>
           </div>
         </div>
@@ -324,29 +327,42 @@
       </div>
     </div>
 
-    <!-- TAB: PERSONAL KNOWLEDGE & INGESTION VAULT -->
+    <!-- TAB: KNOWLEDGE INGESTION & MICRO-LEARNING AGENT -->
     <div id="tab-knowledge" class="tab-content space-y-6">
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-900 border border-slate-800 rounded-2xl p-6">
-        <div>
-          <h3 class="text-lg font-bold text-white flex items-center gap-2">
-            <i data-lucide="library" class="text-sky-400 w-5 h-5"></i> Personal Knowledge &amp; Ingestion Vault
-          </h3>
-          <p class="text-xs text-slate-400 mt-1">Ingest research papers, websites, study notes, or scanned pages. Encrypted with AES-GCM-256 and fed directly into your AI Day Architect.</p>
+      <!-- Auto-Pull Topic Bar -->
+      <div class="bg-gradient-to-r from-slate-900 via-sky-950/20 to-slate-900 border border-sky-900/50 rounded-2xl p-6 space-y-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <i data-lucide="sparkles" class="text-sky-400 w-5 h-5"></i> Autonomous Topic Auto-Pull &amp; Micro-Learning Distiller
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">Type any topic you want to learn or improve on—the agent automatically pulls verified research summaries and structures a 20-minute micro-learning session.</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button type="button" onclick="openIngestModal('url')" class="px-3 py-1.5 bg-indigo-950 hover:bg-indigo-900 border border-indigo-800 text-indigo-300 font-semibold rounded-xl text-xs transition flex items-center gap-1.5">
+              <i data-lucide="globe" class="w-3.5 h-3.5"></i> Ingest Web URL
+            </button>
+            <button type="button" onclick="openIngestModal('paper')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl text-xs transition flex items-center gap-1.5">
+              <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Paste Paper
+            </button>
+            <label for="vault-ocr-input" class="cursor-pointer px-3 py-1.5 bg-emerald-950 hover:bg-emerald-900 border border-emerald-800 text-emerald-300 font-semibold rounded-xl text-xs transition flex items-center gap-1.5">
+              <i data-lucide="camera" class="w-3.5 h-3.5"></i> Scan Page
+            </label>
+            <input type="file" id="vault-ocr-input" accept="image/*,.txt,.md" class="hidden" onchange="handleVaultFileIngest(event)">
+          </div>
         </div>
-        <div class="flex flex-wrap gap-2">
-          <button type="button" onclick="openIngestModal('url')" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5">
-            <i data-lucide="globe" class="w-3.5 h-3.5"></i> Web URL
+
+        <!-- Topic Auto-Pull Form -->
+        <form onsubmit="handleAutoPullTopic(event)" class="flex flex-col sm:flex-row gap-2 pt-1">
+          <input type="text" id="auto-topic-input" required placeholder="e.g., Heart rate variability, Stoicism, Cognitive behavioral therapy, Deep work, Negotiation..." class="flex-grow bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500">
+          <button type="submit" id="auto-topic-btn" class="px-5 py-2.5 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center justify-center gap-1.5 flex-shrink-0">
+            <i data-lucide="download-cloud" class="w-4 h-4"></i> Auto-Pull &amp; Build Micro-Session
           </button>
-          <button type="button" onclick="openIngestModal('paper')" class="px-3.5 py-2 bg-sky-600 hover:bg-sky-500 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1.5">
-            <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Paper / Study Note
-          </button>
-          <label for="vault-ocr-input" class="cursor-pointer px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1.5">
-            <i data-lucide="camera" class="w-3.5 h-3.5"></i> Scan Page (OCR)
-          </label>
-          <input type="file" id="vault-ocr-input" accept="image/*,.txt,.md" class="hidden" onchange="handleVaultFileIngest(event)">
-        </div>
+        </form>
+        <p id="auto-topic-status" class="text-xs text-sky-300 hidden"></p>
       </div>
 
+      <!-- Ingested & Distilled Cards Grid -->
       <div id="knowledge-vault-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- Populated dynamically from userAppState.knowledgeVault -->
       </div>
@@ -443,23 +459,23 @@
   </footer>
 
   <!-- MODALS -->
-  <!-- Knowledge Ingestion Modal (Papers, Websites, Study Material, OCR) -->
+  <!-- Knowledge Ingestion Modal -->
   <div id="ingest-knowledge-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-sm z-[1100] hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-sky-900/50 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl relative">
       <div class="flex justify-between items-center border-b border-slate-800 pb-3">
         <h3 class="text-base font-bold text-white flex items-center gap-2">
-          <i data-lucide="library" class="w-4 h-4 text-sky-400"></i> Ingest Study Material, Paper, or Website
+          <i data-lucide="library" class="w-4 h-4 text-sky-400"></i> Ingest &amp; Auto-Distill Study Material
         </h3>
         <button type="button" onclick="closeIngestModal()" class="text-slate-400 hover:text-white text-xl leading-none">&times;</button>
       </div>
 
       <div id="ingest-url-row" class="space-y-1.5 text-xs">
-        <label class="text-slate-400 block font-medium">Website or Paper URL (Optional)</label>
+        <label class="text-slate-400 block font-medium">Website or Paper URL (Auto-extracts title, thesis &amp; micro-steps)</label>
         <div class="flex gap-2">
           <input type="url" id="ingest-url-input" placeholder="https://arxiv.org/abs/... or article URL" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-200 font-mono">
-          <button type="button" id="ingest-fetch-btn" onclick="fetchUrlIntoIngest()" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl flex-shrink-0">Fetch</button>
+          <button type="button" id="ingest-fetch-btn" onclick="fetchUrlIntoIngest()" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl flex-shrink-0">Auto-Pull</button>
         </div>
-        <p id="ingest-status-text" class="text-[11px] text-slate-400 hidden"></p>
+        <p id="ingest-status-text" class="text-[11px] text-sky-300 hidden"></p>
       </div>
 
       <form onsubmit="handleSaveIngestedItem(event)" class="space-y-3 text-xs">
@@ -473,6 +489,7 @@
             <select id="ingest-type-input" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
               <option value="Research Paper">Research Paper</option>
               <option value="Website / Article">Website / Article</option>
+              <option value="Topic Auto-Pull">Topic Auto-Pull</option>
               <option value="Study Notes / Book">Study Notes / Book</option>
               <option value="OCR Scan">OCR Page Scan</option>
             </select>
@@ -480,8 +497,8 @@
         </div>
 
         <div>
-          <label class="text-slate-400 block mb-1">Key Takeaway / Study Objective (Used by AI Day Architect)</label>
-          <input type="text" id="ingest-takeaway-input" required placeholder="e.g. Master the 3 mechanisms of parasympathetic recovery" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
+          <label class="text-slate-400 block mb-1">Auto-Extracted Thesis / Key Takeaway</label>
+          <input type="text" id="ingest-takeaway-input" required placeholder="Auto-filled on URL pull or type your core objective" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
         </div>
 
         <div>
@@ -491,7 +508,7 @@
 
         <div class="flex justify-end gap-2 pt-2">
           <button type="button" onclick="closeIngestModal()" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl font-semibold">Cancel</button>
-          <button type="submit" class="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl">Encrypt &amp; Add to Vault</button>
+          <button type="submit" class="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl">Distill &amp; Save to Vault</button>
         </div>
       </form>
     </div>
@@ -689,7 +706,7 @@
         circleLabels: { brothers: "Brotherhood Majlis", sisters: "Sisters Halaqa" },
         quote: { text: "The strong one is not the one who physically overpowers, but the one who controls anger under provocation.", source: "Prophetic Guidance (Bukhari)", virtue: "Sabr (Composure)" },
         microLearning: { title: "Tadabbur: Cognitive Self-Regulation", domain: "Virtue & Composure", time: "20-Min Sprint", steps: ["1. Notice somatic tension.", "2. Hold 3s tactical pause.", "3. Respond with Ihsan."] },
-        aiTwin: { persona: "Hakim (Mentor)", welcome: "Peace upon you. Ask me to synthesize your ingested papers or align your daily duties.", promptPlaceholder: "Ask Hakim about ingested material, duties, or recovery..." }
+        aiTwin: { persona: "Hakim (Mentor)", welcome: "Peace upon you. Ask me to distill your ingested papers into micro-learning or align your daily duties.", promptPlaceholder: "Ask Hakim about ingested material, duties, or recovery..." }
       },
       christianity: {
         name: "Christian Path",
@@ -723,6 +740,11 @@
           type: 'Research Paper',
           takeaway: 'Direct 100% of cognitive bandwidth exclusively toward internal response rather than external volatility.',
           content: 'Focus on controllable actions, emotional restraint under high-stakes friction, and deliberate pause before reply.',
+          microSteps: [
+            '1. Core Principle: Separate controllable actions from external events.',
+            '2. Tactical Drill: Hold a 3-second pause before replying under friction.',
+            '3. Active Recall: Write a 1-sentence application in your evening log.'
+          ],
           date: '2026-11-11'
         }
       ],
@@ -735,6 +757,24 @@
       ],
       seekerUnlocked: false
     };
+
+    // Client-Side Micro-Learning Distiller Agent
+    function distillTextToMicroSession(title, rawText) {
+      const clean = (rawText || '').replace(/\s+/g, ' ').trim();
+      const sentences = clean.split(/(?<=[.!?])\s+/).filter(s => s.length > 25 && s.length < 240);
+      const thesis = sentences[0] || clean.slice(0, 140) || `Master key concepts of ${title}`;
+      const detail1 = sentences[1] || `Break down the core mechanism of ${title} into plain language.`;
+      const detail2 = sentences[2] || `Apply one actionable principle from ${title} during today's work or study window.`;
+
+      return {
+        takeaway: thesis,
+        microSteps: [
+          `1. Core Thesis: ${thesis}`,
+          `2. Key Mechanism: ${detail1}`,
+          `3. Active Recall & Drill: ${detail2}`
+        ]
+      };
+    }
 
     // WebCrypto AES-GCM-256 Engine
     window.SanctuaryVaultCrypto = {
@@ -1057,20 +1097,106 @@
       alert("Encrypted with AES-GCM-256 and saved to your zero-knowledge vault.");
     };
 
-    // Knowledge Ingestion Engine (Papers, URLs, Study Notes, OCR)
+    // Autonomous Topic Auto-Pull (Pulls summary + builds 20-min micro-learning session)
+    window.handleAutoPullTopic = async function(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('auto-topic-input');
+      const btn = document.getElementById('auto-topic-btn');
+      const status = document.getElementById('auto-topic-status');
+      const topic = input.value.trim();
+      if (!topic) return;
+
+      btn.disabled = true;
+      btn.innerText = 'Pulling & Distilling...';
+      status.classList.remove('hidden');
+      status.innerText = `Agent searching & synthesizing knowledge on "${topic}"...`;
+
+      try {
+        const slug = encodeURIComponent(topic.replace(/\s+/g, '_'));
+        const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${slug}`);
+        let title = topic;
+        let extract = '';
+
+        if (res.ok) {
+          const data = await res.json();
+          title = data.title || topic;
+          extract = data.extract || '';
+        }
+
+        if (!extract) {
+          // Fallback search API if exact title didn't match
+          const searchRes = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(topic)}&format=json&origin=*`);
+          const searchJson = await searchRes.json();
+          const topHit = searchJson?.query?.search?.[0];
+          if (topHit) {
+            title = topHit.title;
+            const sumRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title.replace(/\s+/g, '_'))}`);
+            if (sumRes.ok) {
+              const sumData = await sumRes.json();
+              extract = sumData.extract || topHit.snippet.replace(/<[^>]+>/g, '');
+            }
+          }
+        }
+
+        if (!extract) {
+          extract = `Foundational study framework for ${topic}. Break down core principles, identify practical applications, and test retention using active recall.`;
+        }
+
+        const distilled = distillTextToMicroSession(title, extract);
+        window.userAppState.knowledgeVault = window.userAppState.knowledgeVault || [];
+        window.userAppState.knowledgeVault.unshift({
+          id: 'kv_' + Date.now(),
+          title: title,
+          type: 'Topic Auto-Pull',
+          takeaway: distilled.takeaway,
+          content: extract,
+          microSteps: distilled.microSteps,
+          date: new Date().toISOString().split('T')[0]
+        });
+
+        input.value = '';
+        status.innerText = `Synthesized "${title}" into a 20-minute micro-learning session and saved to your encrypted vault!`;
+        renderAllUI();
+        pushCloudUserData();
+      } catch (err) {
+        status.innerText = 'Could not reach external knowledge feed. Try pasting an article URL or text manually.';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i data-lucide="download-cloud" class="w-4 h-4"></i> Auto-Pull &amp; Build Micro-Session';
+        if (window.lucide) lucide.createIcons();
+      }
+    };
+
+    // Promote any vault card into the active Micro-Learning Session
+    window.activateMicroSession = function(id) {
+      const vault = window.userAppState.knowledgeVault || [];
+      const idx = vault.findIndex(item => item.id === id);
+      if (idx > -1) {
+        const [selected] = vault.splice(idx, 1);
+        if (!selected.microSteps) {
+          selected.microSteps = distillTextToMicroSession(selected.title, selected.content).microSteps;
+        }
+        vault.unshift(selected);
+        window.userAppState.knowledgeVault = vault;
+        renderAllUI();
+        pushCloudUserData();
+        alert(`"${selected.title}" is now your active 20-minute micro-learning session!`);
+      }
+    };
+
+    // Knowledge Ingestion Modal (URL, Paper, OCR)
     window.openIngestModal = function(mode) {
       const modal = document.getElementById('ingest-knowledge-modal');
-      const urlRow = document.getElementById('ingest-url-row');
       const typeSel = document.getElementById('ingest-type-input');
       const status = document.getElementById('ingest-status-text');
       if (status) status.classList.add('hidden');
-      if (mode === 'url') {
-        if (urlRow) urlRow.classList.remove('hidden');
-        if (typeSel) typeSel.value = 'Website / Article';
-      } else {
-        if (urlRow) urlRow.classList.remove('hidden');
-        if (typeSel) typeSel.value = 'Research Paper';
+      if (mode === 'topic') {
+        switchTab('tab-knowledge');
+        document.getElementById('auto-topic-input')?.focus();
+        return;
       }
+      if (mode === 'url' && typeSel) typeSel.value = 'Website / Article';
+      if (mode === 'paper' && typeSel) typeSel.value = 'Research Paper';
       if (modal) modal.classList.remove('hidden');
       if (window.lucide) lucide.createIcons();
     };
@@ -1087,25 +1213,30 @@
       if (!url) return;
 
       btn.disabled = true;
-      btn.innerText = 'Fetching...';
+      btn.innerText = 'Pulling...';
       status.classList.remove('hidden');
-      status.innerText = 'Extracting clean article text via Jina Reader...';
+      status.innerText = 'Extracting clean article text and auto-distilling key takeaway...';
 
       try {
         const res = await fetch(`https://r.jina.ai/${url}`);
         if (!res.ok) throw new Error('Could not automatically fetch URL.');
         const text = await res.text();
         const lines = text.split('\n').filter(l => l.trim().length > 0);
-        if (lines.length > 0 && !document.getElementById('ingest-title-input').value) {
-          document.getElementById('ingest-title-input').value = lines[0].replace(/^#+\s*/, '').slice(0, 60);
+        const autoTitle = lines.length > 0 ? lines[0].replace(/^#+\s*/, '').slice(0, 65) : 'Ingested Web Article';
+        if (!document.getElementById('ingest-title-input').value) {
+          document.getElementById('ingest-title-input').value = autoTitle;
         }
         document.getElementById('ingest-content-input').value = text.slice(0, 3500);
-        status.innerText = 'Content extracted! Add your key takeaway below and save.';
+        const distilled = distillTextToMicroSession(autoTitle, text.slice(0, 2000));
+        if (!document.getElementById('ingest-takeaway-input').value) {
+          document.getElementById('ingest-takeaway-input').value = distilled.takeaway;
+        }
+        status.innerText = 'Article pulled and distilled! Click "Distill & Save to Vault" below.';
       } catch (err) {
         status.innerText = 'Site blocked automatic reader fetch. Paste the text directly below.';
       } finally {
         btn.disabled = false;
-        btn.innerText = 'Fetch';
+        btn.innerText = 'Auto-Pull';
       }
     };
 
@@ -1115,23 +1246,28 @@
       openIngestModal('paper');
       const status = document.getElementById('ingest-status-text');
       status.classList.remove('hidden');
-      document.getElementById('ingest-title-input').value = file.name.replace(/\.[^/.]+$/, '');
+      const cleanName = file.name.replace(/\.[^/.]+$/, '');
+      document.getElementById('ingest-title-input').value = cleanName;
 
       if (file.type.startsWith('image/')) {
         document.getElementById('ingest-type-input').value = 'OCR Scan';
         status.innerText = 'Running local browser OCR (Tesseract)...';
         try {
           const res = await Tesseract.recognize(file, 'eng');
-          document.getElementById('ingest-content-input').value = res.data.text.trim();
-          status.innerText = 'OCR extraction complete! Verify text and save.';
+          const extracted = res.data.text.trim();
+          document.getElementById('ingest-content-input').value = extracted;
+          document.getElementById('ingest-takeaway-input').value = distillTextToMicroSession(cleanName, extracted).takeaway;
+          status.innerText = 'OCR extraction and distillation complete! Click Save.';
         } catch (err) {
           status.innerText = 'OCR failed. Type or paste notes manually.';
         }
       } else {
         const reader = new FileReader();
         reader.onload = ev => {
-          document.getElementById('ingest-content-input').value = ev.target.result.slice(0, 4000);
-          status.innerText = 'Document text loaded into vault editor.';
+          const txt = ev.target.result.slice(0, 4000);
+          document.getElementById('ingest-content-input').value = txt;
+          document.getElementById('ingest-takeaway-input').value = distillTextToMicroSession(cleanName, txt).takeaway;
+          status.innerText = 'Document loaded and distilled! Click Save.';
         };
         reader.readAsText(file);
       }
@@ -1143,14 +1279,16 @@
       const type = document.getElementById('ingest-type-input').value;
       const takeaway = document.getElementById('ingest-takeaway-input').value.trim();
       const content = document.getElementById('ingest-content-input').value.trim();
+      const distilled = distillTextToMicroSession(title, content);
 
       window.userAppState.knowledgeVault = window.userAppState.knowledgeVault || [];
       window.userAppState.knowledgeVault.unshift({
         id: 'kv_' + Date.now(),
         title,
         type,
-        takeaway,
+        takeaway: takeaway || distilled.takeaway,
         content,
+        microSteps: distilled.microSteps,
         date: new Date().toISOString().split('T')[0]
       });
 
@@ -1173,19 +1311,23 @@
     window.generateWorkflowFromVault = function() {
       const vault = window.userAppState.knowledgeVault || [];
       if (!vault.length) {
-        alert('Add a paper, website, or study note to your Knowledge Vault first.');
+        alert('Auto-pull a topic or ingest a paper into your Knowledge Vault first.');
         return;
       }
       const latest = vault[0];
+      const steps = (latest.microSteps && latest.microSteps.length)
+        ? latest.microSteps.join('\n')
+        : `1. Read & annotate "${latest.title}" (${latest.type})\n2. Core focus: ${latest.takeaway}\n3. Write 3-sentence Feynman recall summary in Journal`;
+
       window.userAppState.customWorkflows = window.userAppState.customWorkflows || [];
       window.userAppState.customWorkflows.unshift({
         id: 'wf_' + Date.now(),
-        title: `Study Agent: ${latest.title}`,
-        steps: `1. Read & annotate "${latest.title}" (${latest.type})\n2. Core focus: ${latest.takeaway}\n3. Write 3-sentence Feynman recall summary in Journal`
+        title: `Micro-Learning Sprint: ${latest.title}`,
+        steps
       });
       renderAllUI();
       pushCloudUserData();
-      alert(`Agent generated a structured study workflow around "${latest.title}"!`);
+      alert(`Agent generated a tailored micro-learning workflow around "${latest.title}"!`);
     };
 
     // Alignment & UI Renders
@@ -1211,14 +1353,13 @@
       document.getElementById('active-quote-source').innerText = cfg.quote.source;
       document.getElementById('active-virtue-tag').innerText = cfg.quote.virtue;
 
-      // Highlight latest ingested item in the Active Study Focus card if available
+      // Render top Tailored Micro-Learning Session card from latest ingested/distilled item
       if (vault.length > 0) {
-        document.getElementById('active-micro-title').innerText = vault[0].title;
-        document.getElementById('active-micro-domain').innerText = vault[0].type;
-        document.getElementById('active-micro-steps').innerHTML = `
-          <p class="text-sky-300 font-medium">Takeaway: ${vault[0].takeaway}</p>
-          <p class="text-slate-400 line-clamp-2">${vault[0].content}</p>
-        `;
+        const activeStudy = vault[0];
+        const steps = activeStudy.microSteps || distillTextToMicroSession(activeStudy.title, activeStudy.content).microSteps;
+        document.getElementById('active-micro-title').innerText = activeStudy.title;
+        document.getElementById('active-micro-domain').innerText = activeStudy.type;
+        document.getElementById('active-micro-steps').innerHTML = steps.map(s => `<p>${s}</p>`).join('');
       } else {
         document.getElementById('active-micro-title').innerText = cfg.microLearning.title;
         document.getElementById('active-micro-domain').innerText = cfg.microLearning.domain;
@@ -1239,23 +1380,33 @@
       const j = document.getElementById('muhasabah-notes');
       if (j && window.userAppState.muhasabah) j.value = window.userAppState.muhasabah;
 
-      // Render Knowledge Vault Grid
+      // Render Knowledge & Micro-Learning Grid
       const kvGrid = document.getElementById('knowledge-vault-grid');
       if (kvGrid) {
-        kvGrid.innerHTML = vault.map(item => `
-          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between space-y-3">
-            <div class="space-y-2">
-              <div class="flex justify-between items-center">
-                <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-800">${item.type}</span>
-                <button type="button" onclick="deleteVaultItem('${item.id}')" class="text-slate-500 hover:text-rose-400 text-sm">&times;</button>
+        kvGrid.innerHTML = vault.map((item, idx) => {
+          const steps = item.microSteps || distillTextToMicroSession(item.title, item.content).microSteps;
+          return `
+            <div class="bg-slate-900 border ${idx === 0 ? 'border-sky-500/50' : 'border-slate-800'} rounded-2xl p-5 flex flex-col justify-between space-y-3">
+              <div class="space-y-2">
+                <div class="flex justify-between items-center">
+                  <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-800">${item.type}</span>
+                  <button type="button" onclick="deleteVaultItem('${item.id}')" class="text-slate-500 hover:text-rose-400 text-sm">&times;</button>
+                </div>
+                <h4 class="font-bold text-white text-sm">${item.title}</h4>
+                <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800/90 space-y-1 text-[11px] text-slate-300">
+                  <span class="text-[10px] font-bold uppercase text-emerald-400 block">Distilled Micro-Session:</span>
+                  ${steps.map(st => `<p>${st}</p>`).join('')}
+                </div>
               </div>
-              <h4 class="font-bold text-white text-sm">${item.title}</h4>
-              <p class="text-xs text-emerald-400 font-medium">Focus: <span class="text-slate-300 font-normal">${item.takeaway}</span></p>
-              <p class="text-[11px] text-slate-400 line-clamp-3 font-mono bg-slate-950 p-2.5 rounded-lg border border-slate-800/80">${item.content}</p>
+              <div class="flex justify-between items-center pt-2 border-t border-slate-800/60">
+                <span class="text-[10px] text-slate-500 font-mono">${item.date || 'Today'}</span>
+                <button type="button" onclick="activateMicroSession('${item.id}')" class="px-2.5 py-1 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 rounded-lg text-[11px] font-semibold">
+                  ${idx === 0 ? 'Active Sprint' : 'Set Active Sprint'}
+                </button>
+              </div>
             </div>
-            <div class="text-[10px] text-slate-500 font-mono pt-1 border-t border-slate-800/60">Ingested: ${item.date || 'Today'}</div>
-          </div>
-        `).join('') || '<p class="text-xs text-slate-500 col-span-3">No papers, websites, or study materials ingested yet. Click "Ingest Study / URL" above.</p>';
+          `;
+        }).join('') || '<p class="text-xs text-slate-500 col-span-3">Type a topic above and click Auto-Pull to generate your first tailored micro-learning session.</p>';
       }
 
       const tCont = document.getElementById('tasks-list-container');
@@ -1311,7 +1462,7 @@
       const box = document.getElementById('active-twin-welcome');
       if (!inp.value.trim()) return;
       const latestStudy = (window.userAppState.knowledgeVault || [])[0];
-      const studyContext = latestStudy ? ` Apply your current study focus ("${latestStudy.title}": ${latestStudy.takeaway})` : '';
+      const studyContext = latestStudy ? ` Apply your active micro-learning focus ("${latestStudy.title}": ${latestStudy.takeaway})` : '';
       box.innerText = `Counsel on "${inp.value}": Hold a 3-second tactical pause, anchor your intention, and protect your recovery reserve.${studyContext}`;
       inp.value = '';
     };
@@ -1321,8 +1472,8 @@
       const container = document.getElementById('ai-structured-schedule');
       const vault = window.userAppState.knowledgeVault || [];
       const tasks = (window.userAppState.tasks || []).filter(t => !t.completed);
-      const studyBlockTitle = vault.length ? `Study: ${vault[0].title}` : 'Sacred Anchor & Deep Work';
-      const studyBlockDesc = vault.length ? `Synthesize: ${vault[0].takeaway}` : 'Morning devotional primer & zero-distraction output.';
+      const studyBlockTitle = vault.length ? `Micro-Study: ${vault[0].title}` : 'Sacred Anchor & Deep Work';
+      const studyBlockDesc = vault.length ? `Distilled Focus: ${vault[0].takeaway}` : 'Morning devotional primer & zero-distraction output.';
       const dutyBlockTitle = tasks.length ? `Execute: ${tasks[0].title}` : 'Mid-Day Anchor & Micro-Sprint';
 
       if (container) {
