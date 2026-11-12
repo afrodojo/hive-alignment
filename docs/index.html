@@ -1,1 +1,1 @@
-﻿Get-Clipboard -Raw | Out-File -FilePath "docs\index.html" -Encoding utf8 -NoNewline; git add docs/index.html; git commit -m "feat(quiz): add 3-question active-recall quiz and PDF.js parser"; git push origin main
+[System.IO.File]::WriteAllText((Join-Path (Get-Location) "docs\index.html"), (Get-Clipboard -Raw), (New-Object System.Text.UTF8Encoding($false))); git add docs/index.html; git commit -m "feat(quiz): add 3-question active-recall quiz and PDF.js parser"; git push origin main
