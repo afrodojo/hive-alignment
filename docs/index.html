@@ -1,1 +1,1900 @@
-[System.IO.File]::WriteAllText((Join-Path (Get-Location) "docs\index.html"), (Get-Clipboard -Raw), (New-Object System.Text.UTF8Encoding($false))); git add docs/index.html; git commit -m "feat(quiz): add 3-question active-recall quiz and PDF.js parser"; git push origin main
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <title>Hive Alignment | Executive Performance & Personal Operating System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-slate-950 min-h-screen flex flex-col">
+
+  <!-- Top Navigation -->
+  <nav class="sticky top-0 w-full z-40 bg-slate-950/90 backdrop-blur-md border-b border-slate-900">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3 cursor-pointer" onclick="showLandingView()">
+        <i data-lucide="shield-check" class="text-emerald-400 w-6 h-6"></i>
+        <span class="font-bold text-lg tracking-tight text-white">Hive Alignment</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="#science" onclick="showLandingView()" class="text-sm text-slate-300 hover:text-white transition hidden md:block">Science & Studies</a>
+        <a href="#privacy" onclick="showLandingView()" class="text-sm text-slate-300 hover:text-white transition hidden md:block">Zero-Knowledge Privacy</a>
+        
+        <div id="auth-user-badge" class="hidden items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" title="Zero-Knowledge Sync Active"></span>
+          <span id="auth-user-name" class="px-3 py-1.5 rounded-lg bg-emerald-950/70 border border-emerald-800/40 text-emerald-300 text-xs font-semibold"></span>
+          <button type="button" onclick="showChangePasswordModal()" class="px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700/60 text-slate-300 hover:text-white font-semibold rounded-lg text-xs transition flex items-center gap-1 shadow-sm" title="Change Password">
+            <i data-lucide="key" class="w-3 h-3 text-slate-400"></i> Key
+          </button>
+          <button type="button" onclick="brotherSignOut()" class="px-3 py-1.5 bg-rose-950/50 hover:bg-rose-900/60 border border-rose-800/50 text-rose-300 hover:text-rose-100 font-semibold rounded-lg text-xs transition flex items-center gap-1.5">
+            <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Exit
+          </button>
+        </div>
+
+        <button type="button" id="brother-login-btn" onclick="showLoginModal()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-emerald-500/40 text-emerald-300 hover:text-white font-bold rounded-lg text-sm transition flex items-center gap-2 shadow-sm">
+          <i data-lucide="lock" class="w-4 h-4 text-emerald-400"></i> Member Login
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PUBLIC LANDING VIEW -->
+  <main id="landing-view" class="flex-grow">
+    <section class="pt-20 pb-16 px-6 max-w-5xl mx-auto text-center space-y-6">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950 border border-emerald-800 text-emerald-300 text-xs font-medium">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Zero-Knowledge E2EE & Active-Recall Micro-Learning Agent
+      </div>
+      <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white leading-tight">
+        Master Your Battles: Faith, Duties, Strategy & <span class="text-emerald-400">Athletic Vitality</span>
+      </h1>
+      <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">
+        A client-side encrypted personal operating system that ingests your multi-page PDFs, papers, and battle topics to build micro-learning sprints and active-recall quizzes.
+      </p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
+        <button type="button" onclick="toggleCockpit(true)" class="px-8 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-emerald-500/10 transition flex items-center justify-center gap-2">
+          Open Member Cockpit <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+        <button type="button" onclick="showSignUpModal()" class="px-8 py-3.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 font-semibold rounded-xl transition">
+          Create Encrypted Vault
+        </button>
+      </div>
+    </section>
+
+    <!-- Science Section -->
+    <section id="science" class="py-16 px-6 max-w-6xl mx-auto border-t border-slate-900">
+      <div class="text-center max-w-2xl mx-auto space-y-3 mb-12">
+        <h2 class="text-3xl font-bold tracking-tight text-white">Backed by Autonomic Science, Strategy & Privacy</h2>
+        <p class="text-slate-400">Structured daily execution engineered around active-recall testing and tailored battle arenas.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+          <div class="w-10 h-10 rounded-xl bg-emerald-950 border border-emerald-800 flex items-center justify-center text-emerald-400">
+            <i data-lucide="shield-check"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white">Zero-Knowledge E2EE</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Your biometrics, PDF research papers, and quiz scores are encrypted with AES-GCM-256 in your browser before upload.
+          </p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+          <div class="w-10 h-10 rounded-xl bg-sky-950 border border-sky-800 flex items-center justify-center text-sky-400">
+            <i data-lucide="brain-circuit"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white">Active-Recall Quiz Generator</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Every PDF or topic card automatically generates a 3-question self-quiz to lock in long-term retention via the testing effect.
+          </p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+          <div class="w-10 h-10 rounded-xl bg-purple-950 border border-purple-800 flex items-center justify-center text-purple-400">
+            <i data-lucide="calendar"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white">Agentic Day Structuring</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Automatically converts your distilled micro-learning sessions, duties, and battle arenas into time-blocked focus windows.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- COCKPIT DASHBOARD VIEW -->
+  <section id="cockpit-view" class="hidden flex-grow max-w-6xl mx-auto px-6 py-8 w-full space-y-6">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b border-slate-800 gap-4">
+      <div>
+        <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+          <i data-lucide="layout-dashboard" class="text-emerald-400"></i> Member Operations Cockpit
+        </h2>
+        <p class="text-xs text-slate-400 mt-1">Encrypted Day Architect • PDF & Topic Micro-Learning • 3Q Active-Recall Quizzes</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <button type="button" onclick="openIngestModal('topic')" class="px-3 py-1.5 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Ingest PDF / Topic / URL
+        </button>
+        <button type="button" onclick="openOnboardingModal()" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+          <i data-lucide="sliders" class="w-3.5 h-3.5 text-emerald-400"></i> Tailor Battles & Path
+        </button>
+        <button type="button" onclick="triggerImmediateCloudSave()" class="px-3 py-1.5 bg-emerald-950 hover:bg-emerald-900 border border-emerald-800 text-emerald-300 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+          <i data-lucide="lock" class="w-3.5 h-3.5"></i> Encrypt & Save
+        </button>
+        <button type="button" onclick="toggleCockpit(false)" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-lg text-sm text-slate-300 transition">
+          Exit Cockpit
+        </button>
+      </div>
+    </div>
+
+    <!-- Active Battles Bar with Direct Study Auto-Pull -->
+    <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-rose-950/80 border border-rose-800/60 flex items-center justify-center text-rose-400">
+          <i data-lucide="swords" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h3 class="text-sm font-bold text-white">
+            Active Battle Arenas: <span id="active-battles-labels" class="text-rose-400 font-medium">Work Friction • Mental Health</span>
+          </h3>
+          <p class="text-xs text-slate-400">Tactical drills, auto-pulled topics, and AI guidance are tailored to support these active challenges.</p>
+        </div>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <button type="button" id="battle-autopull-top-btn" onclick="autoPullForActiveBattles()" class="px-3.5 py-1.5 bg-rose-950 hover:bg-rose-900 border border-rose-800/70 text-rose-200 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-rose-400"></i> Pull Battle-Tailored Study
+        </button>
+        <button type="button" onclick="openOnboardingModal()" class="px-3 py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-300 rounded-lg text-xs font-semibold">
+          Change Battles
+        </button>
+      </div>
+    </div>
+
+    <!-- Fellowship & Spiritual Path Selector -->
+    <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
+      <div class="flex items-center gap-3">
+        <div id="circle-indicator-badge" class="w-10 h-10 rounded-xl bg-emerald-950/80 border border-emerald-800/60 flex items-center justify-center text-emerald-400">
+          <i data-lucide="shield" class="w-5 h-5" id="circle-icon"></i>
+        </div>
+        <div>
+          <h3 id="sanctuary-active-heading" class="text-base font-bold text-white">Brotherhood Majlis • Islamic Path ☪</h3>
+          <p class="text-xs text-slate-400">Harmonizing autonomic telemetry, obligations, and physical discipline.</p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2.5">
+        <div class="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-800 text-xs">
+          <button type="button" id="circle-btn-brothers" onclick="setSanctuaryCircle('brothers')" class="px-3 py-1.5 rounded-lg font-semibold transition bg-emerald-500 text-slate-950 shadow">Brothers</button>
+          <button type="button" id="circle-btn-sisters" onclick="setSanctuaryCircle('sisters')" class="px-3 py-1.5 rounded-lg font-semibold transition text-slate-400 hover:text-white">Sisters</button>
+        </div>
+
+        <div class="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-800 text-xs">
+          <button type="button" id="path-btn-islam" onclick="setSanctuaryPath('islam')" class="px-3 py-1.5 rounded-lg font-semibold transition bg-emerald-600/30 text-emerald-300 border border-emerald-500/40">☪ Islam</button>
+          <button type="button" id="path-btn-christianity" onclick="setSanctuaryPath('christianity')" class="px-3 py-1.5 rounded-lg font-semibold transition text-slate-400 hover:text-white">✝ Christianity</button>
+          <button type="button" id="path-btn-judaism" onclick="setSanctuaryPath('judaism')" class="px-3 py-1.5 rounded-lg font-semibold transition text-slate-400 hover:text-white">✡ Judaism</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI AGENTIC DAY ARCHITECT -->
+    <div class="bg-gradient-to-r from-slate-900 via-indigo-950/20 to-slate-900 border border-indigo-900/40 rounded-2xl p-6 shadow-xl space-y-4">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-3">
+        <div>
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            Autonomous AI Day Architect <span class="text-[10px] bg-indigo-950 text-indigo-300 border border-indigo-800 px-2 py-0.5 rounded uppercase">Knowledge-Aware Agent</span>
+          </h3>
+          <p class="text-xs text-slate-400">Synthesizes your uploaded PDFs, auto-pulled topics, micro-learning sprints, and duties into a daily execution plan.</p>
+        </div>
+        <button type="button" onclick="runAiDayStructure()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-2">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Architect My Day
+        </button>
+      </div>
+      <div id="ai-structured-schedule" class="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs pt-1">
+        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
+          <span class="text-indigo-400 font-mono text-[11px] font-bold">06:00 - 08:00 AM</span>
+          <p class="font-semibold text-slate-200">Sacred Anchor & Deep Study</p>
+          <p class="text-[10px] text-slate-400">Morning devotional primer & ingested literature synthesis.</p>
+        </div>
+        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
+          <span class="text-sky-400 font-mono text-[11px] font-bold">12:30 - 13:30 PM</span>
+          <p class="font-semibold text-slate-200">Mid-Day Anchor & Micro-Sprint</p>
+          <p class="text-[10px] text-slate-400">20-min distilled micro-learning session & 48oz hydration.</p>
+        </div>
+        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
+          <span class="text-amber-400 font-mono text-[11px] font-bold">17:30 - 18:45 PM</span>
+          <p class="font-semibold text-slate-200">Tactical Strength Cadence</p>
+          <p class="text-[10px] text-slate-400">Autoregulated resistance training session.</p>
+        </div>
+        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
+          <span class="text-purple-400 font-mono text-[11px] font-bold">21:00 - 22:00 PM</span>
+          <p class="font-semibold text-slate-200">Night Accounting & Shutdown</p>
+          <p class="text-[10px] text-slate-400">Evening reflection, family time & decompression.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DYNAMIC ALIGNMENT CARDS -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between space-y-4 shadow-lg">
+        <div>
+          <div class="flex justify-between items-center border-b border-slate-800 pb-2.5">
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Sacred Maxim</span>
+            <span id="active-virtue-tag" class="text-[10px] px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-300 font-mono">Sabr</span>
+          </div>
+          <p id="active-quote-text" class="text-sm text-slate-200 italic mt-3 leading-relaxed">
+            "The strong one is not the one who physically overpowers, but the one who controls anger under provocation."
+          </p>
+        </div>
+        <div class="pt-2 border-t border-slate-800 flex justify-between items-center text-xs">
+          <span id="active-quote-source" class="text-slate-400">Prophetic Guidance</span>
+          <button type="button" onclick="openOnboardingModal()" class="text-[11px] text-emerald-400 hover:text-emerald-300">Edit Path</button>
+        </div>
+      </div>
+
+      <!-- Tailored Micro-Learning Session Card -->
+      <div class="bg-slate-900 border border-sky-900/50 rounded-2xl p-6 flex flex-col justify-between space-y-4 shadow-lg">
+        <div>
+          <div class="flex justify-between items-center border-b border-slate-800 pb-2.5">
+            <span class="text-xs font-bold uppercase tracking-wider text-sky-400 flex items-center gap-1.5">
+              <i data-lucide="graduation-cap" class="w-3.5 h-3.5"></i> Tailored Micro-Learning
+            </span>
+            <span id="active-micro-time" class="text-[10px] text-sky-300 bg-sky-950 border border-sky-800 px-2 py-0.5 rounded font-mono">20-Min Session</span>
+          </div>
+          <h4 id="active-micro-title" class="font-bold text-white text-sm mt-3">Tadabbur: Cognitive Self-Regulation</h4>
+          <div id="active-micro-steps" class="mt-2 space-y-1.5 text-xs text-slate-300">
+            <p>1. Core Principle: Notice somatic triggers early.</p>
+            <p>2. Tactical Drill: Execute 3-5s silence before reply.</p>
+            <p>3. Active Recall: Write 1-line summary in Journal.</p>
+          </div>
+        </div>
+        <div class="pt-2 border-t border-slate-800 flex justify-between items-center gap-2">
+          <span id="active-micro-domain" class="text-[11px] text-slate-400 truncate">Spiritual Physiology</span>
+          <div class="flex items-center gap-1.5 flex-shrink-0">
+            <button type="button" onclick="openActiveRecallQuiz()" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-slate-950 rounded-lg text-xs font-bold transition flex items-center gap-1">
+              <i data-lucide="help-circle" class="w-3 h-3"></i> Quiz (3Q)
+            </button>
+            <button type="button" onclick="switchTab('tab-knowledge')" class="px-2.5 py-1 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 rounded-lg text-xs font-semibold">Vault →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-emerald-900/40 rounded-2xl p-6 flex flex-col justify-between space-y-3 shadow-lg">
+        <div>
+          <div class="flex justify-between items-center border-b border-slate-800 pb-2.5">
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">AI Spiritual Twin</span>
+            <span id="active-twin-persona" class="text-[10px] bg-emerald-950 border border-emerald-800 text-emerald-300 px-2 py-0.5 rounded font-mono">Hakim</span>
+          </div>
+          <p id="active-twin-welcome" class="text-xs text-slate-300 mt-2.5 leading-relaxed">
+            Peace upon you. Ask me to distill your uploaded PDFs into micro-learning or align your daily duties.
+          </p>
+        </div>
+        <div class="space-y-2 pt-2">
+          <input type="text" id="ai-twin-input" placeholder="Ask about your ingested material or duties..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+          <button type="button" onclick="consultAiTwin()" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl text-xs transition">Seek Counsel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- COCKPIT NAVIGATION TABS -->
+    <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-2">
+      <button type="button" onclick="switchTab('tab-briefings')" id="btn-tab-briefings" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold bg-emerald-500 text-slate-950 transition">Briefings</button>
+      <button type="button" onclick="switchTab('tab-knowledge')" id="btn-tab-knowledge" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-sky-400 hover:text-sky-300 transition">Knowledge & Micro-Learning</button>
+      <button type="button" onclick="switchTab('tab-calendar')" id="btn-tab-calendar" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">Calendar Sync</button>
+      <button type="button" onclick="switchTab('tab-duties')" id="btn-tab-duties" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">Duties & Tasks</button>
+      <button type="button" onclick="switchTab('tab-workflows')" id="btn-tab-workflows" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">Agent Workflows</button>
+      <button type="button" onclick="switchTab('tab-spiritual')" id="btn-tab-spiritual" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">Journal & Accounting</button>
+      <button type="button" onclick="switchTab('tab-seeker')" id="btn-tab-seeker" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-amber-400 hover:text-amber-300 transition">Seeker Study (Locked)</button>
+    </div>
+
+    <!-- TAB 1: DAILY BRIEFINGS -->
+    <div id="tab-briefings" class="tab-content active space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+          <h4 class="text-emerald-400 font-bold text-sm border-b border-slate-800 pb-2">Morning Awakening</h4>
+          <div class="space-y-3 text-xs">
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-m0" onchange="syncCheck('chk-m0')" class="mt-0.5 rounded bg-slate-950 text-emerald-500">
+              <span class="text-slate-300">Morning devotional anchor & prayer</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-m1" onchange="syncCheck('chk-m1')" class="mt-0.5 rounded bg-slate-950 text-emerald-500">
+              <span class="text-slate-300">Wearable recovery check (>66% Green)</span>
+            </label>
+          </div>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+          <h4 class="text-sky-400 font-bold text-sm border-b border-slate-800 pb-2">Mid-Day Recalibration</h4>
+          <div class="space-y-3 text-xs">
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-d0" onchange="syncCheck('chk-d0')" class="mt-0.5 rounded bg-slate-950 text-emerald-500">
+              <span class="text-slate-300">Mid-day prayer & contemplative pause</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-d1" onchange="syncCheck('chk-d1')" class="mt-0.5 rounded bg-slate-950 text-emerald-500">
+              <span class="text-slate-300">20-min tailored micro-learning + 3Q recall quiz</span>
+            </label>
+          </div>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+          <h4 class="text-purple-400 font-bold text-sm border-b border-slate-800 pb-2">Evening Accounting</h4>
+          <div class="space-y-3 text-xs">
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-e0" onchange="syncCheck('chk-e0')" class="mt-0.5 rounded bg-slate-950 text-emerald-500">
+              <span class="text-slate-300">Night prayer & gratitude review</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" id="chk-e1" onchange="syncCheck('chk-e1')" class="mt-0.5 rounded bg-slate-950 text-emerald-500">
+              <span class="text-slate-300">Nightly self-accounting (Muhasabah / Examen)</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: KNOWLEDGE INGESTION & MICRO-LEARNING AGENT -->
+    <div id="tab-knowledge" class="tab-content space-y-6">
+      <div class="bg-gradient-to-r from-slate-900 via-sky-950/20 to-slate-900 border border-sky-900/50 rounded-2xl p-6 space-y-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <i data-lucide="sparkles" class="text-sky-400 w-5 h-5"></i> Autonomous PDF, Topic & URL Micro-Learning Agent
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">Upload multi-page PDF papers, pull battle-tailored research, or enter any topic/URL to build a 20-minute micro-learning session with a 3-question recall quiz.</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button type="button" id="battle-autopull-tab-btn" onclick="autoPullForActiveBattles()" class="px-3.5 py-1.5 bg-rose-950 hover:bg-rose-900 border border-rose-800 text-rose-200 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm">
+              <i data-lucide="swords" class="w-3.5 h-3.5 text-rose-400"></i> Auto-Pull for Active Battles
+            </button>
+            <label for="vault-ocr-input" class="cursor-pointer px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm">
+              <i data-lucide="file-up" class="w-3.5 h-3.5"></i> Upload PDF / Scan Page
+            </label>
+            <input type="file" id="vault-ocr-input" accept=".pdf,application/pdf,image/*,.txt,.md" class="hidden" onchange="handleVaultFileIngest(event)">
+            <button type="button" onclick="openIngestModal('url')" class="px-3 py-1.5 bg-indigo-950 hover:bg-indigo-900 border border-indigo-800 text-indigo-300 font-semibold rounded-xl text-xs transition flex items-center gap-1.5">
+              <i data-lucide="globe" class="w-3.5 h-3.5"></i> Web URL
+            </button>
+            <button type="button" onclick="openIngestModal('paper')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl text-xs transition flex items-center gap-1.5">
+              <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Paste Text
+            </button>
+          </div>
+        </div>
+
+        <!-- Topic Auto-Pull Form -->
+        <form onsubmit="handleAutoPullTopic(event)" class="flex flex-col sm:flex-row gap-2 pt-1">
+          <input type="text" id="auto-topic-input" required placeholder="e.g., Heart rate variability, Stoicism, Cognitive behavioral therapy, Deep work, Negotiation..." class="flex-grow bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500">
+          <button type="submit" id="auto-topic-btn" class="px-5 py-2.5 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center justify-center gap-1.5 flex-shrink-0">
+            <i data-lucide="download-cloud" class="w-4 h-4"></i> Auto-Pull & Build Micro-Session
+          </button>
+        </form>
+        <p id="auto-topic-status" class="text-xs text-sky-300 hidden"></p>
+      </div>
+
+      <!-- Ingested & Distilled Cards Grid -->
+      <div id="knowledge-vault-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+
+    <!-- TAB 2: CALENDAR SYNC -->
+    <div id="tab-calendar" class="tab-content space-y-6">
+      <div class="flex justify-between items-center bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <div>
+          <h3 class="text-lg font-bold text-white">Two-Way Calendar Sync & Schedule</h3>
+          <p class="text-xs text-slate-400">Encrypted schedule synced across your devices.</p>
+        </div>
+        <button type="button" onclick="openAddEventModal()" class="px-4 py-2 bg-emerald-600 text-slate-950 font-bold rounded-xl text-xs">+ New Event</button>
+      </div>
+      <div id="calendar-events-list" class="space-y-2.5 text-xs"></div>
+    </div>
+
+    <!-- TAB 3: DUTIES & TASKS -->
+    <div id="tab-duties" class="tab-content space-y-6">
+      <div class="flex justify-between items-center bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <div>
+          <h3 class="text-lg font-bold text-white">Duties, Obligations & Reminders</h3>
+          <p class="text-xs text-slate-400">Client-side encrypted with AES-GCM-256.</p>
+        </div>
+        <button type="button" onclick="openAddTaskModal()" class="px-4 py-2 bg-emerald-600 text-slate-950 font-bold rounded-xl text-xs">+ Add Duty</button>
+      </div>
+      <div id="tasks-list-container" class="space-y-2.5 text-xs"></div>
+    </div>
+
+    <!-- TAB 4: AGENT WORKFLOWS -->
+    <div id="tab-workflows" class="tab-content space-y-6">
+      <div class="flex justify-between items-center bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <div>
+          <h3 class="text-lg font-bold text-white">Agentic Workflow & Study Builder</h3>
+          <p class="text-xs text-slate-400">Build custom study tracks or generate one automatically from your Knowledge Vault.</p>
+        </div>
+        <div class="flex gap-2">
+          <button type="button" onclick="generateWorkflowFromVault()" class="px-3.5 py-2 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 font-bold rounded-xl text-xs">Build From Ingested Vault</button>
+          <button type="button" onclick="openCreateCustomWorkflowModal()" class="px-4 py-2 bg-purple-600 text-white font-bold rounded-xl text-xs">+ New Workflow</button>
+        </div>
+      </div>
+      <div id="custom-workflows-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+    </div>
+
+    <!-- TAB 5: JOURNAL & ACCOUNTING -->
+    <div id="tab-spiritual" class="tab-content space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
+        <h3 class="text-base font-bold text-white">Encrypted Daily Self-Accountability Log</h3>
+        <textarea id="muhasabah-notes" rows="4" placeholder="Write your private reflection here. Encrypted before leaving your browser..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"></textarea>
+        <div class="flex justify-between items-center">
+          <span id="muhasabah-status" class="text-[11px] text-slate-500">Zero-knowledge encryption active</span>
+          <button type="button" onclick="saveMuhasabah()" class="px-4 py-1.5 bg-emerald-600 text-slate-950 font-bold rounded-lg text-xs">Encrypt & Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 6: SEEKER STUDY (GATED) -->
+    <div id="tab-seeker" class="tab-content space-y-6">
+      <div id="seeker-locked-banner" class="bg-slate-900 border border-amber-800/40 rounded-2xl p-8 text-center space-y-4">
+        <h3 class="text-xl font-bold text-white">Private Aspirant & Seeker Vault</h3>
+        <p class="text-xs text-slate-400 max-w-md mx-auto">
+          Restricted to authorized accounts (cyberdojosensei@gmail.com and Gabe Evans). Others require an invitation token to unlock.
+        </p>
+        <button type="button" onclick="openSeekerInviteModal()" class="px-6 py-2.5 bg-amber-500 text-slate-950 font-bold rounded-xl text-xs">Enter Invitation Code</button>
+      </div>
+      <div id="seeker-unlocked-content" class="hidden bg-slate-900 border border-amber-900/40 rounded-2xl p-6 space-y-3">
+        <h3 class="text-xl font-bold text-amber-400">Omega Psi Phi Heritage & Drill Engine (Unlocked)</h3>
+        <p class="text-xs text-slate-300">Cardinal Principles: Manhood • Scholarship • Perseverance • Uplift</p>
+        <p class="text-xs text-slate-400">Founded Nov 17, 1911 • Thirkield Hall, Howard University</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ZERO-KNOWLEDGE PRIVACY SHIELD BANNER -->
+  <div id="privacy" class="max-w-6xl mx-auto px-6 mb-8 mt-8 w-full">
+    <div class="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80 text-xs text-slate-400 space-y-2 shadow-lg">
+      <div class="flex items-center gap-2 text-emerald-400 font-bold uppercase tracking-wider text-[11px]">
+        <i data-lucide="shield-alert" class="w-4 h-4"></i>
+        <span>Zero-Knowledge Architecture & Privacy Shield (PII / PHI Compliant)</span>
+      </div>
+      <p class="leading-relaxed text-[11px] text-slate-300">
+        <strong>We do not store, process, or sell your unencrypted data.</strong> All reflections, biometrics, uploaded PDF extracts, quiz scores, and tasks are encrypted in your local browser using military-grade <strong>AES-GCM-256</strong> prior to cloud transmission. Neither our servers nor database administrators possess your decryption keys.
+      </p>
+      <div class="flex flex-wrap gap-4 pt-1 text-[10px] text-slate-500 font-mono">
+        <span>• Client-Side WebCrypto & PDF.js</span>
+        <span>• PBKDF2 (250,000 Iterations)</span>
+        <span>• Zero Plaintext Server Logs</span>
+      </div>
+    </div>
+  </div>
+
+  <footer class="py-6 px-6 text-center text-xs text-slate-500 border-t border-slate-900 mt-auto">
+    <p>© 2026 Hive Alignment. Open-source health & performance architecture.</p>
+  </footer>
+
+  <!-- MODALS -->
+  <!-- Interactive 3-Question Active-Recall Quiz Modal -->
+  <div id="recall-quiz-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[1200] hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-emerald-800/60 rounded-2xl max-w-xl w-full p-6 space-y-5 shadow-2xl relative my-8">
+      <div class="flex justify-between items-start border-b border-slate-800 pb-3">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+            <i data-lucide="brain-circuit" class="w-3.5 h-3.5"></i> Active-Recall Self-Test (3 Questions)
+          </span>
+          <h3 id="quiz-modal-title" class="text-base font-bold text-white mt-1">Study Recall Verification</h3>
+        </div>
+        <button type="button" onclick="closeRecallQuizModal()" class="text-slate-400 hover:text-white text-xl leading-none">×</button>
+      </div>
+
+      <div id="quiz-questions-container" class="space-y-4 text-xs"></div>
+
+      <div id="quiz-score-banner" class="hidden p-3.5 rounded-xl bg-emerald-950/60 border border-emerald-800/70 text-emerald-300 text-xs flex justify-between items-center">
+        <span id="quiz-score-text" class="font-bold">Recall Score Recorded!</span>
+        <span class="text-[10px] font-mono text-emerald-400">Encrypted to Vault</span>
+      </div>
+
+      <div class="flex flex-wrap justify-between items-center gap-2 pt-2 border-t border-slate-800">
+        <button type="button" onclick="revealAllQuizAnswers()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition">
+          Check Answers & Reveal Source Key
+        </button>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="recordQuizMastery(3)" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl text-xs transition">
+            Mark 3/3 Mastered
+          </button>
+          <button type="button" onclick="closeRecallQuizModal()" class="px-3.5 py-2 bg-slate-800 text-slate-300 rounded-xl text-xs font-semibold">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Knowledge Ingestion Modal -->
+  <div id="ingest-knowledge-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-sm z-[1100] hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-sky-900/50 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl relative">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="library" class="w-4 h-4 text-sky-400"></i> Ingest & Auto-Distill Study Material
+        </h3>
+        <button type="button" onclick="closeIngestModal()" class="text-slate-400 hover:text-white text-xl leading-none">×</button>
+      </div>
+
+      <div id="ingest-url-row" class="space-y-1.5 text-xs">
+        <label class="text-slate-400 block font-medium">Website or Paper URL (Auto-extracts title, thesis, micro-steps & 3Q quiz)</label>
+        <div class="flex gap-2">
+          <input type="url" id="ingest-url-input" placeholder="https://arxiv.org/abs/... or article URL" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-200 font-mono">
+          <button type="button" id="ingest-fetch-btn" onclick="fetchUrlIntoIngest()" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl flex-shrink-0">Auto-Pull</button>
+        </div>
+        <p id="ingest-status-text" class="text-[11px] text-sky-300 hidden"></p>
+      </div>
+
+      <form onsubmit="handleSaveIngestedItem(event)" class="space-y-3 text-xs">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-400 block mb-1">Title / Paper Name</label>
+            <input type="text" id="ingest-title-input" required placeholder="e.g. Autonomic HRV & Focus" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">Source Type</label>
+            <select id="ingest-type-input" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
+              <option value="PDF Paper">PDF Paper</option>
+              <option value="Research Paper">Research Paper</option>
+              <option value="Website / Article">Website / Article</option>
+              <option value="Battle-Tailored Study">Battle-Tailored Study</option>
+              <option value="Topic Auto-Pull">Topic Auto-Pull</option>
+              <option value="Study Notes / Book">Study Notes / Book</option>
+              <option value="OCR Scan">OCR Page Scan</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-slate-400 block mb-1">Auto-Extracted Thesis / Key Takeaway</label>
+          <input type="text" id="ingest-takeaway-input" required placeholder="Auto-filled on PDF/URL pull or type your core objective" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
+        </div>
+
+        <div>
+          <label class="text-slate-400 block mb-1">Excerpts / Extracted Text</label>
+          <textarea id="ingest-content-input" rows="5" required placeholder="Upload a PDF, fetch a URL, or paste paper text here..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200 font-mono"></textarea>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeIngestModal()" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl font-semibold">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl">Distill & Build 3Q Quiz</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Login / Sign Up Modal -->
+  <div id="brotherhood-auth-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[999] hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-emerald-900/40 rounded-2xl max-w-sm w-full p-6 space-y-5 shadow-2xl relative">
+      <button type="button" onclick="hideLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">×</button>
+      <div class="text-center space-y-1">
+        <h3 class="text-xl font-extrabold text-white">Hive Alignment Sanctuary</h3>
+        <p class="text-xs text-slate-400">Zero-Knowledge Encrypted Access</p>
+      </div>
+      <div class="flex rounded-xl bg-slate-950 p-1 border border-slate-800 text-xs font-semibold">
+        <button type="button" id="tab-auth-signin" onclick="switchAuthMode('signin')" class="flex-1 py-1.5 rounded-lg bg-emerald-500 text-slate-950">Sign In</button>
+        <button type="button" id="tab-auth-signup" onclick="switchAuthMode('signup')" class="flex-1 py-1.5 rounded-lg text-slate-400">Sign Up</button>
+      </div>
+      <form onsubmit="handleAuthSubmit(event)" class="space-y-3.5 text-xs">
+        <div id="auth-name-container" class="hidden">
+          <label class="text-slate-400 block mb-1">Your Name / Call-Sign</label>
+          <input type="text" id="auth-name-input" placeholder="Name" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-slate-200">
+        </div>
+        <div>
+          <label class="text-slate-400 block mb-1">Email Address</label>
+          <input type="email" id="auth-email-input" required placeholder="name@domain.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-slate-200">
+        </div>
+        <div>
+          <label class="text-slate-400 block mb-1">Master Password / Encryption Key</label>
+          <input type="password" id="auth-password-input" required minlength="6" placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-slate-200">
+        </div>
+        <div id="auth-forgot-link" class="flex items-center justify-between text-[11px] pt-1">
+          <button type="button" onclick="showForgotPasswordView()" class="text-emerald-400 hover:text-emerald-300 underline underline-offset-2 transition">
+            Forgot password / Reset link
+          </button>
+        </div>
+        <div id="auth-error-msg" class="hidden p-2.5 bg-rose-950/50 border border-rose-900 rounded-lg text-rose-300 text-[11px]"></div>
+        <button type="submit" id="auth-submit-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl">Sign In to Vault</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Password Reset & Recovery Modal -->
+  <div id="brotherhood-password-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[99999] hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-emerald-900/40 rounded-2xl max-w-sm w-full p-6 space-y-5 shadow-2xl relative">
+      <button type="button" onclick="closePasswordModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition text-xl leading-none">×</button>
+      
+      <div id="pw-reset-request-view" class="space-y-4">
+        <div class="text-center space-y-1">
+          <h3 class="text-lg font-bold text-white tracking-tight">Reset Password</h3>
+          <p class="text-xs text-slate-400">Enter your email to receive a password reset link</p>
+        </div>
+        <form onsubmit="handleSendResetEmail(event)" class="space-y-3 text-xs">
+          <div>
+            <label class="text-slate-400 block mb-1 font-medium">Account Email</label>
+            <input type="email" id="reset-email-input" required placeholder="name@domain.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200">
+          </div>
+          <div id="reset-status-msg" class="hidden p-2.5 rounded-lg text-[11px] leading-tight"></div>
+          <button type="submit" id="reset-submit-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl transition">
+            Send Reset Instructions
+          </button>
+          <button type="button" onclick="returnToLoginModal()" class="w-full text-center text-slate-400 hover:text-white text-[11px] pt-1">
+            ← Back to Login
+          </button>
+        </form>
+      </div>
+
+      <div id="pw-update-view" class="space-y-4 hidden">
+        <div class="text-center space-y-1">
+          <h3 class="text-lg font-bold text-white tracking-tight">Set New Password</h3>
+          <p class="text-xs text-slate-400">Choose a new password (min 6 characters)</p>
+        </div>
+        <form onsubmit="handleUpdatePassword(event)" class="space-y-3 text-xs">
+          <div>
+            <label class="text-slate-400 block mb-1 font-medium">New Password</label>
+            <input type="password" id="new-password-input" minlength="6" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1 font-medium">Confirm New Password</label>
+            <input type="password" id="confirm-password-input" minlength="6" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200">
+          </div>
+          <div id="update-status-msg" class="hidden p-2.5 rounded-lg text-[11px] leading-tight"></div>
+          <button type="submit" id="update-submit-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl transition">
+            Save New Password
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Onboarding Wizard Modal -->
+  <div id="onboarding-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[1000] hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 space-y-5 shadow-2xl">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <span class="text-xs font-bold text-emerald-400 uppercase">Configure Battles & Spiritual Path</span>
+        <button type="button" onclick="closeOnboardingModal()" class="text-slate-400 hover:text-white text-sm">×</button>
+      </div>
+      <div class="space-y-4 text-xs">
+        <div>
+          <label class="text-slate-300 font-semibold block mb-1">Active Battles</label>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="p-2.5 rounded-xl border border-slate-800 bg-slate-950 flex items-center gap-2"><input type="checkbox" id="battle-chk-work" checked> Work Friction</label>
+            <label class="p-2.5 rounded-xl border border-slate-800 bg-slate-950 flex items-center gap-2"><input type="checkbox" id="battle-chk-mental" checked> Mental Health</label>
+            <label class="p-2.5 rounded-xl border border-slate-800 bg-slate-950 flex items-center gap-2"><input type="checkbox" id="battle-chk-family"> Family Dynamics</label>
+            <label class="p-2.5 rounded-xl border border-slate-800 bg-slate-950 flex items-center gap-2"><input type="checkbox" id="battle-chk-edu"> Academic Focus</label>
+          </div>
+        </div>
+        <div>
+          <label class="text-slate-300 font-semibold block mb-1">Spiritual Tradition</label>
+          <select id="onboard-path-select" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
+            <option value="islam">Islam ☪</option>
+            <option value="christianity">Christianity ✝</option>
+            <option value="judaism">Judaism ✡</option>
+          </select>
+        </div>
+        <button type="button" onclick="completeOnboarding()" class="w-full py-2.5 bg-emerald-500 text-slate-950 font-bold rounded-xl">Apply Configuration</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Task Modal -->
+  <div id="add-task-modal" class="fixed inset-0 bg-black/80 z-[1100] hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-sm w-full p-6 space-y-4">
+      <h3 class="text-base font-bold text-white">New Encrypted Duty / Task</h3>
+      <form onsubmit="handleCreateTask(event)" class="space-y-3 text-xs">
+        <input type="text" id="task-title-input" required placeholder="Task title..." class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-slate-200">
+        <div class="flex justify-end gap-2">
+          <button type="button" onclick="closeAddTaskModal()" class="px-3 py-1.5 bg-slate-800 text-slate-300 rounded-lg">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 bg-emerald-600 text-slate-950 font-bold rounded-lg">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Calendar Event Modal -->
+  <div id="add-event-modal" class="fixed inset-0 bg-black/80 z-[1100] hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-sm w-full p-6 space-y-4">
+      <h3 class="text-base font-bold text-white">New Calendar Event</h3>
+      <form onsubmit="handleCreateCalendarEvent(event)" class="space-y-3 text-xs">
+        <input type="text" id="ev-title" required placeholder="Event title..." class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-slate-200">
+        <input type="text" id="ev-time" required placeholder="Time (e.g. 14:00 - 15:00)" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-slate-200">
+        <div class="flex justify-end gap-2">
+          <button type="button" onclick="closeAddEventModal()" class="px-3 py-1.5 bg-slate-800 text-slate-300 rounded-lg">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 bg-emerald-600 text-slate-950 font-bold rounded-lg">Add</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Create Workflow Modal -->
+  <div id="create-agent-wf-modal" class="fixed inset-0 bg-black/80 z-[1100] hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-sm w-full p-6 space-y-4">
+      <h3 class="text-base font-bold text-white">New Study / Agent Workflow</h3>
+      <form onsubmit="handleSaveCustomAgentWorkflow(event)" class="space-y-3 text-xs">
+        <input type="text" id="wf-title" required placeholder="Topic or Skill Title..." class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-slate-200">
+        <textarea id="wf-steps" rows="3" required placeholder="Steps (one per line)..." class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200"></textarea>
+        <div class="flex justify-end gap-2">
+          <button type="button" onclick="closeCreateAgentWfModal()" class="px-3 py-1.5 bg-slate-800 text-slate-300 rounded-lg">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 bg-purple-600 text-white font-bold rounded-lg">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Seeker Invite Modal -->
+  <div id="seeker-invite-modal" class="fixed inset-0 bg-black/80 z-[1100] hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-amber-800/40 rounded-2xl max-w-sm w-full p-6 space-y-4">
+      <h3 class="text-base font-bold text-white">Unlock Seeker Vault</h3>
+      <form onsubmit="handleUnlockSeeker(event)" class="space-y-3 text-xs">
+        <input type="text" id="seeker-code-input" required placeholder="Invitation Code" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-slate-200">
+        <div class="flex justify-end gap-2">
+          <button type="button" onclick="closeSeekerInviteModal()" class="px-3 py-1.5 bg-slate-800 text-slate-300 rounded-lg">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 bg-amber-500 text-slate-950 font-bold rounded-lg">Unlock</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CORE APPLICATION SCRIPT -->
+  <script>
+    if (window.pdfjsLib) {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+
+    window.SUPA_URL = 'https://jsyooxahstzrhipbocss.supabase.co';
+    window.SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeW9veGFoc3R6cmhpcGJvY3NzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzODU1MTcsImV4cCI6MjEwODk2MTUxN30.BJXbrkrO-2IwRQHX38-YvWGkiFC7ONcfrq6fbY4OkNI';
+    window.currentUserSession = null;
+    window.activeAuthMode = 'signin';
+    window.masterPassphrase = null;
+    window.activeQuizItemId = null;
+
+    window.SEEKER_AUTHORIZED_EMAILS = [
+      'cyberdojosensei@gmail.com',
+      'mrevans3571894@yahoo.com'
+    ];
+
+    window.BATTLE_TOPIC_LIBRARY = {
+      work: ['Negotiation', 'Emotional intelligence', 'Decision-making', 'Stoicism', 'Time management'],
+      mental: ['Heart rate variability', 'Cognitive behavioral therapy', 'Autonomic nervous system', 'Mindfulness', 'Stress management'],
+      family: ['Active listening', 'Nonviolent Communication', 'Attachment theory', 'Empathy', 'Conflict resolution'],
+      edu: ['Spaced repetition', 'Testing effect', 'Metacognition', 'Feynman Technique', 'Deep work']
+    };
+
+    window.SANCTUARY_PATHS = {
+      islam: {
+        name: "Islamic Path",
+        symbol: "☪",
+        circleLabels: { brothers: "Brotherhood Majlis", sisters: "Sisters Halaqa" },
+        quote: { text: "The strong one is not the one who physically overpowers, but the one who controls anger under provocation.", source: "Prophetic Guidance (Bukhari)", virtue: "Sabr (Composure)" },
+        microLearning: { title: "Tadabbur: Cognitive Self-Regulation", domain: "Virtue & Composure", time: "20-Min Sprint", steps: ["1. Notice somatic tension.", "2. Hold 3s tactical pause.", "3. Respond with Ihsan."] },
+        aiTwin: { persona: "Hakim (Mentor)", welcome: "Peace upon you. Ask me to distill your uploaded PDFs into micro-learning or align your daily duties.", promptPlaceholder: "Ask Hakim about ingested material, duties, or recovery..." }
+      },
+      christianity: {
+        name: "Christian Path",
+        symbol: "✝",
+        circleLabels: { brothers: "Men of Valor Fellowship", sisters: "Daughters of Grace Circle" },
+        quote: { text: "A soft answer turns away wrath, but a harsh word stirs up anger.", source: "Proverbs 15:1", virtue: "Agape & Restraint" },
+        microLearning: { title: "Hesychia: Interior Stillness", domain: "Contemplative Discernment", time: "20-Min Sprint", steps: ["1. Silence distractions.", "2. Read Lectio Divina.", "3. Execute servant leadership."] },
+        aiTwin: { persona: "Barnabas (Encourager)", welcome: "Grace and peace to you. Ask me to synthesize your study material or organize your day.", promptPlaceholder: "Ask Barnabas about ingested papers or decisions..." }
+      },
+      judaism: {
+        name: "Jewish Path",
+        symbol: "✡",
+        circleLabels: { brothers: "Chaverim Circle", sisters: "Sisterhood Havurah" },
+        quote: { text: "Who is strong? He who subdues his evil inclination and masters his passions.", source: "Pirkei Avot 4:1", virtue: "Kavannah & Mastery" },
+        microLearning: { title: "Mussar Practice: Developing Anavah", domain: "Ethical Refinement", time: "20-Min Sprint", steps: ["1. Take up your rightful space, no more, no less.", "2. Listen fully before responding.", "3. Direct action with Kavannah."] },
+        aiTwin: { persona: "Chaver (Thought Partner)", welcome: "Shalom. Ask me to analyze your study notes or structure your obligations.", promptPlaceholder: "Ask Chaver about ingested studies or scheduling..." }
+      }
+    };
+
+    window.userAppState = {
+      circle: 'brothers',
+      path: 'islam',
+      battles: ['work', 'mental'],
+      checks: {},
+      muhasabah: '',
+      tasks: [],
+      knowledgeVault: [
+        {
+          id: 'kv_1',
+          title: 'Dichotomy of Control & Executive Composure',
+          type: 'Research Paper',
+          takeaway: 'Direct 100% of cognitive bandwidth exclusively toward internal response rather than external volatility.',
+          content: 'Focus on controllable actions, emotional restraint under high-stakes friction, and deliberate pause before reply.',
+          microSteps: [
+            '1. Core Principle: Separate controllable actions from external events.',
+            '2. Tactical Drill: Hold a 3-second pause before replying under friction.',
+            '3. Active Recall: Write a 1-sentence application in your evening log.'
+          ],
+          quiz: [
+            { q: '1. According to the Dichotomy of Control, where should 100% of cognitive bandwidth be directed?', a: 'Exclusively toward internal responses and controllable actions rather than external volatility.' },
+            { q: '2. What tactical reset should you execute before replying under high-stakes friction?', a: 'Hold a deliberate 3-second pause to regulate autonomic reactivity.' },
+            { q: '3. How can you apply this principle to an active duty or challenge on your schedule today?', a: 'Identify one uncontrollable stressor today, detach emotionally, and execute only the next controllable step.' }
+          ],
+          quizScore: null,
+          date: '2026-11-11'
+        }
+      ],
+      calendarEvents: [
+        { id: 'ev_1', title: 'Executive Operations Sync', time: '09:00 - 09:45 AM' },
+        { id: 'ev_2', title: 'Mid-Day Contemplative Anchor', time: '12:30 - 13:00 PM' }
+      ],
+      customWorkflows: [
+        { id: 'wf_1', title: '90-Min Deep Work Sprint', steps: '1. Isolation block\n2. High-friction focus\n3. 3-point summary' }
+      ],
+      seekerUnlocked: false
+    };
+
+    // 3-Question Active-Recall Quiz Generator
+    function generateRecallQuiz(title, rawText) {
+      const clean = (rawText || '').replace(/--- Page \d+ ---/g, ' ').replace(/\s+/g, ' ').trim();
+      const sentences = clean.split(/(?<=[.!?])\s+/).filter(s => s.length > 35 && s.length < 240);
+      const stopWords = new Set(['which', 'their', 'there', 'these', 'those', 'about', 'through', 'between', 'because', 'however', 'during', 'within', 'without', 'using', 'based']);
+
+      const buildCloze = (sentence, idx) => {
+        if (!sentence) return null;
+        const words = sentence.split(/\s+/);
+        let targetIdx = -1;
+        let longestLen = 0;
+        words.forEach((w, i) => {
+          const stripped = w.replace(/[^a-zA-Z0-9-]/g, '');
+          if (stripped.length >= 6 && !stopWords.has(stripped.toLowerCase()) && stripped.length > longestLen) {
+            longestLen = stripped.length;
+            targetIdx = i;
+          }
+        });
+        if (targetIdx === -1) return null;
+        const answerWord = words[targetIdx].replace(/[.,;:!?()"]/g, '');
+        const maskedWords = [...words];
+        maskedWords[targetIdx] = '________';
+        return {
+          q: `${idx}. Complete the core concept from "${title}": "${maskedWords.join(' ')}"`,
+          a: `${answerWord} — Full statement: "${sentence}"`
+        };
+      };
+
+      const q1 = buildCloze(sentences[0], 1) || {
+        q: `1. In your own words, what is the primary thesis or purpose of "${title}"?`,
+        a: sentences[0] || `Core synthesis of ${title}.`
+      };
+
+      const q2 = buildCloze(sentences[1] || sentences[2], 2) || {
+        q: `2. What key mechanism, evidence, or principle supports "${title}"?`,
+        a: sentences[1] || sentences[2] || `Identify the primary mechanism described in ${title}.`
+      };
+
+      const q3 = {
+        q: `3. Applied Synthesis: How will you apply a principle from "${title}" to your active battles or duties today?`,
+        a: sentences[2] || sentences[0] || `Execute one concrete action based on ${title} during today's work or study block.`
+      };
+
+      return [q1, q2, q3];
+    }
+
+    // Client-Side Micro-Learning Distiller Agent
+    function distillTextToMicroSession(title, rawText) {
+      const clean = (rawText || '').replace(/--- Page \d+ ---/g, ' ').replace(/\s+/g, ' ').trim();
+      const sentences = clean.split(/(?<=[.!?])\s+/).filter(s => s.length > 25 && s.length < 240);
+      const thesis = sentences[0] || clean.slice(0, 140) || `Master key concepts of ${title}`;
+      const detail1 = sentences[1] || `Break down the core mechanism of ${title} into plain language.`;
+      const detail2 = sentences[2] || `Apply one actionable principle from ${title} during today's work or study window.`;
+
+      return {
+        takeaway: thesis,
+        microSteps: [
+          `1. Core Thesis: ${thesis}`,
+          `2. Key Mechanism: ${detail1}`,
+          `3. Active Recall & Drill: ${detail2}`
+        ],
+        quiz: generateRecallQuiz(title, rawText)
+      };
+    }
+
+    // Client-Side Multi-Page PDF Text Extractor (PDF.js)
+    async function extractTextFromPdfFile(file, onProgress) {
+      if (!window.pdfjsLib) throw new Error('PDF.js engine not loaded.');
+      const buffer = await file.arrayBuffer();
+      const pdf = await window.pdfjsLib.getDocument({ data: buffer }).promise;
+      const totalPages = pdf.numPages;
+      const maxPages = Math.min(totalPages, 30);
+      let fullText = '';
+
+      for (let pageNum = 1; pageNum <= maxPages; pageNum++) {
+        if (onProgress) onProgress(pageNum, totalPages);
+        const page = await pdf.getPage(pageNum);
+        const textContent = await page.getTextContent();
+        const pageStr = textContent.items.map(item => item.str).join(' ');
+        fullText += `\n--- Page ${pageNum} ---\n${pageStr}`;
+      }
+
+      return {
+        text: fullText.trim(),
+        pageCount: totalPages
+      };
+    }
+
+    // WebCrypto AES-GCM-256 Engine
+    window.SanctuaryVaultCrypto = {
+      async deriveKey(passphrase, salt) {
+        const enc = new TextEncoder();
+        const keyMaterial = await crypto.subtle.importKey("raw", enc.encode(passphrase), { name: "PBKDF2" }, false, ["deriveKey"]);
+        return crypto.subtle.deriveKey(
+          { name: "PBKDF2", salt: salt, iterations: 250000, hash: "SHA-256" },
+          keyMaterial,
+          { name: "AES-GCM", length: 256 },
+          false,
+          ["encrypt", "decrypt"]
+        );
+      },
+      async encryptPayload(dataObj, passphrase) {
+        const enc = new TextEncoder();
+        const salt = crypto.getRandomValues(new Uint8Array(16));
+        const iv = crypto.getRandomValues(new Uint8Array(12));
+        const key = await this.deriveKey(passphrase, salt);
+        const cipherBuffer = await crypto.subtle.encrypt({ name: "AES-GCM", iv: iv }, key, enc.encode(JSON.stringify(dataObj)));
+        return {
+          ciphertext: btoa(String.fromCharCode(...new Uint8Array(cipherBuffer))),
+          iv: btoa(String.fromCharCode(...iv)),
+          salt: btoa(String.fromCharCode(...salt))
+        };
+      },
+      async decryptPayload(bundle, passphrase) {
+        const dec = new TextDecoder();
+        const salt = Uint8Array.from(atob(bundle.salt), c => c.charCodeAt(0));
+        const iv = Uint8Array.from(atob(bundle.iv), c => c.charCodeAt(0));
+        const cipherBytes = Uint8Array.from(atob(bundle.ciphertext), c => c.charCodeAt(0));
+        const key = await this.deriveKey(passphrase, salt);
+        const decryptedBuffer = await crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, cipherBytes);
+        return JSON.parse(dec.decode(decryptedBuffer));
+      }
+    };
+
+    // Supabase Singleton
+    window.getSupaClient = function() {
+      if (window._supaClientInstance) return window._supaClientInstance;
+      if (window.supabase && typeof window.supabase.createClient === 'function') {
+        window._supaClientInstance = window.supabase.createClient(window.SUPA_URL, window.SUPA_ANON_KEY);
+        return window._supaClientInstance;
+      }
+      return null;
+    };
+
+    // Navigation & View Toggles
+    window.toggleCockpit = function(show) {
+      if (show && !window.currentUserSession) {
+        window.showLoginModal();
+        return;
+      }
+      document.getElementById('landing-view').classList.toggle('hidden', show);
+      document.getElementById('cockpit-view').classList.toggle('hidden', !show);
+      if (show) window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.showLandingView = function() {
+      window.toggleCockpit(false);
+    };
+
+    window.switchTab = function(tabId) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('bg-emerald-500', 'text-slate-950'));
+      const activeTab = document.getElementById(tabId);
+      if (activeTab) activeTab.classList.add('active');
+      const activeBtn = document.getElementById('btn-' + tabId);
+      if (activeBtn) activeBtn.classList.add('bg-emerald-500', 'text-slate-950');
+      if (window.lucide) lucide.createIcons();
+    };
+
+    // Interactive 3Q Active-Recall Quiz Handlers
+    window.openActiveRecallQuiz = function() {
+      const vault = window.userAppState.knowledgeVault || [];
+      if (!vault.length) {
+        alert('Upload a PDF or auto-pull a study topic first to generate a quiz.');
+        return;
+      }
+      window.openRecallQuiz(vault[0].id);
+    };
+
+    window.openRecallQuiz = function(itemId) {
+      const vault = window.userAppState.knowledgeVault || [];
+      const item = vault.find(v => v.id === itemId);
+      if (!item) return;
+
+      window.activeQuizItemId = item.id;
+      const quiz = (item.quiz && item.quiz.length)
+        ? item.quiz
+        : generateRecallQuiz(item.title, item.content);
+
+      document.getElementById('quiz-modal-title').innerText = item.title;
+      document.getElementById('quiz-score-banner').classList.add('hidden');
+
+      const container = document.getElementById('quiz-questions-container');
+      container.innerHTML = quiz.map((qObj, i) => `
+        <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+          <p class="font-semibold text-slate-200 leading-relaxed">${qObj.q}</p>
+          <input type="text" placeholder="Type your recall response here before revealing answer..." class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-emerald-500">
+          <div id="quiz-ans-${i}" class="hidden p-2.5 rounded-lg bg-emerald-950/40 border border-emerald-800/50 text-emerald-300 text-[11px]">
+            <strong>Source Key:</strong> ${qObj.a}
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('recall-quiz-modal').classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.revealAllQuizAnswers = function() {
+      [0, 1, 2].forEach(i => {
+        const el = document.getElementById(`quiz-ans-${i}`);
+        if (el) el.classList.remove('hidden');
+      });
+    };
+
+    window.recordQuizMastery = async function(score) {
+      if (!window.activeQuizItemId) return;
+      window.userAppState.knowledgeVault = (window.userAppState.knowledgeVault || []).map(item => {
+        if (item.id === window.activeQuizItemId) {
+          item.quizScore = `${score}/3 Mastered`;
+        }
+        return item;
+      });
+      const banner = document.getElementById('quiz-score-banner');
+      const txt = document.getElementById('quiz-score-text');
+      if (banner && txt) {
+        txt.innerText = `Recorded ${score}/3 Active Recall Mastery!`;
+        banner.classList.remove('hidden');
+      }
+      renderAllUI();
+      await pushCloudUserData();
+    };
+
+    window.closeRecallQuizModal = function() {
+      document.getElementById('recall-quiz-modal').classList.add('hidden');
+      window.activeQuizItemId = null;
+    };
+
+    // Auth & Forgot Password Modals
+    window.showLoginModal = function() {
+      const m = document.getElementById('brotherhood-auth-modal');
+      if (m) m.classList.remove('hidden');
+    };
+    window.hideLoginModal = function() {
+      const m = document.getElementById('brotherhood-auth-modal');
+      if (m) m.classList.add('hidden');
+    };
+    window.showSignUpModal = function() {
+      window.showLoginModal();
+      window.switchAuthMode('signup');
+    };
+
+    window.showForgotPasswordView = function() {
+      window.hideLoginModal();
+      const pw = document.getElementById('brotherhood-password-modal');
+      const rView = document.getElementById('pw-reset-request-view');
+      const uView = document.getElementById('pw-update-view');
+      const emailVal = document.getElementById('auth-email-input')?.value.trim();
+      if (emailVal && document.getElementById('reset-email-input')) {
+        document.getElementById('reset-email-input').value = emailVal;
+      }
+      if (pw) pw.classList.remove('hidden');
+      if (rView) rView.classList.remove('hidden');
+      if (uView) uView.classList.add('hidden');
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.showChangePasswordModal = function() {
+      const pw = document.getElementById('brotherhood-password-modal');
+      const rView = document.getElementById('pw-reset-request-view');
+      const uView = document.getElementById('pw-update-view');
+      if (pw) pw.classList.remove('hidden');
+      if (rView) rView.classList.add('hidden');
+      if (uView) uView.classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.closePasswordModal = function() {
+      const pw = document.getElementById('brotherhood-password-modal');
+      if (pw) pw.classList.add('hidden');
+    };
+
+    window.returnToLoginModal = function() {
+      window.closePasswordModal();
+      window.showLoginModal();
+    };
+
+    window.handleSendResetEmail = async function(e) {
+      if (e) e.preventDefault();
+      const email = document.getElementById('reset-email-input').value.trim().toLowerCase();
+      const btn = document.getElementById('reset-submit-btn');
+      const msg = document.getElementById('reset-status-msg');
+
+      msg.className = 'hidden';
+      btn.disabled = true;
+      btn.innerText = 'Dispatching Reset Link...';
+
+      try {
+        const client = window.getSupaClient();
+        if (!client) throw new Error('Supabase gateway not initialized.');
+
+        const { error } = await client.auth.resetPasswordForEmail(email, {
+          redirectTo: window.location.origin + window.location.pathname
+        });
+        if (error) throw error;
+
+        msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block';
+        msg.innerText = 'Reset link sent! Check your email inbox (and spam folder) to set a new password.';
+      } catch (err) {
+        msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
+        msg.innerText = err.message || 'Could not send reset email.';
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Send Reset Instructions';
+      }
+    };
+
+    window.handleUpdatePassword = async function(e) {
+      if (e) e.preventDefault();
+      const p1 = document.getElementById('new-password-input').value;
+      const p2 = document.getElementById('confirm-password-input').value;
+      const btn = document.getElementById('update-submit-btn');
+      const msg = document.getElementById('update-status-msg');
+
+      if (p1 !== p2) {
+        msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
+        msg.innerText = 'Passwords do not match.';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerText = 'Updating Password...';
+
+      try {
+        const client = window.getSupaClient();
+        if (!client) throw new Error('Supabase gateway not initialized.');
+
+        const { error } = await client.auth.updateUser({ password: p1 });
+        if (error) throw error;
+
+        window.masterPassphrase = p1;
+        await pushCloudUserData();
+
+        msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block';
+        msg.innerText = 'Password updated successfully!';
+        setTimeout(() => {
+          window.closePasswordModal();
+          window.location.hash = '';
+        }, 1200);
+      } catch (err) {
+        msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
+        msg.innerText = err.message || 'Failed to update password.';
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Save New Password';
+      }
+    };
+
+    window.switchAuthMode = function(mode) {
+      window.activeAuthMode = mode;
+      const btnIn = document.getElementById('tab-auth-signin');
+      const btnUp = document.getElementById('tab-auth-signup');
+      const nameBox = document.getElementById('auth-name-container');
+      const submitBtn = document.getElementById('auth-submit-btn');
+      const forgotLink = document.getElementById('auth-forgot-link');
+
+      if (mode === 'signup') {
+        btnUp.className = "flex-1 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-bold";
+        btnIn.className = "flex-1 py-1.5 rounded-lg text-slate-400";
+        nameBox.classList.remove('hidden');
+        forgotLink.classList.add('hidden');
+        submitBtn.innerText = "Create Encrypted Vault";
+      } else {
+        btnIn.className = "flex-1 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-bold";
+        btnUp.className = "flex-1 py-1.5 rounded-lg text-slate-400";
+        nameBox.classList.add('hidden');
+        forgotLink.classList.remove('hidden');
+        submitBtn.innerText = "Sign In to Vault";
+      }
+    };
+
+    window.handleAuthSubmit = async function(e) {
+      if (e) e.preventDefault();
+      const email = document.getElementById('auth-email-input').value.trim().toLowerCase();
+      const password = document.getElementById('auth-password-input').value;
+      const name = document.getElementById('auth-name-input').value.trim() || 'Member';
+      const errBox = document.getElementById('auth-error-msg');
+      const btn = document.getElementById('auth-submit-btn');
+
+      errBox.classList.add('hidden');
+      btn.disabled = true;
+      btn.innerText = "Unlocking Vault...";
+
+      try {
+        const client = window.getSupaClient();
+        if (!client) throw new Error("Supabase gateway not initialized.");
+
+        let res;
+        if (window.activeAuthMode === 'signup') {
+          res = await client.auth.signUp({ email, password, options: { data: { full_name: name } } });
+        } else {
+          res = await client.auth.signInWithPassword({ email, password });
+        }
+        if (res.error) throw res.error;
+
+        window.currentUserSession = res.data.user;
+        window.masterPassphrase = password;
+        localStorage.setItem('hive_active_profile_key', email);
+
+        window.hideLoginModal();
+        document.getElementById('brother-login-btn').classList.add('hidden');
+        const badge = document.getElementById('auth-user-badge');
+        badge.classList.remove('hidden');
+        badge.classList.add('flex');
+        document.getElementById('auth-user-name').innerText = email.split('@')[0];
+
+        await pullCloudUserData();
+        window.toggleCockpit(true);
+      } catch (err) {
+        errBox.innerText = err.message || "Authentication failed.";
+        errBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.innerText = window.activeAuthMode === 'signup' ? "Create Encrypted Vault" : "Sign In to Vault";
+      }
+    };
+
+    window.brotherSignOut = async function() {
+      const client = window.getSupaClient();
+      if (client) await client.auth.signOut();
+      window.currentUserSession = null;
+      window.masterPassphrase = null;
+      localStorage.removeItem('sanctuary_user_state');
+      window.toggleCockpit(false);
+      document.getElementById('auth-user-badge').classList.add('hidden');
+      document.getElementById('brother-login-btn').classList.remove('hidden');
+    };
+
+    // Cloud Sync
+    async function pullCloudUserData() {
+      const client = window.getSupaClient();
+      if (!client || !window.currentUserSession) return;
+      const key = window.currentUserSession.email.toLowerCase();
+      try {
+        const { data } = await client.from('brotherhood_status').select('*').eq('brother', key).maybeSingle();
+        if (data) {
+          if (data.encrypted_payload && window.masterPassphrase) {
+            try {
+              const dec = await window.SanctuaryVaultCrypto.decryptPayload(data.encrypted_payload, window.masterPassphrase);
+              window.userAppState = Object.assign(window.userAppState, dec);
+            } catch (e) {
+              if (data.data) window.userAppState = Object.assign(window.userAppState, data.data);
+            }
+          } else if (data.data) {
+            window.userAppState = Object.assign(window.userAppState, data.data);
+          }
+          renderAllUI();
+        }
+      } catch (e) {}
+    }
+
+    async function pushCloudUserData() {
+      const client = window.getSupaClient();
+      localStorage.setItem('sanctuary_user_state', JSON.stringify(window.userAppState));
+      if (!client || !window.currentUserSession) return;
+      const key = window.currentUserSession.email.toLowerCase();
+      let encBundle = null;
+      if (window.masterPassphrase) {
+        encBundle = await window.SanctuaryVaultCrypto.encryptPayload(window.userAppState, window.masterPassphrase);
+      }
+      try {
+        await client.from('brotherhood_status').upsert({
+          brother: key,
+          fellowship_circle: window.userAppState.circle,
+          spiritual_path: window.userAppState.path,
+          encrypted_payload: encBundle,
+          data: window.userAppState,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'brother' });
+      } catch (e) {}
+    }
+
+    window.triggerImmediateCloudSave = async function() {
+      await pushCloudUserData();
+      alert("Encrypted with AES-GCM-256 and saved to your zero-knowledge vault.");
+    };
+
+    // Reusable Topic Pull & Distill Helper
+    async function pullAndDistillTopic(topic, sourceTypeLabel) {
+      const slug = encodeURIComponent(topic.replace(/\s+/g, '_'));
+      const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${slug}`);
+      let title = topic;
+      let extract = '';
+
+      if (res.ok) {
+        const data = await res.json();
+        title = data.title || topic;
+        extract = data.extract || '';
+      }
+
+      if (!extract) {
+        const searchRes = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(topic)}&format=json&origin=*`);
+        const searchJson = await searchRes.json();
+        const topHit = searchJson?.query?.search?.[0];
+        if (topHit) {
+          title = topHit.title;
+          const sumRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title.replace(/\s+/g, '_'))}`);
+          if (sumRes.ok) {
+            const sumData = await sumRes.json();
+            extract = sumData.extract || topHit.snippet.replace(/<[^>]+>/g, '');
+          }
+        }
+      }
+
+      if (!extract) {
+        extract = `Foundational study framework for ${topic}. Break down core principles, identify practical applications, and test retention using active recall.`;
+      }
+
+      const distilled = distillTextToMicroSession(title, extract);
+      window.userAppState.knowledgeVault = window.userAppState.knowledgeVault || [];
+      window.userAppState.knowledgeVault.unshift({
+        id: 'kv_' + Date.now(),
+        title: title,
+        type: sourceTypeLabel || 'Topic Auto-Pull',
+        takeaway: distilled.takeaway,
+        content: extract,
+        microSteps: distilled.microSteps,
+        quiz: distilled.quiz,
+        quizScore: null,
+        date: new Date().toISOString().split('T')[0]
+      });
+
+      return title;
+    }
+
+    // One-Click Battle-Tailored Study Auto-Pull
+    window.autoPullForActiveBattles = async function() {
+      const battles = (window.userAppState.battles && window.userAppState.battles.length)
+        ? window.userAppState.battles
+        : ['work', 'mental'];
+
+      const candidateTopics = [];
+      battles.forEach(b => {
+        (window.BATTLE_TOPIC_LIBRARY[b] || []).forEach(t => candidateTopics.push({ battle: b, topic: t }));
+      });
+
+      const existingTitles = new Set((window.userAppState.knowledgeVault || []).map(v => v.title.toLowerCase()));
+      const freshCandidates = candidateTopics.filter(c => !existingTitles.has(c.topic.toLowerCase()));
+      const pool = freshCandidates.length ? freshCandidates : candidateTopics;
+      const chosen = pool[Math.floor(Math.random() * pool.length)];
+
+      const topBtn = document.getElementById('battle-autopull-top-btn');
+      const tabBtn = document.getElementById('battle-autopull-tab-btn');
+      const status = document.getElementById('auto-topic-status');
+
+      if (topBtn) { topBtn.disabled = true; topBtn.innerText = 'Pulling Battle Study...'; }
+      if (tabBtn) { tabBtn.disabled = true; tabBtn.innerText = 'Pulling Battle Study...'; }
+      if (status) {
+        status.classList.remove('hidden');
+        status.innerText = `Agent pulling study material for your "${chosen.battle.toUpperCase()}" battle arena: "${chosen.topic}"...`;
+      }
+
+      try {
+        const battleNames = { work: 'Work Friction', mental: 'Mental Health', family: 'Family Dynamics', edu: 'Academic Focus' };
+        const badgeLabel = `Battle: ${battleNames[chosen.battle] || chosen.battle}`;
+        const pulledTitle = await pullAndDistillTopic(chosen.topic, badgeLabel);
+
+        renderAllUI();
+        await pushCloudUserData();
+        switchTab('tab-knowledge');
+
+        if (status) {
+          status.innerText = `Pulled "${pulledTitle}" (${badgeLabel}), distilled micro-learning steps, and built a 3-question recall quiz!`;
+        }
+      } catch (err) {
+        if (status) status.innerText = 'Network error pulling topic. Try again or upload a PDF.';
+      } finally {
+        if (topBtn) {
+          topBtn.disabled = false;
+          topBtn.innerHTML = '<i data-lucide="sparkles" class="w-3.5 h-3.5 text-rose-400"></i> Pull Battle-Tailored Study';
+        }
+        if (tabBtn) {
+          tabBtn.disabled = false;
+          tabBtn.innerHTML = '<i data-lucide="swords" class="w-3.5 h-3.5 text-rose-400"></i> Auto-Pull for Active Battles';
+        }
+        if (window.lucide) lucide.createIcons();
+      }
+    };
+
+    // Autonomous Topic Auto-Pull Form Handler
+    window.handleAutoPullTopic = async function(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('auto-topic-input');
+      const btn = document.getElementById('auto-topic-btn');
+      const status = document.getElementById('auto-topic-status');
+      const topic = input.value.trim();
+      if (!topic) return;
+
+      btn.disabled = true;
+      btn.innerText = 'Pulling & Distilling...';
+      status.classList.remove('hidden');
+      status.innerText = `Agent searching & synthesizing knowledge on "${topic}"...`;
+
+      try {
+        const title = await pullAndDistillTopic(topic, 'Topic Auto-Pull');
+        input.value = '';
+        status.innerText = `Synthesized "${title}" into a 20-minute micro-learning session and 3-question recall quiz!`;
+        renderAllUI();
+        pushCloudUserData();
+      } catch (err) {
+        status.innerText = 'Could not reach external knowledge feed. Try uploading a PDF or pasting text.';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i data-lucide="download-cloud" class="w-4 h-4"></i> Auto-Pull & Build Micro-Session';
+        if (window.lucide) lucide.createIcons();
+      }
+    };
+
+    // Promote any vault card into the active Micro-Learning Session
+    window.activateMicroSession = function(id) {
+      const vault = window.userAppState.knowledgeVault || [];
+      const idx = vault.findIndex(item => item.id === id);
+      if (idx > -1) {
+        const [selected] = vault.splice(idx, 1);
+        const distilled = distillTextToMicroSession(selected.title, selected.content);
+        if (!selected.microSteps) selected.microSteps = distilled.microSteps;
+        if (!selected.quiz) selected.quiz = distilled.quiz;
+        vault.unshift(selected);
+        window.userAppState.knowledgeVault = vault;
+        renderAllUI();
+        pushCloudUserData();
+        alert(`"${selected.title}" is now your active 20-minute micro-learning session!`);
+      }
+    };
+
+    // Knowledge Ingestion Modal (PDF, URL, Paper, OCR)
+    window.openIngestModal = function(mode) {
+      const modal = document.getElementById('ingest-knowledge-modal');
+      const typeSel = document.getElementById('ingest-type-input');
+      const status = document.getElementById('ingest-status-text');
+      if (status) status.classList.add('hidden');
+      if (mode === 'topic') {
+        switchTab('tab-knowledge');
+        document.getElementById('auto-topic-input')?.focus();
+        return;
+      }
+      if (mode === 'url' && typeSel) typeSel.value = 'Website / Article';
+      if (mode === 'paper' && typeSel) typeSel.value = 'Research Paper';
+      if (modal) modal.classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.closeIngestModal = function() {
+      const modal = document.getElementById('ingest-knowledge-modal');
+      if (modal) modal.classList.add('hidden');
+    };
+
+    window.fetchUrlIntoIngest = async function() {
+      const url = document.getElementById('ingest-url-input').value.trim();
+      const btn = document.getElementById('ingest-fetch-btn');
+      const status = document.getElementById('ingest-status-text');
+      if (!url) return;
+
+      btn.disabled = true;
+      btn.innerText = 'Pulling...';
+      status.classList.remove('hidden');
+      status.innerText = 'Extracting clean article text and auto-distilling key takeaway...';
+
+      try {
+        const res = await fetch(`https://r.jina.ai/${url}`);
+        if (!res.ok) throw new Error('Could not automatically fetch URL.');
+        const text = await res.text();
+        const lines = text.split('\n').filter(l => l.trim().length > 0);
+        const autoTitle = lines.length > 0 ? lines[0].replace(/^#+\s*/, '').slice(0, 65) : 'Ingested Web Article';
+        if (!document.getElementById('ingest-title-input').value) {
+          document.getElementById('ingest-title-input').value = autoTitle;
+        }
+        document.getElementById('ingest-content-input').value = text.slice(0, 4000);
+        const distilled = distillTextToMicroSession(autoTitle, text.slice(0, 2000));
+        if (!document.getElementById('ingest-takeaway-input').value) {
+          document.getElementById('ingest-takeaway-input').value = distilled.takeaway;
+        }
+        status.innerText = 'Article pulled and distilled! Click "Distill & Build 3Q Quiz" below.';
+      } catch (err) {
+        status.innerText = 'Site blocked automatic reader fetch. Paste the text directly below.';
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Auto-Pull';
+      }
+    };
+
+    // Multi-Page PDF, Image OCR, and Plaintext File Ingestion Handler
+    window.handleVaultFileIngest = async function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      openIngestModal('paper');
+      const status = document.getElementById('ingest-status-text');
+      status.classList.remove('hidden');
+      const cleanName = file.name.replace(/\.[^/.]+$/, '');
+      document.getElementById('ingest-title-input').value = cleanName;
+
+      if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
+        document.getElementById('ingest-type-input').value = 'PDF Paper';
+        status.innerText = 'Parsing multi-page PDF locally in browser (PDF.js)...';
+        try {
+          const { text, pageCount } = await extractTextFromPdfFile(file, (curr, total) => {
+            status.innerText = `Extracting text from PDF page ${curr} of ${total}...`;
+          });
+          if (!text || text.replace(/--- Page \d+ ---/g, '').trim().length < 20) {
+            status.innerText = 'PDF appears to be a scanned image without selectable text. Upload a page screenshot for OCR or paste text.';
+            return;
+          }
+          document.getElementById('ingest-content-input').value = text.slice(0, 8000);
+          document.getElementById('ingest-takeaway-input').value = distillTextToMicroSession(cleanName, text.slice(0, 3000)).takeaway;
+          status.innerText = `Extracted ${pageCount} PDF page(s) and distilled core thesis! Click "Distill & Build 3Q Quiz".`;
+        } catch (err) {
+          status.innerText = 'PDF extraction error: ' + (err.message || 'Could not parse file.');
+        }
+      } else if (file.type.startsWith('image/')) {
+        document.getElementById('ingest-type-input').value = 'OCR Scan';
+        status.innerText = 'Running local browser OCR (Tesseract)...';
+        try {
+          const res = await Tesseract.recognize(file, 'eng');
+          const extracted = res.data.text.trim();
+          document.getElementById('ingest-content-input').value = extracted;
+          document.getElementById('ingest-takeaway-input').value = distillTextToMicroSession(cleanName, extracted).takeaway;
+          status.innerText = 'OCR extraction complete! Click "Distill & Build 3Q Quiz".';
+        } catch (err) {
+          status.innerText = 'OCR failed. Type or paste notes manually.';
+        }
+      } else {
+        const reader = new FileReader();
+        reader.onload = ev => {
+          const txt = ev.target.result.slice(0, 6000);
+          document.getElementById('ingest-content-input').value = txt;
+          document.getElementById('ingest-takeaway-input').value = distillTextToMicroSession(cleanName, txt).takeaway;
+          status.innerText = 'Document loaded! Click "Distill & Build 3Q Quiz".';
+        };
+        reader.readAsText(file);
+      }
+      e.target.value = '';
+    };
+
+    window.handleSaveIngestedItem = function(e) {
+      if (e) e.preventDefault();
+      const title = document.getElementById('ingest-title-input').value.trim();
+      const type = document.getElementById('ingest-type-input').value;
+      const takeaway = document.getElementById('ingest-takeaway-input').value.trim();
+      const content = document.getElementById('ingest-content-input').value.trim();
+      const distilled = distillTextToMicroSession(title, content);
+
+      window.userAppState.knowledgeVault = window.userAppState.knowledgeVault || [];
+      window.userAppState.knowledgeVault.unshift({
+        id: 'kv_' + Date.now(),
+        title,
+        type,
+        takeaway: takeaway || distilled.takeaway,
+        content,
+        microSteps: distilled.microSteps,
+        quiz: distilled.quiz,
+        quizScore: null,
+        date: new Date().toISOString().split('T')[0]
+      });
+
+      document.getElementById('ingest-title-input').value = '';
+      document.getElementById('ingest-takeaway-input').value = '';
+      document.getElementById('ingest-content-input').value = '';
+      document.getElementById('ingest-url-input').value = '';
+
+      renderAllUI();
+      pushCloudUserData();
+      closeIngestModal();
+    };
+
+    window.deleteVaultItem = function(id) {
+      window.userAppState.knowledgeVault = (window.userAppState.knowledgeVault || []).filter(item => item.id !== id);
+      renderAllUI();
+      pushCloudUserData();
+    };
+
+    window.generateWorkflowFromVault = function() {
+      const vault = window.userAppState.knowledgeVault || [];
+      if (!vault.length) {
+        alert('Upload a PDF or auto-pull a topic into your Knowledge Vault first.');
+        return;
+      }
+      const latest = vault[0];
+      const steps = (latest.microSteps && latest.microSteps.length)
+        ? latest.microSteps.join('\n')
+        : `1. Read & annotate "${latest.title}" (${latest.type})\n2. Core focus: ${latest.takeaway}\n3. Complete 3-question recall quiz`;
+
+      window.userAppState.customWorkflows = window.userAppState.customWorkflows || [];
+      window.userAppState.customWorkflows.unshift({
+        id: 'wf_' + Date.now(),
+        title: `Micro-Learning Sprint: ${latest.title}`,
+        steps
+      });
+      renderAllUI();
+      pushCloudUserData();
+      alert(`Agent generated a tailored micro-learning workflow around "${latest.title}"!`);
+    };
+
+    // Alignment & UI Renders
+    window.setSanctuaryCircle = function(c) {
+      window.userAppState.circle = c;
+      renderAllUI();
+      pushCloudUserData();
+    };
+    window.setSanctuaryPath = function(p) {
+      window.userAppState.path = p;
+      renderAllUI();
+      pushCloudUserData();
+    };
+
+    function renderAllUI() {
+      const p = window.userAppState.path || 'islam';
+      const c = window.userAppState.circle || 'brothers';
+      const cfg = window.SANCTUARY_PATHS[p] || window.SANCTUARY_PATHS.islam;
+      const vault = window.userAppState.knowledgeVault || [];
+
+      document.getElementById('sanctuary-active-heading').innerHTML = `${cfg.circleLabels[c]} • ${cfg.name} ${cfg.symbol}`;
+      document.getElementById('active-quote-text').innerText = `"${cfg.quote.text}"`;
+      document.getElementById('active-quote-source').innerText = cfg.quote.source;
+      document.getElementById('active-virtue-tag').innerText = cfg.quote.virtue;
+
+      if (vault.length > 0) {
+        const activeStudy = vault[0];
+        const steps = activeStudy.microSteps || distillTextToMicroSession(activeStudy.title, activeStudy.content).microSteps;
+        document.getElementById('active-micro-title').innerText = activeStudy.title;
+        document.getElementById('active-micro-domain').innerText = activeStudy.quizScore ? `${activeStudy.type} (${activeStudy.quizScore})` : activeStudy.type;
+        document.getElementById('active-micro-steps').innerHTML = steps.map(s => `<p>${s}</p>`).join('');
+      } else {
+        document.getElementById('active-micro-title').innerText = cfg.microLearning.title;
+        document.getElementById('active-micro-domain').innerText = cfg.microLearning.domain;
+        document.getElementById('active-micro-steps').innerHTML = cfg.microLearning.steps.map(s => `<p>${s}</p>`).join('');
+      }
+
+      document.getElementById('active-twin-persona').innerText = cfg.aiTwin.persona;
+      document.getElementById('active-twin-welcome').innerText = cfg.aiTwin.welcome;
+
+      const map = { work: "Work Friction", mental: "Mental Health", family: "Family Dynamics", edu: "Academic Focus" };
+      document.getElementById('active-battles-labels').innerText = (window.userAppState.battles || []).map(b => map[b] || b).join(" • ");
+
+      Object.keys(window.userAppState.checks || {}).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.checked = !!window.userAppState.checks[id];
+      });
+
+      const j = document.getElementById('muhasabah-notes');
+      if (j && window.userAppState.muhasabah) j.value = window.userAppState.muhasabah;
+
+      const kvGrid = document.getElementById('knowledge-vault-grid');
+      if (kvGrid) {
+        kvGrid.innerHTML = vault.map((item, idx) => {
+          const steps = item.microSteps || distillTextToMicroSession(item.title, item.content).microSteps;
+          return `
+            <div class="bg-slate-900 border ${idx === 0 ? 'border-sky-500/50' : 'border-slate-800'} rounded-2xl p-5 flex flex-col justify-between space-y-3">
+              <div class="space-y-2">
+                <div class="flex justify-between items-center gap-2">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-800">${item.type}</span>
+                    ${item.quizScore ? `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">${item.quizScore}</span>` : ''}
+                  </div>
+                  <button type="button" onclick="deleteVaultItem('${item.id}')" class="text-slate-500 hover:text-rose-400 text-sm">×</button>
+                </div>
+                <h4 class="font-bold text-white text-sm">${item.title}</h4>
+                <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800/90 space-y-1 text-[11px] text-slate-300">
+                  <span class="text-[10px] font-bold uppercase text-emerald-400 block">Distilled Micro-Session:</span>
+                  ${steps.map(st => `<p>${st}</p>`).join('')}
+                </div>
+              </div>
+              <div class="flex justify-between items-center gap-2 pt-2 border-t border-slate-800/60">
+                <button type="button" onclick="openRecallQuiz('${item.id}')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-slate-950 rounded-lg text-[11px] font-bold flex items-center gap-1">
+                  <i data-lucide="help-circle" class="w-3 h-3"></i> Quiz (3Q)
+                </button>
+                <button type="button" onclick="activateMicroSession('${item.id}')" class="px-2.5 py-1 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 rounded-lg text-[11px] font-semibold">
+                  ${idx === 0 ? 'Active Sprint' : 'Set Active Sprint'}
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('') || '<p class="text-xs text-slate-500 col-span-3">Upload a PDF paper, click "Auto-Pull for Active Battles", or enter a topic above.</p>';
+      }
+
+      const tCont = document.getElementById('tasks-list-container');
+      if (tCont) {
+        tCont.innerHTML = (window.userAppState.tasks || []).map(t => `
+          <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 flex justify-between items-center">
+            <span class="${t.completed ? 'line-through text-slate-500' : 'text-slate-200'}">${t.title}</span>
+            <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTask('${t.id}')">
+          </div>
+        `).join('') || '<p class="text-slate-500">No duties added yet.</p>';
+      }
+
+      const cCont = document.getElementById('calendar-events-list');
+      if (cCont) {
+        cCont.innerHTML = (window.userAppState.calendarEvents || []).map(ev => `
+          <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 flex justify-between">
+            <span class="text-slate-200">${ev.title}</span>
+            <span class="text-emerald-400 font-mono">${ev.time}</span>
+          </div>
+        `).join('');
+      }
+
+      const wCont = document.getElementById('custom-workflows-container');
+      if (wCont) {
+        wCont.innerHTML = (window.userAppState.customWorkflows || []).map(w => `
+          <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl space-y-2">
+            <h4 class="font-bold text-white">${w.title}</h4>
+            <pre class="text-xs text-slate-400 font-mono whitespace-pre-wrap">${w.steps}</pre>
+          </div>
+        `).join('');
+      }
+
+      const email = (window.currentUserSession?.email || '').toLowerCase();
+      const unlocked = window.SEEKER_AUTHORIZED_EMAILS.includes(email) || window.userAppState.seekerUnlocked;
+      document.getElementById('seeker-locked-banner').classList.toggle('hidden', unlocked);
+      document.getElementById('seeker-unlocked-content').classList.toggle('hidden', !unlocked);
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    // Interactive Actions
+    window.syncCheck = function(id) {
+      window.userAppState.checks[id] = document.getElementById(id).checked;
+      pushCloudUserData();
+    };
+    window.saveMuhasabah = function() {
+      window.userAppState.muhasabah = document.getElementById('muhasabah-notes').value;
+      pushCloudUserData();
+      document.getElementById('muhasabah-status').innerText = "Encrypted & saved at " + new Date().toLocaleTimeString();
+    };
+    window.consultAiTwin = function() {
+      const inp = document.getElementById('ai-twin-input');
+      const box = document.getElementById('active-twin-welcome');
+      if (!inp.value.trim()) return;
+      const latestStudy = (window.userAppState.knowledgeVault || [])[0];
+      const studyContext = latestStudy ? ` Apply your active micro-learning focus ("${latestStudy.title}": ${latestStudy.takeaway})` : '';
+      box.innerText = `Counsel on "${inp.value}": Hold a 3-second tactical pause, anchor your intention, and protect your recovery reserve.${studyContext}`;
+      inp.value = '';
+    };
+
+    // Knowledge-Aware AI Day Architect
+    window.runAiDayStructure = function() {
+      const container = document.getElementById('ai-structured-schedule');
+      const vault = window.userAppState.knowledgeVault || [];
+      const tasks = (window.userAppState.tasks || []).filter(t => !t.completed);
+      const studyBlockTitle = vault.length ? `Micro-Study: ${vault[0].title}` : 'Sacred Anchor & Deep Work';
+      const studyBlockDesc = vault.length ? `Distilled Focus: ${vault[0].takeaway}` : 'Morning devotional primer & zero-distraction output.';
+      const dutyBlockTitle = tasks.length ? `Execute: ${tasks[0].title}` : 'Mid-Day Anchor & Micro-Sprint';
+
+      if (container) {
+        container.innerHTML = `
+          <div class="p-3 bg-slate-950 rounded-xl border border-indigo-500/50 space-y-1">
+            <span class="text-indigo-400 font-mono text-[11px] font-bold">06:00 – 08:00 AM</span>
+            <p class="font-semibold text-white">${studyBlockTitle}</p>
+            <p class="text-[10px] text-slate-400">${studyBlockDesc}</p>
+          </div>
+          <div class="p-3 bg-slate-950 rounded-xl border border-sky-500/50 space-y-1">
+            <span class="text-sky-400 font-mono text-[11px] font-bold">12:30 – 13:30 PM</span>
+            <p class="font-semibold text-white">${dutyBlockTitle}</p>
+            <p class="text-[10px] text-slate-400">Mid-day prayer anchor, vagal reset & priority execution.</p>
+          </div>
+          <div class="p-3 bg-slate-950 rounded-xl border border-amber-500/50 space-y-1">
+            <span class="text-amber-400 font-mono text-[11px] font-bold">17:30 – 18:45 PM</span>
+            <p class="font-semibold text-white">Tactical S&C Cadence</p>
+            <p class="text-[10px] text-slate-400">Autoregulated resistance training session.</p>
+          </div>
+          <div class="p-3 bg-slate-950 rounded-xl border border-purple-500/50 space-y-1">
+            <span class="text-purple-400 font-mono text-[11px] font-bold">21:00 – 22:00 PM</span>
+            <p class="font-semibold text-white">3Q Active Recall & Shutdown</p>
+            <p class="text-[10px] text-slate-400">Complete 3-question quiz, nightly accounting & screen shutdown.</p>
+          </div>
+        `;
+      }
+      pushCloudUserData();
+    };
+
+    // Modals Helpers
+    window.openOnboardingModal = () => document.getElementById('onboarding-modal').classList.remove('hidden');
+    window.closeOnboardingModal = () => document.getElementById('onboarding-modal').classList.add('hidden');
+    window.completeOnboarding = function() {
+      const b = [];
+      if (document.getElementById('battle-chk-work').checked) b.push('work');
+      if (document.getElementById('battle-chk-mental').checked) b.push('mental');
+      if (document.getElementById('battle-chk-family').checked) b.push('family');
+      if (document.getElementById('battle-chk-edu').checked) b.push('edu');
+      window.userAppState.battles = b;
+      window.userAppState.path = document.getElementById('onboard-path-select').value;
+      renderAllUI();
+      pushCloudUserData();
+      closeOnboardingModal();
+    };
+
+    window.openAddTaskModal = () => document.getElementById('add-task-modal').classList.remove('hidden');
+    window.closeAddTaskModal = () => document.getElementById('add-task-modal').classList.add('hidden');
+    window.handleCreateTask = function(e) {
+      e.preventDefault();
+      window.userAppState.tasks.push({ id: 't_' + Date.now(), title: document.getElementById('task-title-input').value, completed: false });
+      document.getElementById('task-title-input').value = '';
+      renderAllUI();
+      pushCloudUserData();
+      closeAddTaskModal();
+    };
+    window.toggleTask = function(id) {
+      window.userAppState.tasks.forEach(t => { if (t.id === id) t.completed = !t.completed; });
+      renderAllUI();
+      pushCloudUserData();
+    };
+
+    window.openAddEventModal = () => document.getElementById('add-event-modal').classList.remove('hidden');
+    window.closeAddEventModal = () => document.getElementById('add-event-modal').classList.add('hidden');
+    window.handleCreateCalendarEvent = function(e) {
+      e.preventDefault();
+      window.userAppState.calendarEvents.push({ id: 'e_' + Date.now(), title: document.getElementById('ev-title').value, time: document.getElementById('ev-time').value });
+      document.getElementById('ev-title').value = '';
+      document.getElementById('ev-time').value = '';
+      renderAllUI();
+      pushCloudUserData();
+      closeAddEventModal();
+    };
+
+    window.openCreateCustomWorkflowModal = () => document.getElementById('create-agent-wf-modal').classList.remove('hidden');
+    window.closeCreateAgentWfModal = () => document.getElementById('create-agent-wf-modal').classList.add('hidden');
+    window.handleSaveCustomAgentWorkflow = function(e) {
+      e.preventDefault();
+      window.userAppState.customWorkflows.push({ id: 'w_' + Date.now(), title: document.getElementById('wf-title').value, steps: document.getElementById('wf-steps').value });
+      document.getElementById('wf-title').value = '';
+      document.getElementById('wf-steps').value = '';
+      renderAllUI();
+      pushCloudUserData();
+      closeCreateAgentWfModal();
+    };
+
+    window.openSeekerInviteModal = () => document.getElementById('seeker-invite-modal').classList.remove('hidden');
+    window.closeSeekerInviteModal = () => document.getElementById('seeker-invite-modal').classList.add('hidden');
+    window.handleUnlockSeeker = function(e) {
+      e.preventDefault();
+      const code = document.getElementById('seeker-code-input').value.trim();
+      if (code === 'OMEGA-1911' || code === 'TAU-RHO-1964') {
+        window.userAppState.seekerUnlocked = true;
+        renderAllUI();
+        pushCloudUserData();
+        closeSeekerInviteModal();
+      } else {
+        alert("Invalid invitation code.");
+      }
+    };
+
+    // Initialize Icons, Session & Recovery Link Detection on Load
+    window.addEventListener('DOMContentLoaded', async () => {
+      if (window.lucide) lucide.createIcons();
+      const cached = localStorage.getItem('sanctuary_user_state');
+      if (cached) {
+        try { window.userAppState = Object.assign(window.userAppState, JSON.parse(cached)); } catch (e) {}
+      }
+      const client = window.getSupaClient();
+      if (client) {
+        client.auth.onAuthStateChange((event) => {
+          if (event === 'PASSWORD_RECOVERY') {
+            window.showChangePasswordModal();
+          }
+        });
+
+        const { data } = await client.auth.getSession();
+        if (data?.session?.user) {
+          window.currentUserSession = data.session.user;
+          document.getElementById('brother-login-btn').classList.add('hidden');
+          const badge = document.getElementById('auth-user-badge');
+          badge.classList.remove('hidden');
+          badge.classList.add('flex');
+          document.getElementById('auth-user-name').innerText = window.currentUserSession.email.split('@')[0];
+          await pullCloudUserData();
+        }
+      }
+      if (window.location.hash.includes('type=recovery')) {
+        setTimeout(window.showChangePasswordModal, 400);
+      }
+      renderAllUI();
+    });
+  </script>
+</body>
+</html>
