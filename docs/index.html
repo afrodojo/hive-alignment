@@ -10,6 +10,7 @@
     .tab-content { display: none; }
     .tab-content.active { display: block; }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
@@ -55,7 +56,7 @@
         Master Your Battles: Faith, Duties, Strategy &amp; <span class="text-emerald-400">Athletic Vitality</span>
       </h1>
       <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">
-        A client-side encrypted personal operating system that automatically pulls knowledge tailored to your active battles and distills it into micro-learning sprints.
+        A client-side encrypted personal operating system that ingests your multi-page PDFs, papers, and battle topics to architect tailored micro-learning sprints.
       </p>
       <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
         <button type="button" onclick="toggleCockpit(true)" class="px-8 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-emerald-500/10 transition flex items-center justify-center gap-2">
@@ -81,17 +82,17 @@
           </div>
           <h3 class="text-xl font-bold text-white">Zero-Knowledge E2EE</h3>
           <p class="text-sm text-slate-400 leading-relaxed">
-            Your biometrics, ingested research, and duties are encrypted with AES-GCM-256 in your browser before upload. We cannot read your plaintext data.
+            Your biometrics, PDF research papers, and duties are encrypted with AES-GCM-256 in your browser before upload. We cannot read your plaintext data.
           </p>
         </div>
 
         <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
           <div class="w-10 h-10 rounded-xl bg-sky-950 border border-sky-800 flex items-center justify-center text-sky-400">
-            <i data-lucide="sparkles"></i>
+            <i data-lucide="file-text"></i>
           </div>
-          <h3 class="text-xl font-bold text-white">Battle-Tailored Auto-Study</h3>
+          <h3 class="text-xl font-bold text-white">Client-Side PDF &amp; Topic Agent</h3>
           <p class="text-sm text-slate-400 leading-relaxed">
-            One click pulls verified research tailored to your active battles—whether workplace friction, anxiety, family strain, or academic overload.
+            Upload multi-page PDFs or pull battle-tailored research locally—distilled into 20-minute micro-learning sessions without raw files ever leaving your device.
           </p>
         </div>
 
@@ -115,11 +116,11 @@
         <h2 class="text-2xl font-bold text-white flex items-center gap-2">
           <i data-lucide="layout-dashboard" class="text-emerald-400"></i> Member Operations Cockpit
         </h2>
-        <p class="text-xs text-slate-400 mt-1">Encrypted Day Architect &bull; Auto-Knowledge &amp; Micro-Learning &bull; Battles &bull; Tasks</p>
+        <p class="text-xs text-slate-400 mt-1">Encrypted Day Architect &bull; PDF &amp; Topic Micro-Learning &bull; Battles &bull; Tasks</p>
       </div>
       <div class="flex flex-wrap items-center gap-2">
         <button type="button" onclick="openIngestModal('topic')" class="px-3 py-1.5 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
-          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Auto-Pull Topic / URL
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Ingest PDF / Topic / URL
         </button>
         <button type="button" onclick="openOnboardingModal()" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
           <i data-lucide="sliders" class="w-3.5 h-3.5 text-emerald-400"></i> Tailor Battles &amp; Path
@@ -189,7 +190,7 @@
           <h3 class="text-base font-bold text-white flex items-center gap-2">
             Autonomous AI Day Architect <span class="text-[10px] bg-indigo-950 text-indigo-300 border border-indigo-800 px-2 py-0.5 rounded uppercase">Knowledge-Aware Agent</span>
           </h3>
-          <p class="text-xs text-slate-400">Synthesizes your auto-pulled topics, papers, micro-learning sprints, and duties into a daily execution plan.</p>
+          <p class="text-xs text-slate-400">Synthesizes your uploaded PDFs, auto-pulled topics, micro-learning sprints, and duties into a daily execution plan.</p>
         </div>
         <button type="button" onclick="runAiDayStructure()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-2">
           <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Architect My Day
@@ -266,7 +267,7 @@
             <span id="active-twin-persona" class="text-[10px] bg-emerald-950 border border-emerald-800 text-emerald-300 px-2 py-0.5 rounded font-mono">Hakim</span>
           </div>
           <p id="active-twin-welcome" class="text-xs text-slate-300 mt-2.5 leading-relaxed">
-            Peace upon you. Ask me to distill your ingested papers into micro-learning or align your daily duties.
+            Peace upon you. Ask me to distill your uploaded PDFs into micro-learning or align your daily duties.
           </p>
         </div>
         <div class="space-y-2 pt-2">
@@ -338,24 +339,24 @@
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h3 class="text-lg font-bold text-white flex items-center gap-2">
-              <i data-lucide="sparkles" class="text-sky-400 w-5 h-5"></i> Autonomous Topic Auto-Pull &amp; Micro-Learning Distiller
+              <i data-lucide="sparkles" class="text-sky-400 w-5 h-5"></i> Autonomous PDF, Topic &amp; URL Micro-Learning Agent
             </h3>
-            <p class="text-xs text-slate-400 mt-1">Pull targeted research automatically from your Active Battles or enter any topic/URL to build a 20-minute micro-learning session.</p>
+            <p class="text-xs text-slate-400 mt-1">Upload multi-page PDF papers, pull battle-tailored research, or enter any topic/URL to build a 20-minute micro-learning session.</p>
           </div>
           <div class="flex flex-wrap gap-2">
             <button type="button" id="battle-autopull-tab-btn" onclick="autoPullForActiveBattles()" class="px-3.5 py-1.5 bg-rose-950 hover:bg-rose-900 border border-rose-800 text-rose-200 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm">
               <i data-lucide="swords" class="w-3.5 h-3.5 text-rose-400"></i> Auto-Pull for Active Battles
             </button>
+            <label for="vault-ocr-input" class="cursor-pointer px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm">
+              <i data-lucide="file-up" class="w-3.5 h-3.5"></i> Upload PDF / Scan Page
+            </label>
+            <input type="file" id="vault-ocr-input" accept=".pdf,application/pdf,image/*,.txt,.md" class="hidden" onchange="handleVaultFileIngest(event)">
             <button type="button" onclick="openIngestModal('url')" class="px-3 py-1.5 bg-indigo-950 hover:bg-indigo-900 border border-indigo-800 text-indigo-300 font-semibold rounded-xl text-xs transition flex items-center gap-1.5">
-              <i data-lucide="globe" class="w-3.5 h-3.5"></i> Ingest Web URL
+              <i data-lucide="globe" class="w-3.5 h-3.5"></i> Web URL
             </button>
             <button type="button" onclick="openIngestModal('paper')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl text-xs transition flex items-center gap-1.5">
-              <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Paste Paper
+              <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Paste Text
             </button>
-            <label for="vault-ocr-input" class="cursor-pointer px-3 py-1.5 bg-emerald-950 hover:bg-emerald-900 border border-emerald-800 text-emerald-300 font-semibold rounded-xl text-xs transition flex items-center gap-1.5">
-              <i data-lucide="camera" class="w-3.5 h-3.5"></i> Scan Page
-            </label>
-            <input type="file" id="vault-ocr-input" accept="image/*,.txt,.md" class="hidden" onchange="handleVaultFileIngest(event)">
           </div>
         </div>
 
@@ -449,10 +450,10 @@
         <span>Zero-Knowledge Architecture &amp; Privacy Shield (PII / PHI Compliant)</span>
       </div>
       <p class="leading-relaxed text-[11px] text-slate-300">
-        <strong>We do not store, process, or sell your unencrypted data.</strong> All reflections, biometrics, ingested study materials, and tasks are encrypted in your local browser using military-grade <strong>AES-GCM-256</strong> prior to cloud transmission. Neither our servers nor database administrators possess your decryption keys.
+        <strong>We do not store, process, or sell your unencrypted data.</strong> All reflections, biometrics, uploaded PDF extracts, and tasks are encrypted in your local browser using military-grade <strong>AES-GCM-256</strong> prior to cloud transmission. Neither our servers nor database administrators possess your decryption keys.
       </p>
       <div class="flex flex-wrap gap-4 pt-1 text-[10px] text-slate-500 font-mono">
-        <span>&bull; Client-Side WebCrypto (SubtleCrypto)</span>
+        <span>&bull; Client-Side WebCrypto &amp; PDF.js</span>
         <span>&bull; PBKDF2 (250,000 Iterations)</span>
         <span>&bull; Zero Plaintext Server Logs</span>
       </div>
@@ -492,6 +493,7 @@
           <div>
             <label class="text-slate-400 block mb-1">Source Type</label>
             <select id="ingest-type-input" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
+              <option value="PDF Paper">PDF Paper</option>
               <option value="Research Paper">Research Paper</option>
               <option value="Website / Article">Website / Article</option>
               <option value="Battle-Tailored Study">Battle-Tailored Study</option>
@@ -504,12 +506,12 @@
 
         <div>
           <label class="text-slate-400 block mb-1">Auto-Extracted Thesis / Key Takeaway</label>
-          <input type="text" id="ingest-takeaway-input" required placeholder="Auto-filled on URL pull or type your core objective" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
+          <input type="text" id="ingest-takeaway-input" required placeholder="Auto-filled on PDF/URL pull or type your core objective" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
         </div>
 
         <div>
-          <label class="text-slate-400 block mb-1">Excerpts / Raw Content</label>
-          <textarea id="ingest-content-input" rows="4" required placeholder="Paste paper abstract, article text, or study notes here..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200 font-mono"></textarea>
+          <label class="text-slate-400 block mb-1">Excerpts / Extracted Text</label>
+          <textarea id="ingest-content-input" rows="5" required placeholder="Upload a PDF, fetch a URL, or paste paper text here..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200 font-mono"></textarea>
         </div>
 
         <div class="flex justify-end gap-2 pt-2">
@@ -694,6 +696,10 @@
 
   <!-- CORE APPLICATION SCRIPT -->
   <script>
+    if (window.pdfjsLib) {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+
     window.SUPA_URL = 'https://jsyooxahstzrhipbocss.supabase.co';
     window.SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeW9veGFoc3R6cmhpcGJvY3NzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzODU1MTcsImV4cCI6MjEwODk2MTUxN30.BJXbrkrO-2IwRQHX38-YvWGkiFC7ONcfrq6fbY4OkNI';
     window.currentUserSession = null;
@@ -719,7 +725,7 @@
         circleLabels: { brothers: "Brotherhood Majlis", sisters: "Sisters Halaqa" },
         quote: { text: "The strong one is not the one who physically overpowers, but the one who controls anger under provocation.", source: "Prophetic Guidance (Bukhari)", virtue: "Sabr (Composure)" },
         microLearning: { title: "Tadabbur: Cognitive Self-Regulation", domain: "Virtue & Composure", time: "20-Min Sprint", steps: ["1. Notice somatic tension.", "2. Hold 3s tactical pause.", "3. Respond with Ihsan."] },
-        aiTwin: { persona: "Hakim (Mentor)", welcome: "Peace upon you. Ask me to distill your ingested papers into micro-learning or align your daily duties.", promptPlaceholder: "Ask Hakim about ingested material, duties, or recovery..." }
+        aiTwin: { persona: "Hakim (Mentor)", welcome: "Peace upon you. Ask me to distill your uploaded PDFs into micro-learning or align your daily duties.", promptPlaceholder: "Ask Hakim about ingested material, duties, or recovery..." }
       },
       christianity: {
         name: "Christian Path",
@@ -786,6 +792,29 @@
           `2. Key Mechanism: ${detail1}`,
           `3. Active Recall & Drill: ${detail2}`
         ]
+      };
+    }
+
+    // Client-Side Multi-Page PDF Text Extractor (PDF.js)
+    async function extractTextFromPdfFile(file, onProgress) {
+      if (!window.pdfjsLib) throw new Error('PDF.js engine not loaded.');
+      const buffer = await file.arrayBuffer();
+      const pdf = await window.pdfjsLib.getDocument({ data: buffer }).promise;
+      const totalPages = pdf.numPages;
+      const maxPages = Math.min(totalPages, 30);
+      let fullText = '';
+
+      for (let pageNum = 1; pageNum <= maxPages; pageNum++) {
+        if (onProgress) onProgress(pageNum, totalPages);
+        const page = await pdf.getPage(pageNum);
+        const textContent = await page.getTextContent();
+        const pageStr = textContent.items.map(item => item.str).join(' ');
+        fullText += `\n--- Page ${pageNum} ---\n${pageStr}`;
+      }
+
+      return {
+        text: fullText.trim(),
+        pageCount: totalPages
       };
     }
 
@@ -1196,7 +1225,7 @@
           status.innerText = `Pulled "${pulledTitle}" (${badgeLabel}) and distilled it into your active 20-minute micro-learning session!`;
         }
       } catch (err) {
-        if (status) status.innerText = 'Network error pulling topic. Try again or paste an article URL.';
+        if (status) status.innerText = 'Network error pulling topic. Try again or upload a PDF.';
       } finally {
         if (topBtn) {
           topBtn.disabled = false;
@@ -1231,7 +1260,7 @@
         renderAllUI();
         pushCloudUserData();
       } catch (err) {
-        status.innerText = 'Could not reach external knowledge feed. Try pasting an article URL or text manually.';
+        status.innerText = 'Could not reach external knowledge feed. Try uploading a PDF or pasting text.';
       } finally {
         btn.disabled = false;
         btn.innerHTML = '<i data-lucide="download-cloud" class="w-4 h-4"></i> Auto-Pull &amp; Build Micro-Session';
@@ -1256,7 +1285,7 @@
       }
     };
 
-    // Knowledge Ingestion Modal (URL, Paper, OCR)
+    // Knowledge Ingestion Modal (PDF, URL, Paper, OCR)
     window.openIngestModal = function(mode) {
       const modal = document.getElementById('ingest-knowledge-modal');
       const typeSel = document.getElementById('ingest-type-input');
@@ -1298,7 +1327,7 @@
         if (!document.getElementById('ingest-title-input').value) {
           document.getElementById('ingest-title-input').value = autoTitle;
         }
-        document.getElementById('ingest-content-input').value = text.slice(0, 3500);
+        document.getElementById('ingest-content-input').value = text.slice(0, 4000);
         const distilled = distillTextToMicroSession(autoTitle, text.slice(0, 2000));
         if (!document.getElementById('ingest-takeaway-input').value) {
           document.getElementById('ingest-takeaway-input').value = distilled.takeaway;
@@ -1312,6 +1341,7 @@
       }
     };
 
+    // Multi-Page PDF, Image OCR, and Plaintext File Ingestion Handler
     window.handleVaultFileIngest = async function(e) {
       const file = e.target.files[0];
       if (!file) return;
@@ -1321,7 +1351,24 @@
       const cleanName = file.name.replace(/\.[^/.]+$/, '');
       document.getElementById('ingest-title-input').value = cleanName;
 
-      if (file.type.startsWith('image/')) {
+      if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
+        document.getElementById('ingest-type-input').value = 'PDF Paper';
+        status.innerText = 'Parsing multi-page PDF locally in browser (PDF.js)...';
+        try {
+          const { text, pageCount } = await extractTextFromPdfFile(file, (curr, total) => {
+            status.innerText = `Extracting text from PDF page ${curr} of ${total}...`;
+          });
+          if (!text || text.replace(/--- Page \d+ ---/g, '').trim().length < 20) {
+            status.innerText = 'PDF appears to be a scanned image without selectable text. Upload a page screenshot for OCR or paste text.';
+            return;
+          }
+          document.getElementById('ingest-content-input').value = text.slice(0, 8000);
+          document.getElementById('ingest-takeaway-input').value = distillTextToMicroSession(cleanName, text.slice(0, 3000)).takeaway;
+          status.innerText = `Extracted ${pageCount} PDF page(s) and distilled core thesis! Click "Distill & Save to Vault".`;
+        } catch (err) {
+          status.innerText = 'PDF extraction error: ' + (err.message || 'Could not parse file.');
+        }
+      } else if (file.type.startsWith('image/')) {
         document.getElementById('ingest-type-input').value = 'OCR Scan';
         status.innerText = 'Running local browser OCR (Tesseract)...';
         try {
@@ -1336,13 +1383,14 @@
       } else {
         const reader = new FileReader();
         reader.onload = ev => {
-          const txt = ev.target.result.slice(0, 4000);
+          const txt = ev.target.result.slice(0, 6000);
           document.getElementById('ingest-content-input').value = txt;
           document.getElementById('ingest-takeaway-input').value = distillTextToMicroSession(cleanName, txt).takeaway;
           status.innerText = 'Document loaded and distilled! Click Save.';
         };
         reader.readAsText(file);
       }
+      e.target.value = '';
     };
 
     window.handleSaveIngestedItem = function(e) {
@@ -1383,7 +1431,7 @@
     window.generateWorkflowFromVault = function() {
       const vault = window.userAppState.knowledgeVault || [];
       if (!vault.length) {
-        alert('Auto-pull a topic or ingest a paper into your Knowledge Vault first.');
+        alert('Upload a PDF or auto-pull a topic into your Knowledge Vault first.');
         return;
       }
       const latest = vault[0];
@@ -1476,7 +1524,7 @@
               </div>
             </div>
           `;
-        }).join('') || '<p class="text-xs text-slate-500 col-span-3">Click "Auto-Pull for Active Battles" or enter a topic above to generate your first micro-learning session.</p>';
+        }).join('') || '<p class="text-xs text-slate-500 col-span-3">Upload a PDF paper, click "Auto-Pull for Active Battles", or enter a topic above.</p>';
       }
 
       const tCont = document.getElementById('tasks-list-container');
