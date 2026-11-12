@@ -2,7 +2,7 @@
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
-  <title>Hive Alignment | Executive Performance & Personal Operating System</title>
+  <title>Hive Alignment | Executive Performance &amp; Personal Operating System</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -23,12 +23,15 @@
         <span class="font-bold text-lg tracking-tight text-white">Hive Alignment</span>
       </div>
       <div class="flex items-center gap-4">
-        <a href="#science" onclick="showLandingView()" class="text-sm text-slate-300 hover:text-white transition hidden md:block">Science & Studies</a>
+        <a href="#science" onclick="showLandingView()" class="text-sm text-slate-300 hover:text-white transition hidden md:block">Science &amp; Studies</a>
         <a href="#privacy" onclick="showLandingView()" class="text-sm text-slate-300 hover:text-white transition hidden md:block">Zero-Knowledge Privacy</a>
         
         <div id="auth-user-badge" class="hidden items-center gap-2">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" title="Zero-Knowledge Sync Active"></span>
           <span id="auth-user-name" class="px-3 py-1.5 rounded-lg bg-emerald-950/70 border border-emerald-800/40 text-emerald-300 text-xs font-semibold"></span>
+          <button type="button" onclick="showChangePasswordModal()" class="px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700/60 text-slate-300 hover:text-white font-semibold rounded-lg text-xs transition flex items-center gap-1 shadow-sm" title="Change Password">
+            <i data-lucide="key" class="w-3 h-3 text-slate-400"></i> Key
+          </button>
           <button type="button" onclick="brotherSignOut()" class="px-3 py-1.5 bg-rose-950/50 hover:bg-rose-900/60 border border-rose-800/50 text-rose-300 hover:text-rose-100 font-semibold rounded-lg text-xs transition flex items-center gap-1.5">
             <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Exit
           </button>
@@ -45,10 +48,10 @@
   <main id="landing-view" class="flex-grow">
     <section class="pt-20 pb-16 px-6 max-w-5xl mx-auto text-center space-y-6">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950 border border-emerald-800 text-emerald-300 text-xs font-medium">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Zero-Knowledge E2EE & AI Day Architect Active
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Zero-Knowledge E2EE &amp; AI Day Architect Active
       </div>
       <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white leading-tight">
-        Master Your Battles: Faith, Duties, Strategy & <span class="text-emerald-400">Athletic Vitality</span>
+        Master Your Battles: Faith, Duties, Strategy &amp; <span class="text-emerald-400">Athletic Vitality</span>
       </h1>
       <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">
         A client-side encrypted personal operating system tailored to your battles across career, family, mental health, and education.
@@ -66,7 +69,7 @@
     <!-- Science Section -->
     <section id="science" class="py-16 px-6 max-w-6xl mx-auto border-t border-slate-900">
       <div class="text-center max-w-2xl mx-auto space-y-3 mb-12">
-        <h2 class="text-3xl font-bold tracking-tight text-white">Backed by Autonomic Science, Strategy & Privacy</h2>
+        <h2 class="text-3xl font-bold tracking-tight text-white">Backed by Autonomic Science, Strategy &amp; Privacy</h2>
         <p class="text-slate-400">Structured daily execution engineered around what you are battling right now.</p>
       </div>
 
@@ -111,14 +114,14 @@
         <h2 class="text-2xl font-bold text-white flex items-center gap-2">
           <i data-lucide="layout-dashboard" class="text-emerald-400"></i> Member Operations Cockpit
         </h2>
-        <p class="text-xs text-slate-400 mt-1">Encrypted Day Architect • Battles • Tasks • Learning • Vaults</p>
+        <p class="text-xs text-slate-400 mt-1">Encrypted Day Architect &bull; Battles &bull; Tasks &bull; Learning &bull; Vaults</p>
       </div>
       <div class="flex flex-wrap items-center gap-2">
         <button type="button" onclick="openOnboardingModal()" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
-          <i data-lucide="sliders" class="w-3.5 h-3.5 text-emerald-400"></i> Tailor Battles & Path
+          <i data-lucide="sliders" class="w-3.5 h-3.5 text-emerald-400"></i> Tailor Battles &amp; Path
         </button>
         <button type="button" onclick="triggerImmediateCloudSave()" class="px-3 py-1.5 bg-emerald-950 hover:bg-emerald-900 border border-emerald-800 text-emerald-300 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
-          <i data-lucide="lock" class="w-3.5 h-3.5"></i> Encrypt & Save
+          <i data-lucide="lock" class="w-3.5 h-3.5"></i> Encrypt &amp; Save
         </button>
         <button type="button" onclick="toggleCockpit(false)" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-lg text-sm text-slate-300 transition">
           Exit Cockpit
@@ -134,7 +137,7 @@
         </div>
         <div>
           <h3 class="text-sm font-bold text-white">
-            Active Battle Arenas: <span id="active-battles-labels" class="text-rose-400 font-medium">Work Friction • Mental Health</span>
+            Active Battle Arenas: <span id="active-battles-labels" class="text-rose-400 font-medium">Work Friction &bull; Mental Health</span>
           </h3>
           <p class="text-xs text-slate-400">Tactical drills and AI guidance are tailored to support these active challenges.</p>
         </div>
@@ -151,7 +154,7 @@
           <i data-lucide="shield" class="w-5 h-5" id="circle-icon"></i>
         </div>
         <div>
-          <h3 id="sanctuary-active-heading" class="text-base font-bold text-white">Brotherhood Majlis • Islamic Path ☪</h3>
+          <h3 id="sanctuary-active-heading" class="text-base font-bold text-white">Brotherhood Majlis &bull; Islamic Path ☪</h3>
           <p class="text-xs text-slate-400">Harmonizing autonomic telemetry, obligations, and physical discipline.</p>
         </div>
       </div>
@@ -186,13 +189,13 @@
       <div id="ai-structured-schedule" class="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs pt-1">
         <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
           <span class="text-indigo-400 font-mono text-[11px] font-bold">06:00 - 08:00 AM</span>
-          <p class="font-semibold text-slate-200">Sacred Anchor & Deep Work</p>
-          <p class="text-[10px] text-slate-400">Morning devotional primer & zero-distraction output.</p>
+          <p class="font-semibold text-slate-200">Sacred Anchor &amp; Deep Work</p>
+          <p class="text-[10px] text-slate-400">Morning devotional primer &amp; zero-distraction output.</p>
         </div>
         <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
           <span class="text-sky-400 font-mono text-[11px] font-bold">12:30 - 13:30 PM</span>
-          <p class="font-semibold text-slate-200">Mid-Day Anchor & Micro-Sprint</p>
-          <p class="text-[10px] text-slate-400">Parasympathetic reset, posture & 48oz hydration.</p>
+          <p class="font-semibold text-slate-200">Mid-Day Anchor &amp; Micro-Sprint</p>
+          <p class="text-[10px] text-slate-400">Parasympathetic reset, posture &amp; 48oz hydration.</p>
         </div>
         <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
           <span class="text-amber-400 font-mono text-[11px] font-bold">17:30 - 18:45 PM</span>
@@ -201,8 +204,8 @@
         </div>
         <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
           <span class="text-purple-400 font-mono text-[11px] font-bold">21:00 - 22:00 PM</span>
-          <p class="font-semibold text-slate-200">Night Accounting & Shutdown</p>
-          <p class="text-[10px] text-slate-400">Evening reflection, family time & decompression.</p>
+          <p class="font-semibold text-slate-200">Night Accounting &amp; Shutdown</p>
+          <p class="text-[10px] text-slate-400">Evening reflection, family time &amp; decompression.</p>
         </div>
       </div>
     </div>
@@ -240,7 +243,7 @@
         </div>
         <div class="pt-2 border-t border-slate-800 flex justify-between items-center">
           <span id="active-micro-domain" class="text-[11px] text-slate-400">Spiritual Physiology</span>
-          <button type="button" onclick="switchTab('tab-workflows')" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold">Workflows →</button>
+          <button type="button" onclick="switchTab('tab-workflows')" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold">Workflows &rarr;</button>
         </div>
       </div>
 
@@ -265,9 +268,9 @@
     <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-2">
       <button type="button" onclick="switchTab('tab-briefings')" id="btn-tab-briefings" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold bg-emerald-500 text-slate-950 transition">Briefings</button>
       <button type="button" onclick="switchTab('tab-calendar')" id="btn-tab-calendar" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">Calendar Sync</button>
-      <button type="button" onclick="switchTab('tab-duties')" id="btn-tab-duties" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">Duties & Tasks</button>
+      <button type="button" onclick="switchTab('tab-duties')" id="btn-tab-duties" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">Duties &amp; Tasks</button>
       <button type="button" onclick="switchTab('tab-workflows')" id="btn-tab-workflows" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">Agent Workflows</button>
-      <button type="button" onclick="switchTab('tab-spiritual')" id="btn-tab-spiritual" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">Journal & Accounting</button>
+      <button type="button" onclick="switchTab('tab-spiritual')" id="btn-tab-spiritual" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">Journal &amp; Accounting</button>
       <button type="button" onclick="switchTab('tab-seeker')" id="btn-tab-seeker" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-amber-400 hover:text-amber-300 transition">Seeker Study (Locked)</button>
     </div>
 
@@ -279,11 +282,11 @@
           <div class="space-y-3 text-xs">
             <label class="flex items-start gap-2.5 cursor-pointer">
               <input type="checkbox" id="chk-m0" onchange="syncCheck('chk-m0')" class="mt-0.5 rounded bg-slate-950 text-emerald-500">
-              <span class="text-slate-300">Morning devotional anchor & prayer</span>
+              <span class="text-slate-300">Morning devotional anchor &amp; prayer</span>
             </label>
             <label class="flex items-start gap-2.5 cursor-pointer">
               <input type="checkbox" id="chk-m1" onchange="syncCheck('chk-m1')" class="mt-0.5 rounded bg-slate-950 text-emerald-500">
-              <span class="text-slate-300">Wearable recovery check (>66% Green)</span>
+              <span class="text-slate-300">Wearable recovery check (&gt;66% Green)</span>
             </label>
           </div>
         </div>
@@ -292,7 +295,7 @@
           <div class="space-y-3 text-xs">
             <label class="flex items-start gap-2.5 cursor-pointer">
               <input type="checkbox" id="chk-d0" onchange="syncCheck('chk-d0')" class="mt-0.5 rounded bg-slate-950 text-emerald-500">
-              <span class="text-slate-300">Mid-day prayer & contemplative pause</span>
+              <span class="text-slate-300">Mid-day prayer &amp; contemplative pause</span>
             </label>
             <label class="flex items-start gap-2.5 cursor-pointer">
               <input type="checkbox" id="chk-d1" onchange="syncCheck('chk-d1')" class="mt-0.5 rounded bg-slate-950 text-emerald-500">
@@ -305,7 +308,7 @@
           <div class="space-y-3 text-xs">
             <label class="flex items-start gap-2.5 cursor-pointer">
               <input type="checkbox" id="chk-e0" onchange="syncCheck('chk-e0')" class="mt-0.5 rounded bg-slate-950 text-emerald-500">
-              <span class="text-slate-300">Night prayer & gratitude review</span>
+              <span class="text-slate-300">Night prayer &amp; gratitude review</span>
             </label>
             <label class="flex items-start gap-2.5 cursor-pointer">
               <input type="checkbox" id="chk-e1" onchange="syncCheck('chk-e1')" class="mt-0.5 rounded bg-slate-950 text-emerald-500">
@@ -320,7 +323,7 @@
     <div id="tab-calendar" class="tab-content space-y-6">
       <div class="flex justify-between items-center bg-slate-900 border border-slate-800 rounded-2xl p-6">
         <div>
-          <h3 class="text-lg font-bold text-white">Two-Way Calendar Sync & Schedule</h3>
+          <h3 class="text-lg font-bold text-white">Two-Way Calendar Sync &amp; Schedule</h3>
           <p class="text-xs text-slate-400">Encrypted schedule synced across your devices.</p>
         </div>
         <button type="button" onclick="openAddEventModal()" class="px-4 py-2 bg-emerald-600 text-slate-950 font-bold rounded-xl text-xs">+ New Event</button>
@@ -332,7 +335,7 @@
     <div id="tab-duties" class="tab-content space-y-6">
       <div class="flex justify-between items-center bg-slate-900 border border-slate-800 rounded-2xl p-6">
         <div>
-          <h3 class="text-lg font-bold text-white">Duties, Obligations & Reminders</h3>
+          <h3 class="text-lg font-bold text-white">Duties, Obligations &amp; Reminders</h3>
           <p class="text-xs text-slate-400">Client-side encrypted with AES-GCM-256.</p>
         </div>
         <button type="button" onclick="openAddTaskModal()" class="px-4 py-2 bg-emerald-600 text-slate-950 font-bold rounded-xl text-xs">+ Add Duty</button>
@@ -344,7 +347,7 @@
     <div id="tab-workflows" class="tab-content space-y-6">
       <div class="flex justify-between items-center bg-slate-900 border border-slate-800 rounded-2xl p-6">
         <div>
-          <h3 class="text-lg font-bold text-white">Agentic Workflow & Study Builder</h3>
+          <h3 class="text-lg font-bold text-white">Agentic Workflow &amp; Study Builder</h3>
           <p class="text-xs text-slate-400">Build custom study tracks or daily SOPs.</p>
         </div>
         <button type="button" onclick="openCreateCustomWorkflowModal()" class="px-4 py-2 bg-purple-600 text-white font-bold rounded-xl text-xs">+ New Workflow</button>
@@ -359,7 +362,7 @@
         <textarea id="muhasabah-notes" rows="4" placeholder="Write your private reflection here. Encrypted before leaving your browser..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"></textarea>
         <div class="flex justify-between items-center">
           <span id="muhasabah-status" class="text-[11px] text-slate-500">Zero-knowledge encryption active</span>
-          <button type="button" onclick="saveMuhasabah()" class="px-4 py-1.5 bg-emerald-600 text-slate-950 font-bold rounded-lg text-xs">Encrypt & Save</button>
+          <button type="button" onclick="saveMuhasabah()" class="px-4 py-1.5 bg-emerald-600 text-slate-950 font-bold rounded-lg text-xs">Encrypt &amp; Save</button>
         </div>
       </div>
     </div>
@@ -367,16 +370,16 @@
     <!-- TAB 6: SEEKER STUDY (GATED) -->
     <div id="tab-seeker" class="tab-content space-y-6">
       <div id="seeker-locked-banner" class="bg-slate-900 border border-amber-800/40 rounded-2xl p-8 text-center space-y-4">
-        <h3 class="text-xl font-bold text-white">Private Aspirant & Seeker Vault</h3>
+        <h3 class="text-xl font-bold text-white">Private Aspirant &amp; Seeker Vault</h3>
         <p class="text-xs text-slate-400 max-w-md mx-auto">
           Restricted to authorized accounts (cyberdojosensei@gmail.com and Gabe Evans). Others require an invitation token to unlock.
         </p>
         <button type="button" onclick="openSeekerInviteModal()" class="px-6 py-2.5 bg-amber-500 text-slate-950 font-bold rounded-xl text-xs">Enter Invitation Code</button>
       </div>
       <div id="seeker-unlocked-content" class="hidden bg-slate-900 border border-amber-900/40 rounded-2xl p-6 space-y-3">
-        <h3 class="text-xl font-bold text-amber-400">Omega Psi Phi Heritage & Drill Engine (Unlocked)</h3>
-        <p class="text-xs text-slate-300">Cardinal Principles: Manhood • Scholarship • Perseverance • Uplift</p>
-        <p class="text-xs text-slate-400">Founded Nov 17, 1911 • Thirkield Hall, Howard University</p>
+        <h3 class="text-xl font-bold text-amber-400">Omega Psi Phi Heritage &amp; Drill Engine (Unlocked)</h3>
+        <p class="text-xs text-slate-300">Cardinal Principles: Manhood &bull; Scholarship &bull; Perseverance &bull; Uplift</p>
+        <p class="text-xs text-slate-400">Founded Nov 17, 1911 &bull; Thirkield Hall, Howard University</p>
       </div>
     </div>
   </section>
@@ -386,27 +389,28 @@
     <div class="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80 text-xs text-slate-400 space-y-2 shadow-lg">
       <div class="flex items-center gap-2 text-emerald-400 font-bold uppercase tracking-wider text-[11px]">
         <i data-lucide="shield-alert" class="w-4 h-4"></i>
-        <span>Zero-Knowledge Architecture & Privacy Shield (PII / PHI Compliant)</span>
+        <span>Zero-Knowledge Architecture &amp; Privacy Shield (PII / PHI Compliant)</span>
       </div>
       <p class="leading-relaxed text-[11px] text-slate-300">
         <strong>We do not store, process, or sell your unencrypted data.</strong> All reflections, biometrics, tasks, and clinical markers are encrypted in your local browser using military-grade <strong>AES-GCM-256</strong> prior to cloud transmission. Neither our servers nor database administrators possess your decryption keys.
       </p>
       <div class="flex flex-wrap gap-4 pt-1 text-[10px] text-slate-500 font-mono">
-        <span>• Client-Side WebCrypto (SubtleCrypto)</span>
-        <span>• PBKDF2 (250,000 Iterations)</span>
-        <span>• Zero Plaintext Server Logs</span>
+        <span>&bull; Client-Side WebCrypto (SubtleCrypto)</span>
+        <span>&bull; PBKDF2 (250,000 Iterations)</span>
+        <span>&bull; Zero Plaintext Server Logs</span>
       </div>
     </div>
   </div>
 
   <footer class="py-6 px-6 text-center text-xs text-slate-500 border-t border-slate-900 mt-auto">
-    <p>© 2026 Hive Alignment. Open-source health & performance architecture.</p>
+    <p>&copy; 2026 Hive Alignment. Open-source health &amp; performance architecture.</p>
   </footer>
 
   <!-- MODALS -->
+  <!-- Login / Sign Up Modal -->
   <div id="brotherhood-auth-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[999] hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-emerald-900/40 rounded-2xl max-w-sm w-full p-6 space-y-5 shadow-2xl relative">
-      <button type="button" onclick="hideLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">×</button>
+      <button type="button" onclick="hideLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">&times;</button>
       <div class="text-center space-y-1">
         <h3 class="text-xl font-extrabold text-white">Hive Alignment Sanctuary</h3>
         <p class="text-xs text-slate-400">Zero-Knowledge Encrypted Access</p>
@@ -428,9 +432,70 @@
           <label class="text-slate-400 block mb-1">Master Password / Encryption Key</label>
           <input type="password" id="auth-password-input" required minlength="6" placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-slate-200">
         </div>
+        <div id="auth-forgot-link" class="flex items-center justify-between text-[11px] pt-1">
+          <button type="button" onclick="showForgotPasswordView()" class="text-emerald-400 hover:text-emerald-300 underline underline-offset-2 transition">
+            Forgot password / Reset link
+          </button>
+        </div>
         <div id="auth-error-msg" class="hidden p-2.5 bg-rose-950/50 border border-rose-900 rounded-lg text-rose-300 text-[11px]"></div>
         <button type="submit" id="auth-submit-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl">Sign In to Vault</button>
       </form>
+    </div>
+  </div>
+
+  <!-- Password Reset & Recovery Modal -->
+  <div id="brotherhood-password-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[99999] hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-emerald-900/40 rounded-2xl max-w-sm w-full p-6 space-y-5 shadow-2xl relative">
+      <button type="button" onclick="closePasswordModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition text-xl leading-none">&times;</button>
+      
+      <!-- Request Reset Email View -->
+      <div id="pw-reset-request-view" class="space-y-4">
+        <div class="text-center space-y-1">
+          <div class="inline-flex p-3 rounded-2xl bg-emerald-950/70 border border-emerald-800/40 text-emerald-400 mb-1">
+            <i data-lucide="key-round" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white tracking-tight">Reset Password</h3>
+          <p class="text-xs text-slate-400">Enter your email to receive a password reset link</p>
+        </div>
+        <form onsubmit="handleSendResetEmail(event)" class="space-y-3 text-xs">
+          <div>
+            <label class="text-slate-400 block mb-1 font-medium">Account Email</label>
+            <input type="email" id="reset-email-input" required placeholder="name@domain.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-emerald-500">
+          </div>
+          <div id="reset-status-msg" class="hidden p-2.5 rounded-lg text-[11px] leading-tight"></div>
+          <button type="submit" id="reset-submit-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl transition">
+            Send Reset Instructions
+          </button>
+          <button type="button" onclick="returnToLoginModal()" class="w-full text-center text-slate-400 hover:text-white text-[11px] pt-1">
+            &larr; Back to Login
+          </button>
+        </form>
+      </div>
+
+      <!-- Set New Password View -->
+      <div id="pw-update-view" class="space-y-4 hidden">
+        <div class="text-center space-y-1">
+          <div class="inline-flex p-3 rounded-2xl bg-emerald-950/70 border border-emerald-800/40 text-emerald-400 mb-1">
+            <i data-lucide="shield-check" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white tracking-tight">Set New Password</h3>
+          <p class="text-xs text-slate-400">Choose a new password (min 6 characters)</p>
+        </div>
+        <form onsubmit="handleUpdatePassword(event)" class="space-y-3 text-xs">
+          <div>
+            <label class="text-slate-400 block mb-1 font-medium">New Password</label>
+            <input type="password" id="new-password-input" minlength="6" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1 font-medium">Confirm New Password</label>
+            <input type="password" id="confirm-password-input" minlength="6" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-emerald-500">
+          </div>
+          <div id="update-status-msg" class="hidden p-2.5 rounded-lg text-[11px] leading-tight"></div>
+          <button type="submit" id="update-submit-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl transition">
+            Save New Password
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 
@@ -438,8 +503,8 @@
   <div id="onboarding-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[1000] hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 space-y-5 shadow-2xl">
       <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-        <span class="text-xs font-bold text-emerald-400 uppercase">Configure Battles & Spiritual Path</span>
-        <button type="button" onclick="closeOnboardingModal()" class="text-slate-400 hover:text-white text-sm">×</button>
+        <span class="text-xs font-bold text-emerald-400 uppercase">Configure Battles &amp; Spiritual Path</span>
+        <button type="button" onclick="closeOnboardingModal()" class="text-slate-400 hover:text-white text-sm">&times;</button>
       </div>
       <div class="space-y-4 text-xs">
         <div>
@@ -651,7 +716,7 @@
       if (window.lucide) lucide.createIcons();
     };
 
-    // Auth Modals
+    // Auth & Forgot Password Modals
     window.showLoginModal = function() {
       const m = document.getElementById('brotherhood-auth-modal');
       if (m) m.classList.remove('hidden');
@@ -664,22 +729,132 @@
       window.showLoginModal();
       window.switchAuthMode('signup');
     };
+
+    window.showForgotPasswordView = function() {
+      window.hideLoginModal();
+      const pw = document.getElementById('brotherhood-password-modal');
+      const rView = document.getElementById('pw-reset-request-view');
+      const uView = document.getElementById('pw-update-view');
+      const emailVal = document.getElementById('auth-email-input')?.value.trim();
+      if (emailVal && document.getElementById('reset-email-input')) {
+        document.getElementById('reset-email-input').value = emailVal;
+      }
+      if (pw) pw.classList.remove('hidden');
+      if (rView) rView.classList.remove('hidden');
+      if (uView) uView.classList.add('hidden');
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.showChangePasswordModal = function() {
+      const pw = document.getElementById('brotherhood-password-modal');
+      const rView = document.getElementById('pw-reset-request-view');
+      const uView = document.getElementById('pw-update-view');
+      if (pw) pw.classList.remove('hidden');
+      if (rView) rView.classList.add('hidden');
+      if (uView) uView.classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.closePasswordModal = function() {
+      const pw = document.getElementById('brotherhood-password-modal');
+      if (pw) pw.classList.add('hidden');
+    };
+
+    window.returnToLoginModal = function() {
+      window.closePasswordModal();
+      window.showLoginModal();
+    };
+
+    window.handleSendResetEmail = async function(e) {
+      if (e) e.preventDefault();
+      const email = document.getElementById('reset-email-input').value.trim().toLowerCase();
+      const btn = document.getElementById('reset-submit-btn');
+      const msg = document.getElementById('reset-status-msg');
+
+      msg.className = 'hidden';
+      btn.disabled = true;
+      btn.innerText = 'Dispatching Reset Link...';
+
+      try {
+        const client = window.getSupaClient();
+        if (!client) throw new Error('Supabase gateway not initialized.');
+
+        const { error } = await client.auth.resetPasswordForEmail(email, {
+          redirectTo: window.location.origin + window.location.pathname
+        });
+        if (error) throw error;
+
+        msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block';
+        msg.innerText = 'Reset link sent! Check your email inbox (and spam folder) to set a new password.';
+      } catch (err) {
+        msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
+        msg.innerText = err.message || 'Could not send reset email.';
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Send Reset Instructions';
+      }
+    };
+
+    window.handleUpdatePassword = async function(e) {
+      if (e) e.preventDefault();
+      const p1 = document.getElementById('new-password-input').value;
+      const p2 = document.getElementById('confirm-password-input').value;
+      const btn = document.getElementById('update-submit-btn');
+      const msg = document.getElementById('update-status-msg');
+
+      if (p1 !== p2) {
+        msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
+        msg.innerText = 'Passwords do not match.';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerText = 'Updating Password...';
+
+      try {
+        const client = window.getSupaClient();
+        if (!client) throw new Error('Supabase gateway not initialized.');
+
+        const { error } = await client.auth.updateUser({ password: p1 });
+        if (error) throw error;
+
+        window.masterPassphrase = p1;
+        await pushCloudUserData();
+
+        msg.className = 'p-3 bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 rounded-xl text-xs block';
+        msg.innerText = 'Password updated successfully!';
+        setTimeout(() => {
+          window.closePasswordModal();
+          window.location.hash = '';
+        }, 1200);
+      } catch (err) {
+        msg.className = 'p-3 bg-rose-950/70 border border-rose-800/60 text-rose-300 rounded-xl text-xs block';
+        msg.innerText = err.message || 'Failed to update password.';
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Save New Password';
+      }
+    };
+
     window.switchAuthMode = function(mode) {
       window.activeAuthMode = mode;
       const btnIn = document.getElementById('tab-auth-signin');
       const btnUp = document.getElementById('tab-auth-signup');
       const nameBox = document.getElementById('auth-name-container');
       const submitBtn = document.getElementById('auth-submit-btn');
+      const forgotLink = document.getElementById('auth-forgot-link');
 
       if (mode === 'signup') {
         btnUp.className = "flex-1 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-bold";
         btnIn.className = "flex-1 py-1.5 rounded-lg text-slate-400";
         nameBox.classList.remove('hidden');
+        forgotLink.classList.add('hidden');
         submitBtn.innerText = "Create Encrypted Vault";
       } else {
         btnIn.className = "flex-1 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-bold";
         btnUp.className = "flex-1 py-1.5 rounded-lg text-slate-400";
         nameBox.classList.add('hidden');
+        forgotLink.classList.remove('hidden');
         submitBtn.innerText = "Sign In to Vault";
       }
     };
@@ -807,7 +982,7 @@
       const c = window.userAppState.circle || 'brothers';
       const cfg = window.SANCTUARY_PATHS[p] || window.SANCTUARY_PATHS.islam;
 
-      document.getElementById('sanctuary-active-heading').innerHTML = `${cfg.circleLabels[c]} • ${cfg.name} ${cfg.symbol}`;
+      document.getElementById('sanctuary-active-heading').innerHTML = `${cfg.circleLabels[c]} &bull; ${cfg.name} ${cfg.symbol}`;
       document.getElementById('active-quote-text').innerText = `"${cfg.quote.text}"`;
       document.getElementById('active-quote-source').innerText = cfg.quote.source;
       document.getElementById('active-virtue-tag').innerText = cfg.quote.virtue;
@@ -958,7 +1133,7 @@
       }
     };
 
-    // Initialize Icons & Session on Load
+    // Initialize Icons, Session & Recovery Link Detection on Load
     window.addEventListener('DOMContentLoaded', async () => {
       if (window.lucide) lucide.createIcons();
       const cached = localStorage.getItem('sanctuary_user_state');
@@ -967,6 +1142,12 @@
       }
       const client = window.getSupaClient();
       if (client) {
+        client.auth.onAuthStateChange((event) => {
+          if (event === 'PASSWORD_RECOVERY') {
+            window.showChangePasswordModal();
+          }
+        });
+
         const { data } = await client.auth.getSession();
         if (data?.session?.user) {
           window.currentUserSession = data.session.user;
@@ -977,6 +1158,9 @@
           document.getElementById('auth-user-name').innerText = window.currentUserSession.email.split('@')[0];
           await pullCloudUserData();
         }
+      }
+      if (window.location.hash.includes('type=recovery')) {
+        setTimeout(window.showChangePasswordModal, 400);
       }
       renderAllUI();
     });
