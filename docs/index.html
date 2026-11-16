@@ -314,6 +314,7 @@
       <button type="button" onclick="switchTab('tab-calendar')" id="btn-tab-calendar" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">Calendar Sync</button>
       <button type="button" onclick="switchTab('tab-duties')" id="btn-tab-duties" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">Duties & Tasks</button>
       <button type="button" onclick="switchTab('tab-workflows')" id="btn-tab-workflows" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">Agent Workflows</button>
+      <button type="button" onclick="switchTab('tab-faith')" id="btn-tab-faith" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition">Faith & Salat Path</button>
       <button type="button" onclick="switchTab('tab-spiritual')" id="btn-tab-spiritual" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">Journal & Accounting</button>
       <button type="button" onclick="switchTab('tab-seeker')" id="btn-tab-seeker" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-amber-400 hover:text-amber-300 transition">Seeker Study (Omega)</button>
     </div>
@@ -446,6 +447,70 @@
         </div>
       </div>
       <div id="custom-workflows-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+    </div>
+
+    <!-- TAB: ISLAMIC FAITH LEARNING PATHS & LIVE PRAYER TIMES -->
+    <div id="tab-faith" class="tab-content space-y-6">
+      <!-- Live Prayer Times & Location Bar -->
+      <div class="bg-gradient-to-r from-slate-900 via-emerald-950/30 to-slate-900 border border-emerald-800/50 rounded-2xl p-6 space-y-4 shadow-xl">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-4">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+              <i data-lucide="compass" class="w-3.5 h-3.5"></i> Sacred Daily Cadence • Live Salat Schedule
+            </span>
+            <h3 class="text-lg font-extrabold text-white mt-0.5">Islamic Faith Path & Prayer-Anchored Learning</h3>
+            <p id="salat-location-label" class="text-xs text-slate-400 mt-0.5">Syncing daily prayer windows to structure Quran, Hadith, and doctoral focus...</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <form onsubmit="handleUpdateSalatCity(event)" class="flex items-center gap-1.5 text-xs">
+              <input type="text" id="salat-city-input" placeholder="City, State (e.g. Fredericksburg, VA)" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-slate-200 focus:outline-none focus:border-emerald-500">
+              <button type="submit" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl transition">Sync Times</button>
+            </form>
+            <button type="button" onclick="loadAllIslamicModulesToVault()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-md">
+              <i data-lucide="book-open-check" class="w-3.5 h-3.5"></i> Load All 5 Faith Paths to Vault
+            </button>
+          </div>
+        </div>
+
+        <!-- 5 Daily Prayer Windows + Sunrise -->
+        <div id="salat-times-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 text-xs">
+          <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 text-center">
+            <span class="text-[10px] uppercase text-emerald-400 font-bold block">Fajr</span>
+            <span class="text-sm font-mono font-bold text-white">--:--</span>
+            <span class="text-[10px] text-slate-400 block mt-0.5">Quran & Tadabbur</span>
+          </div>
+          <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 text-center">
+            <span class="text-[10px] uppercase text-amber-400 font-bold block">Sunrise</span>
+            <span class="text-sm font-mono font-bold text-white">--:--</span>
+            <span class="text-[10px] text-slate-400 block mt-0.5">Ishraq & Deep Work</span>
+          </div>
+          <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 text-center">
+            <span class="text-[10px] uppercase text-sky-400 font-bold block">Dhuhr</span>
+            <span class="text-sm font-mono font-bold text-white">--:--</span>
+            <span class="text-[10px] text-slate-400 block mt-0.5">Hadith & Reset</span>
+          </div>
+          <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 text-center">
+            <span class="text-[10px] uppercase text-indigo-400 font-bold block">Asr</span>
+            <span class="text-sm font-mono font-bold text-white">--:--</span>
+            <span class="text-[10px] text-slate-400 block mt-0.5">Adhkar & Family</span>
+          </div>
+          <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 text-center">
+            <span class="text-[10px] uppercase text-rose-400 font-bold block">Maghrib</span>
+            <span class="text-sm font-mono font-bold text-white">--:--</span>
+            <span class="text-[10px] text-slate-400 block mt-0.5">Adab & Presence</span>
+          </div>
+          <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 text-center">
+            <span class="text-[10px] uppercase text-purple-400 font-bold block">Isha</span>
+            <span class="text-sm font-mono font-bold text-white">--:--</span>
+            <span class="text-[10px] text-slate-400 block mt-0.5">Al-Mulk & Muhasabah</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 Structured Islamic Faith Learning Modules -->
+      <div id="islamic-curriculum-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Populated dynamically with Quran Reading, Understanding, Prayer Recitation, Do's & Don'ts, and Hadiths -->
+      </div>
     </div>
 
     <!-- TAB 5: JOURNAL & ACCOUNTING -->
@@ -1074,14 +1139,33 @@
             </div>
           </div>
 
-          <div>
-            <div class="flex justify-between items-center mb-1">
-              <label class="text-slate-400 font-medium">Study Room / Call Link</label>
-              <button type="button" onclick="generatePrivateStudyRoomUrl()" class="text-[11px] text-emerald-400 hover:text-emerald-300 font-semibold">
-                + Generate Jitsi Room
+          <div class="space-y-2">
+            <div class="flex justify-between items-center">
+              <label class="text-slate-400 font-medium">Meeting Platform (Teams, Google Meet, Jitsi, Zoom)</label>
+            </div>
+            <div class="flex flex-wrap gap-1.5 text-[10px]">
+              <button type="button" onclick="launchMeetingPlatform('teams')" class="px-2.5 py-1 bg-indigo-950 hover:bg-indigo-900 border border-indigo-700/70 text-indigo-200 rounded-lg font-bold transition">
+                + Microsoft Teams
+              </button>
+              <button type="button" onclick="launchMeetingPlatform('gmeet')" class="px-2.5 py-1 bg-emerald-950 hover:bg-emerald-900 border border-emerald-700/70 text-emerald-200 rounded-lg font-bold transition">
+                + Google Meet
+              </button>
+              <button type="button" onclick="generatePrivateStudyRoomUrl()" class="px-2.5 py-1 bg-sky-950 hover:bg-sky-900 border border-sky-700/70 text-sky-200 rounded-lg font-bold transition">
+                + Instant Jitsi Room
+              </button>
+              <button type="button" onclick="launchMeetingPlatform('zoom')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 rounded-lg font-semibold transition">
+                + Zoom
               </button>
             </div>
-            <input type="url" id="inv-room-url" placeholder="https://meet.jit.si/... or Zoom / Signal link" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200 font-mono">
+            <input type="url" id="inv-room-url" placeholder="Paste Teams, Google Meet, Jitsi, or Zoom link here..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200 font-mono">
+          </div>
+
+          <div class="space-y-1">
+            <div class="flex justify-between items-center">
+              <label class="text-slate-400 font-medium">GroupMe Chat Link (Saved to Vault)</label>
+              <a href="https://web.groupme.com/chats" target="_blank" rel="noopener noreferrer" class="text-[10px] text-sky-400 hover:text-sky-300 font-semibold">Open GroupMe →</a>
+            </div>
+            <input type="url" id="inv-groupme-url" placeholder="https://groupme.com/join_group/... or https://web.groupme.com/chats" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200 font-mono">
           </div>
 
           <div>
@@ -1120,15 +1204,21 @@
           </div>
 
           <div class="pt-2 border-t border-slate-800 space-y-1.5">
-            <span class="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">Dispatch Invite:</span>
+            <span class="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">Dispatch via Chat, Calendar & Link:</span>
             <div class="grid grid-cols-2 gap-1.5">
+              <button type="button" onclick="dispatchBrotherInvite('groupme')" class="px-3 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl text-[11px] transition flex items-center justify-center gap-1">
+                <i data-lucide="message-square" class="w-3.5 h-3.5"></i> Copy & Open GroupMe
+              </button>
               <button type="button" onclick="dispatchBrotherInvite('copy')" class="px-3 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-[11px] transition flex items-center justify-center gap-1">
                 <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Text / Signal
               </button>
-              <button type="button" onclick="dispatchBrotherInvite('ics')" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-[11px] transition flex items-center justify-center gap-1">
-                <i data-lucide="calendar-plus" class="w-3.5 h-3.5"></i> Download .ICS
+              <button type="button" onclick="dispatchBrotherInvite('gcal')" class="px-3 py-2 bg-emerald-950 hover:bg-emerald-900 border border-emerald-700 text-emerald-200 font-bold rounded-xl text-[11px] transition flex items-center justify-center gap-1">
+                <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Google Calendar
               </button>
-              <button type="button" onclick="dispatchBrotherInvite('email')" class="px-3 py-2 bg-sky-950 hover:bg-sky-900 border border-sky-700 text-sky-200 font-bold rounded-xl text-[11px] transition flex items-center justify-center gap-1">
+              <button type="button" onclick="dispatchBrotherInvite('ics')" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-[11px] transition flex items-center justify-center gap-1">
+                <i data-lucide="calendar-plus" class="w-3.5 h-3.5"></i> Teams / Outlook .ICS
+              </button>
+              <button type="button" onclick="dispatchBrotherInvite('email')" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-xl text-[11px] transition flex items-center justify-center gap-1">
                 <i data-lucide="mail" class="w-3.5 h-3.5"></i> Send Email
               </button>
               <button type="button" onclick="dispatchBrotherInvite('link')" class="px-3 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-[11px] transition flex items-center justify-center gap-1">
@@ -4391,6 +4481,8 @@
         agendaInput.value = activeStudy ? `Core Focus: ${activeStudy.takeaway}` : '1. Check-in & intention\n2. 25-min focused study sprint\n3. Key takeaways & action items';
       }
 
+      const gmInput = document.getElementById('inv-groupme-url');
+      if (gmInput && window.userAppState.groupMeUrl) gmInput.value = window.userAppState.groupMeUrl;
       renderBrotherContactsList();
       document.getElementById('brother-invite-modal').classList.remove('hidden');
       if (window.lucide) lucide.createIcons();
@@ -4601,7 +4693,32 @@
       renderAllUI();
       await pushCloudUserData();
 
-      if (channel === 'copy') {
+      const gmUrlVal = (document.getElementById('inv-groupme-url')?.value || '').trim();
+      if (gmUrlVal) {
+        window.userAppState.groupMeUrl = gmUrlVal;
+        await pushCloudUserData();
+      }
+
+      if (channel === 'groupme') {
+        await navigator.clipboard.writeText(p.formattedText);
+        const targetGm = gmUrlVal || window.userAppState.groupMeUrl || 'https://web.groupme.com/chats';
+        window.open(targetGm, '_blank', 'noopener,noreferrer');
+        if (statusEl) {
+          statusEl.classList.remove('hidden');
+          statusEl.innerText = 'Invite copied to clipboard & opened GroupMe! Paste (Ctrl+V) directly into your GroupMe chat.';
+        }
+      } else if (channel === 'gcal') {
+        const startParts = p.start.split(':');
+        const startDt = new Date(${p.date}T::00);
+        const endDt = new Date(startDt.getTime() + p.duration * 60000);
+        const fmtG = d => d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+        const gcalUrl = https://calendar.google.com/calendar/render?action=TEMPLATE&text=&dates=/&details=&location=;
+        window.open(gcalUrl, '_blank', 'noopener,noreferrer');
+        if (statusEl) {
+          statusEl.classList.remove('hidden');
+          statusEl.innerText = 'Opened Google Calendar event template with your Teams/Meet link & study agenda!';
+        }
+      } else if (channel === 'copy') {
         await navigator.clipboard.writeText(p.formattedText);
         if (statusEl) {
           statusEl.classList.remove('hidden');
@@ -4744,6 +4861,329 @@
       pushCloudUserData();
     };
 
+    // MULTI-PLATFORM MEETING LAUNCHERS (TEAMS, GOOGLE MEET, ZOOM, GROUPME)
+    window.launchMeetingPlatform = function(platform) {
+      if (platform === 'gmeet') {
+        window.open('https://meet.google.com/new', '_blank', 'noopener,noreferrer');
+        const statusEl = document.getElementById('brother-invite-status');
+        if (statusEl) {
+          statusEl.classList.remove('hidden');
+          statusEl.innerText = 'Opened Google Meet in a new tab—copy your new meet.google.com link and paste it into the Study Room box above!';
+        }
+      } else if (platform === 'teams') {
+        const title = encodeURIComponent(document.getElementById('inv-title')?.value || 'Brotherhood Study Session');
+        window.open(`https://teams.microsoft.com/l/meeting/new?subject=${title}`, '_blank', 'noopener,noreferrer');
+        const statusEl = document.getElementById('brother-invite-status');
+        if (statusEl) {
+          statusEl.classList.remove('hidden');
+          statusEl.innerText = 'Opened Microsoft Teams scheduler—copy the Teams join link and paste it into the Study Room box above!';
+        }
+      } else if (platform === 'zoom') {
+        window.open('https://zoom.us/start/videomeeting', '_blank', 'noopener,noreferrer');
+      }
+    };
+
+    // ISLAMIC FAITH LEARNING PATHS & LIVE PRAYER TIME ENGINE
+    window.ISLAMIC_LEARNING_MODULES = [
+      {
+        id: 'islam_mod_quran_read',
+        title: 'Quran Reading & Tajweed Foundations',
+        pillar: 'Quran Reading',
+        prayerAnchor: 'Fajr',
+        duration: '20-Min Morning Mushaf',
+        takeaway: 'Master Arabic articulation points (Makharij), elongation rules (Madd), and a consistent daily 2-page Mushaf recitation cadence after Fajr.',
+        content: 'Consistent Quran reading starts with accurate Makharij (throat, tongue, and lip articulation points), observing Noon Sakinah and Meem Sakinah rules (Idgham, Ikhfa, Izhar, Iqlab), and maintaining steady Tartil (measured recitation) every morning after Fajr.',
+        microSteps: [
+          '1. Core Rule: Recite with Tartil (measured pace), honoring Madd (2, 4, or 6 counts) and Noon/Meem Sakinah rules.',
+          '2. Daily Drill: Read 2 pages from the Mushaf immediately after Fajr while listening to a Qari (e.g., Husary or Mishary) to verify pronunciation.',
+          '3. Active Recall: Identify 3 Tajweed rules in today’s passage and recite the verses smoothly from memory.'
+        ],
+        quiz: [
+          { q: '1. What are the four rules of Noon Sakinah and Tanween in Tajweed?', a: 'Izhar (clear pronunciation), Idgham (merging), Iqlab (converting to Meem), and Ikhfa (hiding/nasalization).' },
+          { q: '2. What is the Qur’anic command regarding the pace and clarity of recitation (Tartil)?', a: 'Recite the Quran in a slow, measured, and distinct tone (Surah Al-Muzzammil 73:4).' },
+          { q: '3. Applied Drill: Which Surah or Mushaf page are you reciting in your post-Fajr block today?', a: 'Commit to 2 pages with audio verification right after Fajr.' }
+        ]
+      },
+      {
+        id: 'islam_mod_tadabbur',
+        title: 'Quran Understanding (Tadabbur & Tafsir)',
+        pillar: 'Quran Understanding',
+        prayerAnchor: 'Fajr / Maghrib',
+        duration: '20-Min Reflection',
+        takeaway: 'Move beyond surface reading to deep Tadabbur: analyze core themes of Al-Fatihah, Ayat al-Kursi (2:255), Al-Asr (103), and Al-Hujurat (49).',
+        content: 'Surah Al-Asr (103) establishes the four criteria against loss: Iman (faith), righteous action, advising one another to truth, and advising one another to patience. Surah Al-Hujurat (49) lays the blueprint for brotherhood: verifying news before acting, reconciling disputes, and avoiding mockery, suspicion, and backbiting.',
+        microSteps: [
+          '1. Core Thesis: Understand the direct command and life principle behind every verse studied.',
+          '2. Key Surahs: Master the themes of Al-Fatihah, Ayat al-Kursi (2:255), Al-Asr (103), and Al-Hujurat (49).',
+          '3. Active Recall: Write one verse’s core lesson in plain English and apply it to a family or brotherhood interaction today.'
+        ],
+        quiz: [
+          { q: '1. According to Surah Al-Asr (103), what are the four qualities that save a person from loss?', a: 'Faith (Iman), righteous deeds, mutually advising to truth, and mutually advising to patience (Sabr).' },
+          { q: '2. What social poisons does Surah Al-Hujurat (49:11-12) explicitly forbid among believers?', a: 'Mockery, defaming one another, offensive nicknames, destructive suspicion, spying, and backbiting (Gheebah).' },
+          { q: '3. Applied Synthesis: How does Ayat al-Kursi (2:255) anchor executive composure under stress?', a: 'Recognizing Allah as Al-Hayy Al-Qayyum (The Ever-Living Sustainer) frees the believer from anxiety over outcomes.' }
+        ]
+      },
+      {
+        id: 'islam_mod_salat',
+        title: 'Prayer Recitation & Meaning (Khushu in Salat)',
+        pillar: 'Prayer Recitation',
+        prayerAnchor: 'All 5 Daily Prayers',
+        duration: '15-Min Salat Focus',
+        takeaway: 'Transform daily Salat by knowing the exact Arabic text and English meaning of every movement from Takbir to Taslim.',
+        content: 'Khushu (humble presence) in Salat requires understanding what you say: Allahu Akbar (Allah is Greater than whatever you were just doing), Subhana Rabbiyal-Adheem in Ruku (Glory to my Lord the Supreme), Subhana Rabbiyal-A’la in Sujood (Glory to my Lord the Most High), and At-Tahiyyat in Tashahhud.',
+        microSteps: [
+          '1. Opening & Al-Fatihah: Pause after each ayah of Al-Fatihah, remembering Allah responds directly to every verse.',
+          '2. Ruku & Sujood: Mean "Subhana Rabbiyal-Adheem" (3x) in bowing and "Subhana Rabbiyal-A’la" (3x) in prostration—the closest point to Allah.',
+          '3. Tashahhud & Adhkar: Recite At-Tahiyyat, Salawat Ibrahimiyyah, and post-Salat Tasbih (SubhanAllah 33x, Alhamdulillah 33x, Allahu Akbar 34x).'
+        ],
+        quiz: [
+          { q: '1. What is the Arabic recitation and English meaning said in Sujood (prostration)?', a: 'Subhana Rabbiyal-A’la — "Glory be to my Lord, the Most High."' },
+          { q: '2. What is the Prophetic post-Salat Tasbih count after every obligatory prayer?', a: 'SubhanAllah (33 times), Alhamdulillah (33 times), and Allahu Akbar (34 times), completing 100.' },
+          { q: '3. Applied Drill: Which single part of your 5 daily prayers will you slow down to deepen Khushu today?', a: 'Pause for 2 seconds between each verse of Al-Fatihah in your next prayer.' }
+        ]
+      },
+      {
+        id: 'islam_mod_dos_donts',
+        title: 'Islamic Do’s & Don’ts (Adab & Sacred Boundaries)',
+        pillar: 'Do’s & Don’ts (Adab)',
+        prayerAnchor: 'Dhuhr / Asr',
+        duration: '15-Min Ethics Drill',
+        takeaway: 'Guard core Fard obligations, uphold trustworthiness (Amanah) and family kindness, and avoid backbiting, Riba, and anger-driven speech.',
+        content: 'Essential Do’s: Establish the 5 daily prayers on time, honor parents and family, fulfill covenants and trust (Amanah), speak truth with gentleness, and give charity. Essential Don’ts: Avoid Shirk, backbiting (Gheebah), lying, arrogance, Riba (usury/interest), and harming neighbors or brothers.',
+        microSteps: [
+          '1. Core Do’s: Guard the 5 prayers on time, keep every promise (Amanah), and lead family with mercy.',
+          '2. Core Don’ts: Zero backbiting (Gheebah), zero arrogance, zero Riba, and zero reactive speech in anger.',
+          '3. Active Recall: Audit your speech and transactions today against Prophetic Adab.'
+        ],
+        quiz: [
+          { q: '1. Why is Gheebah (backbiting) described so severely in the Quran (49:12)?', a: 'Speaking about a brother behind his back in a way he dislikes is compared to eating the flesh of one’s dead brother.' },
+          { q: '2. What are three non-negotiable daily "Do’s" of Muslim character in family and leadership?', a: 'Establishing the 5 daily prayers on time, fulfilling trusts/promises (Amanah), and treating family with kindness.' },
+          { q: '3. Applied Synthesis: What boundary will you enforce today to protect your tongue and integrity?', a: 'Refuse to participate in gossip and redirect any negative talk toward constructive solutions.' }
+        ]
+      },
+      {
+        id: 'islam_mod_hadith',
+        title: 'Authentic Hadiths (40 Nawawi & Prophetic Character)',
+        pillar: 'Hadith Study',
+        prayerAnchor: 'Dhuhr / Isha',
+        duration: '20-Min Hadith Sprint',
+        takeaway: 'Internalize foundational Sahih Hadiths on Niyyah (intentions), anger restraint, brotherhood, and the virtue of seeking knowledge.',
+        content: 'Hadith 1 (Bukhari & Muslim): "Actions are judged by intentions (Innama al-a’malu bin-niyyat)." Hadith 13: "None of you truly believes until he loves for his brother what he loves for himself." Hadith 16 (Bukhari): "Do not become angry (La taghdab)." Hadith (Muslim): "Whoever treads a path in search of knowledge, Allah makes easy for him a path to Paradise."',
+        microSteps: [
+          '1. Niyyah & Knowledge: Connect your January doctoral studies and daily work to seeking beneficial knowledge for Allah’s sake.',
+          '2. Brotherhood & Restraint: Practice "La taghdab" (do not get angry) and "love for your brother what you love for yourself."',
+          '3. Active Recall: Memorize the Arabic key phrase and life application of 1 Hadith per week.'
+        ],
+        quiz: [
+          { q: '1. Complete the foundational Hadith (Bukhari/Muslim): "Actions are but by ________, and every person shall have only that which they ________."', a: 'Intentions (Niyyah); intended.' },
+          { q: '2. What is the Prophetic promise for the one who travels a path seeking beneficial knowledge (Sahih Muslim)?', a: 'Allah makes easy for them a path to Paradise (Jannah).' },
+          { q: '3. Applied Synthesis: How does Hadith 13 ("love for your brother what you love for yourself") apply to your study circle?', a: 'Share helpful study summaries, check on peers, and support their mastery as much as your own.' }
+        ]
+      }
+    ];
+
+    window.initIslamicFaithAndPrayerTimes = async function() {
+      renderIslamicCurriculumCards();
+      const savedCity = window.userAppState.salatCity || 'Fredericksburg, VA';
+      const cityInput = document.getElementById('salat-city-input');
+      if (cityInput && !cityInput.value) cityInput.value = savedCity;
+      await fetchLiveSalatTimes(savedCity);
+    };
+
+    window.handleUpdateSalatCity = async function(e) {
+      if (e) e.preventDefault();
+      const val = document.getElementById('salat-city-input').value.trim();
+      if (!val) return;
+      window.userAppState.salatCity = val;
+      await pushCloudUserData();
+      await fetchLiveSalatTimes(val);
+    };
+
+    async function fetchLiveSalatTimes(cityQuery) {
+      const labelEl = document.getElementById('salat-location-label');
+      const gridEl = document.getElementById('salat-times-grid');
+      if (!gridEl) return;
+
+      const parts = cityQuery.split(',').map(s => s.trim());
+      const city = parts[0] || 'Fredericksburg';
+      const country = parts[1] && parts[1].length > 2 ? parts[1] : 'United States';
+
+      try {
+        const res = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=2`);
+        if (!res.ok) throw new Error('Could not fetch timings');
+        const json = await res.json();
+        const t = json?.data?.timings;
+        const hijri = json?.data?.date?.hijri;
+        if (!t) throw new Error('No timings returned');
+
+        window.userAppState.liveSalatTimings = t;
+        if (labelEl) {
+          const hijriStr = hijri ? ` • ${hijri.day} ${hijri.month?.en} ${hijri.year} AH` : '';
+          labelEl.innerText = `Live Prayer Times for ${cityQuery}${hijriStr} (ISNA Method)`;
+        }
+
+        const windows = [
+          { name: 'Fajr', time: t.Fajr, color: 'emerald', focus: 'Quran Reading & Tadabbur' },
+          { name: 'Sunrise', time: t.Sunrise, color: 'amber', focus: 'Ishraq & Doctoral Deep Work' },
+          { name: 'Dhuhr', time: t.Dhuhr, color: 'sky', focus: 'Hadith & Character Reset' },
+          { name: 'Asr', time: t.Asr, color: 'indigo', focus: 'Evening Adhkar & Family' },
+          { name: 'Maghrib', time: t.Maghrib, color: 'rose', focus: 'Adab & Household Presence' },
+          { name: 'Isha', time: t.Isha, color: 'purple', focus: 'Surah Al-Mulk & Muhasabah' }
+        ];
+
+        gridEl.innerHTML = windows.map(w => `
+          <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 hover:border-${w.color}-500/50 transition text-center space-y-0.5">
+            <span class="text-[10px] uppercase text-${w.color}-400 font-bold block">${w.name}</span>
+            <span class="text-sm font-mono font-bold text-white block">${w.time}</span>
+            <span class="text-[10px] text-slate-400 block">${w.focus}</span>
+          </div>
+        `).join('');
+      } catch (err) {
+        if (labelEl) labelEl.innerText = `Prayer Anchor Cadence Active (${cityQuery})`;
+      }
+    }
+
+    function renderIslamicCurriculumCards() {
+      const grid = document.getElementById('islamic-curriculum-grid');
+      if (!grid) return;
+      const vault = window.userAppState.knowledgeVault || [];
+
+      grid.innerHTML = window.ISLAMIC_LEARNING_MODULES.map(mod => {
+        const savedCard = vault.find(v => v.id === mod.id);
+        const scoreBadge = savedCard && savedCard.quizScore
+          ? `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">${savedCard.quizScore}</span>`
+          : '';
+
+        return `
+          <div class="bg-slate-900 border border-emerald-900/40 rounded-2xl p-5 flex flex-col justify-between space-y-3 shadow-lg">
+            <div class="space-y-2">
+              <div class="flex justify-between items-center gap-2 flex-wrap">
+                <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">${mod.pillar}</span>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-950 text-amber-300 border border-slate-800">Anchor: ${mod.prayerAnchor}</span>
+                  ${scoreBadge}
+                </div>
+              </div>
+              <h4 class="font-bold text-white text-sm">${mod.title}</h4>
+              <p class="text-[11px] text-slate-400 leading-relaxed">${mod.takeaway}</p>
+              <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800/90 space-y-1 text-[11px] text-slate-300">
+                <span class="text-[10px] font-bold uppercase text-emerald-400 block">Micro-Learning Drill (${mod.duration}):</span>
+                ${mod.microSteps.map(st => `<p>${st}</p>`).join('')}
+              </div>
+            </div>
+            <div class="flex flex-wrap justify-between items-center gap-2 pt-2 border-t border-slate-800/60">
+              <button type="button" onclick="launchIslamicModuleQuiz('${mod.id}')" class="px-2.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-lg text-[11px] font-bold flex items-center gap-1">
+                <i data-lucide="help-circle" class="w-3 h-3"></i> Quiz (3Q)
+              </button>
+              <button type="button" onclick="activateIslamicModuleSprint('${mod.id}')" class="px-2.5 py-1.5 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 rounded-lg text-[11px] font-semibold">
+                Set Active Sprint
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function ensureIslamicModuleInVault(modId) {
+      const mod = window.ISLAMIC_LEARNING_MODULES.find(m => m.id === modId);
+      if (!mod) return null;
+      window.userAppState.knowledgeVault = window.userAppState.knowledgeVault || [];
+      let existing = window.userAppState.knowledgeVault.find(v => v.id === mod.id);
+      if (!existing) {
+        existing = {
+          id: mod.id,
+          title: mod.title,
+          domain: 'Faith',
+          type: `Faith • ${mod.pillar}`,
+          duration: mod.duration,
+          takeaway: mod.takeaway,
+          content: mod.content,
+          microSteps: mod.microSteps,
+          quiz: mod.quiz,
+          masteryLevel: 0,
+          nextReviewDate: getTodayIsoDate(),
+          quizScore: null,
+          date: getTodayIsoDate()
+        };
+        window.userAppState.knowledgeVault.unshift(existing);
+      }
+      return existing;
+    }
+
+    window.launchIslamicModuleQuiz = async function(modId) {
+      const item = ensureIslamicModuleInVault(modId);
+      if (!item) return;
+      renderAllUI();
+      await pushCloudUserData();
+      window.openRecallQuiz(item.id);
+    };
+
+    window.activateIslamicModuleSprint = async function(modId) {
+      const item = ensureIslamicModuleInVault(modId);
+      if (!item) return;
+      window.activateMicroSession(item.id);
+    };
+
+    window.loadAllIslamicModulesToVault = async function() {
+      window.ISLAMIC_LEARNING_MODULES.slice().reverse().forEach(m => ensureIslamicModuleInVault(m.id));
+      window.userAppState.customWorkflows = window.userAppState.customWorkflows || [];
+      const wfTitle = 'Islamic Faith Path: Quran, Salat Recitation, Adab & Hadith';
+      if (!window.userAppState.customWorkflows.some(w => w.title === wfTitle)) {
+        window.userAppState.customWorkflows.unshift({
+          id: 'wf_islam_path_' + Date.now(),
+          title: wfTitle,
+          steps: '1. Post-Fajr: 20-min Quran Reading (Tartil) + Tadabbur understanding\n2. All 5 Prayers: Practice word-for-word Khushu in Al-Fatihah, Ruku, Sujood & Tashahhud\n3. Post-Dhuhr/Asr: Review 1 Hadith & daily Adab (Do’s & Don’ts) boundary\n4. Post-Isha: Recite Surah Al-Mulk & complete nightly Muhasabah accounting'
+        });
+      }
+      renderAllUI();
+      await pushCloudUserData();
+      alert('All 5 Islamic Faith Learning Paths (Quran Reading, Understanding, Prayer Recitation, Do’s & Don’ts, and Hadiths) added to your encrypted vault & workflows!');
+    };
+
+    // Prayer-Anchored 5-Pillar AI Day Architect
+    window.runAiDayStructure = function() {
+      const container = document.getElementById('ai-structured-schedule');
+      const vault = window.userAppState.knowledgeVault || [];
+      const t = window.userAppState.liveSalatTimings || {};
+      const today = getTodayIsoDate();
+      const dueItem = vault.find(i => !i.nextReviewDate || i.nextReviewDate <= today) || vault[0];
+      const docItem = vault.find(i => (i.domain || i.type || '').toLowerCase().includes('doctoral')) || dueItem;
+
+      const fajrLabel = t.Fajr ? `Fajr (${t.Fajr})` : 'Fajr Dawn';
+      const dhuhrLabel = t.Dhuhr ? `Dhuhr (${t.Dhuhr})` : 'Dhuhr Mid-Day';
+      const asrMaghribLabel = (t.Asr && t.Maghrib) ? `Asr (${t.Asr}) – Maghrib (${t.Maghrib})` : 'Asr – Maghrib';
+      const ishaLabel = t.Isha ? `Isha (${t.Isha})` : 'Isha Night';
+
+      const docTitle = docItem ? docItem.title : 'Doctoral Prep & Literature Matrix';
+
+      if (container) {
+        container.innerHTML = `
+          <div class="p-3 bg-slate-950 rounded-xl border border-emerald-500/50 space-y-1">
+            <span class="text-emerald-400 font-mono text-[11px] font-bold">${fajrLabel} → Sunrise</span>
+            <p class="font-semibold text-white">Quran Reading & ${docTitle}</p>
+            <p class="text-[10px] text-slate-400">20-min Mushaf & Tadabbur followed by morning Doctoral study block.</p>
+          </div>
+          <div class="p-3 bg-slate-950 rounded-xl border border-sky-500/50 space-y-1">
+            <span class="text-sky-400 font-mono text-[11px] font-bold">${dhuhrLabel}</span>
+            <p class="font-semibold text-white">Salat Khushu, Hadith & Retention Sprint</p>
+            <p class="text-[10px] text-slate-400">Mindful Dhuhr recitation + 20-min due micro-learning & 3Q quiz.</p>
+          </div>
+          <div class="p-3 bg-slate-950 rounded-xl border border-amber-500/50 space-y-1">
+            <span class="text-amber-400 font-mono text-[11px] font-bold">${asrMaghribLabel}</span>
+            <p class="font-semibold text-white">Health Training & Family Adab</p>
+            <p class="text-[10px] text-slate-400">Evening Adhkar, physical conditioning, and device-free family dinner.</p>
+          </div>
+          <div class="p-3 bg-slate-950 rounded-xl border border-purple-500/50 space-y-1">
+            <span class="text-purple-400 font-mono text-[11px] font-bold">${ishaLabel}</span>
+            <p class="font-semibold text-white">Omega Line Recall, Al-Mulk & Muhasabah</p>
+            <p class="text-[10px] text-slate-400">Line brother BIO/3Q drill, Surah Al-Mulk, and nightly self-accounting.</p>
+          </div>
+        `;
+      }
+      pushCloudUserData();
+    };
+
     // Initialize Icons, Session & Recovery Link Detection on Load
     window.addEventListener('DOMContentLoaded', async () => {
       if (window.lucide) lucide.createIcons();
@@ -4775,6 +5215,7 @@
         setTimeout(window.showChangePasswordModal, 400);
       }
       renderAllUI();
+      initIslamicFaithAndPrayerTimes();
     });
   </script>
 </body>
