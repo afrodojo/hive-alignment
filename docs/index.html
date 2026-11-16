@@ -521,6 +521,56 @@
           <p id="omega-web-pull-status" class="text-xs text-amber-300 hidden font-medium"></p>
         </div>
 
+        <!-- Official Omega & NPHC Web Knowledge Harvester -->
+        <div class="bg-slate-900 border border-amber-800/50 rounded-2xl p-5 space-y-3.5 shadow-lg">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+            <div>
+              <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                <i data-lucide="globe" class="w-4 h-4 text-amber-400"></i> Official Omega & NPHC Web Harvester
+              </h4>
+              <p class="text-[11px] text-slate-400">Pulls live history, lineage, programs, and archives directly from OPPF HQ, Third District, Tau Rho Chapter, and NPHC Fredericksburg into 3Q recall drills.</p>
+            </div>
+            <button type="button" id="pull-all-omega-sites-btn" onclick="pullAllOfficialOmegaSites()" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-md flex-shrink-0">
+              <i data-lucide="download-cloud" class="w-3.5 h-3.5"></i> Pull All Official Omega & NPHC Sites
+            </button>
+          </div>
+
+          <div class="flex flex-wrap gap-2 text-[11px]">
+            <button type="button" onclick="pullSingleOfficialSite('https://oppf.org/about-omega/', 'Official: OPPF HQ', 'OPPF International History & Founders')" class="px-3 py-1.5 bg-purple-950 hover:bg-purple-900 border border-purple-700/70 text-purple-200 rounded-lg font-semibold transition flex items-center gap-1">
+              <i data-lucide="landmark" class="w-3 h-3 text-amber-400"></i> OPPF.org (About & Founders)
+            </button>
+            <button type="button" onclick="pullSingleOfficialSite('https://3rddistrictques.org/about-us/overview/', 'Official: Third District', 'Third District Overview & History')" class="px-3 py-1.5 bg-purple-950 hover:bg-purple-900 border border-purple-700/70 text-purple-200 rounded-lg font-semibold transition flex items-center gap-1">
+              <i data-lucide="map-pin" class="w-3 h-3 text-amber-400"></i> 3rd District (3rddistrictques.org)
+            </button>
+            <button type="button" onclick="pullSingleOfficialSite('https://www.taurhoques.org/tau-rho-lines', 'Official: Tau Rho Chapter', 'Tau Rho Chapter Lines & Lineage')" class="px-3 py-1.5 bg-purple-950 hover:bg-purple-900 border border-purple-700/70 text-purple-200 rounded-lg font-semibold transition flex items-center gap-1">
+              <i data-lucide="users" class="w-3 h-3 text-amber-400"></i> Tau Rho Lines
+            </button>
+            <button type="button" onclick="pullSingleOfficialSite('https://www.taurhoques.org/programs-1', 'Official: Tau Rho Chapter', 'Tau Rho Mandated Programs & Achievement Week')" class="px-3 py-1.5 bg-purple-950 hover:bg-purple-900 border border-purple-700/70 text-purple-200 rounded-lg font-semibold transition flex items-center gap-1">
+              <i data-lucide="award" class="w-3 h-3 text-amber-400"></i> Tau Rho Programs
+            </button>
+            <button type="button" onclick="pullSingleOfficialSite('https://www.nphcfred.org/', 'Official: NPHC Fredericksburg', 'NPHC Greater Fredericksburg Overview')" class="px-3 py-1.5 bg-purple-950 hover:bg-purple-900 border border-purple-700/70 text-purple-200 rounded-lg font-semibold transition flex items-center gap-1">
+              <i data-lucide="shield-check" class="w-3 h-3 text-amber-400"></i> NPHC Fredericksburg
+            </button>
+            <button type="button" onclick="pullSingleOfficialSite('https://www.nphcfred.org/historian-archives', 'Official: NPHC Fredericksburg', 'NPHC Fredericksburg Historian & Archives')" class="px-3 py-1.5 bg-purple-950 hover:bg-purple-900 border border-purple-700/70 text-purple-200 rounded-lg font-semibold transition flex items-center gap-1">
+              <i data-lucide="book-open" class="w-3 h-3 text-amber-400"></i> NPHC Fred Archives
+            </button>
+          </div>
+
+          <form onsubmit="handleCustomOmegaUrlPull(event)" class="flex flex-col sm:flex-row gap-2 text-xs pt-1">
+            <input type="url" id="custom-omega-url-input" required placeholder="Paste any page URL from oppf.org, 3rddistrictques.org, taurhoques.org, or nphcfred.org..." class="flex-grow bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-slate-200 font-mono focus:outline-none focus:border-amber-500">
+            <select id="custom-omega-url-cat" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-200">
+              <option value="Official: OPPF HQ">OPPF HQ</option>
+              <option value="Official: Third District">Third District</option>
+              <option value="Official: Tau Rho Chapter">Tau Rho Chapter</option>
+              <option value="Official: NPHC Fredericksburg">NPHC Fredericksburg</option>
+            </select>
+            <button type="submit" id="custom-omega-url-btn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition flex-shrink-0">
+              Pull & Distill Page
+            </button>
+          </form>
+          <p id="omega-web-pull-status" class="text-xs text-amber-300 hidden font-medium"></p>
+        </div>
+
         <!-- Pinned Proton Drive Folder Live Link -->
         <div class="bg-slate-900 border border-purple-900/50 rounded-2xl p-5 space-y-3">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
@@ -1522,6 +1572,144 @@
       await pushCloudUserData();
       switchTab("tab-workflows");
       alert("4-Phase Omega & Line Brother Learning Plan generated in Agent Workflows and added to your Daily Duties!");
+    };
+
+    // OFFICIAL OMEGA & NPHC WEB HARVESTER ENGINE
+    window.OFFICIAL_OMEGA_SOURCES = [
+      { url: 'https://oppf.org/about-omega/', category: 'Official: OPPF HQ', title: 'OPPF International History, Founders & Principles' },
+      { url: 'https://3rddistrictques.org/about-us/overview/', category: 'Official: Third District', title: 'Third District Overview & History (VA & DC)' },
+      { url: 'https://www.taurhoques.org/tau-rho-lines', category: 'Official: Tau Rho Chapter', title: 'Tau Rho Chapter Lines & Lineage' },
+      { url: 'https://www.taurhoques.org/programs-1', category: 'Official: Tau Rho Chapter', title: 'Tau Rho Mandated Programs & Achievement Week' },
+      { url: 'https://www.taurhoques.org/committees', category: 'Official: Tau Rho Chapter', title: 'Tau Rho Committees & Chapter Structure' },
+      { url: 'https://www.nphcfred.org/', category: 'Official: NPHC Fredericksburg', title: 'NPHC of Greater Fredericksburg Overview' },
+      { url: 'https://www.nphcfred.org/historian-archives', category: 'Official: NPHC Fredericksburg', title: 'NPHC Fredericksburg Historian & Archives' }
+    ];
+
+    async function fetchCleanWebPageText(url) {
+      try {
+        const res = await fetch(`https://r.jina.ai/${url}`);
+        if (res.ok) {
+          const md = await res.text();
+          const cleaned = md
+            .replace(/!\[.*?\]\(.*?\)/g, '')
+            .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+            .replace(/[#*`>_~-]+/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+          if (cleaned.length > 120) return cleaned;
+        }
+      } catch (e) {}
+
+      const proxyRes = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
+      if (!proxyRes.ok) throw new Error(`Could not reach ${url}`);
+      const json = await proxyRes.json();
+      if (!json || !json.contents) throw new Error(`Empty response from ${url}`);
+      const doc = new DOMParser().parseFromString(json.contents, 'text/html');
+      doc.querySelectorAll('script, style, nav, footer, header, noscript, iframe').forEach(el => el.remove());
+      const bodyText = (doc.body?.textContent || '').replace(/\s+/g, ' ').trim();
+      if (bodyText.length < 80) throw new Error(`Insufficient readable text extracted from ${url}`);
+      return bodyText;
+    }
+
+    window.pullSingleOfficialSite = async function(url, category, customTitle, silent) {
+      const statusEl = document.getElementById('omega-web-pull-status');
+      if (statusEl && !silent) {
+        statusEl.classList.remove('hidden');
+        statusEl.innerText = `Pulling live content from ${url}...`;
+      }
+
+      try {
+        const cleanText = await fetchCleanWebPageText(url);
+        const title = customTitle || url.replace(/^https?:\/\/(www\.)?/, '').slice(0, 60);
+        const distilled = distillTextToMicroSession(title, cleanText.slice(0, 7500));
+
+        window.userAppState.omegaNotebooks = window.userAppState.omegaNotebooks || [];
+        window.userAppState.omegaNotebooks = window.userAppState.omegaNotebooks.filter(
+          item => item.sourceUrl !== url && item.title !== title
+        );
+
+        window.userAppState.omegaNotebooks.unshift({
+          id: 'om_web_' + Date.now() + '_' + Math.random().toString(36).slice(2, 5),
+          title: title,
+          source: category || 'Official Web Source',
+          sourceUrl: url,
+          takeaway: distilled.takeaway,
+          content: cleanText.slice(0, 8000),
+          microSteps: distilled.microSteps,
+          quiz: distilled.quiz,
+          quizScore: null,
+          date: new Date().toISOString().split('T')[0]
+        });
+
+        if (!silent) {
+          window.activeOmegaCategory = category || 'All';
+          renderAllUI();
+          await pushCloudUserData();
+          if (statusEl) {
+            statusEl.innerText = `Pulled "${title}" (${cleanText.length.toLocaleString()} chars), built 20-min micro-session & 3Q recall drill!`;
+          }
+        }
+        return true;
+      } catch (err) {
+        if (!silent && statusEl) {
+          statusEl.innerText = `Notice on ${url}: ${err.message}. You can also copy/paste text from that page via "Paste Note".`;
+        }
+        return false;
+      }
+    };
+
+    window.pullAllOfficialOmegaSites = async function() {
+      const btn = document.getElementById('pull-all-omega-sites-btn');
+      const statusEl = document.getElementById('omega-web-pull-status');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerText = 'Harvesting Official Sites...';
+      }
+      if (statusEl) statusEl.classList.remove('hidden');
+
+      let successCount = 0;
+      const total = window.OFFICIAL_OMEGA_SOURCES.length;
+
+      for (let i = 0; i < total; i++) {
+        const src = window.OFFICIAL_OMEGA_SOURCES[i];
+        if (statusEl) {
+          statusEl.innerText = `Pulling (${i + 1}/${total}): ${src.title} (${src.url})...`;
+        }
+        const ok = await window.pullSingleOfficialSite(src.url, src.category, src.title, true);
+        if (ok) successCount++;
+      }
+
+      window.activeOmegaCategory = 'All';
+      renderAllUI();
+      await pushCloudUserData();
+
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i data-lucide="download-cloud" class="w-3.5 h-3.5"></i> Pull All Official Omega & NPHC Sites';
+      }
+      if (statusEl) {
+        statusEl.innerText = `Harvest complete! Pulled ${successCount} of ${total} official Omega & NPHC pages into your encrypted vault with 3Q recall quizzes.`;
+      }
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.handleCustomOmegaUrlPull = async function(e) {
+      if (e) e.preventDefault();
+      const urlInput = document.getElementById('custom-omega-url-input');
+      const catSelect = document.getElementById('custom-omega-url-cat');
+      const btn = document.getElementById('custom-omega-url-btn');
+      const url = urlInput.value.trim();
+      if (!url) return;
+
+      btn.disabled = true;
+      btn.innerText = 'Pulling...';
+      const slugTitle = url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '').split('/').pop().replace(/[-_]+/g, ' ');
+      const formattedTitle = slugTitle ? slugTitle.replace(/\b\w/g, l => l.toUpperCase()) : url;
+
+      await window.pullSingleOfficialSite(url, catSelect.value, formattedTitle, false);
+      urlInput.value = '';
+      btn.disabled = false;
+      btn.innerText = 'Pull & Distill Page';
     };
 
     // OFFICIAL OMEGA & NPHC WEB HARVESTER ENGINE
