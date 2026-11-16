@@ -626,6 +626,77 @@
     <p>© 2026 Hive Alignment. Open-source health & performance architecture.</p>
   </footer>
 
+  <!-- Custom Polymath Micro-Learning Session Modal -->
+  <div id="custom-micro-session-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-sm z-[1160] hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-emerald-800/60 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl relative my-8">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400">Polymath Retention Architect</span>
+          <h3 class="text-base font-bold text-white flex items-center gap-2 mt-0.5">
+            <i data-lucide="graduation-cap" class="w-4 h-4 text-emerald-400"></i> Create Custom Micro-Learning Session
+          </h3>
+        </div>
+        <button type="button" onclick="closeCustomMicroSessionModal()" class="text-slate-400 hover:text-white text-xl leading-none">×</button>
+      </div>
+
+      <form onsubmit="handleSaveCustomMicroSession(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="text-slate-400 block mb-1 font-medium">Session Title / Topic</label>
+          <input type="text" id="cms-title" required placeholder="e.g., Mixed-Methods Doctoral Design, Surah Al-Asr, HRV Recovery..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200 focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-400 block mb-1 font-medium">Life Pillar / Domain</label>
+            <select id="cms-domain" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
+              <option value="Doctoral Studies">Doctoral Studies (Jan 2027)</option>
+              <option value="Faith">Faith & Spiritual Discipline</option>
+              <option value="Health">Health & Vitality</option>
+              <option value="Family">Family & Leadership</option>
+              <option value="Omega">Omega & Brotherhood</option>
+              <option value="Polymath">Polymath / Interdisciplinary</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1 font-medium">Micro-Sprint Duration</label>
+            <select id="cms-duration" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
+              <option value="10-Min Rapid Primer">10-Min Rapid Primer</option>
+              <option value="15-Min Commute Drill">15-Min Commute Drill</option>
+              <option value="20-Min Deep Sprint" selected>20-Min Deep Sprint</option>
+              <option value="30-Min Doctoral Synthesis">30-Min Doctoral Synthesis</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-slate-400 block mb-1 font-medium">Core Takeaway / Anchor Thesis (Optional — auto-extracted if blank)</label>
+          <input type="text" id="cms-takeaway" placeholder="One-sentence core insight you want permanently retained..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
+        </div>
+
+        <div>
+          <label class="text-slate-400 block mb-1 font-medium">Study Notes, Excerpts, or Raw Ideas (Auto-distills 3 steps & 3Q quiz)</label>
+          <textarea id="cms-content" rows="4" required placeholder="Paste notes from a book, lecture, paper, or podcast. The agent will structure a 3-step micro-lesson and generate active-recall questions..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200 font-mono"></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+          <div>
+            <label class="text-slate-400 block mb-1">Custom Recall Question #1 (Optional)</label>
+            <input type="text" id="cms-custom-q1" placeholder="e.g., What are the 3 core assumptions?" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">Answer Key #1 (Optional)</label>
+            <input type="text" id="cms-custom-a1" placeholder="Target answer for self-check..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200">
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+          <button type="button" onclick="closeCustomMicroSessionModal()" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl font-semibold">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl">Create & Schedule Session</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- MODALS -->
   <!-- Add / Paste Proton Omega Notebook Entry Modal -->
   <div id="omega-note-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-sm z-[1150] hidden flex items-center justify-center p-4">
@@ -944,6 +1015,274 @@
     window.masterPassphrase = null;
     window.activeQuizItemId = null;
     window.activeOmegaCategory = 'All';
+    window.activePolymathDomain = 'All';
+
+    window.openCustomMicroSessionModal = () => document.getElementById('custom-micro-session-modal').classList.remove('hidden');
+    window.closeCustomMicroSessionModal = () => document.getElementById('custom-micro-session-modal').classList.add('hidden');
+
+    window.setPolymathDomainFilter = function(dom) {
+      window.activePolymathDomain = dom;
+      renderAllUI();
+    };
+
+    function getTodayIsoDate() {
+      return new Date().toISOString().split('T')[0];
+    }
+
+    function addDaysIso(days) {
+      const d = new Date();
+      d.setDate(d.getDate() + days);
+      return d.toISOString().split('T')[0];
+    }
+
+    function advanceSpacedRepetition(item, score) {
+      const intervals = [1, 3, 7, 21, 45];
+      const nextLvl = Math.min((item.masteryLevel || 0) + 1, intervals.length);
+      const daysToAdd = intervals[nextLvl - 1] || 7;
+      item.masteryLevel = nextLvl;
+      item.nextReviewDate = addDaysIso(daysToAdd);
+      item.quizScore = `${score}/3 • Lvl ${nextLvl} (+${daysToAdd}d)`;
+    }
+
+    window.handleSaveCustomMicroSession = async function(e) {
+      if (e) e.preventDefault();
+      const title = document.getElementById('cms-title').value.trim();
+      const domain = document.getElementById('cms-domain').value;
+      const duration = document.getElementById('cms-duration').value;
+      const customTakeaway = document.getElementById('cms-takeaway').value.trim();
+      const content = document.getElementById('cms-content').value.trim();
+      const customQ1 = document.getElementById('cms-custom-q1').value.trim();
+      const customA1 = document.getElementById('cms-custom-a1').value.trim();
+
+      const distilled = distillTextToMicroSession(title, content);
+      const quiz = [...distilled.quiz];
+      if (customQ1) {
+        quiz[0] = {
+          q: `1. ${customQ1}`,
+          a: customA1 || distilled.takeaway
+        };
+      }
+
+      window.userAppState.knowledgeVault = window.userAppState.knowledgeVault || [];
+      window.userAppState.knowledgeVault.unshift({
+        id: 'kv_cms_' + Date.now(),
+        title,
+        domain,
+        type: `${domain} • ${duration}`,
+        duration,
+        takeaway: customTakeaway || distilled.takeaway,
+        content,
+        microSteps: distilled.microSteps,
+        quiz,
+        masteryLevel: 0,
+        nextReviewDate: getTodayIsoDate(),
+        quizScore: null,
+        date: getTodayIsoDate()
+      });
+
+      document.getElementById('cms-title').value = '';
+      document.getElementById('cms-takeaway').value = '';
+      document.getElementById('cms-content').value = '';
+      document.getElementById('cms-custom-q1').value = '';
+      document.getElementById('cms-custom-a1').value = '';
+
+      window.activePolymathDomain = 'All';
+      renderAllUI();
+      await pushCloudUserData();
+      closeCustomMicroSessionModal();
+    };
+
+    window.loadPolymathFivePillarPack = async function() {
+      const today = getTodayIsoDate();
+      const starters = [
+        {
+          id: 'kv_p_doc_' + Date.now(),
+          title: 'Doctoral Prep (Jan 2027): Literature Synthesis & Research Gap Matrix',
+          domain: 'Doctoral Studies',
+          duration: '30-Min Doctoral Synthesis',
+          type: 'Doctoral Studies • 30-Min Doctoral Synthesis',
+          takeaway: 'Synthesize papers by comparing methodology, sample constraints, and unresolved theoretical gaps rather than summarizing sequentially.',
+          content: 'Effective doctoral literature reviews group prior studies by theoretical lens, empirical methodology, and boundary conditions. Always extract the research question, data source, core finding, and limitation for every paper read.',
+          microSteps: [
+            '1. Core Thesis: Group literature by theoretical lens and methodology, not chronological summary.',
+            '2. Tactical Drill: Extract Research Question, Method, Finding, and Gap for 1 paper today.',
+            '3. Active Recall: State in 2 sentences how your target dissertation topic bridges an existing gap.'
+          ],
+          quiz: [
+            { q: '1. How should a doctoral literature review organize prior research instead of chronological summaries?', a: 'By theoretical lens, empirical methodology, and unresolved research gaps.' },
+            { q: '2. What four elements should be extracted from every academic paper you read?', a: 'Research question, methodology/data source, core finding, and boundary limitation.' },
+            { q: '3. Applied Synthesis: What is one research question or methodological area you want to sharpen before January?', a: 'Write a 2-sentence problem statement in your encrypted Journal.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        },
+        {
+          id: 'kv_p_faith_' + (Date.now() + 1),
+          title: 'Faith & Stewardship: Sacred Time Anchors & Intention (Niyyah)',
+          domain: 'Faith',
+          duration: '15-Min Commute Drill',
+          type: 'Faith • 15-Min Commute Drill',
+          takeaway: 'Anchor every intellectual and leadership pursuit with renewed intention so scholarship becomes an act of service and gratitude.',
+          content: 'True discipline begins with spiritual alignment before cognitive output. By framing study, work, and family stewardship around sacred time anchors, fragmented attention consolidates into purposeful presence.',
+          microSteps: [
+            '1. Core Thesis: Renew intention before opening books, terminals, or meetings.',
+            '2. Tactical Drill: Protect the first 20 minutes after morning prayer for reflection before screens.',
+            '3. Active Recall: Audit tonight whether your actions matched your morning intention.'
+          ],
+          quiz: [
+            { q: '1. What transforms intellectual and leadership effort into sustained spiritual discipline?', a: 'Aligning every pursuit with conscious intention and sacred daily anchors.' },
+            { q: '2. What boundary protects morning spiritual clarity before cognitive work begins?', a: 'Reserving the first 20 minutes after morning devotion before checking screens or messages.' },
+            { q: '3. Applied Synthesis: Which duty today requires the highest degree of patience and excellence (Ihsan)?', a: 'Identify one high-friction interaction today and enter it with calm composure.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        },
+        {
+          id: 'kv_p_health_' + (Date.now() + 2),
+          title: 'Health & Vitality: Autonomic Recovery, HRV & Cognitive Stamina',
+          domain: 'Health',
+          duration: '10-Min Rapid Primer',
+          type: 'Health • 10-Min Rapid Primer',
+          takeaway: 'Doctoral-level cognitive output requires parasympathetic recovery, consistent sleep timing, and autoregulated physical training.',
+          content: 'Heart rate variability (HRV) reflects vagal tone and nervous system readiness. High cognitive strain paired with poor sleep suppresses HRV; pairing heavy study blocks with nasal breathing resets and Zone 2 or resistance training preserves executive stamina.',
+          microSteps: [
+            '1. Core Thesis: Cognitive endurance depends directly on autonomic recovery and sleep consistency.',
+            '2. Tactical Drill: Execute 3 minutes of slow physiological sighs between deep study blocks.',
+            '3. Active Recall: Match today’s training intensity to your morning recovery state.'
+          ],
+          quiz: [
+            { q: '1. What physiological metric reflects vagal tone and autonomic nervous system readiness?', a: 'Heart rate variability (HRV).' },
+            { q: '2. How can you reset autonomic stress between two intense study or work blocks?', a: 'Execute 3 minutes of slow physiological sighs / nasal breathing.' },
+            { q: '3. Applied Synthesis: What single sleep or hydration habit will protect your recovery tonight?', a: 'Set a hard screen cutoff 45 minutes before sleep and complete hydration targets early.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        },
+        {
+          id: 'kv_p_fam_' + (Date.now() + 3),
+          title: 'Family Leadership: Undivided Presence & Transition Rituals',
+          domain: 'Family',
+          duration: '10-Min Rapid Primer',
+          type: 'Family • 10-Min Rapid Primer',
+          takeaway: 'Use a deliberate shutdown ritual before re-entering family space so doctoral and work intensity never spills onto loved ones.',
+          content: 'Polymaths often carry open cognitive loops into family time. A 5-minute shutdown checklist—writing down tomorrow’s top priority and closing all tabs—creates a clean psychological boundary for warm, attentive family presence.',
+          microSteps: [
+            '1. Core Thesis: Close open cognitive loops before transitioning from work/study to family.',
+            '2. Tactical Drill: Perform a 5-minute desk shutdown and phone-away block during family dinner.',
+            '3. Active Recall: Ask one open-ended question to each family member tonight and listen fully.'
+          ],
+          quiz: [
+            { q: '1. Why do polymaths often struggle with presence during family time?', a: 'They carry unresolved cognitive loops from study or work into household interactions.' },
+            { q: '2. What 5-minute habit creates a clean boundary before family time?', a: 'Writing down tomorrow’s top task, closing tabs, and placing devices away.' },
+            { q: '3. Applied Synthesis: What dedicated family moment are you protecting on tonight’s schedule?', a: 'Lock in an uninterrupted evening check-in window.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        }
+      ];
+
+      window.userAppState.knowledgeVault = [...starters, ...(window.userAppState.knowledgeVault || [])];
+      window.activePolymathDomain = 'All';
+      renderAllUI();
+      await pushCloudUserData();
+      alert('Loaded 4 Pillar Micro-Learning Sessions (Doctoral Prep, Faith, Health, Family) alongside your Omega & Line Bro vault!');
+    };
+
+    function renderPolymathVaultUI(vault) {
+      const today = getTodayIsoDate();
+      const getDomain = (item) => {
+        if (item.domain) return item.domain;
+        const t = (item.type || '').toLowerCase();
+        if (t.includes('doctoral')) return 'Doctoral Studies';
+        if (t.includes('faith')) return 'Faith';
+        if (t.includes('health')) return 'Health';
+        if (t.includes('family')) return 'Family';
+        if (t.includes('omega')) return 'Omega';
+        return 'Polymath';
+      };
+
+      const isDue = (item) => !item.nextReviewDate || item.nextReviewDate <= today;
+      const dueCount = vault.filter(isDue).length;
+
+      const dueSummary = document.getElementById('retention-due-summary');
+      if (dueSummary) {
+        dueSummary.innerText = `${dueCount} Due Today • ${vault.length} Total Sessions`;
+      }
+
+      const domains = ['All', 'Due Today', 'Doctoral Studies', 'Faith', 'Health', 'Family', 'Omega', 'Polymath'];
+      const filterBar = document.getElementById('polymath-domain-filters');
+      if (filterBar) {
+        filterBar.innerHTML = domains.map(dom => {
+          let count = 0;
+          if (dom === 'All') count = vault.length;
+          else if (dom === 'Due Today') count = dueCount;
+          else count = vault.filter(i => getDomain(i) === dom).length;
+
+          const active = window.activePolymathDomain === dom;
+          return `
+            <button type="button" onclick="setPolymathDomainFilter('${dom}')" class="px-3 py-1.5 rounded-xl font-semibold transition border ${active ? 'bg-emerald-500 text-slate-950 border-emerald-400' : 'bg-slate-950 text-slate-300 border-slate-800 hover:border-emerald-700'}">
+              ${dom} (${count})
+            </button>
+          `;
+        }).join('');
+      }
+
+      let filtered = vault;
+      if (window.activePolymathDomain === 'Due Today') {
+        filtered = vault.filter(isDue);
+      } else if (window.activePolymathDomain !== 'All') {
+        filtered = vault.filter(i => getDomain(i) === window.activePolymathDomain);
+      }
+
+      renderPolymathVaultUI(vault);
+      const kvGrid = null;
+      if (kvGrid) {
+        kvGrid.innerHTML = filtered.map((item) => {
+          const dom = getDomain(item);
+          const due = isDue(item);
+          const steps = item.microSteps || distillTextToMicroSession(item.title, item.content).microSteps;
+          const isTopActive = vault[0] && vault[0].id === item.id;
+          return `
+            <div class="bg-slate-900 border ${isTopActive ? 'border-emerald-500/60' : 'border-slate-800'} rounded-2xl p-5 flex flex-col justify-between space-y-3">
+              <div class="space-y-2">
+                <div class="flex justify-between items-center gap-2">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-800">${dom}</span>
+                    ${item.duration ? `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-950 text-slate-300 border border-slate-800">${item.duration}</span>` : ''}
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded ${due ? 'bg-amber-950 text-amber-300 border border-amber-700/70' : 'bg-emerald-950 text-emerald-300 border border-emerald-800'}">
+                      ${due ? 'Due Today' : 'Next: ' + item.nextReviewDate}
+                    </span>
+                  </div>
+                  <button type="button" onclick="deleteVaultItem('${item.id}')" class="text-slate-500 hover:text-rose-400 text-sm">×</button>
+                </div>
+                <h4 class="font-bold text-white text-sm">${item.title}</h4>
+                ${item.quizScore ? `<p class="text-[10px] font-mono text-emerald-400">Retention Status: ${item.quizScore}</p>` : ''}
+                <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800/90 space-y-1 text-[11px] text-slate-300">
+                  <span class="text-[10px] font-bold uppercase text-emerald-400 block">Distilled Micro-Session:</span>
+                  ${steps.map(st => `<p>${st}</p>`).join('')}
+                </div>
+              </div>
+              <div class="flex justify-between items-center gap-2 pt-2 border-t border-slate-800/60">
+                <button type="button" onclick="openRecallQuiz('${item.id}')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-slate-950 rounded-lg text-[11px] font-bold flex items-center gap-1">
+                  <i data-lucide="help-circle" class="w-3 h-3"></i> Quiz (3Q)
+                </button>
+                <button type="button" onclick="activateMicroSession('${item.id}')" class="px-2.5 py-1 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 rounded-lg text-[11px] font-semibold">
+                  ${isTopActive ? 'Active Sprint' : 'Set Active Sprint'}
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('') || '<p class="text-xs text-slate-400 col-span-3">No sessions in this filter yet. Click "+ Custom Micro-Session" or "Load 5-Pillar Polymath Pack" above.</p>';
+      }
+    }
 
     window.DEFAULT_PROTON_DRIVE_URL = 'https://drive.proton.me/u/1/pC4-NZ8H50HL9uc0AXs62lyyZHXWlu1ZD4zdKWtd2pPNsXykgBxOwE0ahcgrGo3g-SmqkaVNczhhMwNZ5TZfMQ==/folder/e0eLJ0PWkOuW4lJu3PTdCG5v-h-L8Qh5iaoGB1qBWDsS7xOKSE-uRnClcbaE2ZEULciuIWrV2ay0z-lvLTv8vA==';
 
@@ -1447,6 +1786,274 @@
       }
 
       window.activeOmegaCategory = 'All';
+    window.activePolymathDomain = 'All';
+
+    window.openCustomMicroSessionModal = () => document.getElementById('custom-micro-session-modal').classList.remove('hidden');
+    window.closeCustomMicroSessionModal = () => document.getElementById('custom-micro-session-modal').classList.add('hidden');
+
+    window.setPolymathDomainFilter = function(dom) {
+      window.activePolymathDomain = dom;
+      renderAllUI();
+    };
+
+    function getTodayIsoDate() {
+      return new Date().toISOString().split('T')[0];
+    }
+
+    function addDaysIso(days) {
+      const d = new Date();
+      d.setDate(d.getDate() + days);
+      return d.toISOString().split('T')[0];
+    }
+
+    function advanceSpacedRepetition(item, score) {
+      const intervals = [1, 3, 7, 21, 45];
+      const nextLvl = Math.min((item.masteryLevel || 0) + 1, intervals.length);
+      const daysToAdd = intervals[nextLvl - 1] || 7;
+      item.masteryLevel = nextLvl;
+      item.nextReviewDate = addDaysIso(daysToAdd);
+      item.quizScore = `${score}/3 • Lvl ${nextLvl} (+${daysToAdd}d)`;
+    }
+
+    window.handleSaveCustomMicroSession = async function(e) {
+      if (e) e.preventDefault();
+      const title = document.getElementById('cms-title').value.trim();
+      const domain = document.getElementById('cms-domain').value;
+      const duration = document.getElementById('cms-duration').value;
+      const customTakeaway = document.getElementById('cms-takeaway').value.trim();
+      const content = document.getElementById('cms-content').value.trim();
+      const customQ1 = document.getElementById('cms-custom-q1').value.trim();
+      const customA1 = document.getElementById('cms-custom-a1').value.trim();
+
+      const distilled = distillTextToMicroSession(title, content);
+      const quiz = [...distilled.quiz];
+      if (customQ1) {
+        quiz[0] = {
+          q: `1. ${customQ1}`,
+          a: customA1 || distilled.takeaway
+        };
+      }
+
+      window.userAppState.knowledgeVault = window.userAppState.knowledgeVault || [];
+      window.userAppState.knowledgeVault.unshift({
+        id: 'kv_cms_' + Date.now(),
+        title,
+        domain,
+        type: `${domain} • ${duration}`,
+        duration,
+        takeaway: customTakeaway || distilled.takeaway,
+        content,
+        microSteps: distilled.microSteps,
+        quiz,
+        masteryLevel: 0,
+        nextReviewDate: getTodayIsoDate(),
+        quizScore: null,
+        date: getTodayIsoDate()
+      });
+
+      document.getElementById('cms-title').value = '';
+      document.getElementById('cms-takeaway').value = '';
+      document.getElementById('cms-content').value = '';
+      document.getElementById('cms-custom-q1').value = '';
+      document.getElementById('cms-custom-a1').value = '';
+
+      window.activePolymathDomain = 'All';
+      renderAllUI();
+      await pushCloudUserData();
+      closeCustomMicroSessionModal();
+    };
+
+    window.loadPolymathFivePillarPack = async function() {
+      const today = getTodayIsoDate();
+      const starters = [
+        {
+          id: 'kv_p_doc_' + Date.now(),
+          title: 'Doctoral Prep (Jan 2027): Literature Synthesis & Research Gap Matrix',
+          domain: 'Doctoral Studies',
+          duration: '30-Min Doctoral Synthesis',
+          type: 'Doctoral Studies • 30-Min Doctoral Synthesis',
+          takeaway: 'Synthesize papers by comparing methodology, sample constraints, and unresolved theoretical gaps rather than summarizing sequentially.',
+          content: 'Effective doctoral literature reviews group prior studies by theoretical lens, empirical methodology, and boundary conditions. Always extract the research question, data source, core finding, and limitation for every paper read.',
+          microSteps: [
+            '1. Core Thesis: Group literature by theoretical lens and methodology, not chronological summary.',
+            '2. Tactical Drill: Extract Research Question, Method, Finding, and Gap for 1 paper today.',
+            '3. Active Recall: State in 2 sentences how your target dissertation topic bridges an existing gap.'
+          ],
+          quiz: [
+            { q: '1. How should a doctoral literature review organize prior research instead of chronological summaries?', a: 'By theoretical lens, empirical methodology, and unresolved research gaps.' },
+            { q: '2. What four elements should be extracted from every academic paper you read?', a: 'Research question, methodology/data source, core finding, and boundary limitation.' },
+            { q: '3. Applied Synthesis: What is one research question or methodological area you want to sharpen before January?', a: 'Write a 2-sentence problem statement in your encrypted Journal.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        },
+        {
+          id: 'kv_p_faith_' + (Date.now() + 1),
+          title: 'Faith & Stewardship: Sacred Time Anchors & Intention (Niyyah)',
+          domain: 'Faith',
+          duration: '15-Min Commute Drill',
+          type: 'Faith • 15-Min Commute Drill',
+          takeaway: 'Anchor every intellectual and leadership pursuit with renewed intention so scholarship becomes an act of service and gratitude.',
+          content: 'True discipline begins with spiritual alignment before cognitive output. By framing study, work, and family stewardship around sacred time anchors, fragmented attention consolidates into purposeful presence.',
+          microSteps: [
+            '1. Core Thesis: Renew intention before opening books, terminals, or meetings.',
+            '2. Tactical Drill: Protect the first 20 minutes after morning prayer for reflection before screens.',
+            '3. Active Recall: Audit tonight whether your actions matched your morning intention.'
+          ],
+          quiz: [
+            { q: '1. What transforms intellectual and leadership effort into sustained spiritual discipline?', a: 'Aligning every pursuit with conscious intention and sacred daily anchors.' },
+            { q: '2. What boundary protects morning spiritual clarity before cognitive work begins?', a: 'Reserving the first 20 minutes after morning devotion before checking screens or messages.' },
+            { q: '3. Applied Synthesis: Which duty today requires the highest degree of patience and excellence (Ihsan)?', a: 'Identify one high-friction interaction today and enter it with calm composure.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        },
+        {
+          id: 'kv_p_health_' + (Date.now() + 2),
+          title: 'Health & Vitality: Autonomic Recovery, HRV & Cognitive Stamina',
+          domain: 'Health',
+          duration: '10-Min Rapid Primer',
+          type: 'Health • 10-Min Rapid Primer',
+          takeaway: 'Doctoral-level cognitive output requires parasympathetic recovery, consistent sleep timing, and autoregulated physical training.',
+          content: 'Heart rate variability (HRV) reflects vagal tone and nervous system readiness. High cognitive strain paired with poor sleep suppresses HRV; pairing heavy study blocks with nasal breathing resets and Zone 2 or resistance training preserves executive stamina.',
+          microSteps: [
+            '1. Core Thesis: Cognitive endurance depends directly on autonomic recovery and sleep consistency.',
+            '2. Tactical Drill: Execute 3 minutes of slow physiological sighs between deep study blocks.',
+            '3. Active Recall: Match today’s training intensity to your morning recovery state.'
+          ],
+          quiz: [
+            { q: '1. What physiological metric reflects vagal tone and autonomic nervous system readiness?', a: 'Heart rate variability (HRV).' },
+            { q: '2. How can you reset autonomic stress between two intense study or work blocks?', a: 'Execute 3 minutes of slow physiological sighs / nasal breathing.' },
+            { q: '3. Applied Synthesis: What single sleep or hydration habit will protect your recovery tonight?', a: 'Set a hard screen cutoff 45 minutes before sleep and complete hydration targets early.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        },
+        {
+          id: 'kv_p_fam_' + (Date.now() + 3),
+          title: 'Family Leadership: Undivided Presence & Transition Rituals',
+          domain: 'Family',
+          duration: '10-Min Rapid Primer',
+          type: 'Family • 10-Min Rapid Primer',
+          takeaway: 'Use a deliberate shutdown ritual before re-entering family space so doctoral and work intensity never spills onto loved ones.',
+          content: 'Polymaths often carry open cognitive loops into family time. A 5-minute shutdown checklist—writing down tomorrow’s top priority and closing all tabs—creates a clean psychological boundary for warm, attentive family presence.',
+          microSteps: [
+            '1. Core Thesis: Close open cognitive loops before transitioning from work/study to family.',
+            '2. Tactical Drill: Perform a 5-minute desk shutdown and phone-away block during family dinner.',
+            '3. Active Recall: Ask one open-ended question to each family member tonight and listen fully.'
+          ],
+          quiz: [
+            { q: '1. Why do polymaths often struggle with presence during family time?', a: 'They carry unresolved cognitive loops from study or work into household interactions.' },
+            { q: '2. What 5-minute habit creates a clean boundary before family time?', a: 'Writing down tomorrow’s top task, closing tabs, and placing devices away.' },
+            { q: '3. Applied Synthesis: What dedicated family moment are you protecting on tonight’s schedule?', a: 'Lock in an uninterrupted evening check-in window.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        }
+      ];
+
+      window.userAppState.knowledgeVault = [...starters, ...(window.userAppState.knowledgeVault || [])];
+      window.activePolymathDomain = 'All';
+      renderAllUI();
+      await pushCloudUserData();
+      alert('Loaded 4 Pillar Micro-Learning Sessions (Doctoral Prep, Faith, Health, Family) alongside your Omega & Line Bro vault!');
+    };
+
+    function renderPolymathVaultUI(vault) {
+      const today = getTodayIsoDate();
+      const getDomain = (item) => {
+        if (item.domain) return item.domain;
+        const t = (item.type || '').toLowerCase();
+        if (t.includes('doctoral')) return 'Doctoral Studies';
+        if (t.includes('faith')) return 'Faith';
+        if (t.includes('health')) return 'Health';
+        if (t.includes('family')) return 'Family';
+        if (t.includes('omega')) return 'Omega';
+        return 'Polymath';
+      };
+
+      const isDue = (item) => !item.nextReviewDate || item.nextReviewDate <= today;
+      const dueCount = vault.filter(isDue).length;
+
+      const dueSummary = document.getElementById('retention-due-summary');
+      if (dueSummary) {
+        dueSummary.innerText = `${dueCount} Due Today • ${vault.length} Total Sessions`;
+      }
+
+      const domains = ['All', 'Due Today', 'Doctoral Studies', 'Faith', 'Health', 'Family', 'Omega', 'Polymath'];
+      const filterBar = document.getElementById('polymath-domain-filters');
+      if (filterBar) {
+        filterBar.innerHTML = domains.map(dom => {
+          let count = 0;
+          if (dom === 'All') count = vault.length;
+          else if (dom === 'Due Today') count = dueCount;
+          else count = vault.filter(i => getDomain(i) === dom).length;
+
+          const active = window.activePolymathDomain === dom;
+          return `
+            <button type="button" onclick="setPolymathDomainFilter('${dom}')" class="px-3 py-1.5 rounded-xl font-semibold transition border ${active ? 'bg-emerald-500 text-slate-950 border-emerald-400' : 'bg-slate-950 text-slate-300 border-slate-800 hover:border-emerald-700'}">
+              ${dom} (${count})
+            </button>
+          `;
+        }).join('');
+      }
+
+      let filtered = vault;
+      if (window.activePolymathDomain === 'Due Today') {
+        filtered = vault.filter(isDue);
+      } else if (window.activePolymathDomain !== 'All') {
+        filtered = vault.filter(i => getDomain(i) === window.activePolymathDomain);
+      }
+
+      renderPolymathVaultUI(vault);
+      const kvGrid = null;
+      if (kvGrid) {
+        kvGrid.innerHTML = filtered.map((item) => {
+          const dom = getDomain(item);
+          const due = isDue(item);
+          const steps = item.microSteps || distillTextToMicroSession(item.title, item.content).microSteps;
+          const isTopActive = vault[0] && vault[0].id === item.id;
+          return `
+            <div class="bg-slate-900 border ${isTopActive ? 'border-emerald-500/60' : 'border-slate-800'} rounded-2xl p-5 flex flex-col justify-between space-y-3">
+              <div class="space-y-2">
+                <div class="flex justify-between items-center gap-2">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-800">${dom}</span>
+                    ${item.duration ? `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-950 text-slate-300 border border-slate-800">${item.duration}</span>` : ''}
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded ${due ? 'bg-amber-950 text-amber-300 border border-amber-700/70' : 'bg-emerald-950 text-emerald-300 border border-emerald-800'}">
+                      ${due ? 'Due Today' : 'Next: ' + item.nextReviewDate}
+                    </span>
+                  </div>
+                  <button type="button" onclick="deleteVaultItem('${item.id}')" class="text-slate-500 hover:text-rose-400 text-sm">×</button>
+                </div>
+                <h4 class="font-bold text-white text-sm">${item.title}</h4>
+                ${item.quizScore ? `<p class="text-[10px] font-mono text-emerald-400">Retention Status: ${item.quizScore}</p>` : ''}
+                <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800/90 space-y-1 text-[11px] text-slate-300">
+                  <span class="text-[10px] font-bold uppercase text-emerald-400 block">Distilled Micro-Session:</span>
+                  ${steps.map(st => `<p>${st}</p>`).join('')}
+                </div>
+              </div>
+              <div class="flex justify-between items-center gap-2 pt-2 border-t border-slate-800/60">
+                <button type="button" onclick="openRecallQuiz('${item.id}')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-slate-950 rounded-lg text-[11px] font-bold flex items-center gap-1">
+                  <i data-lucide="help-circle" class="w-3 h-3"></i> Quiz (3Q)
+                </button>
+                <button type="button" onclick="activateMicroSession('${item.id}')" class="px-2.5 py-1 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 rounded-lg text-[11px] font-semibold">
+                  ${isTopActive ? 'Active Sprint' : 'Set Active Sprint'}
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('') || '<p class="text-xs text-slate-400 col-span-3">No sessions in this filter yet. Click "+ Custom Micro-Session" or "Load 5-Pillar Polymath Pack" above.</p>';
+      }
+    }
       renderAllUI();
       await pushCloudUserData();
       if (status) {
@@ -1495,6 +2102,274 @@
       }
 
       window.activeOmegaCategory = 'All';
+    window.activePolymathDomain = 'All';
+
+    window.openCustomMicroSessionModal = () => document.getElementById('custom-micro-session-modal').classList.remove('hidden');
+    window.closeCustomMicroSessionModal = () => document.getElementById('custom-micro-session-modal').classList.add('hidden');
+
+    window.setPolymathDomainFilter = function(dom) {
+      window.activePolymathDomain = dom;
+      renderAllUI();
+    };
+
+    function getTodayIsoDate() {
+      return new Date().toISOString().split('T')[0];
+    }
+
+    function addDaysIso(days) {
+      const d = new Date();
+      d.setDate(d.getDate() + days);
+      return d.toISOString().split('T')[0];
+    }
+
+    function advanceSpacedRepetition(item, score) {
+      const intervals = [1, 3, 7, 21, 45];
+      const nextLvl = Math.min((item.masteryLevel || 0) + 1, intervals.length);
+      const daysToAdd = intervals[nextLvl - 1] || 7;
+      item.masteryLevel = nextLvl;
+      item.nextReviewDate = addDaysIso(daysToAdd);
+      item.quizScore = `${score}/3 • Lvl ${nextLvl} (+${daysToAdd}d)`;
+    }
+
+    window.handleSaveCustomMicroSession = async function(e) {
+      if (e) e.preventDefault();
+      const title = document.getElementById('cms-title').value.trim();
+      const domain = document.getElementById('cms-domain').value;
+      const duration = document.getElementById('cms-duration').value;
+      const customTakeaway = document.getElementById('cms-takeaway').value.trim();
+      const content = document.getElementById('cms-content').value.trim();
+      const customQ1 = document.getElementById('cms-custom-q1').value.trim();
+      const customA1 = document.getElementById('cms-custom-a1').value.trim();
+
+      const distilled = distillTextToMicroSession(title, content);
+      const quiz = [...distilled.quiz];
+      if (customQ1) {
+        quiz[0] = {
+          q: `1. ${customQ1}`,
+          a: customA1 || distilled.takeaway
+        };
+      }
+
+      window.userAppState.knowledgeVault = window.userAppState.knowledgeVault || [];
+      window.userAppState.knowledgeVault.unshift({
+        id: 'kv_cms_' + Date.now(),
+        title,
+        domain,
+        type: `${domain} • ${duration}`,
+        duration,
+        takeaway: customTakeaway || distilled.takeaway,
+        content,
+        microSteps: distilled.microSteps,
+        quiz,
+        masteryLevel: 0,
+        nextReviewDate: getTodayIsoDate(),
+        quizScore: null,
+        date: getTodayIsoDate()
+      });
+
+      document.getElementById('cms-title').value = '';
+      document.getElementById('cms-takeaway').value = '';
+      document.getElementById('cms-content').value = '';
+      document.getElementById('cms-custom-q1').value = '';
+      document.getElementById('cms-custom-a1').value = '';
+
+      window.activePolymathDomain = 'All';
+      renderAllUI();
+      await pushCloudUserData();
+      closeCustomMicroSessionModal();
+    };
+
+    window.loadPolymathFivePillarPack = async function() {
+      const today = getTodayIsoDate();
+      const starters = [
+        {
+          id: 'kv_p_doc_' + Date.now(),
+          title: 'Doctoral Prep (Jan 2027): Literature Synthesis & Research Gap Matrix',
+          domain: 'Doctoral Studies',
+          duration: '30-Min Doctoral Synthesis',
+          type: 'Doctoral Studies • 30-Min Doctoral Synthesis',
+          takeaway: 'Synthesize papers by comparing methodology, sample constraints, and unresolved theoretical gaps rather than summarizing sequentially.',
+          content: 'Effective doctoral literature reviews group prior studies by theoretical lens, empirical methodology, and boundary conditions. Always extract the research question, data source, core finding, and limitation for every paper read.',
+          microSteps: [
+            '1. Core Thesis: Group literature by theoretical lens and methodology, not chronological summary.',
+            '2. Tactical Drill: Extract Research Question, Method, Finding, and Gap for 1 paper today.',
+            '3. Active Recall: State in 2 sentences how your target dissertation topic bridges an existing gap.'
+          ],
+          quiz: [
+            { q: '1. How should a doctoral literature review organize prior research instead of chronological summaries?', a: 'By theoretical lens, empirical methodology, and unresolved research gaps.' },
+            { q: '2. What four elements should be extracted from every academic paper you read?', a: 'Research question, methodology/data source, core finding, and boundary limitation.' },
+            { q: '3. Applied Synthesis: What is one research question or methodological area you want to sharpen before January?', a: 'Write a 2-sentence problem statement in your encrypted Journal.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        },
+        {
+          id: 'kv_p_faith_' + (Date.now() + 1),
+          title: 'Faith & Stewardship: Sacred Time Anchors & Intention (Niyyah)',
+          domain: 'Faith',
+          duration: '15-Min Commute Drill',
+          type: 'Faith • 15-Min Commute Drill',
+          takeaway: 'Anchor every intellectual and leadership pursuit with renewed intention so scholarship becomes an act of service and gratitude.',
+          content: 'True discipline begins with spiritual alignment before cognitive output. By framing study, work, and family stewardship around sacred time anchors, fragmented attention consolidates into purposeful presence.',
+          microSteps: [
+            '1. Core Thesis: Renew intention before opening books, terminals, or meetings.',
+            '2. Tactical Drill: Protect the first 20 minutes after morning prayer for reflection before screens.',
+            '3. Active Recall: Audit tonight whether your actions matched your morning intention.'
+          ],
+          quiz: [
+            { q: '1. What transforms intellectual and leadership effort into sustained spiritual discipline?', a: 'Aligning every pursuit with conscious intention and sacred daily anchors.' },
+            { q: '2. What boundary protects morning spiritual clarity before cognitive work begins?', a: 'Reserving the first 20 minutes after morning devotion before checking screens or messages.' },
+            { q: '3. Applied Synthesis: Which duty today requires the highest degree of patience and excellence (Ihsan)?', a: 'Identify one high-friction interaction today and enter it with calm composure.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        },
+        {
+          id: 'kv_p_health_' + (Date.now() + 2),
+          title: 'Health & Vitality: Autonomic Recovery, HRV & Cognitive Stamina',
+          domain: 'Health',
+          duration: '10-Min Rapid Primer',
+          type: 'Health • 10-Min Rapid Primer',
+          takeaway: 'Doctoral-level cognitive output requires parasympathetic recovery, consistent sleep timing, and autoregulated physical training.',
+          content: 'Heart rate variability (HRV) reflects vagal tone and nervous system readiness. High cognitive strain paired with poor sleep suppresses HRV; pairing heavy study blocks with nasal breathing resets and Zone 2 or resistance training preserves executive stamina.',
+          microSteps: [
+            '1. Core Thesis: Cognitive endurance depends directly on autonomic recovery and sleep consistency.',
+            '2. Tactical Drill: Execute 3 minutes of slow physiological sighs between deep study blocks.',
+            '3. Active Recall: Match today’s training intensity to your morning recovery state.'
+          ],
+          quiz: [
+            { q: '1. What physiological metric reflects vagal tone and autonomic nervous system readiness?', a: 'Heart rate variability (HRV).' },
+            { q: '2. How can you reset autonomic stress between two intense study or work blocks?', a: 'Execute 3 minutes of slow physiological sighs / nasal breathing.' },
+            { q: '3. Applied Synthesis: What single sleep or hydration habit will protect your recovery tonight?', a: 'Set a hard screen cutoff 45 minutes before sleep and complete hydration targets early.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        },
+        {
+          id: 'kv_p_fam_' + (Date.now() + 3),
+          title: 'Family Leadership: Undivided Presence & Transition Rituals',
+          domain: 'Family',
+          duration: '10-Min Rapid Primer',
+          type: 'Family • 10-Min Rapid Primer',
+          takeaway: 'Use a deliberate shutdown ritual before re-entering family space so doctoral and work intensity never spills onto loved ones.',
+          content: 'Polymaths often carry open cognitive loops into family time. A 5-minute shutdown checklist—writing down tomorrow’s top priority and closing all tabs—creates a clean psychological boundary for warm, attentive family presence.',
+          microSteps: [
+            '1. Core Thesis: Close open cognitive loops before transitioning from work/study to family.',
+            '2. Tactical Drill: Perform a 5-minute desk shutdown and phone-away block during family dinner.',
+            '3. Active Recall: Ask one open-ended question to each family member tonight and listen fully.'
+          ],
+          quiz: [
+            { q: '1. Why do polymaths often struggle with presence during family time?', a: 'They carry unresolved cognitive loops from study or work into household interactions.' },
+            { q: '2. What 5-minute habit creates a clean boundary before family time?', a: 'Writing down tomorrow’s top task, closing tabs, and placing devices away.' },
+            { q: '3. Applied Synthesis: What dedicated family moment are you protecting on tonight’s schedule?', a: 'Lock in an uninterrupted evening check-in window.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        }
+      ];
+
+      window.userAppState.knowledgeVault = [...starters, ...(window.userAppState.knowledgeVault || [])];
+      window.activePolymathDomain = 'All';
+      renderAllUI();
+      await pushCloudUserData();
+      alert('Loaded 4 Pillar Micro-Learning Sessions (Doctoral Prep, Faith, Health, Family) alongside your Omega & Line Bro vault!');
+    };
+
+    function renderPolymathVaultUI(vault) {
+      const today = getTodayIsoDate();
+      const getDomain = (item) => {
+        if (item.domain) return item.domain;
+        const t = (item.type || '').toLowerCase();
+        if (t.includes('doctoral')) return 'Doctoral Studies';
+        if (t.includes('faith')) return 'Faith';
+        if (t.includes('health')) return 'Health';
+        if (t.includes('family')) return 'Family';
+        if (t.includes('omega')) return 'Omega';
+        return 'Polymath';
+      };
+
+      const isDue = (item) => !item.nextReviewDate || item.nextReviewDate <= today;
+      const dueCount = vault.filter(isDue).length;
+
+      const dueSummary = document.getElementById('retention-due-summary');
+      if (dueSummary) {
+        dueSummary.innerText = `${dueCount} Due Today • ${vault.length} Total Sessions`;
+      }
+
+      const domains = ['All', 'Due Today', 'Doctoral Studies', 'Faith', 'Health', 'Family', 'Omega', 'Polymath'];
+      const filterBar = document.getElementById('polymath-domain-filters');
+      if (filterBar) {
+        filterBar.innerHTML = domains.map(dom => {
+          let count = 0;
+          if (dom === 'All') count = vault.length;
+          else if (dom === 'Due Today') count = dueCount;
+          else count = vault.filter(i => getDomain(i) === dom).length;
+
+          const active = window.activePolymathDomain === dom;
+          return `
+            <button type="button" onclick="setPolymathDomainFilter('${dom}')" class="px-3 py-1.5 rounded-xl font-semibold transition border ${active ? 'bg-emerald-500 text-slate-950 border-emerald-400' : 'bg-slate-950 text-slate-300 border-slate-800 hover:border-emerald-700'}">
+              ${dom} (${count})
+            </button>
+          `;
+        }).join('');
+      }
+
+      let filtered = vault;
+      if (window.activePolymathDomain === 'Due Today') {
+        filtered = vault.filter(isDue);
+      } else if (window.activePolymathDomain !== 'All') {
+        filtered = vault.filter(i => getDomain(i) === window.activePolymathDomain);
+      }
+
+      renderPolymathVaultUI(vault);
+      const kvGrid = null;
+      if (kvGrid) {
+        kvGrid.innerHTML = filtered.map((item) => {
+          const dom = getDomain(item);
+          const due = isDue(item);
+          const steps = item.microSteps || distillTextToMicroSession(item.title, item.content).microSteps;
+          const isTopActive = vault[0] && vault[0].id === item.id;
+          return `
+            <div class="bg-slate-900 border ${isTopActive ? 'border-emerald-500/60' : 'border-slate-800'} rounded-2xl p-5 flex flex-col justify-between space-y-3">
+              <div class="space-y-2">
+                <div class="flex justify-between items-center gap-2">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-800">${dom}</span>
+                    ${item.duration ? `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-950 text-slate-300 border border-slate-800">${item.duration}</span>` : ''}
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded ${due ? 'bg-amber-950 text-amber-300 border border-amber-700/70' : 'bg-emerald-950 text-emerald-300 border border-emerald-800'}">
+                      ${due ? 'Due Today' : 'Next: ' + item.nextReviewDate}
+                    </span>
+                  </div>
+                  <button type="button" onclick="deleteVaultItem('${item.id}')" class="text-slate-500 hover:text-rose-400 text-sm">×</button>
+                </div>
+                <h4 class="font-bold text-white text-sm">${item.title}</h4>
+                ${item.quizScore ? `<p class="text-[10px] font-mono text-emerald-400">Retention Status: ${item.quizScore}</p>` : ''}
+                <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800/90 space-y-1 text-[11px] text-slate-300">
+                  <span class="text-[10px] font-bold uppercase text-emerald-400 block">Distilled Micro-Session:</span>
+                  ${steps.map(st => `<p>${st}</p>`).join('')}
+                </div>
+              </div>
+              <div class="flex justify-between items-center gap-2 pt-2 border-t border-slate-800/60">
+                <button type="button" onclick="openRecallQuiz('${item.id}')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-slate-950 rounded-lg text-[11px] font-bold flex items-center gap-1">
+                  <i data-lucide="help-circle" class="w-3 h-3"></i> Quiz (3Q)
+                </button>
+                <button type="button" onclick="activateMicroSession('${item.id}')" class="px-2.5 py-1 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 rounded-lg text-[11px] font-semibold">
+                  ${isTopActive ? 'Active Sprint' : 'Set Active Sprint'}
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('') || '<p class="text-xs text-slate-400 col-span-3">No sessions in this filter yet. Click "+ Custom Micro-Session" or "Load 5-Pillar Polymath Pack" above.</p>';
+      }
+    }
       renderAllUI();
       await pushCloudUserData();
       if (status) {
@@ -1680,6 +2555,274 @@
       }
 
       window.activeOmegaCategory = 'All';
+    window.activePolymathDomain = 'All';
+
+    window.openCustomMicroSessionModal = () => document.getElementById('custom-micro-session-modal').classList.remove('hidden');
+    window.closeCustomMicroSessionModal = () => document.getElementById('custom-micro-session-modal').classList.add('hidden');
+
+    window.setPolymathDomainFilter = function(dom) {
+      window.activePolymathDomain = dom;
+      renderAllUI();
+    };
+
+    function getTodayIsoDate() {
+      return new Date().toISOString().split('T')[0];
+    }
+
+    function addDaysIso(days) {
+      const d = new Date();
+      d.setDate(d.getDate() + days);
+      return d.toISOString().split('T')[0];
+    }
+
+    function advanceSpacedRepetition(item, score) {
+      const intervals = [1, 3, 7, 21, 45];
+      const nextLvl = Math.min((item.masteryLevel || 0) + 1, intervals.length);
+      const daysToAdd = intervals[nextLvl - 1] || 7;
+      item.masteryLevel = nextLvl;
+      item.nextReviewDate = addDaysIso(daysToAdd);
+      item.quizScore = `${score}/3 • Lvl ${nextLvl} (+${daysToAdd}d)`;
+    }
+
+    window.handleSaveCustomMicroSession = async function(e) {
+      if (e) e.preventDefault();
+      const title = document.getElementById('cms-title').value.trim();
+      const domain = document.getElementById('cms-domain').value;
+      const duration = document.getElementById('cms-duration').value;
+      const customTakeaway = document.getElementById('cms-takeaway').value.trim();
+      const content = document.getElementById('cms-content').value.trim();
+      const customQ1 = document.getElementById('cms-custom-q1').value.trim();
+      const customA1 = document.getElementById('cms-custom-a1').value.trim();
+
+      const distilled = distillTextToMicroSession(title, content);
+      const quiz = [...distilled.quiz];
+      if (customQ1) {
+        quiz[0] = {
+          q: `1. ${customQ1}`,
+          a: customA1 || distilled.takeaway
+        };
+      }
+
+      window.userAppState.knowledgeVault = window.userAppState.knowledgeVault || [];
+      window.userAppState.knowledgeVault.unshift({
+        id: 'kv_cms_' + Date.now(),
+        title,
+        domain,
+        type: `${domain} • ${duration}`,
+        duration,
+        takeaway: customTakeaway || distilled.takeaway,
+        content,
+        microSteps: distilled.microSteps,
+        quiz,
+        masteryLevel: 0,
+        nextReviewDate: getTodayIsoDate(),
+        quizScore: null,
+        date: getTodayIsoDate()
+      });
+
+      document.getElementById('cms-title').value = '';
+      document.getElementById('cms-takeaway').value = '';
+      document.getElementById('cms-content').value = '';
+      document.getElementById('cms-custom-q1').value = '';
+      document.getElementById('cms-custom-a1').value = '';
+
+      window.activePolymathDomain = 'All';
+      renderAllUI();
+      await pushCloudUserData();
+      closeCustomMicroSessionModal();
+    };
+
+    window.loadPolymathFivePillarPack = async function() {
+      const today = getTodayIsoDate();
+      const starters = [
+        {
+          id: 'kv_p_doc_' + Date.now(),
+          title: 'Doctoral Prep (Jan 2027): Literature Synthesis & Research Gap Matrix',
+          domain: 'Doctoral Studies',
+          duration: '30-Min Doctoral Synthesis',
+          type: 'Doctoral Studies • 30-Min Doctoral Synthesis',
+          takeaway: 'Synthesize papers by comparing methodology, sample constraints, and unresolved theoretical gaps rather than summarizing sequentially.',
+          content: 'Effective doctoral literature reviews group prior studies by theoretical lens, empirical methodology, and boundary conditions. Always extract the research question, data source, core finding, and limitation for every paper read.',
+          microSteps: [
+            '1. Core Thesis: Group literature by theoretical lens and methodology, not chronological summary.',
+            '2. Tactical Drill: Extract Research Question, Method, Finding, and Gap for 1 paper today.',
+            '3. Active Recall: State in 2 sentences how your target dissertation topic bridges an existing gap.'
+          ],
+          quiz: [
+            { q: '1. How should a doctoral literature review organize prior research instead of chronological summaries?', a: 'By theoretical lens, empirical methodology, and unresolved research gaps.' },
+            { q: '2. What four elements should be extracted from every academic paper you read?', a: 'Research question, methodology/data source, core finding, and boundary limitation.' },
+            { q: '3. Applied Synthesis: What is one research question or methodological area you want to sharpen before January?', a: 'Write a 2-sentence problem statement in your encrypted Journal.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        },
+        {
+          id: 'kv_p_faith_' + (Date.now() + 1),
+          title: 'Faith & Stewardship: Sacred Time Anchors & Intention (Niyyah)',
+          domain: 'Faith',
+          duration: '15-Min Commute Drill',
+          type: 'Faith • 15-Min Commute Drill',
+          takeaway: 'Anchor every intellectual and leadership pursuit with renewed intention so scholarship becomes an act of service and gratitude.',
+          content: 'True discipline begins with spiritual alignment before cognitive output. By framing study, work, and family stewardship around sacred time anchors, fragmented attention consolidates into purposeful presence.',
+          microSteps: [
+            '1. Core Thesis: Renew intention before opening books, terminals, or meetings.',
+            '2. Tactical Drill: Protect the first 20 minutes after morning prayer for reflection before screens.',
+            '3. Active Recall: Audit tonight whether your actions matched your morning intention.'
+          ],
+          quiz: [
+            { q: '1. What transforms intellectual and leadership effort into sustained spiritual discipline?', a: 'Aligning every pursuit with conscious intention and sacred daily anchors.' },
+            { q: '2. What boundary protects morning spiritual clarity before cognitive work begins?', a: 'Reserving the first 20 minutes after morning devotion before checking screens or messages.' },
+            { q: '3. Applied Synthesis: Which duty today requires the highest degree of patience and excellence (Ihsan)?', a: 'Identify one high-friction interaction today and enter it with calm composure.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        },
+        {
+          id: 'kv_p_health_' + (Date.now() + 2),
+          title: 'Health & Vitality: Autonomic Recovery, HRV & Cognitive Stamina',
+          domain: 'Health',
+          duration: '10-Min Rapid Primer',
+          type: 'Health • 10-Min Rapid Primer',
+          takeaway: 'Doctoral-level cognitive output requires parasympathetic recovery, consistent sleep timing, and autoregulated physical training.',
+          content: 'Heart rate variability (HRV) reflects vagal tone and nervous system readiness. High cognitive strain paired with poor sleep suppresses HRV; pairing heavy study blocks with nasal breathing resets and Zone 2 or resistance training preserves executive stamina.',
+          microSteps: [
+            '1. Core Thesis: Cognitive endurance depends directly on autonomic recovery and sleep consistency.',
+            '2. Tactical Drill: Execute 3 minutes of slow physiological sighs between deep study blocks.',
+            '3. Active Recall: Match today’s training intensity to your morning recovery state.'
+          ],
+          quiz: [
+            { q: '1. What physiological metric reflects vagal tone and autonomic nervous system readiness?', a: 'Heart rate variability (HRV).' },
+            { q: '2. How can you reset autonomic stress between two intense study or work blocks?', a: 'Execute 3 minutes of slow physiological sighs / nasal breathing.' },
+            { q: '3. Applied Synthesis: What single sleep or hydration habit will protect your recovery tonight?', a: 'Set a hard screen cutoff 45 minutes before sleep and complete hydration targets early.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        },
+        {
+          id: 'kv_p_fam_' + (Date.now() + 3),
+          title: 'Family Leadership: Undivided Presence & Transition Rituals',
+          domain: 'Family',
+          duration: '10-Min Rapid Primer',
+          type: 'Family • 10-Min Rapid Primer',
+          takeaway: 'Use a deliberate shutdown ritual before re-entering family space so doctoral and work intensity never spills onto loved ones.',
+          content: 'Polymaths often carry open cognitive loops into family time. A 5-minute shutdown checklist—writing down tomorrow’s top priority and closing all tabs—creates a clean psychological boundary for warm, attentive family presence.',
+          microSteps: [
+            '1. Core Thesis: Close open cognitive loops before transitioning from work/study to family.',
+            '2. Tactical Drill: Perform a 5-minute desk shutdown and phone-away block during family dinner.',
+            '3. Active Recall: Ask one open-ended question to each family member tonight and listen fully.'
+          ],
+          quiz: [
+            { q: '1. Why do polymaths often struggle with presence during family time?', a: 'They carry unresolved cognitive loops from study or work into household interactions.' },
+            { q: '2. What 5-minute habit creates a clean boundary before family time?', a: 'Writing down tomorrow’s top task, closing tabs, and placing devices away.' },
+            { q: '3. Applied Synthesis: What dedicated family moment are you protecting on tonight’s schedule?', a: 'Lock in an uninterrupted evening check-in window.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        }
+      ];
+
+      window.userAppState.knowledgeVault = [...starters, ...(window.userAppState.knowledgeVault || [])];
+      window.activePolymathDomain = 'All';
+      renderAllUI();
+      await pushCloudUserData();
+      alert('Loaded 4 Pillar Micro-Learning Sessions (Doctoral Prep, Faith, Health, Family) alongside your Omega & Line Bro vault!');
+    };
+
+    function renderPolymathVaultUI(vault) {
+      const today = getTodayIsoDate();
+      const getDomain = (item) => {
+        if (item.domain) return item.domain;
+        const t = (item.type || '').toLowerCase();
+        if (t.includes('doctoral')) return 'Doctoral Studies';
+        if (t.includes('faith')) return 'Faith';
+        if (t.includes('health')) return 'Health';
+        if (t.includes('family')) return 'Family';
+        if (t.includes('omega')) return 'Omega';
+        return 'Polymath';
+      };
+
+      const isDue = (item) => !item.nextReviewDate || item.nextReviewDate <= today;
+      const dueCount = vault.filter(isDue).length;
+
+      const dueSummary = document.getElementById('retention-due-summary');
+      if (dueSummary) {
+        dueSummary.innerText = `${dueCount} Due Today • ${vault.length} Total Sessions`;
+      }
+
+      const domains = ['All', 'Due Today', 'Doctoral Studies', 'Faith', 'Health', 'Family', 'Omega', 'Polymath'];
+      const filterBar = document.getElementById('polymath-domain-filters');
+      if (filterBar) {
+        filterBar.innerHTML = domains.map(dom => {
+          let count = 0;
+          if (dom === 'All') count = vault.length;
+          else if (dom === 'Due Today') count = dueCount;
+          else count = vault.filter(i => getDomain(i) === dom).length;
+
+          const active = window.activePolymathDomain === dom;
+          return `
+            <button type="button" onclick="setPolymathDomainFilter('${dom}')" class="px-3 py-1.5 rounded-xl font-semibold transition border ${active ? 'bg-emerald-500 text-slate-950 border-emerald-400' : 'bg-slate-950 text-slate-300 border-slate-800 hover:border-emerald-700'}">
+              ${dom} (${count})
+            </button>
+          `;
+        }).join('');
+      }
+
+      let filtered = vault;
+      if (window.activePolymathDomain === 'Due Today') {
+        filtered = vault.filter(isDue);
+      } else if (window.activePolymathDomain !== 'All') {
+        filtered = vault.filter(i => getDomain(i) === window.activePolymathDomain);
+      }
+
+      renderPolymathVaultUI(vault);
+      const kvGrid = null;
+      if (kvGrid) {
+        kvGrid.innerHTML = filtered.map((item) => {
+          const dom = getDomain(item);
+          const due = isDue(item);
+          const steps = item.microSteps || distillTextToMicroSession(item.title, item.content).microSteps;
+          const isTopActive = vault[0] && vault[0].id === item.id;
+          return `
+            <div class="bg-slate-900 border ${isTopActive ? 'border-emerald-500/60' : 'border-slate-800'} rounded-2xl p-5 flex flex-col justify-between space-y-3">
+              <div class="space-y-2">
+                <div class="flex justify-between items-center gap-2">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-800">${dom}</span>
+                    ${item.duration ? `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-950 text-slate-300 border border-slate-800">${item.duration}</span>` : ''}
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded ${due ? 'bg-amber-950 text-amber-300 border border-amber-700/70' : 'bg-emerald-950 text-emerald-300 border border-emerald-800'}">
+                      ${due ? 'Due Today' : 'Next: ' + item.nextReviewDate}
+                    </span>
+                  </div>
+                  <button type="button" onclick="deleteVaultItem('${item.id}')" class="text-slate-500 hover:text-rose-400 text-sm">×</button>
+                </div>
+                <h4 class="font-bold text-white text-sm">${item.title}</h4>
+                ${item.quizScore ? `<p class="text-[10px] font-mono text-emerald-400">Retention Status: ${item.quizScore}</p>` : ''}
+                <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800/90 space-y-1 text-[11px] text-slate-300">
+                  <span class="text-[10px] font-bold uppercase text-emerald-400 block">Distilled Micro-Session:</span>
+                  ${steps.map(st => `<p>${st}</p>`).join('')}
+                </div>
+              </div>
+              <div class="flex justify-between items-center gap-2 pt-2 border-t border-slate-800/60">
+                <button type="button" onclick="openRecallQuiz('${item.id}')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-slate-950 rounded-lg text-[11px] font-bold flex items-center gap-1">
+                  <i data-lucide="help-circle" class="w-3 h-3"></i> Quiz (3Q)
+                </button>
+                <button type="button" onclick="activateMicroSession('${item.id}')" class="px-2.5 py-1 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 rounded-lg text-[11px] font-semibold">
+                  ${isTopActive ? 'Active Sprint' : 'Set Active Sprint'}
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('') || '<p class="text-xs text-slate-400 col-span-3">No sessions in this filter yet. Click "+ Custom Micro-Session" or "Load 5-Pillar Polymath Pack" above.</p>';
+      }
+    }
       renderAllUI();
       await pushCloudUserData();
 
@@ -1818,6 +2961,274 @@
       }
 
       window.activeOmegaCategory = 'All';
+    window.activePolymathDomain = 'All';
+
+    window.openCustomMicroSessionModal = () => document.getElementById('custom-micro-session-modal').classList.remove('hidden');
+    window.closeCustomMicroSessionModal = () => document.getElementById('custom-micro-session-modal').classList.add('hidden');
+
+    window.setPolymathDomainFilter = function(dom) {
+      window.activePolymathDomain = dom;
+      renderAllUI();
+    };
+
+    function getTodayIsoDate() {
+      return new Date().toISOString().split('T')[0];
+    }
+
+    function addDaysIso(days) {
+      const d = new Date();
+      d.setDate(d.getDate() + days);
+      return d.toISOString().split('T')[0];
+    }
+
+    function advanceSpacedRepetition(item, score) {
+      const intervals = [1, 3, 7, 21, 45];
+      const nextLvl = Math.min((item.masteryLevel || 0) + 1, intervals.length);
+      const daysToAdd = intervals[nextLvl - 1] || 7;
+      item.masteryLevel = nextLvl;
+      item.nextReviewDate = addDaysIso(daysToAdd);
+      item.quizScore = `${score}/3 • Lvl ${nextLvl} (+${daysToAdd}d)`;
+    }
+
+    window.handleSaveCustomMicroSession = async function(e) {
+      if (e) e.preventDefault();
+      const title = document.getElementById('cms-title').value.trim();
+      const domain = document.getElementById('cms-domain').value;
+      const duration = document.getElementById('cms-duration').value;
+      const customTakeaway = document.getElementById('cms-takeaway').value.trim();
+      const content = document.getElementById('cms-content').value.trim();
+      const customQ1 = document.getElementById('cms-custom-q1').value.trim();
+      const customA1 = document.getElementById('cms-custom-a1').value.trim();
+
+      const distilled = distillTextToMicroSession(title, content);
+      const quiz = [...distilled.quiz];
+      if (customQ1) {
+        quiz[0] = {
+          q: `1. ${customQ1}`,
+          a: customA1 || distilled.takeaway
+        };
+      }
+
+      window.userAppState.knowledgeVault = window.userAppState.knowledgeVault || [];
+      window.userAppState.knowledgeVault.unshift({
+        id: 'kv_cms_' + Date.now(),
+        title,
+        domain,
+        type: `${domain} • ${duration}`,
+        duration,
+        takeaway: customTakeaway || distilled.takeaway,
+        content,
+        microSteps: distilled.microSteps,
+        quiz,
+        masteryLevel: 0,
+        nextReviewDate: getTodayIsoDate(),
+        quizScore: null,
+        date: getTodayIsoDate()
+      });
+
+      document.getElementById('cms-title').value = '';
+      document.getElementById('cms-takeaway').value = '';
+      document.getElementById('cms-content').value = '';
+      document.getElementById('cms-custom-q1').value = '';
+      document.getElementById('cms-custom-a1').value = '';
+
+      window.activePolymathDomain = 'All';
+      renderAllUI();
+      await pushCloudUserData();
+      closeCustomMicroSessionModal();
+    };
+
+    window.loadPolymathFivePillarPack = async function() {
+      const today = getTodayIsoDate();
+      const starters = [
+        {
+          id: 'kv_p_doc_' + Date.now(),
+          title: 'Doctoral Prep (Jan 2027): Literature Synthesis & Research Gap Matrix',
+          domain: 'Doctoral Studies',
+          duration: '30-Min Doctoral Synthesis',
+          type: 'Doctoral Studies • 30-Min Doctoral Synthesis',
+          takeaway: 'Synthesize papers by comparing methodology, sample constraints, and unresolved theoretical gaps rather than summarizing sequentially.',
+          content: 'Effective doctoral literature reviews group prior studies by theoretical lens, empirical methodology, and boundary conditions. Always extract the research question, data source, core finding, and limitation for every paper read.',
+          microSteps: [
+            '1. Core Thesis: Group literature by theoretical lens and methodology, not chronological summary.',
+            '2. Tactical Drill: Extract Research Question, Method, Finding, and Gap for 1 paper today.',
+            '3. Active Recall: State in 2 sentences how your target dissertation topic bridges an existing gap.'
+          ],
+          quiz: [
+            { q: '1. How should a doctoral literature review organize prior research instead of chronological summaries?', a: 'By theoretical lens, empirical methodology, and unresolved research gaps.' },
+            { q: '2. What four elements should be extracted from every academic paper you read?', a: 'Research question, methodology/data source, core finding, and boundary limitation.' },
+            { q: '3. Applied Synthesis: What is one research question or methodological area you want to sharpen before January?', a: 'Write a 2-sentence problem statement in your encrypted Journal.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        },
+        {
+          id: 'kv_p_faith_' + (Date.now() + 1),
+          title: 'Faith & Stewardship: Sacred Time Anchors & Intention (Niyyah)',
+          domain: 'Faith',
+          duration: '15-Min Commute Drill',
+          type: 'Faith • 15-Min Commute Drill',
+          takeaway: 'Anchor every intellectual and leadership pursuit with renewed intention so scholarship becomes an act of service and gratitude.',
+          content: 'True discipline begins with spiritual alignment before cognitive output. By framing study, work, and family stewardship around sacred time anchors, fragmented attention consolidates into purposeful presence.',
+          microSteps: [
+            '1. Core Thesis: Renew intention before opening books, terminals, or meetings.',
+            '2. Tactical Drill: Protect the first 20 minutes after morning prayer for reflection before screens.',
+            '3. Active Recall: Audit tonight whether your actions matched your morning intention.'
+          ],
+          quiz: [
+            { q: '1. What transforms intellectual and leadership effort into sustained spiritual discipline?', a: 'Aligning every pursuit with conscious intention and sacred daily anchors.' },
+            { q: '2. What boundary protects morning spiritual clarity before cognitive work begins?', a: 'Reserving the first 20 minutes after morning devotion before checking screens or messages.' },
+            { q: '3. Applied Synthesis: Which duty today requires the highest degree of patience and excellence (Ihsan)?', a: 'Identify one high-friction interaction today and enter it with calm composure.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        },
+        {
+          id: 'kv_p_health_' + (Date.now() + 2),
+          title: 'Health & Vitality: Autonomic Recovery, HRV & Cognitive Stamina',
+          domain: 'Health',
+          duration: '10-Min Rapid Primer',
+          type: 'Health • 10-Min Rapid Primer',
+          takeaway: 'Doctoral-level cognitive output requires parasympathetic recovery, consistent sleep timing, and autoregulated physical training.',
+          content: 'Heart rate variability (HRV) reflects vagal tone and nervous system readiness. High cognitive strain paired with poor sleep suppresses HRV; pairing heavy study blocks with nasal breathing resets and Zone 2 or resistance training preserves executive stamina.',
+          microSteps: [
+            '1. Core Thesis: Cognitive endurance depends directly on autonomic recovery and sleep consistency.',
+            '2. Tactical Drill: Execute 3 minutes of slow physiological sighs between deep study blocks.',
+            '3. Active Recall: Match today’s training intensity to your morning recovery state.'
+          ],
+          quiz: [
+            { q: '1. What physiological metric reflects vagal tone and autonomic nervous system readiness?', a: 'Heart rate variability (HRV).' },
+            { q: '2. How can you reset autonomic stress between two intense study or work blocks?', a: 'Execute 3 minutes of slow physiological sighs / nasal breathing.' },
+            { q: '3. Applied Synthesis: What single sleep or hydration habit will protect your recovery tonight?', a: 'Set a hard screen cutoff 45 minutes before sleep and complete hydration targets early.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        },
+        {
+          id: 'kv_p_fam_' + (Date.now() + 3),
+          title: 'Family Leadership: Undivided Presence & Transition Rituals',
+          domain: 'Family',
+          duration: '10-Min Rapid Primer',
+          type: 'Family • 10-Min Rapid Primer',
+          takeaway: 'Use a deliberate shutdown ritual before re-entering family space so doctoral and work intensity never spills onto loved ones.',
+          content: 'Polymaths often carry open cognitive loops into family time. A 5-minute shutdown checklist—writing down tomorrow’s top priority and closing all tabs—creates a clean psychological boundary for warm, attentive family presence.',
+          microSteps: [
+            '1. Core Thesis: Close open cognitive loops before transitioning from work/study to family.',
+            '2. Tactical Drill: Perform a 5-minute desk shutdown and phone-away block during family dinner.',
+            '3. Active Recall: Ask one open-ended question to each family member tonight and listen fully.'
+          ],
+          quiz: [
+            { q: '1. Why do polymaths often struggle with presence during family time?', a: 'They carry unresolved cognitive loops from study or work into household interactions.' },
+            { q: '2. What 5-minute habit creates a clean boundary before family time?', a: 'Writing down tomorrow’s top task, closing tabs, and placing devices away.' },
+            { q: '3. Applied Synthesis: What dedicated family moment are you protecting on tonight’s schedule?', a: 'Lock in an uninterrupted evening check-in window.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        }
+      ];
+
+      window.userAppState.knowledgeVault = [...starters, ...(window.userAppState.knowledgeVault || [])];
+      window.activePolymathDomain = 'All';
+      renderAllUI();
+      await pushCloudUserData();
+      alert('Loaded 4 Pillar Micro-Learning Sessions (Doctoral Prep, Faith, Health, Family) alongside your Omega & Line Bro vault!');
+    };
+
+    function renderPolymathVaultUI(vault) {
+      const today = getTodayIsoDate();
+      const getDomain = (item) => {
+        if (item.domain) return item.domain;
+        const t = (item.type || '').toLowerCase();
+        if (t.includes('doctoral')) return 'Doctoral Studies';
+        if (t.includes('faith')) return 'Faith';
+        if (t.includes('health')) return 'Health';
+        if (t.includes('family')) return 'Family';
+        if (t.includes('omega')) return 'Omega';
+        return 'Polymath';
+      };
+
+      const isDue = (item) => !item.nextReviewDate || item.nextReviewDate <= today;
+      const dueCount = vault.filter(isDue).length;
+
+      const dueSummary = document.getElementById('retention-due-summary');
+      if (dueSummary) {
+        dueSummary.innerText = `${dueCount} Due Today • ${vault.length} Total Sessions`;
+      }
+
+      const domains = ['All', 'Due Today', 'Doctoral Studies', 'Faith', 'Health', 'Family', 'Omega', 'Polymath'];
+      const filterBar = document.getElementById('polymath-domain-filters');
+      if (filterBar) {
+        filterBar.innerHTML = domains.map(dom => {
+          let count = 0;
+          if (dom === 'All') count = vault.length;
+          else if (dom === 'Due Today') count = dueCount;
+          else count = vault.filter(i => getDomain(i) === dom).length;
+
+          const active = window.activePolymathDomain === dom;
+          return `
+            <button type="button" onclick="setPolymathDomainFilter('${dom}')" class="px-3 py-1.5 rounded-xl font-semibold transition border ${active ? 'bg-emerald-500 text-slate-950 border-emerald-400' : 'bg-slate-950 text-slate-300 border-slate-800 hover:border-emerald-700'}">
+              ${dom} (${count})
+            </button>
+          `;
+        }).join('');
+      }
+
+      let filtered = vault;
+      if (window.activePolymathDomain === 'Due Today') {
+        filtered = vault.filter(isDue);
+      } else if (window.activePolymathDomain !== 'All') {
+        filtered = vault.filter(i => getDomain(i) === window.activePolymathDomain);
+      }
+
+      renderPolymathVaultUI(vault);
+      const kvGrid = null;
+      if (kvGrid) {
+        kvGrid.innerHTML = filtered.map((item) => {
+          const dom = getDomain(item);
+          const due = isDue(item);
+          const steps = item.microSteps || distillTextToMicroSession(item.title, item.content).microSteps;
+          const isTopActive = vault[0] && vault[0].id === item.id;
+          return `
+            <div class="bg-slate-900 border ${isTopActive ? 'border-emerald-500/60' : 'border-slate-800'} rounded-2xl p-5 flex flex-col justify-between space-y-3">
+              <div class="space-y-2">
+                <div class="flex justify-between items-center gap-2">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-800">${dom}</span>
+                    ${item.duration ? `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-950 text-slate-300 border border-slate-800">${item.duration}</span>` : ''}
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded ${due ? 'bg-amber-950 text-amber-300 border border-amber-700/70' : 'bg-emerald-950 text-emerald-300 border border-emerald-800'}">
+                      ${due ? 'Due Today' : 'Next: ' + item.nextReviewDate}
+                    </span>
+                  </div>
+                  <button type="button" onclick="deleteVaultItem('${item.id}')" class="text-slate-500 hover:text-rose-400 text-sm">×</button>
+                </div>
+                <h4 class="font-bold text-white text-sm">${item.title}</h4>
+                ${item.quizScore ? `<p class="text-[10px] font-mono text-emerald-400">Retention Status: ${item.quizScore}</p>` : ''}
+                <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800/90 space-y-1 text-[11px] text-slate-300">
+                  <span class="text-[10px] font-bold uppercase text-emerald-400 block">Distilled Micro-Session:</span>
+                  ${steps.map(st => `<p>${st}</p>`).join('')}
+                </div>
+              </div>
+              <div class="flex justify-between items-center gap-2 pt-2 border-t border-slate-800/60">
+                <button type="button" onclick="openRecallQuiz('${item.id}')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-slate-950 rounded-lg text-[11px] font-bold flex items-center gap-1">
+                  <i data-lucide="help-circle" class="w-3 h-3"></i> Quiz (3Q)
+                </button>
+                <button type="button" onclick="activateMicroSession('${item.id}')" class="px-2.5 py-1 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 rounded-lg text-[11px] font-semibold">
+                  ${isTopActive ? 'Active Sprint' : 'Set Active Sprint'}
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('') || '<p class="text-xs text-slate-400 col-span-3">No sessions in this filter yet. Click "+ Custom Micro-Session" or "Load 5-Pillar Polymath Pack" above.</p>';
+      }
+    }
       renderAllUI();
       await pushCloudUserData();
 
@@ -2547,7 +3958,8 @@
       const j = document.getElementById('muhasabah-notes');
       if (j && window.userAppState.muhasabah) j.value = window.userAppState.muhasabah;
 
-      const kvGrid = document.getElementById('knowledge-vault-grid');
+      renderPolymathVaultUI(vault);
+      const kvGrid = null;
       if (kvGrid) {
         kvGrid.innerHTML = vault.map((item, idx) => {
           const steps = item.microSteps || distillTextToMicroSession(item.title, item.content).microSteps;
@@ -2804,6 +4216,46 @@
       } else {
         alert("Invalid invitation code.");
       }
+    };
+
+    // 5-Pillar Polymath AI Day Architect Override
+    window.runAiDayStructure = function() {
+      const container = document.getElementById('ai-structured-schedule');
+      const vault = window.userAppState.knowledgeVault || [];
+      const today = getTodayIsoDate();
+      const dueItem = vault.find(i => !i.nextReviewDate || i.nextReviewDate <= today) || vault[0];
+      const docItem = vault.find(i => (i.domain || i.type || '').toLowerCase().includes('doctoral')) || dueItem;
+
+      const block1Title = docItem ? `Faith Anchor & ${docItem.title}` : 'Faith Anchor & Doctoral Deep Study';
+      const block1Desc = docItem ? `Morning devotion + 30-min sprint: ${docItem.takeaway}` : 'Morning prayer, intention setting & January doctoral prep.';
+      const block2Title = dueItem ? `Retention Sprint: ${dueItem.title}` : 'Mid-Day Polymath Micro-Learning';
+      const block2Desc = dueItem ? `Execute 20-min sprint + 3Q active recall (${dueItem.domain || dueItem.type}).` : 'Mid-day prayer anchor & 20-min micro-learning sprint.';
+
+      if (container) {
+        container.innerHTML = `
+          <div class="p-3 bg-slate-950 rounded-xl border border-indigo-500/50 space-y-1">
+            <span class="text-indigo-400 font-mono text-[11px] font-bold">05:30 – 07:30 AM</span>
+            <p class="font-semibold text-white">${block1Title}</p>
+            <p class="text-[10px] text-slate-400">${block1Desc}</p>
+          </div>
+          <div class="p-3 bg-slate-950 rounded-xl border border-sky-500/50 space-y-1">
+            <span class="text-sky-400 font-mono text-[11px] font-bold">12:30 – 13:30 PM</span>
+            <p class="font-semibold text-white">${block2Title}</p>
+            <p class="text-[10px] text-slate-400">${block2Desc}</p>
+          </div>
+          <div class="p-3 bg-slate-950 rounded-xl border border-amber-500/50 space-y-1">
+            <span class="text-amber-400 font-mono text-[11px] font-bold">17:30 – 19:30 PM</span>
+            <p class="font-semibold text-white">Health Cadence & Family Presence</p>
+            <p class="text-[10px] text-slate-400">Autoregulated training followed by device-free family dinner & leadership.</p>
+          </div>
+          <div class="p-3 bg-slate-950 rounded-xl border border-purple-500/50 space-y-1">
+            <span class="text-purple-400 font-mono text-[11px] font-bold">20:30 – 21:30 PM</span>
+            <p class="font-semibold text-white">Omega & Line Bro 3Q Recall + Muhasabah</p>
+            <p class="text-[10px] text-slate-400">Review line brother BIOs, complete 3Q drills & nightly self-accounting.</p>
+          </div>
+        `;
+      }
+      pushCloudUserData();
     };
 
     // Initialize Icons, Session & Recovery Link Detection on Load
