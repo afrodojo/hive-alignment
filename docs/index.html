@@ -1803,6 +1803,7 @@
     };
 
     window.switchTab = function(tabId) {
+      if (tabId === 'tab-seeker' && window.enforceSeekerAccess) window.enforceSeekerAccess();
       document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('bg-emerald-500', 'text-slate-950'));
       const activeTab = document.getElementById(tabId);
@@ -4166,7 +4167,49 @@
       pushCloudUserData();
     };
 
+    window.enforceSeekerAccess = function() {
+      const email = (
+        window.currentUserSession?.email ||
+        window.currentUserSession?.user_metadata?.email ||
+        localStorage.getItem('hive_active_profile_key') ||
+        ''
+      ).trim().toLowerCase();
+      const authList = (window.SEEKER_AUTHORIZED_EMAILS || []).map(e => e.toLowerCase());
+      const unlocked = authList.includes(email) || !!window.userAppState.seekerUnlocked;
+
+      const lockedBanner = document.getElementById('seeker-locked-banner');
+      const unlockedContent = document.getElementById('seeker-unlocked-content');
+      const sTab = document.getElementById('btn-tab-seeker');
+
+      if (lockedBanner) {
+        lockedBanner.classList.toggle('hidden', unlocked);
+        lockedBanner.style.display = unlocked ? 'none' : 'block';
+      }
+      if (unlockedContent) {
+        unlockedContent.classList.toggle('hidden', !unlocked);
+        unlockedContent.style.display = unlocked ? 'block' : 'none';
+      }
+      if (sTab) {
+        sTab.innerText = unlocked ? 'Seeker Study (Omega)' : 'Seeker Study (Locked)';
+      }
+      return unlocked;
+    };
+
+    function normalizeUserAppState() {
+      const s = window.userAppState || {};
+      if (!Array.isArray(s.battles)) s.battles = ['work', 'mental'];
+      if (!Array.isArray(s.tasks)) s.tasks = [];
+      if (!Array.isArray(s.knowledgeVault)) s.knowledgeVault = [];
+      if (!Array.isArray(s.omegaNotebooks)) s.omegaNotebooks = [];
+      if (!Array.isArray(s.calendarEvents)) s.calendarEvents = [];
+      if (!Array.isArray(s.customWorkflows)) s.customWorkflows = [];
+      if (!Array.isArray(s.brotherContacts)) s.brotherContacts = [];
+      if (!s.checks || typeof s.checks !== 'object') s.checks = {};
+    }
+
     function renderAllUI() {
+      normalizeUserAppState();
+      window.enforceSeekerAccess();
       const p = window.userAppState.path || 'islam';
       const c = window.userAppState.circle || 'brothers';
       const cfg = window.SANCTUARY_PATHS[p] || window.SANCTUARY_PATHS.islam;
