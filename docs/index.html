@@ -462,6 +462,9 @@
             </label>
             <input type="file" id="proton-omega-file-input" multiple accept=".zip,.md,.txt,.html,.htm,.pdf,.docx,.json,application/zip,application/pdf,application/json,image/*,audio/*" class="hidden" onchange="handleProtonOmegaFileUpload(event)">
 
+            <button type="button" onclick="buildFullOmegaLinePlan()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-lg">
+              <i data-lucide="map" class="w-3.5 h-3.5"></i> Build 4-Phase Learning Plan
+            </button>
             <button type="button" onclick="openOmegaNoteModal()" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-lg">
               <i data-lucide="plus" class="w-3.5 h-3.5"></i> Paste Note
             </button>
@@ -1426,6 +1429,49 @@
       window.userAppState.omegaNotebooks = (window.userAppState.omegaNotebooks || []).filter(o => o.id !== omegaId);
       renderAllUI();
       await pushCloudUserData();
+    };
+
+    window.buildFullOmegaLinePlan = async function() {
+      const today = new Date().toISOString().split("T")[0];
+      window.userAppState.customWorkflows = window.userAppState.customWorkflows || [];
+      window.userAppState.tasks = window.userAppState.tasks || [];
+
+      const planTracks = [
+        {
+          id: "wf_om_p1_" + Date.now(),
+          title: "Omega Plan Phase 1 (Days 1-4): Foundations & Seeker Rosters",
+          steps: "1. Memorize Nov 17, 1911 founding (Thirkield Hall, Howard Univ), 4 Founders & 4 Cardinal Principles\n2. Match all names, faces & contacts across Seeker Rosters and Image Files\n3. Complete 3Q recall drills on foundational Study Material"
+        },
+        {
+          id: "wf_om_p2_" + (Date.now() + 1),
+          title: "Omega Plan Phase 2 (Days 5-10): OPP Audio History & Line Bro BIOs",
+          steps: "1. Listen to 1 file daily from OPP History - Audio Files and log key milestones\n2. Study 2-3 seeker BIOs daily (Roots, Craft, Purpose)\n3. Pair up with a line brother to quiz each other on BIOs"
+        },
+        {
+          id: "wf_om_p3_" + (Date.now() + 2),
+          title: "Omega Plan Phase 3 (Days 11-16): Tau Rho Lineage & Service Alignment",
+          steps: "1. Master Tau Rho Members Info, charter history & chapter leadership\n2. Coordinate joint execution on Seekers Community Service_Activities\n3. Run 3Q recall drills on Tau Rho chapter cards"
+        },
+        {
+          id: "wf_om_p4_" + (Date.now() + 3),
+          title: "Omega Plan Phase 4 (Days 17-21): Full Recall & 360° Line Readiness",
+          steps: "1. Recite full Seeker Roster + 3-pillar bio summary for every line brother\n2. Synthesize national Omega history with Tau Rho chapter milestones\n3. Verify 3/3 mastery across all imported Proton Drive cards"
+        }
+      ];
+
+      window.userAppState.customWorkflows = [...planTracks, ...window.userAppState.customWorkflows];
+
+      const starterDuties = [
+        { id: "t_om_1_" + Date.now(), title: "Omega Daily: Review 1 Study Material card + run 3Q Recall Quiz", completed: false },
+        { id: "t_om_2_" + (Date.now() + 1), title: "Line Bro Daily: Master 2 seeker BIOs (Roots, Craft, Purpose) & check in", completed: false },
+        { id: "t_om_3_" + (Date.now() + 2), title: "Omega Audio: Listen to 1 OPP History lecture & log 3 takeaways", completed: false }
+      ];
+
+      window.userAppState.tasks = [...starterDuties, ...window.userAppState.tasks];
+      renderAllUI();
+      await pushCloudUserData();
+      switchTab("tab-workflows");
+      alert("4-Phase Omega & Line Brother Learning Plan generated in Agent Workflows and added to your Daily Duties!");
     };
 
     // Interactive 3Q Active-Recall Quiz Handlers
