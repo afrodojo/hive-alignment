@@ -1678,6 +1678,7 @@
         document.getElementById('auth-user-name').innerText = email.split('@')[0];
 
         await pullCloudUserData();
+        renderAllUI();
         window.toggleCockpit(true);
       } catch (err) {
         errBox.innerText = err.message || "Authentication failed.";
@@ -2188,10 +2189,10 @@
       }
 
       // Seeker Gate & Omega Proton Drive Grid
-      const email = (window.currentUserSession?.email || '').toLowerCase();
+      const email = (window.currentUserSession?.email || window.currentUserSession?.user_metadata?.email || localStorage.getItem('hive_active_profile_key') || '').trim().toLowerCase();
       const unlocked = window.SEEKER_AUTHORIZED_EMAILS.includes(email) || window.userAppState.seekerUnlocked;
       document.getElementById('seeker-locked-banner').classList.toggle('hidden', unlocked);
-      document.getElementById('seeker-unlocked-content').classList.toggle('hidden', !unlocked);
+      document.getElementById('seeker-unlocked-content').classList.toggle('hidden', !unlocked); const sTab = document.getElementById('btn-tab-seeker'); if (sTab) sTab.innerText = unlocked ? 'Seeker Study (Omega)' : 'Seeker Study (Locked)';
 
       const pUrl = window.userAppState.protonNotebookUrl || window.DEFAULT_PROTON_DRIVE_URL;
       const pUrlInput = document.getElementById('proton-notebook-url-input');
