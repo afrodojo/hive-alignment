@@ -56,7 +56,7 @@
         Master Your Battles: Faith, Duties, Strategy & <span class="text-emerald-400">Athletic Vitality</span>
       </h1>
       <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">
-        A client-side encrypted personal operating system that ingests your multi-page PDFs, papers, and battle topics to build micro-learning sprints and active-recall quizzes.
+        A client-side encrypted personal operating system that ingests your Proton notebooks, multi-page PDFs, and battle topics to build micro-learning sprints and active-recall quizzes.
       </p>
       <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
         <button type="button" onclick="toggleCockpit(true)" class="px-8 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-emerald-500/10 transition flex items-center justify-center gap-2">
@@ -82,7 +82,7 @@
           </div>
           <h3 class="text-xl font-bold text-white">Zero-Knowledge E2EE</h3>
           <p class="text-sm text-slate-400 leading-relaxed">
-            Your biometrics, PDF research papers, and quiz scores are encrypted with AES-GCM-256 in your browser before upload.
+            Your biometrics, Proton notebook imports, PDF papers, and quiz scores are encrypted with AES-GCM-256 in your browser before upload.
           </p>
         </div>
 
@@ -92,7 +92,7 @@
           </div>
           <h3 class="text-xl font-bold text-white">Active-Recall Quiz Generator</h3>
           <p class="text-sm text-slate-400 leading-relaxed">
-            Every PDF or topic card automatically generates a 3-question self-quiz to lock in long-term retention via the testing effect.
+            Every PDF, Proton notebook section, or topic card automatically generates a 3-question self-quiz to lock in long-term retention.
           </p>
         </div>
 
@@ -116,7 +116,7 @@
         <h2 class="text-2xl font-bold text-white flex items-center gap-2">
           <i data-lucide="layout-dashboard" class="text-emerald-400"></i> Member Operations Cockpit
         </h2>
-        <p class="text-xs text-slate-400 mt-1">Encrypted Day Architect • PDF & Topic Micro-Learning • 3Q Active-Recall Quizzes</p>
+        <p class="text-xs text-slate-400 mt-1">Encrypted Day Architect • Proton Notebook & PDF Learning • 3Q Active-Recall Quizzes</p>
       </div>
       <div class="flex flex-wrap items-center gap-2">
         <button type="button" onclick="openIngestModal('topic')" class="px-3 py-1.5 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
@@ -190,7 +190,7 @@
           <h3 class="text-base font-bold text-white flex items-center gap-2">
             Autonomous AI Day Architect <span class="text-[10px] bg-indigo-950 text-indigo-300 border border-indigo-800 px-2 py-0.5 rounded uppercase">Knowledge-Aware Agent</span>
           </h3>
-          <p class="text-xs text-slate-400">Synthesizes your uploaded PDFs, auto-pulled topics, micro-learning sprints, and duties into a daily execution plan.</p>
+          <p class="text-xs text-slate-400">Synthesizes your Proton notebook notes, uploaded PDFs, micro-learning sprints, and duties into a daily execution plan.</p>
         </div>
         <button type="button" onclick="runAiDayStructure()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-2">
           <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Architect My Day
@@ -272,7 +272,7 @@
             <span id="active-twin-persona" class="text-[10px] bg-emerald-950 border border-emerald-800 text-emerald-300 px-2 py-0.5 rounded font-mono">Hakim</span>
           </div>
           <p id="active-twin-welcome" class="text-xs text-slate-300 mt-2.5 leading-relaxed">
-            Peace upon you. Ask me to distill your uploaded PDFs into micro-learning or align your daily duties.
+            Peace upon you. Ask me to distill your Proton notes or uploaded PDFs into micro-learning.
           </p>
         </div>
         <div class="space-y-2 pt-2">
@@ -355,7 +355,7 @@
             <label for="vault-ocr-input" class="cursor-pointer px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm">
               <i data-lucide="file-up" class="w-3.5 h-3.5"></i> Upload PDF / Scan Page
             </label>
-            <input type="file" id="vault-ocr-input" accept=".pdf,application/pdf,image/*,.txt,.md" class="hidden" onchange="handleVaultFileIngest(event)">
+            <input type="file" id="vault-ocr-input" accept=".pdf,application/pdf,image/*,.txt,.md,.html,.json" class="hidden" onchange="handleVaultFileIngest(event)">
             <button type="button" onclick="openIngestModal('url')" class="px-3 py-1.5 bg-indigo-950 hover:bg-indigo-900 border border-indigo-800 text-indigo-300 font-semibold rounded-xl text-xs transition flex items-center gap-1.5">
               <i data-lucide="globe" class="w-3.5 h-3.5"></i> Web URL
             </button>
@@ -430,7 +430,7 @@
       </div>
     </div>
 
-    <!-- TAB 6: SEEKER STUDY (GATED) -->
+    <!-- TAB 6: SEEKER STUDY & OMEGA PROTON NOTEBOOK (GATED) -->
     <div id="tab-seeker" class="tab-content space-y-6">
       <div id="seeker-locked-banner" class="bg-slate-900 border border-amber-800/40 rounded-2xl p-8 text-center space-y-4">
         <h3 class="text-xl font-bold text-white">Private Aspirant & Seeker Vault</h3>
@@ -439,10 +439,52 @@
         </p>
         <button type="button" onclick="openSeekerInviteModal()" class="px-6 py-2.5 bg-amber-500 text-slate-950 font-bold rounded-xl text-xs">Enter Invitation Code</button>
       </div>
-      <div id="seeker-unlocked-content" class="hidden bg-slate-900 border border-amber-900/40 rounded-2xl p-6 space-y-3">
-        <h3 class="text-xl font-bold text-amber-400">Omega Psi Phi Heritage & Drill Engine (Unlocked)</h3>
-        <p class="text-xs text-slate-300">Cardinal Principles: Manhood • Scholarship • Perseverance • Uplift</p>
-        <p class="text-xs text-slate-400">Founded Nov 17, 1911 • Thirkield Hall, Howard University</p>
+
+      <div id="seeker-unlocked-content" class="hidden space-y-6">
+        <!-- Heritage Header -->
+        <div class="bg-gradient-to-r from-purple-950/60 via-amber-950/40 to-purple-950/50 border border-amber-800/50 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400">Zero-Knowledge Aspirant Vault</span>
+            <h3 class="text-xl font-extrabold text-white mt-0.5">Omega Psi Phi Heritage, Drill & Proton Notebook Engine</h3>
+            <p class="text-xs text-slate-300 mt-1">Manhood • Scholarship • Perseverance • Uplift — Founded Nov 17, 1911 (Thirkield Hall, Howard University)</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <label for="proton-omega-file-input" class="cursor-pointer px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-lg">
+              <i data-lucide="file-up" class="w-3.5 h-3.5"></i> Import Proton File (.md / .pdf / .json)
+            </label>
+            <input type="file" id="proton-omega-file-input" accept=".md,.txt,.html,.htm,.pdf,.json,application/pdf,application/json,text/plain,text/markdown,text/html" class="hidden" onchange="handleProtonOmegaFileUpload(event)">
+            <button type="button" onclick="openOmegaNoteModal()" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-lg">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Paste Proton Note
+            </button>
+          </div>
+        </div>
+
+        <!-- Pinned Proton Drive / Proton Docs / Standard Notes Live Link -->
+        <div class="bg-slate-900 border border-purple-900/50 rounded-2xl p-5 space-y-3">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+            <div>
+              <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                <i data-lucide="shield" class="w-4 h-4 text-purple-400"></i> Linked Proton Notebook (Proton Docs / Drive / Standard Notes)
+              </h4>
+              <p class="text-[11px] text-slate-400">Pin your E2EE Proton notebook URL for one-click launch, or import exported Proton notes below to generate 3Q Omega recall drills.</p>
+            </div>
+            <a id="proton-notebook-launch-btn" href="https://drive.proton.me" target="_blank" rel="noopener noreferrer" class="hidden px-3.5 py-1.5 bg-purple-950 hover:bg-purple-900 border border-purple-700 text-purple-200 rounded-xl text-xs font-bold flex items-center gap-1.5 flex-shrink-0">
+              <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Open Proton Notebook
+            </a>
+          </div>
+          <form onsubmit="handleSaveProtonNotebookLink(event)" class="flex flex-col sm:flex-row gap-2 text-xs">
+            <input type="url" id="proton-notebook-url-input" placeholder="https://drive.proton.me/urls/... or https://app.standardnotes.com" class="flex-grow bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-slate-200 font-mono focus:outline-none focus:border-purple-500">
+            <button type="submit" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl transition flex-shrink-0">
+              Encrypt & Pin Link
+            </button>
+          </form>
+          <p id="proton-import-status" class="text-xs text-purple-300 hidden"></p>
+        </div>
+
+        <!-- Omega Proton Notebook Cards Grid -->
+        <div id="omega-notebooks-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Populated dynamically from userAppState.omegaNotebooks -->
+        </div>
       </div>
     </div>
   </section>
@@ -455,7 +497,7 @@
         <span>Zero-Knowledge Architecture & Privacy Shield (PII / PHI Compliant)</span>
       </div>
       <p class="leading-relaxed text-[11px] text-slate-300">
-        <strong>We do not store, process, or sell your unencrypted data.</strong> All reflections, biometrics, uploaded PDF extracts, quiz scores, and tasks are encrypted in your local browser using military-grade <strong>AES-GCM-256</strong> prior to cloud transmission. Neither our servers nor database administrators possess your decryption keys.
+        <strong>We do not store, process, or sell your unencrypted data.</strong> All reflections, biometrics, Proton notebook imports, uploaded PDF extracts, quiz scores, and tasks are encrypted in your local browser using military-grade <strong>AES-GCM-256</strong> prior to cloud transmission. Neither our servers nor database administrators possess your decryption keys.
       </p>
       <div class="flex flex-wrap gap-4 pt-1 text-[10px] text-slate-500 font-mono">
         <span>• Client-Side WebCrypto & PDF.js</span>
@@ -470,6 +512,32 @@
   </footer>
 
   <!-- MODALS -->
+  <!-- Add / Paste Proton Omega Notebook Entry Modal -->
+  <div id="omega-note-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-sm z-[1150] hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-purple-800/60 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl relative">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="book-marked" class="w-4 h-4 text-amber-400"></i> Add Proton Notebook Section to Omega Vault
+        </h3>
+        <button type="button" onclick="closeOmegaNoteModal()" class="text-slate-400 hover:text-white text-xl leading-none">×</button>
+      </div>
+      <form onsubmit="handleSaveOmegaNotebookEntry(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="text-slate-400 block mb-1">Notebook Section / Chapter Title</label>
+          <input type="text" id="omega-note-title" required placeholder="e.g. Chapter History, Founders Biography, Cardinal Principles" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
+        </div>
+        <div>
+          <label class="text-slate-400 block mb-1">Proton Notebook Content (Auto-builds 20-min sprint & 3Q recall drill)</label>
+          <textarea id="omega-note-content" rows="6" required placeholder="Paste your notes from Proton Docs or Standard Notes here..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200 font-mono"></textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeOmegaNoteModal()" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl font-semibold">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl">Encrypt & Build Omega Drill</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Interactive 3-Question Active-Recall Quiz Modal -->
   <div id="recall-quiz-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[1200] hidden flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-slate-900 border border-emerald-800/60 rounded-2xl max-w-xl w-full p-6 space-y-5 shadow-2xl relative my-8">
@@ -767,7 +835,7 @@
         circleLabels: { brothers: "Brotherhood Majlis", sisters: "Sisters Halaqa" },
         quote: { text: "The strong one is not the one who physically overpowers, but the one who controls anger under provocation.", source: "Prophetic Guidance (Bukhari)", virtue: "Sabr (Composure)" },
         microLearning: { title: "Tadabbur: Cognitive Self-Regulation", domain: "Virtue & Composure", time: "20-Min Sprint", steps: ["1. Notice somatic tension.", "2. Hold 3s tactical pause.", "3. Respond with Ihsan."] },
-        aiTwin: { persona: "Hakim (Mentor)", welcome: "Peace upon you. Ask me to distill your uploaded PDFs into micro-learning or align your daily duties.", promptPlaceholder: "Ask Hakim about ingested material, duties, or recovery..." }
+        aiTwin: { persona: "Hakim (Mentor)", welcome: "Peace upon you. Ask me to distill your Proton notes or uploaded PDFs into micro-learning.", promptPlaceholder: "Ask Hakim about ingested material, duties, or recovery..." }
       },
       christianity: {
         name: "Christian Path",
@@ -794,6 +862,28 @@
       checks: {},
       muhasabah: '',
       tasks: [],
+      protonNotebookUrl: '',
+      omegaNotebooks: [
+        {
+          id: 'om_1',
+          title: 'Foundational Heritage & Cardinal Principles',
+          source: 'Omega Learning Core',
+          takeaway: 'Manhood, Scholarship, Perseverance, and Uplift anchored by the 1911 founding at Howard University.',
+          content: 'Omega Psi Phi Fraternity, Inc. was founded on November 17, 1911, in Thirkield Hall at Howard University by Edgar Amos Love, Oscar James Cooper, Frank Coleman, and Ernest Everett Just. Its four Cardinal Principles are Manhood, Scholarship, Perseverance, and Uplift.',
+          microSteps: [
+            '1. Core Thesis: Founded Nov 17, 1911 at Thirkield Hall, Howard University.',
+            '2. Four Founders: Ernest Everett Just, Frank Coleman, Oscar James Cooper, Edgar Amos Love.',
+            '3. Active Recall: Recite the four Cardinal Principles and apply Scholarship & Uplift today.'
+          ],
+          quiz: [
+            { q: '1. On what date and at which university hall was Omega Psi Phi founded?', a: 'Friday evening, November 17, 1911, in Thirkield Hall at Howard University.' },
+            { q: '2. Who are the four founders of Omega Psi Phi?', a: 'Dr. Ernest Everett Just, Prof. Frank Coleman, Dr. Oscar James Cooper, and Bishop Edgar Amos Love.' },
+            { q: '3. What are the four Cardinal Principles?', a: 'Manhood, Scholarship, Perseverance, and Uplift.' }
+          ],
+          quizScore: null,
+          date: '2026-11-16'
+        }
+      ],
       knowledgeVault: [
         {
           id: 'kv_1',
@@ -985,7 +1075,166 @@
       if (window.lucide) lucide.createIcons();
     };
 
-    // Interactive 3Q Active-Recall Quiz Handlers
+    // PROTON NOTEBOOK & OMEGA LEARNING ENGINE
+    window.openOmegaNoteModal = () => document.getElementById('omega-note-modal').classList.remove('hidden');
+    window.closeOmegaNoteModal = () => document.getElementById('omega-note-modal').classList.add('hidden');
+
+    window.handleSaveProtonNotebookLink = async function(e) {
+      if (e) e.preventDefault();
+      const url = document.getElementById('proton-notebook-url-input').value.trim();
+      window.userAppState.protonNotebookUrl = url;
+      renderAllUI();
+      await pushCloudUserData();
+      const status = document.getElementById('proton-import-status');
+      if (status) {
+        status.classList.remove('hidden');
+        status.innerText = 'Proton Notebook link encrypted and pinned to your Omega Seeker vault!';
+      }
+    };
+
+    window.handleSaveOmegaNotebookEntry = async function(e) {
+      if (e) e.preventDefault();
+      const title = document.getElementById('omega-note-title').value.trim();
+      const content = document.getElementById('omega-note-content').value.trim();
+      const distilled = distillTextToMicroSession(title, content);
+
+      window.userAppState.omegaNotebooks = window.userAppState.omegaNotebooks || [];
+      window.userAppState.omegaNotebooks.unshift({
+        id: 'om_' + Date.now(),
+        title,
+        source: 'Proton Notebook',
+        takeaway: distilled.takeaway,
+        content,
+        microSteps: distilled.microSteps,
+        quiz: distilled.quiz,
+        quizScore: null,
+        date: new Date().toISOString().split('T')[0]
+      });
+
+      document.getElementById('omega-note-title').value = '';
+      document.getElementById('omega-note-content').value = '';
+      renderAllUI();
+      await pushCloudUserData();
+      closeOmegaNoteModal();
+    };
+
+    window.handleProtonOmegaFileUpload = async function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const status = document.getElementById('proton-import-status');
+      if (status) {
+        status.classList.remove('hidden');
+        status.innerText = `Parsing Proton export "${file.name}" locally in browser...`;
+      }
+
+      const cleanName = file.name.replace(/\.[^/.]+$/, '');
+      const lowerName = file.name.toLowerCase();
+
+      try {
+        if (lowerName.endsWith('.pdf')) {
+          const { text, pageCount } = await extractTextFromPdfFile(file, (curr, total) => {
+            if (status) status.innerText = `Extracting Proton PDF page ${curr} of ${total}...`;
+          });
+          const distilled = distillTextToMicroSession(cleanName, text.slice(0, 6000));
+          window.userAppState.omegaNotebooks = window.userAppState.omegaNotebooks || [];
+          window.userAppState.omegaNotebooks.unshift({
+            id: 'om_' + Date.now(),
+            title: cleanName,
+            source: `Proton PDF (${pageCount}p)`,
+            takeaway: distilled.takeaway,
+            content: text.slice(0, 8000),
+            microSteps: distilled.microSteps,
+            quiz: distilled.quiz,
+            quizScore: null,
+            date: new Date().toISOString().split('T')[0]
+          });
+        } else if (lowerName.endsWith('.json')) {
+          // Standard Notes / Proton JSON backup parser
+          const raw = await file.text();
+          const parsed = JSON.parse(raw);
+          const items = Array.isArray(parsed.items) ? parsed.items : (Array.isArray(parsed) ? parsed : []);
+          const notes = items.filter(it => (it.content_type === 'Note' || it.text || it.content?.text));
+          if (!notes.length) throw new Error('No note entries found in JSON export.');
+
+          window.userAppState.omegaNotebooks = window.userAppState.omegaNotebooks || [];
+          notes.slice(0, 15).reverse().forEach((n, idx) => {
+            const nTitle = n.title || n.content?.title || `${cleanName} #${idx + 1}`;
+            const nText = n.text || n.content?.text || '';
+            if (nText.trim().length > 10) {
+              const distilled = distillTextToMicroSession(nTitle, nText);
+              window.userAppState.omegaNotebooks.unshift({
+                id: 'om_' + Date.now() + '_' + idx,
+                title: nTitle,
+                source: 'Proton / Standard Notes JSON',
+                takeaway: distilled.takeaway,
+                content: nText.slice(0, 6000),
+                microSteps: distilled.microSteps,
+                quiz: distilled.quiz,
+                quizScore: null,
+                date: new Date().toISOString().split('T')[0]
+              });
+            }
+          });
+        } else {
+          // Markdown (.md), HTML (.html), or Plaintext (.txt) export from Proton Docs
+          let rawText = await file.text();
+          if (lowerName.endsWith('.html') || lowerName.endsWith('.htm')) {
+            const doc = new DOMParser().parseFromString(rawText, 'text/html');
+            rawText = doc.body.textContent || rawText;
+          }
+          const distilled = distillTextToMicroSession(cleanName, rawText);
+          window.userAppState.omegaNotebooks = window.userAppState.omegaNotebooks || [];
+          window.userAppState.omegaNotebooks.unshift({
+            id: 'om_' + Date.now(),
+            title: cleanName,
+            source: 'Proton Docs Export',
+            takeaway: distilled.takeaway,
+            content: rawText.slice(0, 8000),
+            microSteps: distilled.microSteps,
+            quiz: distilled.quiz,
+            quizScore: null,
+            date: new Date().toISOString().split('T')[0]
+          });
+        }
+
+        renderAllUI();
+        await pushCloudUserData();
+        if (status) status.innerText = `Imported "${file.name}" into your encrypted Omega Learning vault and generated 3Q recall drills!`;
+      } catch (err) {
+        if (status) status.innerText = 'Import notice: ' + (err.message || 'Could not parse file.');
+      }
+      e.target.value = '';
+    };
+
+    window.promoteOmegaToDailySprint = async function(omegaId) {
+      const item = (window.userAppState.omegaNotebooks || []).find(o => o.id === omegaId);
+      if (!item) return;
+
+      window.userAppState.knowledgeVault = window.userAppState.knowledgeVault || [];
+      window.userAppState.knowledgeVault.unshift({
+        id: 'kv_om_' + Date.now(),
+        title: item.title,
+        type: 'Omega Proton Study',
+        takeaway: item.takeaway,
+        content: item.content,
+        microSteps: item.microSteps,
+        quiz: item.quiz,
+        quizScore: item.quizScore || null,
+        date: item.date || new Date().toISOString().split('T')[0]
+      });
+
+      renderAllUI();
+      await pushCloudUserData();
+      alert(`"${item.title}" is now your active daily micro-learning sprint and synced with the AI Day Architect!`);
+    };
+
+    window.deleteOmegaNotebook = async function(omegaId) {
+      window.userAppState.omegaNotebooks = (window.userAppState.omegaNotebooks || []).filter(o => o.id !== omegaId);
+      renderAllUI();
+      await pushCloudUserData();
+    };
+
+    // Interactive 3Q Active-Recall Quiz Handlers (Supports both Knowledge Vault & Omega Proton Notebooks)
     window.openActiveRecallQuiz = function() {
       const vault = window.userAppState.knowledgeVault || [];
       if (!vault.length) {
@@ -997,7 +1246,8 @@
 
     window.openRecallQuiz = function(itemId) {
       const vault = window.userAppState.knowledgeVault || [];
-      const item = vault.find(v => v.id === itemId);
+      const omega = window.userAppState.omegaNotebooks || [];
+      const item = vault.find(v => v.id === itemId) || omega.find(o => o.id === itemId);
       if (!item) return;
 
       window.activeQuizItemId = item.id;
@@ -1033,9 +1283,11 @@
     window.recordQuizMastery = async function(score) {
       if (!window.activeQuizItemId) return;
       window.userAppState.knowledgeVault = (window.userAppState.knowledgeVault || []).map(item => {
-        if (item.id === window.activeQuizItemId) {
-          item.quizScore = `${score}/3 Mastered`;
-        }
+        if (item.id === window.activeQuizItemId) item.quizScore = `${score}/3 Mastered`;
+        return item;
+      });
+      window.userAppState.omegaNotebooks = (window.userAppState.omegaNotebooks || []).map(item => {
+        if (item.id === window.activeQuizItemId) item.quizScore = `${score}/3 Mastered`;
         return item;
       });
       const banner = document.getElementById('quiz-score-banner');
@@ -1729,10 +1981,59 @@
         `).join('');
       }
 
+      // Seeker Gate & Omega Proton Notebook Grid
       const email = (window.currentUserSession?.email || '').toLowerCase();
       const unlocked = window.SEEKER_AUTHORIZED_EMAILS.includes(email) || window.userAppState.seekerUnlocked;
       document.getElementById('seeker-locked-banner').classList.toggle('hidden', unlocked);
       document.getElementById('seeker-unlocked-content').classList.toggle('hidden', !unlocked);
+
+      const pUrlInput = document.getElementById('proton-notebook-url-input');
+      const pLaunchBtn = document.getElementById('proton-notebook-launch-btn');
+      if (pUrlInput && window.userAppState.protonNotebookUrl) {
+        pUrlInput.value = window.userAppState.protonNotebookUrl;
+      }
+      if (pLaunchBtn) {
+        if (window.userAppState.protonNotebookUrl) {
+          pLaunchBtn.href = window.userAppState.protonNotebookUrl;
+          pLaunchBtn.classList.remove('hidden');
+        } else {
+          pLaunchBtn.classList.add('hidden');
+        }
+      }
+
+      const omGrid = document.getElementById('omega-notebooks-grid');
+      if (omGrid) {
+        const omegaItems = window.userAppState.omegaNotebooks || [];
+        omGrid.innerHTML = omegaItems.map(item => {
+          const steps = item.microSteps || distillTextToMicroSession(item.title, item.content).microSteps;
+          return `
+            <div class="bg-slate-900 border border-amber-800/40 rounded-2xl p-5 flex flex-col justify-between space-y-3">
+              <div class="space-y-2">
+                <div class="flex justify-between items-center gap-2">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800">${item.source || 'Proton Notebook'}</span>
+                    ${item.quizScore ? `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">${item.quizScore}</span>` : ''}
+                  </div>
+                  <button type="button" onclick="deleteOmegaNotebook('${item.id}')" class="text-slate-500 hover:text-rose-400 text-sm">×</button>
+                </div>
+                <h4 class="font-bold text-white text-sm">${item.title}</h4>
+                <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800/90 space-y-1 text-[11px] text-slate-300">
+                  <span class="text-[10px] font-bold uppercase text-amber-400 block">Distilled Omega Micro-Session:</span>
+                  ${steps.map(st => `<p>${st}</p>`).join('')}
+                </div>
+              </div>
+              <div class="flex justify-between items-center gap-2 pt-2 border-t border-slate-800/60">
+                <button type="button" onclick="openRecallQuiz('${item.id}')" class="px-2.5 py-1 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-lg text-[11px] font-bold flex items-center gap-1">
+                  <i data-lucide="help-circle" class="w-3 h-3"></i> Drill Quiz (3Q)
+                </button>
+                <button type="button" onclick="promoteOmegaToDailySprint('${item.id}')" class="px-2.5 py-1 bg-purple-950 hover:bg-purple-900 border border-purple-700 text-purple-200 rounded-lg text-[11px] font-semibold">
+                  Set Active Sprint
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('') || '<p class="text-xs text-slate-400 col-span-3">Import an exported Proton file (.md, .pdf, .json) or click "Paste Proton Note" above to build Omega recall drills.</p>';
+      }
 
       if (window.lucide) lucide.createIcons();
     }
