@@ -470,8 +470,11 @@
             <button type="button" id="wview-garmin" onclick="setWearableDashboardView('garmin')" class="px-3 py-1.5 rounded-lg font-semibold text-slate-400 hover:text-white transition">Garmin Tactix</button>
             <button type="button" id="wview-scale" onclick="setWearableDashboardView('scale')" class="px-3 py-1.5 rounded-lg font-semibold text-slate-400 hover:text-white transition">Smart Scale</button>
           </div>
+          <button type="button" onclick="pullCloudUserData()" class="px-3 py-2 bg-slate-950 hover:bg-slate-800 border border-emerald-700/60 text-emerald-300 font-bold rounded-xl text-xs transition flex items-center gap-1.5">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Pull Cloud Sync
+          </button>
           <button type="button" onclick="openWearableConnectModal('whoop-api')" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow">
-            <i data-lucide="link" class="w-3.5 h-3.5"></i> Connect WHOOP / Import CSV
+            <i data-lucide="link" class="w-3.5 h-3.5"></i> Connect Wearables / Import
           </button>
         </div>
       </div>
@@ -4338,6 +4341,18 @@
             }
           } else if (data.data) {
             window.userAppState = Object.assign(window.userAppState, data.data);
+          }
+
+          // Merge newer background cloud wearableTelemetry (Garmin / WHOOP / Smart Scale) into local E2EE state
+          const cloudTel = data.data?.wearableTelemetry;
+          const localTel = window.userAppState.wearableTelemetry;
+          if (cloudTel && cloudTel.syncedAt) {
+            const cloudTs = Date.parse(cloudTel.syncedAt) || 0;
+            const localTs = Date.parse(localTel?.syncedAt || '') || 0;
+            if (cloudTs > localTs) {
+              window.userAppState.wearableTelemetry = Object.assign({}, localTel || {}, cloudTel);
+              await pushCloudUserData();
+            }
           }
           renderAllUI();
         }
