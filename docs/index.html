@@ -952,15 +952,32 @@
           </div>
         </div>
 
-        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
-          <label class="text-slate-400 block font-medium">Option B: WHOOP OAuth 2.0 Authorization Redirect</label>
-          <div class="flex gap-2">
-            <input type="text" id="whoop-client-id" placeholder="WHOOP App Client ID (from developer.whoop.com)" class="flex-grow bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-slate-200 font-mono">
+        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-2.5">
+          <label class="text-slate-400 block font-medium">Option B: HIVE Cognitive Telemetry OAuth 2.0 (Authorization Code Flow)</label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div>
+              <span class="text-[10px] text-slate-500 block mb-0.5">Client ID</span>
+              <input type="text" id="whoop-client-id" value="ed2c0020-c5bf-4029-a911-08ebc514f097" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-slate-200 font-mono">
+            </div>
+            <div>
+              <span class="text-[10px] text-slate-500 block mb-0.5">Client Secret (Encrypted Locally Only)</span>
+              <input type="password" id="whoop-client-secret" placeholder="Paste WHOOP Client Secret..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-slate-200 font-mono">
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+            <p class="text-[10px] text-slate-400">Ensure <code class="text-emerald-300">https://hive-align.eds-360.com/</code> is saved in your WHOOP Redirect URLs.</p>
             <button type="button" onclick="startWhoopOAuthRedirect()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl flex-shrink-0">
-              Authorize WHOOP
+              Authorize WHOOP →
             </button>
           </div>
-          <p class="text-[10px] text-slate-500">Redirect URI to register in WHOOP Developer Dashboard: <code class="text-slate-300">https://hive-align.eds-360.com/</code></p>
+          <div id="whoop-auth-code-box" class="hidden pt-2 border-t border-slate-800 space-y-2">
+            <p class="text-[11px] text-amber-300 font-semibold">WHOOP Authorization Code Received! Exchange for Access Token or copy the PowerShell sync command:</p>
+            <div class="flex gap-2">
+              <input type="text" id="whoop-auth-code-input" readonly class="flex-grow bg-slate-900 border border-amber-700/60 rounded-xl px-3 py-1.5 text-amber-200 font-mono">
+              <button type="button" onclick="exchangeWhoopAuthCode()" class="px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl">Complete Sync</button>
+              <button type="button" onclick="copyWhoopPowerShellSync()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl">Copy PS Sync</button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -2466,11 +2483,16 @@
       document.getElementById('inp-s-bf').value = tel.scale.bodyFat;
       document.getElementById('inp-s-muscle').value = tel.scale.muscleMass;
 
-      if (window.userAppState.whoopClientId) {
-        document.getElementById('whoop-client-id').value = window.userAppState.whoopClientId;
+      document.getElementById('whoop-client-id').value = window.userAppState.whoopClientId || 'ed2c0020-c5bf-4029-a911-08ebc514f097';
+      if (window.userAppState.whoopClientSecret) {
+        document.getElementById('whoop-client-secret').value = window.userAppState.whoopClientSecret;
       }
       if (window.userAppState.whoopAccessToken) {
         document.getElementById('whoop-bearer-token').value = window.userAppState.whoopAccessToken;
+      }
+      if (window.pendingWhoopAuthCode) {
+        document.getElementById('whoop-auth-code-box').classList.remove('hidden');
+        document.getElementById('whoop-auth-code-input').value = window.pendingWhoopAuthCode;
       }
 
       document.getElementById('wearable-sync-status').classList.add('hidden');
@@ -2497,17 +2519,79 @@
     };
 
     window.startWhoopOAuthRedirect = async function() {
-      const clientId = document.getElementById('whoop-client-id').value.trim();
-      if (!clientId) {
-        alert('Enter your WHOOP App Client ID first.');
+      const clientId = (document.getElementById('whoop-client-id').value || 'ed2c0020-c5bf-4029-a911-08ebc514f097').trim();
+      const clientSecret = (document.getElementById('whoop-client-secret').value || '').trim();
+      window.userAppState.whoopClientId = clientId;
+      if (clientSecret) window.userAppState.whoopClientSecret = clientSecret;
+      await pushCloudUserData();
+
+      const redirectUri = encodeURIComponent('https://hive-align.eds-360.com/');
+      const scope = encodeURIComponent('read:recovery read:cycles read:sleep read:workout read:profile read:body_measurement');
+      const state = 'hive_' + Math.random().toString(36).substring(2, 10);
+      window.location.href = `https://api.prod.whoop.com/oauth/oauth2/auth?response_type=code&client_id=${encodeURIComponent(clientId)}&redirect_uri=${redirectUri}&scope=${scope}&state=${state}`;
+    };
+
+    window.exchangeWhoopAuthCode = async function(codeOverride) {
+      const code = (codeOverride || window.pendingWhoopAuthCode || document.getElementById('whoop-auth-code-input')?.value || '').trim();
+      const clientId = (document.getElementById('whoop-client-id')?.value || window.userAppState.whoopClientId || 'ed2c0020-c5bf-4029-a911-08ebc514f097').trim();
+      const clientSecret = (document.getElementById('whoop-client-secret')?.value || window.userAppState.whoopClientSecret || '').trim();
+      const statusEl = document.getElementById('wearable-sync-status');
+
+      if (!code) return;
+      if (!clientSecret) {
+        if (statusEl) {
+          statusEl.classList.remove('hidden');
+          statusEl.innerText = 'Paste your WHOOP Client Secret in the box above and click "Complete Sync" (or click "Copy PS Sync" to run locally).';
+        }
         return;
       }
+
       window.userAppState.whoopClientId = clientId;
+      window.userAppState.whoopClientSecret = clientSecret;
       await pushCloudUserData();
-      const redirectUri = encodeURIComponent(window.location.origin + window.location.pathname);
-      const scope = encodeURIComponent('offline read:recovery read:cycles read:sleep read:workout read:body_measurement read:profile');
-      const state = 'hive_' + Math.random().toString(36).substring(2, 10);
-      window.location.href = `https://api.prod.whoop.com/oauth/oauth2/auth?client_id=${encodeURIComponent(clientId)}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}&state=${state}`;
+
+      if (statusEl) {
+        statusEl.classList.remove('hidden');
+        statusEl.innerText = 'Exchanging WHOOP authorization code for access token...';
+      }
+
+      try {
+        const body = new URLSearchParams({
+          grant_type: 'authorization_code',
+          code: code,
+          client_id: clientId,
+          client_secret: clientSecret,
+          redirect_uri: 'https://hive-align.eds-360.com/'
+        });
+        const tokRes = await fetch('https://api.prod.whoop.com/oauth/oauth2/token', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body.toString()
+        });
+        if (!tokRes.ok) throw new Error(`Token exchange returned HTTP ${tokRes.status}`);
+        const tokJson = await tokRes.json();
+        if (!tokJson.access_token) throw new Error('No access_token in WHOOP response.');
+        window.pendingWhoopAuthCode = null;
+        await window.syncWhoopApiV2Direct(tokJson.access_token);
+      } catch (err) {
+        if (statusEl) {
+          statusEl.classList.remove('hidden');
+          statusEl.innerText = `Browser CORS blocked direct token exchange (${err.message}). Click "Copy PS Sync" to pull your WHOOP data via PowerShell and import the JSON!`;
+        }
+      }
+    };
+
+    window.copyWhoopPowerShellSync = async function() {
+      const code = (window.pendingWhoopAuthCode || document.getElementById('whoop-auth-code-input')?.value || '').trim();
+      const clientId = (document.getElementById('whoop-client-id')?.value || 'ed2c0020-c5bf-4029-a911-08ebc514f097').trim();
+      const clientSecret = (document.getElementById('whoop-client-secret')?.value || 'YOUR_CLIENT_SECRET').trim();
+      const psCmd = `$tok = Invoke-RestMethod -Method Post -Uri "https://api.prod.whoop.com/oauth/oauth2/token" -ContentType "application/x-www-form-urlencoded" -Body @{ grant_type="authorization_code"; code="${code}"; client_id="${clientId}"; client_secret="${clientSecret}"; redirect_uri="https://hive-align.eds-360.com/" }; $h = @{ Authorization = "Bearer $($tok.access_token)" }; $rec = Invoke-RestMethod -Uri "https://api.prod.whoop.com/developer/v2/recovery?limit=7" -Headers $h; $cyc = Invoke-RestMethod -Uri "https://api.prod.whoop.com/developer/v2/cycle?limit=1" -Headers $h; $slp = Invoke-RestMethod -Uri "https://api.prod.whoop.com/developer/v2/activity/sleep?limit=1" -Headers $h; $out = @{ whoop = @{ recovery = [math]::Round($rec.records[0].score.recovery_score); hrv = [math]::Round($rec.records[0].score.hrv_rmssd_milli); rhr = [math]::Round($rec.records[0].score.resting_heart_rate); strain = [math]::Round($cyc.records[0].score.strain, 1); sleepPerf = [math]::Round($slp.records[0].score.sleep_performance_percentage) } } | ConvertTo-Json -Depth 4; $out | Out-File "$env:USERPROFILE\\Downloads\\whoop-live.json" -Encoding utf8; "Saved whoop-live.json to Downloads! Access token: $($tok.access_token)"`;
+      await navigator.clipboard.writeText(psCmd);
+      const statusEl = document.getElementById('wearable-sync-status');
+      if (statusEl) {
+        statusEl.classList.remove('hidden');
+        statusEl.innerText = 'Copied PowerShell WHOOP sync command! Run it in PowerShell to save whoop-live.json in Downloads, then upload it in the "Import CSV / JSON" tab.';
+      }
     };
 
     window.syncWhoopApiV2Direct = async function(overrideToken) {
@@ -4642,13 +4726,20 @@
       } catch (e) {}
 
       checkIncomingStudyInviteUrl();
-      if (window.location.hash.includes('access_token=') && !window.location.hash.includes('type=recovery')) {
-        const hashParams = new URLSearchParams(window.location.hash.substring(1));
-        const whoopTok = hashParams.get('access_token');
-        if (whoopTok) {
-          window.history.replaceState({}, document.title, window.location.pathname);
-          setTimeout(() => window.syncWhoopApiV2Direct(whoopTok), 500);
-        }
+      const urlQuery = new URLSearchParams(window.location.search);
+      const returnedWhoopCode = urlQuery.get('code');
+      const returnedState = urlQuery.get('state') || '';
+      if (returnedWhoopCode && returnedState.startsWith('hive_')) {
+        window.pendingWhoopAuthCode = returnedWhoopCode;
+        window.history.replaceState({}, document.title, window.location.pathname);
+        setTimeout(() => {
+          window.toggleCockpit(true);
+          window.switchTab('tab-wearables');
+          window.openWearableConnectModal('whoop-api');
+          if (window.userAppState.whoopClientSecret) {
+            window.exchangeWhoopAuthCode(returnedWhoopCode);
+          }
+        }, 500);
       }
       if (window.location.hash.includes('type=recovery')) {
         setTimeout(window.showChangePasswordModal, 400);
