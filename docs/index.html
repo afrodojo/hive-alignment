@@ -2670,6 +2670,22 @@
       }
     };
 
+    function syncWearableModalInputsFromState() {
+      const tel = getWearableTelemetry();
+      const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+      setVal('inp-w-rec', tel.whoop.recovery);
+      setVal('inp-w-hrv', tel.whoop.hrv);
+      setVal('inp-w-rhr', tel.whoop.rhr);
+      setVal('inp-w-strain', tel.whoop.strain);
+      setVal('inp-w-sleep', tel.whoop.sleepPerf);
+      setVal('inp-g-ready', tel.garmin.readiness);
+      setVal('inp-g-acwr', tel.garmin.acwr);
+      setVal('inp-g-steps', tel.garmin.steps);
+      setVal('inp-s-weight', tel.scale.weight);
+      setVal('inp-s-bf', tel.scale.bodyFat);
+      setVal('inp-s-muscle', tel.scale.muscleMass);
+    }
+
     window.handleWearableFileImport = async function(e) {
       const file = e.target.files[0];
       if (!file) return;
@@ -2693,38 +2709,94 @@
           if (parsed.rhr != null) tel.whoop.rhr = Math.round(parsed.rhr);
           tel.whoop.lastSync = `Imported JSON (${file.name})`;
         } else {
-          // CSV Parser for WHOOP physiological_cycles.csv / sleeps.csv or Garmin Activities.csv
           const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
           if (lines.length < 2) throw new Error('CSV file has no data rows.');
           const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim().toLowerCase());
-          const latestRow = lines[lines.length - 1].split(',').map(c => c.replace(/"/g, '').trim());
-          const firstDataRow = lines[1].split(',').map(c => c.replace(/"/g, '').trim());
-          // Use row 1 if newest-first, otherwise last row
-          const row = isNaN(Date.parse(firstDataRow[0])) || Date.parse(firstDataRow[0]) >= Date.parse(latestRow[0]) ? firstDataRow : latestRow;
+          const dataRows = lines.slice(1).map(l => l.split(',').map(c => c.replace(/"/g, '').trim()));
+          const newestFirst = isNaN(Date.parse(dataRows[0][0])) || Date.parse(dataRows[0][0]) >= Date.parse(dataRows[dataRows.length - 1][0]);
+          const orderedRows = newestFirst ? dataRows : dataRows.slice().reverse();
 
-          const getCol = (names) => {
+          const findFirstValid = (names) => {
             const idx = headers.findIndex(h => names.some(n => h.includes(n)));
-            return idx > -1 ? parseFloat(row[idx]) : NaN;
+            if (idx === -1) return NaN;
+            for (const r of orderedRows) {
+              const val = parseFloat(r[idx]);
+              if (!isNaN(val)) return val;
+            }
+            return NaN;
           };
 
-          const rec = getCol(['recovery score', 'recovery']);
-          const hrv = getCol(['heart rate variability', 'hrv']);
-          const rhr = getCol(['resting heart rate', 'rhr']);
-          const strain = getCol(['day strain', 'strain']);
-          const sleepPerf = getCol(['sleep performance']);
-          const steps = getCol(['steps']);
-          const weight = getCol(['weight']);
+          const fmtMins = (mins) => {
+            const m = Math.round(mins);
+            return `${Math.floor(m / 60)}h ${m % 60}m`;
+          };
+
+          const rec = findFirstValid(['recovery score']);
+          const hrv = findFirstValid(['heart rate variability']);
+          const rhr = findFirstValid(['resting heart rate']);
+          const strain = findFirstValid(['day strain']);
+          const sleepPerf = findFirstValid(['sleep performance']);
+          const asleepMin = findFirstValid(['asleep duration']);
+          const deepMin = findFirstValid(['deep (sws) duration', 'deep']);
+          const remMin = findFirstValid(['rem duration']);
+          const lightMin = findFirstValid(['light sleep duration']);
+          const spo2 = findFirstValid(['blood oxygen']);
+          const skinTemp = findFirstValid(['skin temp']);
+          const steps = findFirstValid(['steps']);
+          const weight = findFirstValid(['weight']);
 
           if (!isNaN(rec)) tel.whoop.recovery = Math.round(rec);
           if (!isNaN(hrv)) tel.whoop.hrv = Math.round(hrv);
           if (!isNaN(rhr)) tel.whoop.rhr = Math.round(rhr);
           if (!isNaN(strain)) tel.whoop.strain = Number(strain).toFixed(1);
           if (!isNaN(sleepPerf)) tel.whoop.sleepPerf = Math.round(sleepPerf);
+          if (!isNaN(asleepMin)) tel.whoop.sleepDuration = fmtMins(asleepMin);
+          if (!isNaN(deepMin)) tel.whoop.deep = fmtMins(deepMin);
+          if (!isNaN(remMin)) tel.whoop.rem = fmtMins(remMin);
+          if (!isNaN(lightMin)) tel.whoop.light = fmtMins(lightMin);
+          if (!isNaN(spo2)) tel.whoop.spo2 = Number(spo2).toFixed(1);
+          if (!isNaN(skinTemp)) tel.whoop.skinTemp = Number(skinTemp).toFixed(2);
           if (!isNaN(steps)) tel.garmin.steps = Math.round(steps);
           if (!isNaN(weight)) tel.scale.weight = Number(weight).toFixed(1);
-          tel.whoop.lastSync = `Imported CSV (${file.name})`;
+
+          // Extract 7-day Recovery Trend & ACWR if present
+          const recIdx = headers.findIndex(h => h.includes('recovery score'));
+          if (recIdx > -1) {
+            const recent7 = orderedRows.map(r => parseFloat(r[recIdx])).filter(v => !isNaN(v)).slice(0, 7).reverse();
+            if (recent7.length) tel.whoop.trend7d = recent7.map(v => Math.round(v));
+          }
+          const strainIdx = headers.findIndex(h => h.includes('day strain'));
+          if (strainIdx > -1) {
+            const validStrains = orderedRows.map(r => parseFloat(r[strainIdx])).filter(v => !isNaN(v));
+            if (validStrains.length >= 7) {
+              const acute = validStrains.slice(0, 7).reduce((a, b) => a + b, 0) / 7;
+              const chronic = validStrains.slice(0, 28).reduce((a, b) => a + b, 0) / Math.min(28, validStrains.length);
+              if (chronic > 0) {
+                tel.garmin.acwr = Number((acute / chronic).toFixed(2));
+                tel.garmin.acuteLoad = Math.round(acute * 90);
+                tel.garmin.chronicLoad = Math.round(chronic * 90);
+              }
+            }
+          }
+
+          // Workouts CSV support
+          const actIdx = headers.findIndex(h => h.includes('activity name'));
+          const actStrainIdx = headers.findIndex(h => h.includes('activity strain'));
+          const durIdx = headers.findIndex(h => h.includes('duration (min)'));
+          const avgHrIdx = headers.findIndex(h => h.includes('average hr'));
+          if (actIdx > -1 && orderedRows.length > 0) {
+            const wRow = orderedRows[0];
+            const actName = wRow[actIdx] || 'Workout';
+            const dur = durIdx > -1 ? wRow[durIdx] : '';
+            const aStrain = actStrainIdx > -1 ? wRow[actStrainIdx] : '';
+            const aHr = avgHrIdx > -1 ? wRow[avgHrIdx] : '';
+            tel.garmin.lastActivity = `${actName} • ${dur} min • Strain ${aStrain} • Avg HR ${aHr} bpm`;
+          }
+
+          tel.whoop.lastSync = `Imported ${file.name} (${orderedRows.length} records)`;
         }
 
+        syncWearableModalInputsFromState();
         renderAllUI();
         await pushCloudUserData();
         if (statusEl) statusEl.innerText = `Imported "${file.name}" into your encrypted wearable dashboards & updated Auto-Regulator!`;
