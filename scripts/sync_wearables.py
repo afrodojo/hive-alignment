@@ -16,17 +16,57 @@ WHOOP_REFRESH_TOKEN = os.environ.get("WHOOP_REFRESH_TOKEN", "").strip()
 WHOOP_ACCESS_TOKEN = os.environ.get("WHOOP_ACCESS_TOKEN", "").strip()
 
 
-def fetch_existing_state():
-    headers = {
+def supa_headers(extra=None):
+    h = {
         "apikey": SUPA_KEY,
         "Authorization": f"Bearer {SUPA_KEY}",
         "Accept": "application/json",
+        "Content-Type": "application/json",
     }
+    if extra:
+        h.update(extra)
+    return h
+
+
+def fetch_existing_row():
     url = f"{SUPA_URL}/rest/v1/brotherhood_status?brother=eq.{requests.utils.quote(TARGET_EMAIL)}&select=*"
-    res = requests.get(url, headers=headers, timeout=20)
+    res = requests.get(url, headers=supa_headers(), timeout=20)
     if res.ok and res.json():
         return res.json()[0]
-    return {"brother": TARGET_EMAIL, "data": {}}
+    return None
+
+
+def get_required_column_defaults():
+    defaults = {
+        "brother": TARGET_EMAIL,
+        "fellowship_circle": "brothers",
+        "spiritual_path": "islam",
+        "status": "ACTIVE",
+        "gate": "GREEN",
+    }
+    try:
+        spec_res = requests.get(f"{SUPA_URL}/rest/v1/", headers=supa_headers(), timeout=15)
+        if spec_res.ok:
+            spec = spec_res.json()
+            defs = (
+                spec.get("definitions", {}).get("brotherhood_status")
+                or spec.get("components", {}).get("schemas", {}).get("brotherhood_status", {})
+            )
+            required_cols = defs.get("required") or []
+            props = defs.get("properties") or {}
+            for col in required_cols:
+                if col in defaults or col in ("created_at", "updated_at", "data"):
+                    continue
+                col_type = props.get(col, {}).get("type", "string")
+                if col_type in ("integer", "number"):
+                    defaults[col] = 0
+                elif col_type == "boolean":
+                    defaults[col] = False
+                else:
+                    defaults[col] = "default"
+    except Exception:
+        pass
+    return defaults
 
 
 def sync_garmin(telemetry):
@@ -199,8 +239,10 @@ def main():
         print("ERROR: Missing SUPABASE_SERVICE_ROLE_KEY or SUPABASE_ANON_KEY environment variable.")
         return
 
-    row = fetch_existing_state()
-    state_data = row.get("data") or {}
+    existing_row = fetch_existing_row()
+    state_data = (existing_row.get("data") if existing_row else None) or {}
+    if not isinstance(state_data, dict):
+        state_data = {}
     telemetry = state_data.setdefault("wearableTelemetry", {})
 
     sync_garmin(telemetry)
@@ -211,24 +253,27 @@ def main():
     telemetry.setdefault("whoop", {})["lastSync"] = f"Cloud Auto-Sync ({datetime.now(timezone.utc).strftime('%b %d, %H:%M UTC')})"
     state_data["wearableTelemetry"] = telemetry
 
-    headers = {
-        "apikey": SUPA_KEY,
-        "Authorization": f"Bearer {SUPA_KEY}",
-        "Content-Type": "application/json",
-        "Prefer": "resolution=merge-duplicates",
-    }
-    payload = {
-        "brother": TARGET_EMAIL,
-        "data": state_data,
-        "updated_at": now_iso,
-    }
-    res = requests.post(
-        f"{SUPA_URL}/rest/v1/brotherhood_status?on_conflict=brother",
-        headers=headers,
-        data=json.dumps(payload),
-        timeout=20,
-    )
-    print("Supabase upsert status:", res.status_code, res.text[:200])
+    if existing_row:
+        patch_url = f"{SUPA_URL}/rest/v1/brotherhood_status?brother=eq.{requests.utils.quote(TARGET_EMAIL)}"
+        res = requests.patch(
+            patch_url,
+            headers=supa_headers({"Prefer": "return=minimal"}),
+            data=json.dumps({"data": state_data, "updated_at": now_iso}),
+            timeout=20,
+        )
+        print("Supabase PATCH status:", res.status_code, res.text[:200])
+    else:
+        payload = get_required_column_defaults()
+        payload["brother"] = TARGET_EMAIL
+        payload["data"] = state_data
+        payload["updated_at"] = now_iso
+        res = requests.post(
+            f"{SUPA_URL}/rest/v1/brotherhood_status",
+            headers=supa_headers({"Prefer": "return=minimal"}),
+            data=json.dumps(payload),
+            timeout=20,
+        )
+        print("Supabase INSERT status:", res.status_code, res.text[:200])
 
 
 if __name__ == "__main__":
