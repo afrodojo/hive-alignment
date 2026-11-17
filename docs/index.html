@@ -436,6 +436,9 @@
             <button type="button" onclick="openCustomMicroSessionModal()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-md">
               <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> + Custom Micro-Session
             </button>
+            <button type="button" onclick="buildPreJanDoctoralSprint()" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-md">
+              <i data-lucide="rocket" class="w-3.5 h-3.5"></i> Build Pre-Jan Doctoral Sprint
+            </button>
             <button type="button" onclick="loadPolymathFivePillarPack()" class="px-3.5 py-2 bg-purple-950 hover:bg-purple-900 border border-purple-700/70 text-purple-200 font-bold rounded-xl text-xs transition flex items-center gap-1.5">
               <i data-lucide="layers" class="w-3.5 h-3.5 text-purple-400"></i> Load 5-Pillar Polymath Pack
             </button>
@@ -2326,6 +2329,138 @@
       renderAllUI();
       await pushCloudUserData();
       alert('Loaded 4 Pillar Micro-Learning Sessions (Doctoral Prep, Faith, Health, Family) alongside your Omega vault!');
+    };
+
+    window.buildPreJanDoctoralSprint = async function() {
+      const today = getTodayIsoDate();
+      window.userAppState.customWorkflows = window.userAppState.customWorkflows || [];
+      window.userAppState.knowledgeVault = window.userAppState.knowledgeVault || [];
+      window.userAppState.tasks = window.userAppState.tasks || [];
+
+      const sprintWeeks = [
+        {
+          id: 'wf_doc_w1_' + Date.now(),
+          title: 'Doctoral Sprint Wk 1 (Nov 17–23): Research Stack & Problem Statement',
+          steps: '1. Configure Zotero/reference manager & folder taxonomy\n2. Draft 3 candidate research questions during Fajr-to-Sunrise block\n3. Complete 3/3 mastery quiz on Literature Synthesis Matrix'
+        },
+        {
+          id: 'wf_doc_w2_' + (Date.now() + 1),
+          title: 'Doctoral Sprint Wk 2 (Nov 24–30): 10 Seminal Papers Sweep',
+          steps: '1. Upload 2 foundational PDFs/day into Knowledge Vault (PDF.js auto-distill)\n2. Extract Research Question, Sample, Method & Limitation for each\n3. Run Dhuhr 20-min 3Q active-recall drills on extracted papers'
+        },
+        {
+          id: 'wf_doc_w3_' + (Date.now() + 2),
+          title: 'Doctoral Sprint Wk 3 (Dec 01–07): Theoretical & Conceptual Lens',
+          steps: '1. Map competing theoretical frameworks across your 10 seminal papers\n2. Identify unresolved theoretical boundary conditions\n3. Clear all Due Today spaced-repetition cards'
+        },
+        {
+          id: 'wf_doc_w4_' + (Date.now() + 3),
+          title: 'Doctoral Sprint Wk 4 (Dec 08–14): Research Methodology & Validity Drill',
+          steps: '1. Review quantitative, qualitative, and mixed-methods designs\n2. Audit internal, external, and construct validity threats\n3. Create 2 custom 3Q recall cards on target statistical/qualitative methods'
+        },
+        {
+          id: 'wf_doc_w5_' + (Date.now() + 4),
+          title: 'Doctoral Sprint Wk 5 (Dec 15–21): 1,500-Word Synthesis Draft',
+          steps: '1. Write 250 words/day during morning Fajr-to-Sunrise deep block\n2. Connect literature gaps directly to your proposed methodology\n3. Log daily word count and cognitive stamina in Muhasabah'
+        },
+        {
+          id: 'wf_doc_w6_' + (Date.now() + 5),
+          title: 'Doctoral Sprint Wk 6 (Dec 22–28): Syllabi, IRB & Semester Cadence',
+          steps: '1. Map January 2027 course syllabi and milestone deadlines\n2. Complete IRB / human-subjects ethics training prerequisites\n3. Lock in weekly reading, writing, and family shutdown boundaries'
+        },
+        {
+          id: 'wf_doc_w7_' + (Date.now() + 6),
+          title: 'Doctoral Sprint Wk 7 (Dec 29–Jan 4): Final Recall Audit & Day-1 Launch',
+          steps: '1. Execute full spaced-repetition sweep across all Doctoral vault cards\n2. Finalize 1-page research brief & Day-1 reading packet\n3. Launch January semester with prayer-anchored time blocks'
+        }
+      ];
+
+      const docModules = [
+        {
+          id: 'kv_doc_m1_' + Date.now(),
+          title: 'Doctoral Module 1: Crafting a Falsifiable Research Problem Statement',
+          domain: 'Doctoral Studies',
+          duration: '30-Min Doctoral Synthesis',
+          type: 'Doctoral Studies • 30-Min Doctoral Synthesis',
+          takeaway: 'A doctoral problem statement moves from broad context to specific empirical gap, demonstrating why resolving that gap matters theoretically and practically.',
+          content: 'Strong doctoral problem statements avoid broad topic summaries. Structure them in four moves: (1) Established consensus, (2) Specific empirical or theoretical contradiction/gap, (3) Consequences of leaving the gap unresolved, and (4) Purpose of the proposed inquiry.',
+          microSteps: [
+            '1. Core Structure: Consensus -> Specific Gap -> Consequence -> Purpose.',
+            '2. Morning Drill: Write 4 sentences following that exact sequence for your topic.',
+            '3. Active Recall: Verify your research question cannot be answered with a simple Yes/No.'
+          ],
+          quiz: [
+            { q: '1. What are the four structural moves of a tight doctoral problem statement?', a: 'Established consensus, specific empirical/theoretical gap, consequence of the gap, and purpose of the study.' },
+            { q: '2. Why should doctoral research questions avoid simple Yes/No phrasing?', a: 'Doctoral inquiry investigates mechanisms, relationships, variance, or lived processes rather than binary facts.' },
+            { q: '3. Applied Drill: What specific gap in existing literature does your target topic address?', a: 'Write a 2-sentence gap statement in your encrypted Journal today.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        },
+        {
+          id: 'kv_doc_m2_' + (Date.now() + 1),
+          title: 'Doctoral Module 2: Internal, External & Construct Validity Threats',
+          domain: 'Doctoral Studies',
+          duration: '20-Min Deep Sprint',
+          type: 'Doctoral Studies • 20-Min Deep Sprint',
+          takeaway: 'Evaluate every empirical study by testing whether observed effects are causal (internal), generalizable (external), and accurately measured (construct).',
+          content: 'Internal validity asks whether X truly caused Y without confounds (selection bias, maturation, history, attrition). External validity tests generalizability across populations and settings. Construct validity verifies that instruments measure the intended theoretical construct.',
+          microSteps: [
+            '1. Core Distinction: Internal = causality; External = generalizability; Construct = measurement accuracy.',
+            '2. Critique Drill: Identify 1 validity threat in the last paper you read.',
+            '3. Active Recall: Explain how triangulation or control variables mitigate that threat.'
+          ],
+          quiz: [
+            { q: '1. What is the difference between internal validity and external validity?', a: 'Internal validity establishes causal inference within the study; external validity establishes generalizability beyond the sample/setting.' },
+            { q: '2. Name three common threats to internal validity in longitudinal or observational studies.', a: 'Selection bias, history/external events, maturation, and differential attrition.' },
+            { q: '3. Applied Drill: How does construct validity protect your instrumentation choice?', a: 'It ensures operationalized scores accurately reflect the underlying theoretical construct.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        },
+        {
+          id: 'kv_doc_m3_' + (Date.now() + 2),
+          title: 'Doctoral Module 3: Mixed-Methods Integration (Convergent & Explanatory)',
+          domain: 'Doctoral Studies',
+          duration: '20-Min Deep Sprint',
+          type: 'Doctoral Studies • 20-Min Deep Sprint',
+          takeaway: 'Mixed-methods rigor depends on explicit integration points—connecting quantitative breadth with qualitative mechanism depth.',
+          content: 'In convergent parallel designs, quantitative and qualitative strands are collected concurrently and merged via joint displays. In explanatory sequential designs (QUAN -> qual), qualitative interviews explain outliers or mechanisms found in quantitative models.',
+          microSteps: [
+            '1. Core Designs: Convergent Parallel (QUAN + QUAL) vs. Explanatory Sequential (QUAN -> qual).',
+            '2. Integration Rule: Always specify the exact point of interface (joint display or purposive sampling).',
+            '3. Active Recall: Decide which design best fits your primary research question.'
+          ],
+          quiz: [
+            { q: '1. How does an explanatory sequential (QUAN -> qual) design use qualitative data?', a: 'It uses qualitative inquiry to explain mechanisms, nuances, or outliers identified in the initial quantitative phase.' },
+            { q: '2. What tool is used in convergent mixed-methods designs to merge quantitative and qualitative findings?', a: 'A joint display matrix aligning statistical results with qualitative themes.' },
+            { q: '3. Applied Drill: Where would integration occur in a mixed-methods study of your topic?', a: 'Specify whether integration happens at participant selection, data merging, or interpretation.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        }
+      ];
+
+      const docTasks = [
+        { id: 't_doc_1_' + Date.now(), title: 'Doctoral Fajr Block (30m): Read & extract 1 seminal paper into Literature Matrix', completed: false },
+        { id: 't_doc_2_' + (Date.now() + 1), title: 'Doctoral Dhuhr Sprint (20m): Clear Due Today 3Q spaced-repetition quizzes', completed: false }
+      ];
+
+      window.userAppState.customWorkflows = [...sprintWeeks, ...window.userAppState.customWorkflows];
+      window.userAppState.knowledgeVault = [...docModules, ...window.userAppState.knowledgeVault];
+      window.userAppState.tasks = [...docTasks, ...window.userAppState.tasks];
+      window.activePolymathDomain = 'Doctoral Studies';
+
+      renderAllUI();
+      await pushCloudUserData();
+      switchTab('tab-workflows');
+      alert('7-Week Pre-January Doctoral Research Sprint (Nov 17 – Jan 4) generated in Agent Workflows, with 3 Doctoral Modules added to your Knowledge Vault!');
     };
 
     function renderPolymathVaultUI(vault) {
