@@ -15,6 +15,11 @@
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#020617">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="HiveAlign">
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-slate-950 min-h-screen flex flex-col">
 
@@ -29,6 +34,10 @@
         <a href="#science" onclick="showLandingView()" class="text-sm text-slate-300 hover:text-white transition hidden md:block">Science &amp; Studies</a>
         <a href="#privacy" onclick="showLandingView()" class="text-sm text-slate-300 hover:text-white transition hidden md:block">Zero-Knowledge Privacy</a>
         
+                <button type="button" id="pwa-install-btn" onclick="triggerPwaInstall()" class="hidden px-3 py-1.5 bg-indigo-950 hover:bg-indigo-900 border border-indigo-700/70 text-indigo-200 font-bold rounded-lg text-xs transition items-center gap-1.5 shadow-sm" title="Install Hive Alignment as Desktop/Mobile App">
+          <i data-lucide="download" class="w-3.5 h-3.5 text-indigo-400"></i> Install App
+        </button>
+
         <div id="auth-user-badge" class="hidden items-center gap-2">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" title="Zero-Knowledge Sync Active"></span>
           <span id="auth-user-name" class="px-3 py-1.5 rounded-lg bg-emerald-950/70 border border-emerald-800/40 text-emerald-300 text-xs font-semibold"></span>
@@ -959,6 +968,19 @@
   <footer class="py-6 px-6 text-center text-xs text-slate-500 border-t border-slate-900 mt-auto">
     <p>&copy; 2026 Hive Alignment. Open-source health &amp; performance architecture.</p>
   </footer>
+
+  <!-- OTA UPDATE TOAST BANNER -->
+  <div id="pwa-ota-banner" class="hidden fixed bottom-4 right-4 z-[9999] max-w-sm bg-slate-900 border border-emerald-500/70 rounded-2xl p-4 shadow-2xl flex items-center justify-between gap-3">
+    <div class="space-y-0.5">
+      <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> OTA Build Update Ready
+      </span>
+      <p id="pwa-ota-msg" class="text-xs text-slate-200">New cockpit features &amp; sync engine deployed.</p>
+    </div>
+    <button type="button" onclick="applyPwaOtaUpdateNow()" class="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs flex-shrink-0">
+      Update Now
+    </button>
+  </div>
 
   <!-- MODALS -->
   <!-- WHOOP & Wearables Connect / Sync Modal -->
@@ -5113,6 +5135,108 @@
       }
     };
 
+    // PWA INSTALL & OVER-THE-AIR (OTA) AUTO-UPDATE ENGINE
+    window.deferredPwaPrompt = null;
+    window.initialBuildFingerprint = null;
+    window.otaReloadPending = false;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      window.deferredPwaPrompt = e;
+      const btn = document.getElementById('pwa-install-btn');
+      if (btn) {
+        btn.classList.remove('hidden');
+        btn.classList.add('flex');
+      }
+    });
+
+    window.triggerPwaInstall = async function() {
+      if (!window.deferredPwaPrompt) {
+        alert('To install Hive Alignment: open your browser menu (⋮ or Share) and select "Install App" or "Add to Home Screen".');
+        return;
+      }
+      window.deferredPwaPrompt.prompt();
+      const choice = await window.deferredPwaPrompt.userChoice;
+      if (choice && choice.outcome === 'accepted') {
+        const btn = document.getElementById('pwa-install-btn');
+        if (btn) btn.classList.add('hidden');
+      }
+      window.deferredPwaPrompt = null;
+    };
+
+    window.applyPwaOtaUpdateNow = function() {
+      if (window.otaReloadPending) return;
+      window.otaReloadPending = true;
+      try { localStorage.setItem('sanctuary_user_state', JSON.stringify(window.userAppState)); } catch (e) {}
+      window.location.reload();
+    };
+
+    async function computeHtmlFingerprint() {
+      try {
+        const res = await fetch('./index.html?ota_ts=' + Date.now(), { cache: 'no-store' });
+        if (!res.ok) return null;
+        const text = await res.text();
+        const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+        return Array.from(new Uint8Array(buf)).slice(0, 8).map(b => b.toString(16).padStart(2, '0')).join('');
+      } catch (e) {
+        return null;
+      }
+    }
+
+    async function checkForOtaPushUpdate(autoApply) {
+      if (window._swReg) {
+        try { await window._swReg.update(); } catch (e) {}
+      }
+      const latestHash = await computeHtmlFingerprint();
+      if (!latestHash) return;
+      if (!window.initialBuildFingerprint) {
+        window.initialBuildFingerprint = latestHash;
+        return;
+      }
+      if (latestHash !== window.initialBuildFingerprint) {
+        const banner = document.getElementById('pwa-ota-banner');
+        const msg = document.getElementById('pwa-ota-msg');
+        if (banner) banner.classList.remove('hidden');
+        if (msg) msg.innerText = `New GitHub push detected (${latestHash}). Syncing latest cockpit build...`;
+        if (autoApply) {
+          setTimeout(() => window.applyPwaOtaUpdateNow(), 1400);
+        }
+      }
+    }
+
+    async function initPwaOtaEngine() {
+      window.initialBuildFingerprint = await computeHtmlFingerprint();
+      if ('serviceWorker' in navigator) {
+        try {
+          const reg = await navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' });
+          window._swReg = reg;
+          reg.addEventListener('updatefound', () => {
+            const newWorker = reg.installing;
+            if (!newWorker) return;
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                newWorker.postMessage({ type: 'SKIP_WAITING' });
+                const banner = document.getElementById('pwa-ota-banner');
+                if (banner) banner.classList.remove('hidden');
+              }
+            });
+          });
+          navigator.serviceWorker.addEventListener('controllerchange', () => {
+            window.applyPwaOtaUpdateNow();
+          });
+        } catch (err) {
+          console.warn('SW registration notice:', err);
+        }
+      }
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          checkForOtaPushUpdate(true);
+        }
+      });
+      setInterval(() => checkForOtaPushUpdate(true), 5 * 60 * 1000);
+    }
+
     // Initialize Icons, Session & Recovery Link Detection on Load
     window.addEventListener('DOMContentLoaded', async () => {
       if (window.lucide) lucide.createIcons();
@@ -5165,6 +5289,7 @@
         setTimeout(window.showChangePasswordModal, 400);
       }
       initIslamicFaithAndPrayerTimes();
+      initPwaOtaEngine();
     });
   </script>
 </body>

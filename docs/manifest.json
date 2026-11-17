@@ -1,0 +1,31 @@
+{
+  "name": "Hive Alignment | Personal Operating System",
+  "short_name": "HiveAlign",
+  "description": "Zero-Knowledge E2EE Personal Operating System: WHOOP 5.0, Garmin Connect+ & IQ, Salat Cadence, Doctoral Sprints, and Active-Recall Vault.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#020617",
+  "theme_color": "#10b981",
+  "categories": [
+    "health",
+    "productivity",
+    "education",
+    "lifestyle"
+  ],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%23020617'/%3E%3Crect x='24' y='24' width='464' height='464' rx='96' fill='none' stroke='%2310b981' stroke-width='16'/%3E%3Cpath d='M256 96L392 156V264C392 354 334 426 256 448C178 426 120 354 120 264V156L256 96Z' fill='%23064e3b' stroke='%2310b981' stroke-width='20'/%3E%3Cpath d='M204 264L240 300L316 216' fill='none' stroke='%2334d399' stroke-width='28' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%23020617'/%3E%3Crect x='24' y='24' width='464' height='464' rx='96' fill='none' stroke='%2310b981' stroke-width='16'/%3E%3Cpath d='M256 96L392 156V264C392 354 334 426 256 448C178 426 120 354 120 264V156L256 96Z' fill='%23064e3b' stroke='%2310b981' stroke-width='20'/%3E%3Cpath d='M204 264L240 300L316 216' fill='none' stroke='%2334d399' stroke-width='28' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
