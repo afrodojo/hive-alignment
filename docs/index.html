@@ -14,12 +14,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
   <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#020617">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="HiveAlign">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-slate-950 min-h-screen flex flex-col">
 
@@ -30,14 +30,12 @@
         <i data-lucide="shield-check" class="text-emerald-400 w-6 h-6"></i>
         <span class="font-bold text-lg tracking-tight text-white">Hive Alignment</span>
       </div>
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-3">
         <a href="#science" onclick="showLandingView()" class="text-sm text-slate-300 hover:text-white transition hidden md:block">Science &amp; Studies</a>
         <a href="#privacy" onclick="showLandingView()" class="text-sm text-slate-300 hover:text-white transition hidden md:block">Zero-Knowledge Privacy</a>
-        
-                <button type="button" id="pwa-install-btn" onclick="triggerPwaInstall()" class="hidden px-3 py-1.5 bg-indigo-950 hover:bg-indigo-900 border border-indigo-700/70 text-indigo-200 font-bold rounded-lg text-xs transition items-center gap-1.5 shadow-sm" title="Install Hive Alignment as Desktop/Mobile App">
+        <button type="button" id="pwa-install-btn" onclick="triggerPwaInstall()" class="hidden px-3 py-1.5 bg-indigo-950 hover:bg-indigo-900 border border-indigo-700/70 text-indigo-200 font-bold rounded-lg text-xs transition items-center gap-1.5 shadow-sm" title="Install Hive Alignment as Desktop/Mobile App">
           <i data-lucide="download" class="w-3.5 h-3.5 text-indigo-400"></i> Install App
         </button>
-
         <div id="auth-user-badge" class="hidden items-center gap-2">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" title="Zero-Knowledge Sync Active"></span>
           <span id="auth-user-name" class="px-3 py-1.5 rounded-lg bg-emerald-950/70 border border-emerald-800/40 text-emerald-300 text-xs font-semibold"></span>
@@ -48,7 +46,6 @@
             <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Exit
           </button>
         </div>
-
         <button type="button" id="brother-login-btn" onclick="showLoginModal()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-emerald-500/40 text-emerald-300 hover:text-white font-bold rounded-lg text-sm transition flex items-center gap-2 shadow-sm">
           <i data-lucide="lock" class="w-4 h-4 text-emerald-400"></i> Member Login
         </button>
@@ -90,7 +87,7 @@
         Master Your Battles: Faith, Duties, Strategy &amp; <span class="text-emerald-400">Athletic Vitality</span>
       </h1>
       <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">
-        A client-side encrypted personal operating system that syncs WHOOP 5.0, Garmin Connect+ &amp; IQ, Proton Drive folders, doctoral sprints, and active-recall quizzes.
+        A client-side encrypted personal operating system that syncs WHOOP 5.0, Garmin Connect+ &amp; IQ, Proton Drive folders, doctoral sprints, Quran &amp; Islamic scholarship, YouTube visual theater, and on-the-go audiobooks.
       </p>
       <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
         <button type="button" onclick="toggleCockpit(true)" class="px-8 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-emerald-500/10 transition flex items-center justify-center gap-2">
@@ -102,42 +99,26 @@
       </div>
     </section>
 
-    <!-- Science Section -->
     <section id="science" class="py-16 px-6 max-w-6xl mx-auto border-t border-slate-900">
       <div class="text-center max-w-2xl mx-auto space-y-3 mb-12">
         <h2 class="text-3xl font-bold tracking-tight text-white">Backed by Autonomic Science, Strategy &amp; Privacy</h2>
-        <p class="text-slate-400">Structured daily execution engineered around active-recall testing and wearable auto-regulation.</p>
+        <p class="text-slate-400">Structured daily execution engineered around active-recall testing, multi-modal A/V learning, and wearable auto-regulation.</p>
       </div>
-
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
-          <div class="w-10 h-10 rounded-xl bg-emerald-950 border border-emerald-800 flex items-center justify-center text-emerald-400">
-            <i data-lucide="shield-check"></i>
-          </div>
+          <div class="w-10 h-10 rounded-xl bg-emerald-950 border border-emerald-800 flex items-center justify-center text-emerald-400"><i data-lucide="shield-check"></i></div>
           <h3 class="text-xl font-bold text-white">Zero-Knowledge E2EE</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">
-            Your biometrics, Proton Drive archives, PDF papers, and quiz scores are encrypted with AES-GCM-256 in your browser before upload.
-          </p>
+          <p class="text-sm text-slate-400 leading-relaxed">Your biometrics, Proton Drive archives, books, PDF papers, and quiz scores are encrypted with AES-GCM-256 in your browser before upload.</p>
         </div>
-
         <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
-          <div class="w-10 h-10 rounded-xl bg-sky-950 border border-sky-800 flex items-center justify-center text-sky-400">
-            <i data-lucide="brain-circuit"></i>
-          </div>
-          <h3 class="text-xl font-bold text-white">Active-Recall Quiz Generator</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">
-            Every PDF, DOCX, Proton notebook section, or doctoral module automatically generates a 3-question self-quiz to lock in retention.
-          </p>
+          <div class="w-10 h-10 rounded-xl bg-sky-950 border border-sky-800 flex items-center justify-center text-sky-400"><i data-lucide="brain-circuit"></i></div>
+          <h3 class="text-xl font-bold text-white">Multi-Modal A/V &amp; 3Q Recall</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Convert any book chapter, Quran Surah, paper, or YouTube lecture into an on-the-go Audiobook, Visual Synthesis Video, and 3-question quiz.</p>
         </div>
-
         <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
-          <div class="w-10 h-10 rounded-xl bg-purple-950 border border-purple-800 flex items-center justify-center text-purple-400">
-            <i data-lucide="calendar"></i>
-          </div>
+          <div class="w-10 h-10 rounded-xl bg-purple-950 border border-purple-800 flex items-center justify-center text-purple-400"><i data-lucide="calendar"></i></div>
           <h3 class="text-xl font-bold text-white">Agentic Day Structuring</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">
-            Automatically converts your distilled micro-learning sessions, Salat windows, wearable gates, and duties into time-blocked focus windows.
-          </p>
+          <p class="text-sm text-slate-400 leading-relaxed">Synchronizes Salat windows, WHOOP/Garmin recovery gates, doctoral sprints, family presence, and Omega study drills.</p>
         </div>
       </div>
     </section>
@@ -150,14 +131,17 @@
         <h2 class="text-2xl font-bold text-white flex items-center gap-2">
           <i data-lucide="layout-dashboard" class="text-emerald-400"></i> Member Operations Cockpit
         </h2>
-        <p class="text-xs text-slate-400 mt-1">Encrypted Day Architect &bull; WHOOP &amp; Garmin Telemetry &bull; Polymath &amp; Omega Vault</p>
+        <p class="text-xs text-slate-400 mt-1">Encrypted Day Architect &bull; WHOOP &amp; Garmin Telemetry &bull; Doctoral, Islamic &amp; Omega Vault</p>
       </div>
       <div class="flex flex-wrap items-center gap-2">
-        <button type="button" onclick="openIngestModal('topic')" class="px-3 py-1.5 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
-          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Ingest PDF / Topic / URL
+        <button type="button" onclick="openLibraryResourceModal('Doctoral Book / Textbook')" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
+          <i data-lucide="book-open" class="w-3.5 h-3.5"></i> + Book / Quran / Scholar
+        </button>
+        <button type="button" onclick="openYouTubeModal('knowledge')" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5">
+          <i data-lucide="youtube" class="w-3.5 h-3.5"></i> + YouTube Video
         </button>
         <button type="button" onclick="openOnboardingModal()" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
-          <i data-lucide="sliders" class="w-3.5 h-3.5 text-emerald-400"></i> Tailor Battles &amp; Path
+          <i data-lucide="sliders" class="w-3.5 h-3.5 text-emerald-400"></i> Tailor Battles
         </button>
         <button type="button" onclick="triggerImmediateCloudSave()" class="px-3 py-1.5 bg-emerald-950 hover:bg-emerald-900 border border-emerald-800 text-emerald-300 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
           <i data-lucide="lock" class="w-3.5 h-3.5"></i> Encrypt &amp; Save
@@ -202,13 +186,11 @@
           <p class="text-xs text-slate-400">Harmonizing autonomic telemetry, obligations, and physical discipline.</p>
         </div>
       </div>
-
       <div class="flex flex-wrap items-center gap-2.5">
         <div class="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-800 text-xs">
           <button type="button" id="circle-btn-brothers" onclick="setSanctuaryCircle('brothers')" class="px-3 py-1.5 rounded-lg font-semibold transition bg-emerald-500 text-slate-950 shadow">Brothers</button>
           <button type="button" id="circle-btn-sisters" onclick="setSanctuaryCircle('sisters')" class="px-3 py-1.5 rounded-lg font-semibold transition text-slate-400 hover:text-white">Sisters</button>
         </div>
-
         <div class="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-800 text-xs">
           <button type="button" id="path-btn-islam" onclick="setSanctuaryPath('islam')" class="px-3 py-1.5 rounded-lg font-semibold transition bg-emerald-600/30 text-emerald-300 border border-emerald-500/40">☪ Islam</button>
           <button type="button" id="path-btn-christianity" onclick="setSanctuaryPath('christianity')" class="px-3 py-1.5 rounded-lg font-semibold transition text-slate-400 hover:text-white">✝ Christianity</button>
@@ -274,11 +256,14 @@
         </div>
       </div>
       <div class="flex flex-wrap items-center gap-2">
+        <button type="button" onclick="pullCloudUserData(true)" class="px-3 py-1.5 bg-slate-950 hover:bg-slate-800 border border-emerald-700/60 text-emerald-300 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Pull Cloud Sync
+        </button>
         <button type="button" onclick="openWearableConnectModal('whoop-api')" class="px-3 py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-slate-200 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
-          <i data-lucide="activity" class="w-3.5 h-3.5 text-emerald-400"></i> Sync / Connect Wearables
+          <i data-lucide="activity" class="w-3.5 h-3.5 text-emerald-400"></i> Gateway
         </button>
         <button type="button" onclick="switchTab('tab-wearables')" class="px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
-          Open Device Dashboards &rarr;
+          Device Dashboards &rarr;
         </button>
       </div>
     </div>
@@ -301,6 +286,7 @@
         </div>
       </div>
 
+      <!-- Tailored Micro-Learning Session Card -->
       <div class="bg-slate-900 border border-sky-900/50 rounded-2xl p-6 flex flex-col justify-between space-y-4 shadow-lg">
         <div>
           <div class="flex justify-between items-center border-b border-slate-800 pb-2.5">
@@ -316,16 +302,21 @@
             <p>3. Active Recall: Write 1-line summary in Journal.</p>
           </div>
         </div>
-        <div class="pt-2 border-t border-slate-800 flex justify-between items-center gap-2">
-          <span id="active-micro-domain" class="text-[11px] text-slate-400 truncate">Spiritual Physiology</span>
+        <div class="pt-2 border-t border-slate-800 flex flex-wrap justify-between items-center gap-1.5">
+          <span id="active-micro-domain" class="text-[11px] text-slate-400 truncate max-w-[110px]">Spiritual Physiology</span>
           <div class="flex items-center gap-1.5 flex-shrink-0">
-            <button type="button" id="active-micro-watch-btn" onclick="openActiveVideoTheater()" class="hidden px-2.5 py-1 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-bold transition items-center gap-1">
-              <i data-lucide="play-circle" class="w-3 h-3"></i> Watch
+            <button type="button" id="active-micro-watch-btn" onclick="openActiveVideoTheater()" class="hidden px-2 py-1 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-[11px] font-bold transition items-center gap-1">
+              <i data-lucide="play" class="w-3 h-3"></i> YT
             </button>
-            <button type="button" onclick="openActiveRecallQuiz()" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-slate-950 rounded-lg text-xs font-bold transition flex items-center gap-1">
-              <i data-lucide="help-circle" class="w-3 h-3"></i> Quiz (3Q)
+            <button type="button" onclick="launchActiveVaultAv('audio')" class="px-2 py-1 bg-indigo-950 hover:bg-indigo-900 border border-indigo-800 text-indigo-300 rounded-lg text-[11px] font-bold transition flex items-center gap-1" title="Listen as Audiobook">
+              <i data-lucide="headphones" class="w-3 h-3"></i> Audio
             </button>
-            <button type="button" onclick="switchTab('tab-knowledge')" class="px-2.5 py-1 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 rounded-lg text-xs font-semibold">Vault &rarr;</button>
+            <button type="button" onclick="launchActiveVaultAv('video')" class="px-2 py-1 bg-purple-950 hover:bg-purple-900 border border-purple-800 text-purple-300 rounded-lg text-[11px] font-bold transition flex items-center gap-1" title="Play Visual Synth Video">
+              <i data-lucide="monitor-play" class="w-3 h-3"></i> Video
+            </button>
+            <button type="button" onclick="openActiveRecallQuiz()" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-slate-950 rounded-lg text-[11px] font-bold transition flex items-center gap-1">
+              <i data-lucide="help-circle" class="w-3 h-3"></i> 3Q
+            </button>
           </div>
         </div>
       </div>
@@ -411,32 +402,32 @@
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h3 class="text-lg font-bold text-white flex items-center gap-2">
-              <i data-lucide="sparkles" class="text-sky-400 w-5 h-5"></i> Polymath Multi-Pillar Micro-Learning &amp; Doctoral Sprint Engine
+              <i data-lucide="sparkles" class="text-sky-400 w-5 h-5"></i> Doctoral, Sacred &amp; Polymath Multi-Modal Learning Engine
             </h3>
-            <p class="text-xs text-slate-400 mt-1">Structure every insight across Doctoral Studies (Jan 2027), Faith, Health, Family, and Omega into 20-minute sprints with 1d &rarr; 3d &rarr; 7d &rarr; 21d active-recall retention.</p>
+            <p class="text-xs text-slate-400 mt-1">Ingest books, peer-reviewed papers, Quran Surahs, books on Islamic scholars, PDFs, or YouTube lectures—then study via Audiobook, Visual Video, or 3Q Spaced Repetition.</p>
           </div>
           <div class="flex flex-wrap gap-2">
-            <button type="button" id="battle-autopull-tab-btn" onclick="autoPullForActiveBattles()" class="px-3.5 py-1.5 bg-rose-950 hover:bg-rose-900 border border-rose-800 text-rose-200 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm">
-              <i data-lucide="swords" class="w-3.5 h-3.5 text-rose-400"></i> Auto-Pull for Battles
+            <button type="button" onclick="openLibraryResourceModal('Doctoral Book / Textbook')" class="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm">
+              <i data-lucide="book-open" class="w-3.5 h-3.5"></i> + Book / Paper / Scholar
+            </button>
+            <button type="button" onclick="openYouTubeModal('knowledge')" class="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm">
+              <i data-lucide="youtube" class="w-3.5 h-3.5"></i> + YouTube Video
             </button>
             <label for="vault-ocr-input" class="cursor-pointer px-3.5 py-1.5 bg-sky-600 hover:bg-sky-500 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm">
               <i data-lucide="file-up" class="w-3.5 h-3.5"></i> Upload PDF / DOCX / Scan
             </label>
             <input type="file" id="vault-ocr-input" accept=".pdf,.docx,application/pdf,image/*,.txt,.md,.html,.json" class="hidden" onchange="handleVaultFileIngest(event)">
-            <button type="button" onclick="openYouTubeModal('knowledge')" class="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm">
-              <i data-lucide="youtube" class="w-3.5 h-3.5"></i> + YouTube Video
-            </button>
             <button type="button" onclick="openIngestModal('url')" class="px-3 py-1.5 bg-indigo-950 hover:bg-indigo-900 border border-indigo-800 text-indigo-300 font-semibold rounded-xl text-xs transition flex items-center gap-1.5">
               <i data-lucide="globe" class="w-3.5 h-3.5"></i> Web URL
             </button>
-            <button type="button" onclick="openIngestModal('paper')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl text-xs transition flex items-center gap-1.5">
-              <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Paste Text
+            <button type="button" id="battle-autopull-tab-btn" onclick="autoPullForActiveBattles()" class="px-3 py-1.5 bg-rose-950 hover:bg-rose-900 border border-rose-800 text-rose-200 font-bold rounded-xl text-xs transition flex items-center gap-1.5">
+              <i data-lucide="swords" class="w-3.5 h-3.5 text-rose-400"></i> Battle Study
             </button>
           </div>
         </div>
 
         <form onsubmit="handleAutoPullTopic(event)" class="flex flex-col sm:flex-row gap-2 pt-1">
-          <input type="text" id="auto-topic-input" required placeholder="e.g., Mixed methods research, Heart rate variability, Stoicism, Negotiation..." class="flex-grow bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500">
+          <input type="text" id="auto-topic-input" required placeholder="e.g., Mixed methods research, Al-Ghazali, Ibn Khaldun, Heart rate variability, Stoicism..." class="flex-grow bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500">
           <button type="submit" id="auto-topic-btn" class="px-5 py-2.5 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center justify-center gap-1.5 flex-shrink-0">
             <i data-lucide="download-cloud" class="w-4 h-4"></i> Auto-Pull &amp; Build Micro-Session
           </button>
@@ -445,17 +436,20 @@
 
         <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-800/80">
           <div class="flex flex-wrap items-center gap-2">
-            <button type="button" onclick="openLibraryResourceModal('Doctoral Book / Textbook')" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-md">
-              <i data-lucide="book-open" class="w-3.5 h-3.5"></i> + Book / Paper / Scholar
-            </button>
-            <button type="button" onclick="openCustomMicroSessionModal()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-md">
-              <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> + Custom Micro-Session
+            <button type="button" onclick="openCustomMicroSessionModal()" class="px-3.5 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-md">
+              <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> + Custom Session
             </button>
             <button type="button" onclick="buildPreJanDoctoralSprint()" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-md">
-              <i data-lucide="rocket" class="w-3.5 h-3.5"></i> Build Pre-Jan Doctoral Sprint
+              <i data-lucide="rocket" class="w-3.5 h-3.5"></i> 7-Wk Doctoral Sprint
+            </button>
+            <button type="button" onclick="loadDoctoralCanonPack()" class="px-3.5 py-2 bg-sky-950 hover:bg-sky-900 border border-sky-700/70 text-sky-200 font-bold rounded-xl text-xs transition flex items-center gap-1.5">
+              <i data-lucide="graduation-cap" class="w-3.5 h-3.5 text-sky-400"></i> Doctoral Books Pack
+            </button>
+            <button type="button" onclick="loadIslamicScholarsCanonPack()" class="px-3.5 py-2 bg-amber-950 hover:bg-amber-900 border border-amber-700/70 text-amber-200 font-bold rounded-xl text-xs transition flex items-center gap-1.5">
+              <i data-lucide="scroll-text" class="w-3.5 h-3.5 text-amber-400"></i> Islamic Scholars Pack
             </button>
             <button type="button" onclick="loadPolymathFivePillarPack()" class="px-3.5 py-2 bg-purple-950 hover:bg-purple-900 border border-purple-700/70 text-purple-200 font-bold rounded-xl text-xs transition flex items-center gap-1.5">
-              <i data-lucide="layers" class="w-3.5 h-3.5 text-purple-400"></i> Load 5-Pillar Polymath Pack
+              <i data-lucide="layers" class="w-3.5 h-3.5 text-purple-400"></i> 5-Pillar Pack
             </button>
           </div>
           <span id="retention-due-summary" class="text-[11px] font-mono text-amber-300 bg-amber-950/50 border border-amber-800/50 px-3 py-1 rounded-lg">
@@ -762,7 +756,7 @@
             <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
               <i data-lucide="compass" class="w-3.5 h-3.5"></i> Sacred Daily Cadence &bull; Live Salat Schedule
             </span>
-            <h3 class="text-lg font-extrabold text-white mt-0.5">Islamic Faith Path &amp; Prayer-Anchored Learning</h3>
+            <h3 class="text-lg font-extrabold text-white mt-0.5">Islamic Faith Path, Quran &amp; Scholars Library</h3>
             <p id="salat-location-label" class="text-xs text-slate-400 mt-0.5">Syncing daily prayer windows to structure Quran, Hadith, and doctoral focus...</p>
           </div>
           <div class="flex flex-wrap items-center gap-2">
@@ -770,17 +764,17 @@
               <input type="text" id="salat-city-input" placeholder="City, State (e.g. Fredericksburg, VA)" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-slate-200 focus:outline-none focus:border-emerald-500">
               <button type="submit" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl transition">Sync Times</button>
             </form>
-            <button type="button" onclick="openLibraryResourceModal('Quran (Surah / Tafsir / Hifz)')" class="px-3.5 py-2 bg-sky-600 hover:bg-sky-500 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-md">
-              <i data-lucide="book" class="w-3.5 h-3.5"></i> + Quran Surah / Tafsir
+            <button type="button" onclick="openLibraryResourceModal('Quran (Surah / Tafsir / Hifz)')" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1">
+              <i data-lucide="book" class="w-3.5 h-3.5"></i> + Quran Surah
             </button>
-            <button type="button" onclick="openLibraryResourceModal('Book on Islamic Scholars')" class="px-3.5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-md">
-              <i data-lucide="library" class="w-3.5 h-3.5"></i> + Islamic Scholars Book
+            <button type="button" onclick="openLibraryResourceModal('Book on Islamic Scholars')" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1">
+              <i data-lucide="library" class="w-3.5 h-3.5"></i> + Scholars Book
             </button>
-            <button type="button" onclick="loadIslamicScholarsCanonPack()" class="px-3.5 py-2 bg-purple-950 hover:bg-purple-900 border border-purple-700/70 text-purple-200 font-bold rounded-xl text-xs transition flex items-center gap-1.5">
-              <i data-lucide="scroll-text" class="w-3.5 h-3.5 text-amber-400"></i> Load Scholars Canon
+            <button type="button" onclick="loadIslamicScholarsCanonPack()" class="px-3 py-1.5 bg-purple-950 hover:bg-purple-900 border border-purple-700 text-purple-200 font-bold rounded-xl text-xs transition">
+              Load Scholars Canon
             </button>
-            <button type="button" onclick="loadAllIslamicModulesToVault()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-md">
-              <i data-lucide="book-open-check" class="w-3.5 h-3.5"></i> Load All 5 Faith Paths
+            <button type="button" onclick="loadAllIslamicModulesToVault()" class="px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1">
+              <i data-lucide="book-open-check" class="w-3.5 h-3.5"></i> Load 5 Paths
             </button>
           </div>
         </div>
@@ -875,14 +869,14 @@
             </label>
             <input type="file" id="proton-omega-file-input" multiple accept=".zip,.md,.txt,.html,.htm,.pdf,.docx,.json,application/zip,application/pdf,application/json,image/*,audio/*" class="hidden" onchange="handleProtonOmegaFileUpload(event)">
 
-            <button type="button" onclick="openBrotherInviteModal('omega')" class="px-3.5 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-lg">
-              <i data-lucide="user-plus" class="w-3.5 h-3.5"></i> Invite Brothers to Study
-            </button>
-            <button type="button" onclick="buildFullOmegaLinePlan()" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-lg">
-              <i data-lucide="map" class="w-3.5 h-3.5"></i> Build 4-Phase Learning Plan
-            </button>
             <button type="button" onclick="openYouTubeModal('omega')" class="px-3.5 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-lg">
               <i data-lucide="youtube" class="w-3.5 h-3.5"></i> + YouTube Lecture
+            </button>
+            <button type="button" onclick="openBrotherInviteModal('omega')" class="px-3.5 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-lg">
+              <i data-lucide="user-plus" class="w-3.5 h-3.5"></i> Invite Brothers
+            </button>
+            <button type="button" onclick="buildFullOmegaLinePlan()" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-lg">
+              <i data-lucide="map" class="w-3.5 h-3.5"></i> 4-Phase Plan
             </button>
             <button type="button" onclick="openOmegaNoteModal()" class="px-3.5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-lg">
               <i data-lucide="plus" class="w-3.5 h-3.5"></i> Paste Note
@@ -976,12 +970,12 @@
         <span>Zero-Knowledge Architecture &amp; Privacy Shield (PII / PHI Compliant)</span>
       </div>
       <p class="leading-relaxed text-[11px] text-slate-300">
-        <strong>We do not store, process, or sell your unencrypted data.</strong> All reflections, biometrics, Proton Drive archives, uploaded PDF extracts, quiz scores, and tasks are encrypted in your local browser using military-grade <strong>AES-GCM-256</strong> prior to cloud transmission. Neither our servers nor database administrators possess your decryption keys.
+        <strong>We do not store, process, or sell your unencrypted data.</strong> All reflections, biometrics, Proton Drive archives, books, Quran study notes, uploaded PDF extracts, quiz scores, and tasks are encrypted in your local browser using military-grade <strong>AES-GCM-256</strong> prior to cloud transmission. Neither our servers nor database administrators possess your decryption keys.
       </p>
       <div class="flex flex-wrap gap-4 pt-1 text-[10px] text-slate-500 font-mono">
         <span>&bull; Client-Side WebCrypto, JSZip &amp; PDF.js</span>
         <span>&bull; PBKDF2 (250,000 Iterations)</span>
-        <span>&bull; Zero Plaintext Server Logs</span>
+        <span>&bull; Offline SpeechSynthesis A/V Engine</span>
       </div>
     </div>
   </div>
@@ -1001,6 +995,161 @@
     <button type="button" onclick="applyPwaOtaUpdateNow()" class="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs flex-shrink-0">
       Update Now
     </button>
+  </div>
+
+  <!-- MODALS -->
+  <!-- DOCTORAL BOOKS, ACADEMIC PAPERS, QURAN & ISLAMIC SCHOLARS LIBRARY MODAL -->
+  <div id="library-resource-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[1190] hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-amber-700/60 rounded-2xl max-w-2xl w-full p-6 space-y-4 shadow-2xl relative my-8">
+      <div class="flex justify-between items-start border-b border-slate-800 pb-3">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+            <i data-lucide="book-open" class="w-3.5 h-3.5"></i> Doctoral &amp; Sacred Knowledge Library
+          </span>
+          <h3 class="text-base font-bold text-white mt-0.5">Add Book, Academic Paper, Quran Passage, or Book on Islamic Scholars</h3>
+        </div>
+        <button type="button" onclick="closeLibraryResourceModal()" class="text-slate-400 hover:text-white text-xl leading-none">&times;</button>
+      </div>
+
+      <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-3 text-xs">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <span class="font-bold text-emerald-400 uppercase text-[10px]">One-Click Curated Canon Packs:</span>
+          <div class="flex flex-wrap gap-2">
+            <button type="button" onclick="loadDoctoralCanonPack()" class="px-3 py-1.5 bg-indigo-950 hover:bg-indigo-900 border border-indigo-700 text-indigo-200 font-bold rounded-lg text-[11px] transition">
+              + Doctoral Books &amp; Methodology Pack
+            </button>
+            <button type="button" onclick="loadIslamicScholarsCanonPack()" class="px-3 py-1.5 bg-amber-950 hover:bg-amber-900 border border-amber-700 text-amber-200 font-bold rounded-lg text-[11px] transition">
+              + Islamic Scholars Canon Pack
+            </button>
+          </div>
+        </div>
+
+        <div class="pt-2 border-t border-slate-800/80 space-y-1.5">
+          <label class="text-[10px] font-bold uppercase text-sky-400 block">Pull Any Quran Surah (Uthmani Arabic + Sahih International English):</label>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <select id="lib-quran-surah-select" class="flex-grow bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-slate-200">
+              <option value="1">1. Al-Fatihah (The Opener — 7 Ayahs)</option>
+              <option value="2">2. Al-Baqarah (Selected / Ayat al-Kursi 2:255)</option>
+              <option value="18">18. Al-Kahf (The Cave — Friday Anchor)</option>
+              <option value="36">36. Ya-Sin (Heart of the Quran)</option>
+              <option value="49">49. Al-Hujurat (Social Ethics &amp; Brotherhood)</option>
+              <option value="55">55. Ar-Rahman (The Most Merciful)</option>
+              <option value="67" selected>67. Al-Mulk (Nightly Isha Protection — 30 Ayahs)</option>
+              <option value="87">87. Al-A'la (The Most High)</option>
+              <option value="94">94. Ash-Sharh (Relief After Hardship)</option>
+              <option value="103">103. Al-Asr (Time &amp; Salvation)</option>
+              <option value="112">112. Al-Ikhlas (Pure Monotheism)</option>
+            </select>
+            <input type="text" id="lib-quran-ayah-range" placeholder="Ayahs (e.g. 1-10 or 255)" class="sm:w-48 bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-slate-200 font-mono">
+            <button type="button" id="lib-quran-fetch-btn" onclick="fetchQuranSurahIntoForm()" class="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl flex-shrink-0">
+              Pull Quran Text
+            </button>
+          </div>
+          <p id="lib-status-msg" class="text-[11px] text-emerald-300 hidden"></p>
+        </div>
+      </div>
+
+      <form onsubmit="handleSaveLibraryResource(event)" class="space-y-3 text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-400 block mb-1 font-medium">Resource Format</label>
+            <select id="lib-format-select" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
+              <option value="Doctoral Book / Textbook">Doctoral Book / Textbook</option>
+              <option value="Academic Paper (Peer-Reviewed)">Academic Paper (Peer-Reviewed)</option>
+              <option value="Quran (Surah / Tafsir / Hifz)">Quran (Surah / Tafsir / Hifz)</option>
+              <option value="Book on Islamic Scholars">Book on Islamic Scholars</option>
+              <option value="Classical Islamic Text (Turath)">Classical Islamic Text (Turath)</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1 font-medium">Life Pillar</label>
+            <select id="lib-domain-select" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
+              <option value="Doctoral Studies">Doctoral Studies (Jan 2027)</option>
+              <option value="Faith">Faith &amp; Islamic Scholarship</option>
+              <option value="Health">Health &amp; Vitality</option>
+              <option value="Family">Family &amp; Leadership</option>
+              <option value="Omega">Omega &amp; Heritage</option>
+              <option value="Polymath">Polymath Synthesis</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-400 block mb-1 font-medium">Book / Paper / Surah Title</label>
+            <input type="text" id="lib-title-input" required placeholder="e.g., Ihya Ulum al-Din, Research Design (Creswell), Surah Al-Mulk..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1 font-medium">Author / Islamic Scholar / Citation</label>
+            <input type="text" id="lib-author-input" placeholder="e.g., Imam Al-Ghazali, Creswell (2023), Sahih International..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-400 block mb-1 font-medium">Chapter / Ayah Range / DOI (Optional)</label>
+            <input type="text" id="lib-section-input" placeholder="e.g., Ch. 4 Mixed Methods, Ayahs 1-30, Book III..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200 font-mono">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1 font-medium">Attach Book/Paper File (PDF, DOCX, TXT - Optional)</label>
+            <input type="file" id="lib-file-attach" accept=".pdf,.docx,.txt,.md,application/pdf" onchange="handleLibraryFileAttach(event)" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-1.5 text-slate-300 text-[11px]">
+          </div>
+        </div>
+
+        <div>
+          <label class="text-slate-400 block mb-1 font-medium">Full Text, Chapter Excerpts, Tafsir, or Study Notes (Used for Audiobook, Video &amp; 3Q Quiz)</label>
+          <textarea id="lib-content-input" rows="5" required placeholder="Paste book chapter notes, paper abstract & findings, Quran translation + Tafsir, or scholar biography here..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200 font-mono"></textarea>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2 border-t border-slate-800">
+          <button type="button" onclick="closeLibraryResourceModal()" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl font-semibold">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl flex items-center gap-1.5">
+            <i data-lucide="save" class="w-3.5 h-3.5"></i> Save to Vault (Audio, Video &amp; 3Q Ready)
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- AUDIOBOOK & VISUAL SYNTH VIDEO PLAYER MODAL -->
+  <div id="av-synth-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[1230] hidden flex-col items-center justify-center p-4">
+    <div id="av-synth-card" class="bg-slate-900 border border-indigo-700/60 rounded-2xl w-full max-w-4xl overflow-hidden shadow-2xl flex flex-col h-[85vh] md:h-[600px] relative">
+      <div class="flex justify-between items-center p-4 border-b border-slate-800 bg-slate-950">
+        <div class="flex items-center gap-2 text-indigo-400">
+          <i data-lucide="play-circle" class="w-5 h-5"></i>
+          <span class="font-bold text-sm tracking-wide">Cognitive A/V Study Player</span>
+          <span id="av-mode-badge" class="ml-2 text-[10px] bg-indigo-900/50 text-indigo-300 px-2 py-0.5 rounded font-mono">AUDIOBOOK</span>
+        </div>
+        <button type="button" onclick="closeAvPlayer()" class="text-slate-400 hover:text-white text-xl leading-none">&times;</button>
+      </div>
+      
+      <div id="av-visual-screen" class="flex-grow bg-indigo-950 relative flex items-center justify-center p-8 text-center transition-colors duration-700 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent z-0"></div>
+        <h2 id="av-visual-text" class="text-2xl md:text-4xl font-extrabold text-white drop-shadow-2xl leading-tight z-10 px-4">Initializing Study Narration...</h2>
+        <div class="absolute bottom-4 left-6 right-6 flex justify-between items-center text-xs font-mono text-slate-300 z-10">
+          <span id="av-visual-progress">0%</span>
+          <span id="av-visual-topic" class="truncate max-w-[65%]">Topic Name</span>
+        </div>
+      </div>
+
+      <div class="p-4 bg-slate-950 border-t border-slate-800 flex flex-col gap-3">
+        <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+          <div id="av-progress-bar" class="bg-indigo-500 h-full w-0 transition-all duration-300"></div>
+        </div>
+        <div class="flex justify-between items-center">
+          <div class="flex items-center gap-4">
+            <button type="button" onclick="avPrevChunk()" class="text-slate-400 hover:text-white transition" title="Previous Slide/Sentence"><i data-lucide="skip-back" class="w-5 h-5"></i></button>
+            <button type="button" onclick="avTogglePlay()" id="av-btn-play" class="text-white hover:text-indigo-400 transition"><i data-lucide="play" class="w-6 h-6 fill-current"></i></button>
+            <button type="button" onclick="avNextChunk()" class="text-slate-400 hover:text-white transition" title="Next Slide/Sentence"><i data-lucide="skip-forward" class="w-5 h-5"></i></button>
+            <button type="button" onclick="avStop()" class="text-slate-400 hover:text-rose-400 transition" title="Stop"><i data-lucide="square" class="w-5 h-5 fill-current"></i></button>
+          </div>
+          <div class="flex items-center gap-3">
+            <select id="av-voice-select" onchange="avChangeVoice()" class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-slate-300 max-w-[150px] truncate focus:outline-none"></select>
+            <button type="button" onclick="avCycleSpeed()" id="av-btn-speed" class="text-xs font-bold text-slate-200 bg-slate-800 px-3 py-1.5 rounded-lg hover:bg-slate-700 transition w-16 text-center">1.00x</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Add YouTube Video Reference & Visual Learning Modal -->
@@ -1027,7 +1176,6 @@
         <p id="yt-fetch-status" class="text-[11px] text-rose-300 hidden"></p>
       </div>
 
-      <!-- Live Video Thumbnail & Embed Preview -->
       <div id="yt-preview-card" class="hidden p-3 bg-slate-950 rounded-xl border border-slate-800 flex items-center gap-3">
         <img id="yt-preview-thumb" src="" alt="Video Thumbnail" class="w-28 h-16 object-cover rounded-lg border border-slate-700 flex-shrink-0">
         <div class="min-w-0 flex-1">
@@ -1134,175 +1282,22 @@
     </div>
   </div>
 
-  <!-- AUDIOBOOK & VISUAL SYNTH VIDEO PLAYER MODAL -->
-  <div id="av-synth-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[1230] hidden flex-col items-center justify-center p-4">
-    <div class="bg-slate-900 border border-indigo-700/60 rounded-2xl w-full max-w-4xl overflow-hidden shadow-2xl flex flex-col h-[85vh] md:h-[600px] relative">
-      <!-- Header -->
-      <div class="flex justify-between items-center p-4 border-b border-slate-800 bg-slate-950">
-        <div class="flex items-center gap-2 text-indigo-400">
-          <i data-lucide="play-circle" class="w-5 h-5"></i>
-          <span class="font-bold text-sm tracking-wide">Cognitive A/V Player</span>
-          <span id="av-mode-badge" class="ml-2 text-[10px] bg-indigo-900/50 text-indigo-300 px-2 py-0.5 rounded font-mono">AUDIOBOOK</span>
-        </div>
-        <button type="button" onclick="closeAvPlayer()" class="text-slate-400 hover:text-white"><i data-lucide="x"></i></button>
-      </div>
-      
-      <!-- Visual Video Screen -->
-      <div id="av-visual-screen" class="flex-grow bg-black relative flex items-center justify-center p-8 text-center transition-colors duration-1000 overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-0"></div>
-        <h2 id="av-visual-text" class="text-3xl md:text-5xl font-extrabold text-white drop-shadow-2xl leading-tight transition-opacity duration-300 z-10 px-4">Initializing Synth...</h2>
-        <div class="absolute bottom-4 left-6 right-6 flex justify-between items-center text-xs font-mono text-slate-400 z-10">
-          <span id="av-visual-progress">0%</span>
-          <span id="av-visual-topic" class="truncate max-w-[60%]">Topic Name</span>
-        </div>
-      </div>
-
-      <!-- Controls -->
-      <div class="p-4 bg-slate-950 border-t border-slate-800 flex flex-col gap-4">
-        <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden cursor-pointer" id="av-progress-bar-container">
-          <div id="av-progress-bar" class="bg-indigo-500 h-full w-0 transition-all duration-300"></div>
-        </div>
-        <div class="flex justify-between items-center">
-          <div class="flex items-center gap-5">
-            <button type="button" onclick="avTogglePlay()" id="av-btn-play" class="text-white hover:text-indigo-400 transition"><i data-lucide="play" class="w-6 h-6 fill-current"></i></button>
-            <button type="button" onclick="avStop()" class="text-slate-400 hover:text-white transition"><i data-lucide="square" class="w-5 h-5 fill-current"></i></button>
-          </div>
-          <div class="flex items-center gap-3">
-            <select id="av-voice-select" onchange="avChangeVoice()" class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-slate-300 max-w-[130px] truncate focus:outline-none"></select>
-            <button type="button" onclick="avCycleSpeed()" id="av-btn-speed" class="text-xs font-bold text-slate-200 bg-slate-800 px-3 py-1.5 rounded-lg hover:bg-slate-700 transition w-14 text-center">1.0x</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- DOCTORAL BOOKS, ACADEMIC PAPERS, QURAN & ISLAMIC SCHOLARS LIBRARY MODAL -->
-  <div id="library-resource-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[1190] hidden flex items-center justify-center p-4 overflow-y-auto">
-    <div class="bg-slate-900 border border-amber-700/60 rounded-2xl max-w-2xl w-full p-6 space-y-4 shadow-2xl relative my-8">
-      <div class="flex justify-between items-start border-b border-slate-800 pb-3">
-        <div>
-          <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-            <i data-lucide="book-open" class="w-3.5 h-3.5"></i> Doctoral &amp; Sacred Knowledge Library
-          </span>
-          <h3 class="text-base font-bold text-white mt-0.5">Add Book, Academic Paper, Quran Passage, or Book on Islamic Scholars</h3>
-        </div>
-        <button type="button" onclick="closeLibraryResourceModal()" class="text-slate-400 hover:text-white text-xl leading-none">&times;</button>
-      </div>
-
-      <!-- Quick Starter Packs & Live Quran Fetcher Bar -->
-      <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-3 text-xs">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <span class="font-bold text-emerald-400 uppercase text-[10px]">One-Click Curated Canon Packs:</span>
-          <div class="flex flex-wrap gap-2">
-            <button type="button" onclick="loadDoctoralCanonPack()" class="px-3 py-1.5 bg-indigo-950 hover:bg-indigo-900 border border-indigo-700 text-indigo-200 font-bold rounded-lg text-[11px] transition">
-              + Doctoral Books &amp; Methodology Pack
-            </button>
-            <button type="button" onclick="loadIslamicScholarsCanonPack()" class="px-3 py-1.5 bg-amber-950 hover:bg-amber-900 border border-amber-700 text-amber-200 font-bold rounded-lg text-[11px] transition">
-              + Islamic Scholars Canon Pack
-            </button>
-          </div>
-        </div>
-
-        <!-- Live Quran Surah & Translation Auto-Pull -->
-        <div class="pt-2 border-t border-slate-800/80 space-y-1.5">
-          <label class="text-[10px] font-bold uppercase text-sky-400 block">Pull Any Quran Surah (Arabic + Sahih International English):</label>
-          <div class="flex flex-col sm:flex-row gap-2">
-            <select id="lib-quran-surah-select" class="flex-grow bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-slate-200">
-              <option value="1">1. Al-Fatihah (The Opener — 7 Ayahs)</option>
-              <option value="2">2. Al-Baqarah (Selected / Ayat al-Kursi 2:255)</option>
-              <option value="18">18. Al-Kahf (The Cave — Friday Anchor)</option>
-              <option value="36">36. Ya-Sin (Heart of the Quran)</option>
-              <option value="49">49. Al-Hujurat (Social Ethics &amp; Brotherhood)</option>
-              <option value="55">55. Ar-Rahman (The Most Merciful)</option>
-              <option value="67" selected>67. Al-Mulk (Nightly Isha Protection — 30 Ayahs)</option>
-              <option value="87">87. Al-A'la (The Most High)</option>
-              <option value="94">94. Ash-Sharh (Relief After Hardship)</option>
-              <option value="103">103. Al-Asr (Time &amp; Salvation)</option>
-              <option value="112">112. Al-Ikhlas (Pure Monotheism)</option>
-            </select>
-            <input type="text" id="lib-quran-ayah-range" placeholder="Ayahs (e.g. 1-10 or 255, optional)" class="sm:w-48 bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-slate-200 font-mono">
-            <button type="button" id="lib-quran-fetch-btn" onclick="fetchQuranSurahIntoForm()" class="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl flex-shrink-0">
-              Pull Quran Text
-            </button>
-          </div>
-          <p id="lib-status-msg" class="text-[11px] text-emerald-300 hidden"></p>
-        </div>
-      </div>
-
-      <form onsubmit="handleSaveLibraryResource(event)" class="space-y-3 text-xs">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label class="text-slate-400 block mb-1 font-medium">Resource Format</label>
-            <select id="lib-format-select" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
-              <option value="Doctoral Book / Textbook">Doctoral Book / Textbook</option>
-              <option value="Academic Paper (Peer-Reviewed)">Academic Paper (Peer-Reviewed)</option>
-              <option value="Quran (Surah / Tafsir / Hifz)">Quran (Surah / Tafsir / Hifz)</option>
-              <option value="Book on Islamic Scholars">Book on Islamic Scholars</option>
-              <option value="Classical Islamic Text (Turath)">Classical Islamic Text (Turath)</option>
-            </select>
-          </div>
-          <div>
-            <label class="text-slate-400 block mb-1 font-medium">Life Pillar</label>
-            <select id="lib-domain-select" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
-              <option value="Doctoral Studies">Doctoral Studies (Jan 2027)</option>
-              <option value="Faith">Faith &amp; Islamic Scholarship</option>
-              <option value="Health">Health &amp; Vitality</option>
-              <option value="Family">Family &amp; Leadership</option>
-              <option value="Omega">Omega &amp; Heritage</option>
-              <option value="Polymath">Polymath Synthesis</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label class="text-slate-400 block mb-1 font-medium">Book / Paper / Surah Title</label>
-            <input type="text" id="lib-title-input" required placeholder="e.g., Ihya Ulum al-Din, Research Design (Creswell), Surah Al-Mulk..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
-          </div>
-          <div>
-            <label class="text-slate-400 block mb-1 font-medium">Author / Islamic Scholar / Citation</label>
-            <input type="text" id="lib-author-input" placeholder="e.g., Imam Al-Ghazali, Creswell (2023), Sahih International..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label class="text-slate-400 block mb-1 font-medium">Chapter / Ayah Range / DOI (Optional)</label>
-            <input type="text" id="lib-section-input" placeholder="e.g., Ch. 4 Mixed Methods, Ayahs 1-30, Book III..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200 font-mono">
-          </div>
-          <div>
-            <label class="text-slate-400 block mb-1 font-medium">Attach Book/Paper File (PDF, DOCX, TXT - Optional)</label>
-            <input type="file" id="lib-file-attach" accept=".pdf,.docx,.txt,.md,application/pdf" onchange="handleLibraryFileAttach(event)" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-1.5 text-slate-300 text-[11px]">
-          </div>
-        </div>
-
-        <div>
-          <label class="text-slate-400 block mb-1 font-medium">Full Text, Chapter Excerpts, Tafsir, or Study Notes (Used for Audiobook, Video &amp; 3Q Quiz)</label>
-          <textarea id="lib-content-input" rows="5" required placeholder="Paste book chapter notes, paper abstract & findings, Quran translation + Tafsir, or scholar biography here..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200 font-mono"></textarea>
-        </div>
-
-        <div class="flex justify-end gap-2 pt-2 border-t border-slate-800">
-          <button type="button" onclick="closeLibraryResourceModal()" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl font-semibold">Cancel</button>
-          <button type="submit" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl flex items-center gap-1.5">
-            <i data-lucide="save" class="w-3.5 h-3.5"></i> Save to Vault (Audio, Video &amp; 3Q Ready)
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODALS -->
   <!-- WHOOP & Wearables Connect / Sync Modal -->
   <div id="wearable-connect-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[1260] hidden flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-slate-900 border border-emerald-700/60 rounded-2xl max-w-xl w-full p-6 space-y-4 shadow-2xl relative my-8">
-      <div class="flex justify-between items-start border-b border-slate-800 pb-3">
+      <div class="flex justify-between items-start border-b border-slate-800 pb-3 gap-2">
         <div>
           <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
             <i data-lucide="activity" class="w-3.5 h-3.5"></i> Zero-Knowledge Telemetry Gateway
           </span>
           <h3 class="text-base font-bold text-white mt-0.5">Connect WHOOP 5.0, Garmin Connect+ / IQ &amp; Smart Scale</h3>
         </div>
-        <button type="button" onclick="closeWearableConnectModal()" class="text-slate-400 hover:text-white text-xl leading-none">&times;</button>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="pullCloudUserData(true)" class="px-2.5 py-1 bg-emerald-950 hover:bg-emerald-900 border border-emerald-700/70 text-emerald-300 font-bold rounded-lg text-[11px] transition flex items-center gap-1">
+            <i data-lucide="refresh-cw" class="w-3 h-3"></i> Pull Cloud Sync
+          </button>
+          <button type="button" onclick="closeWearableConnectModal()" class="text-slate-400 hover:text-white text-xl leading-none">&times;</button>
+        </div>
       </div>
 
       <div class="flex flex-wrap rounded-xl bg-slate-950 p-1 border border-slate-800 text-xs font-semibold gap-1">
@@ -1312,12 +1307,10 @@
         <button type="button" id="wtab-manual" onclick="switchWearableModalTab('manual')" class="flex-1 py-1.5 px-2 rounded-lg text-slate-400">Quick Sync</button>
       </div>
 
-      <!-- Panel 1: WHOOP API v2 -->
       <div id="wpanel-whoop-api" class="space-y-3 text-xs">
         <p class="text-slate-300 leading-relaxed">
           Sync directly from <strong>WHOOP Developer API v2</strong> (<code class="text-emerald-300">api.prod.whoop.com/developer/v2</code>) or via your scheduled GitHub Actions worker.
         </p>
-
         <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
           <label class="text-slate-400 block font-medium">Option A: Direct WHOOP Bearer Access Token Sync</label>
           <div class="flex gap-2">
@@ -1327,7 +1320,6 @@
             </button>
           </div>
         </div>
-
         <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-2.5">
           <label class="text-slate-400 block font-medium">Option B: HIVE Cognitive Telemetry OAuth 2.0 (Authorization Code Flow)</label>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -1356,7 +1348,6 @@
         </div>
       </div>
 
-      <!-- Panel 2: Garmin Connect+ & Connect IQ Settings -->
       <form id="wpanel-garmin-iq" onsubmit="handleSaveGarminConnectIQ(event)" class="hidden space-y-3 text-xs">
         <div class="p-3 bg-slate-950 rounded-xl border border-indigo-900/50 space-y-2.5">
           <div class="flex justify-between items-center">
@@ -1392,7 +1383,6 @@
             <input type="text" id="inp-gc-insight" value="Balanced workload (ACWR 1.03); prioritize aerobic Zone 2 and sleep consistency." class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-slate-200">
           </div>
         </div>
-
         <div class="p-3 bg-slate-950 rounded-xl border border-amber-900/40 space-y-2.5">
           <div class="flex justify-between items-center">
             <span class="font-bold text-amber-300 uppercase text-[10px]">Connect IQ (CIQ) Data Fields &amp; Watch Apps</span>
@@ -1421,14 +1411,12 @@
             <input type="text" id="inp-ciq-app" value="Tactical Field v4 • AlphaHRV • Hydration+" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-slate-200">
           </div>
         </div>
-
         <div class="flex justify-end gap-2 pt-1">
           <button type="button" onclick="closeWearableConnectModal()" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl font-semibold">Cancel</button>
           <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl">Encrypt &amp; Save Connect+ / IQ</button>
         </div>
       </form>
 
-      <!-- Panel 3: CSV / FIT / JSON File Upload -->
       <div id="wpanel-csv-import" class="hidden space-y-3 text-xs">
         <p class="text-slate-300 leading-relaxed">
           Upload exported <strong>WHOOP</strong> (<code class="text-emerald-300">physiological_cycles.csv</code>, <code class="text-emerald-300">sleeps.csv</code>, <code class="text-emerald-300">workouts.csv</code>, <code class="text-emerald-300">journal_entries.csv</code>), <strong>Garmin Connect</strong> (<code class="text-sky-300">.csv</code> / <code class="text-sky-300">.fit</code>), or <code class="text-purple-300">.json</code> files.
@@ -1441,7 +1429,6 @@
         <input type="file" id="wearable-file-upload" accept=".csv,.json,.fit,text/csv,application/json" class="hidden" onchange="handleWearableFileImport(event)">
       </div>
 
-      <!-- Panel 4: Manual / Quick Telemetry Sync -->
       <form id="wpanel-manual" onsubmit="handleSaveManualWearableTelemetry(event)" class="hidden space-y-3 text-xs">
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
           <div>
@@ -1461,7 +1448,6 @@
             <input type="number" step="0.1" id="inp-w-strain" min="0" max="21" value="5.6" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200 font-mono">
           </div>
         </div>
-
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
           <div>
             <label class="text-slate-400 block mb-1">Sleep Perf %</label>
@@ -1480,7 +1466,6 @@
             <input type="number" id="inp-g-steps" min="0" max="60000" value="10450" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200 font-mono">
           </div>
         </div>
-
         <div class="grid grid-cols-3 gap-2.5">
           <div>
             <label class="text-slate-400 block mb-1">Weight (lbs)</label>
@@ -1495,7 +1480,6 @@
             <input type="number" step="0.1" id="inp-s-muscle" value="165.8" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200 font-mono">
           </div>
         </div>
-
         <div class="flex justify-end gap-2 pt-2">
           <button type="button" onclick="closeWearableConnectModal()" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl font-semibold">Cancel</button>
           <button type="submit" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl">Encrypt &amp; Update Dashboards</button>
@@ -1518,13 +1502,11 @@
         </div>
         <button type="button" onclick="closeCustomMicroSessionModal()" class="text-slate-400 hover:text-white text-xl leading-none">&times;</button>
       </div>
-
       <form onsubmit="handleSaveCustomMicroSession(event)" class="space-y-3 text-xs">
         <div>
           <label class="text-slate-400 block mb-1 font-medium">Session Title / Topic</label>
           <input type="text" id="cms-title" required placeholder="e.g., Mixed-Methods Doctoral Design, Surah Al-Asr, HRV Recovery..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200 focus:outline-none focus:border-emerald-500">
         </div>
-
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="text-slate-400 block mb-1 font-medium">Life Pillar / Domain</label>
@@ -1547,17 +1529,14 @@
             </select>
           </div>
         </div>
-
         <div>
           <label class="text-slate-400 block mb-1 font-medium">Core Takeaway / Anchor Thesis (Optional)</label>
           <input type="text" id="cms-takeaway" placeholder="One-sentence core insight you want permanently retained..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
         </div>
-
         <div>
           <label class="text-slate-400 block mb-1 font-medium">Study Notes, Excerpts, or Raw Ideas</label>
           <textarea id="cms-content" rows="4" required placeholder="Paste notes from a book, lecture, paper, or podcast..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200 font-mono"></textarea>
         </div>
-
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
           <div>
             <label class="text-slate-400 block mb-1">Custom Recall Question #1 (Optional)</label>
@@ -1568,7 +1547,6 @@
             <input type="text" id="cms-custom-a1" placeholder="Target answer for self-check..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200">
           </div>
         </div>
-
         <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
           <button type="button" onclick="closeCustomMicroSessionModal()" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl font-semibold">Cancel</button>
           <button type="submit" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl">Create &amp; Schedule Session</button>
@@ -1628,14 +1606,12 @@
         </div>
         <button type="button" onclick="closeBrotherInviteModal()" class="text-slate-400 hover:text-white text-xl leading-none">&times;</button>
       </div>
-
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
         <div class="space-y-3">
           <div>
             <label class="text-slate-400 block mb-1 font-medium">Session / Meeting Title</label>
             <input type="text" id="inv-title" required placeholder="e.g., Omega Founders & 3Q Recall Drill" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200 focus:outline-none focus:border-indigo-500">
           </div>
-
           <div class="grid grid-cols-2 gap-2">
             <div>
               <label class="text-slate-400 block mb-1 font-medium">Session Type</label>
@@ -1652,7 +1628,6 @@
               <input type="date" id="inv-date" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200">
             </div>
           </div>
-
           <div class="grid grid-cols-2 gap-2">
             <div>
               <label class="text-slate-400 block mb-1 font-medium">Start Time</label>
@@ -1668,7 +1643,6 @@
               </select>
             </div>
           </div>
-
           <div class="space-y-1.5">
             <label class="text-slate-400 font-medium block">Meeting Platform (Teams, Google Meet, Jitsi, Zoom)</label>
             <div class="flex flex-wrap gap-1.5 text-[10px]">
@@ -1679,7 +1653,6 @@
             </div>
             <input type="url" id="inv-room-url" placeholder="Paste Teams, Google Meet, Jitsi, or Zoom link here..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200 font-mono">
           </div>
-
           <div class="space-y-1">
             <div class="flex justify-between items-center">
               <label class="text-slate-400 font-medium">GroupMe Chat Link (Saved to Vault)</label>
@@ -1687,18 +1660,15 @@
             </div>
             <input type="url" id="inv-groupme-url" placeholder="https://groupme.com/join_group/... or https://web.groupme.com/chats" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200 font-mono">
           </div>
-
           <div>
             <label class="text-slate-400 block mb-1 font-medium">Agenda &amp; Study Focus</label>
             <textarea id="inv-agenda" rows="2" placeholder="Topics, 3Q drill targets, or action items..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200"></textarea>
           </div>
-
           <label class="flex items-center gap-2 cursor-pointer text-[11px] text-amber-300">
             <input type="checkbox" id="inv-include-seeker-code" checked class="rounded bg-slate-950 text-amber-500">
             <span>Include Seeker Vault access code (<code class="font-mono">OMEGA-1911</code>) in invite</span>
           </label>
         </div>
-
         <div class="bg-slate-950 border border-slate-800 rounded-xl p-3.5 flex flex-col justify-between space-y-3">
           <div class="space-y-2.5">
             <div class="flex justify-between items-center border-b border-slate-800 pb-2">
@@ -1707,44 +1677,26 @@
                 Auto-Extract from Rosters/BIOs
               </button>
             </div>
-
             <div class="grid grid-cols-3 gap-1.5">
               <input type="text" id="bro-add-name" placeholder="Name" class="bg-slate-900 border border-slate-800 rounded-lg px-2 py-1.5 text-slate-200">
               <input type="email" id="bro-add-email" placeholder="Email" class="bg-slate-900 border border-slate-800 rounded-lg px-2 py-1.5 text-slate-200">
-              <button type="button" onclick="addBrotherContact()" class="bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg px-2 py-1.5">
-                + Add
-              </button>
+              <button type="button" onclick="addBrotherContact()" class="bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg px-2 py-1.5">+ Add</button>
             </div>
-
             <div id="brother-contacts-list" class="max-h-48 overflow-y-auto space-y-1.5 pr-1"></div>
           </div>
-
           <div class="pt-2 border-t border-slate-800 space-y-1.5">
             <span class="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">Dispatch via Chat, Calendar &amp; Link:</span>
             <div class="grid grid-cols-2 gap-1.5">
-              <button type="button" onclick="dispatchBrotherInvite('groupme')" class="px-3 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl text-[11px] transition flex items-center justify-center gap-1">
-                <i data-lucide="message-square" class="w-3.5 h-3.5"></i> Copy &amp; Open GroupMe
-              </button>
-              <button type="button" onclick="dispatchBrotherInvite('copy')" class="px-3 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-[11px] transition flex items-center justify-center gap-1">
-                <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Text / Signal
-              </button>
-              <button type="button" onclick="dispatchBrotherInvite('gcal')" class="px-3 py-2 bg-emerald-950 hover:bg-emerald-900 border border-emerald-700 text-emerald-200 font-bold rounded-xl text-[11px] transition flex items-center justify-center gap-1">
-                <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Google Calendar
-              </button>
-              <button type="button" onclick="dispatchBrotherInvite('ics')" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-[11px] transition flex items-center justify-center gap-1">
-                <i data-lucide="calendar-plus" class="w-3.5 h-3.5"></i> Teams / Outlook .ICS
-              </button>
-              <button type="button" onclick="dispatchBrotherInvite('email')" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-xl text-[11px] transition flex items-center justify-center gap-1">
-                <i data-lucide="mail" class="w-3.5 h-3.5"></i> Send Email
-              </button>
-              <button type="button" onclick="dispatchBrotherInvite('link')" class="px-3 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-[11px] transition flex items-center justify-center gap-1">
-                <i data-lucide="link" class="w-3.5 h-3.5"></i> Copy Cockpit Link
-              </button>
+              <button type="button" onclick="dispatchBrotherInvite('groupme')" class="px-3 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl text-[11px] transition flex items-center justify-center gap-1"><i data-lucide="message-square" class="w-3.5 h-3.5"></i> Copy &amp; Open GroupMe</button>
+              <button type="button" onclick="dispatchBrotherInvite('copy')" class="px-3 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-[11px] transition flex items-center justify-center gap-1"><i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Text / Signal</button>
+              <button type="button" onclick="dispatchBrotherInvite('gcal')" class="px-3 py-2 bg-emerald-950 hover:bg-emerald-900 border border-emerald-700 text-emerald-200 font-bold rounded-xl text-[11px] transition flex items-center justify-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> Google Calendar</button>
+              <button type="button" onclick="dispatchBrotherInvite('ics')" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-[11px] transition flex items-center justify-center gap-1"><i data-lucide="calendar-plus" class="w-3.5 h-3.5"></i> Teams / Outlook .ICS</button>
+              <button type="button" onclick="dispatchBrotherInvite('email')" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-xl text-[11px] transition flex items-center justify-center gap-1"><i data-lucide="mail" class="w-3.5 h-3.5"></i> Send Email</button>
+              <button type="button" onclick="dispatchBrotherInvite('link')" class="px-3 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-[11px] transition flex items-center justify-center gap-1"><i data-lucide="link" class="w-3.5 h-3.5"></i> Copy Cockpit Link</button>
             </div>
           </div>
         </div>
       </div>
-
       <p id="brother-invite-status" class="hidden text-xs text-emerald-300 bg-emerald-950/60 border border-emerald-800/60 rounded-xl px-3.5 py-2 font-medium"></p>
     </div>
   </div>
@@ -1761,14 +1713,11 @@
         </div>
         <button type="button" onclick="closeRecallQuizModal()" class="text-slate-400 hover:text-white text-xl leading-none">&times;</button>
       </div>
-
       <div id="quiz-questions-container" class="space-y-4 text-xs"></div>
-
       <div id="quiz-score-banner" class="hidden p-3.5 rounded-xl bg-emerald-950/60 border border-emerald-800/70 text-emerald-300 text-xs flex justify-between items-center">
         <span id="quiz-score-text" class="font-bold">Recall Score Recorded!</span>
         <span class="text-[10px] font-mono text-emerald-400">Encrypted to Vault</span>
       </div>
-
       <div class="flex flex-wrap justify-between items-center gap-2 pt-2 border-t border-slate-800">
         <button type="button" onclick="revealAllQuizAnswers()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition">
           Check Answers &amp; Reveal Source Key
@@ -1777,9 +1726,7 @@
           <button type="button" onclick="recordQuizMastery(3)" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl text-xs transition">
             Mark 3/3 Mastered (+Spaced Interval)
           </button>
-          <button type="button" onclick="closeRecallQuizModal()" class="px-3.5 py-2 bg-slate-800 text-slate-300 rounded-xl text-xs font-semibold">
-            Close
-          </button>
+          <button type="button" onclick="closeRecallQuizModal()" class="px-3.5 py-2 bg-slate-800 text-slate-300 rounded-xl text-xs font-semibold">Close</button>
         </div>
       </div>
     </div>
@@ -1794,16 +1741,14 @@
         </h3>
         <button type="button" onclick="closeIngestModal()" class="text-slate-400 hover:text-white text-xl leading-none">&times;</button>
       </div>
-
       <div id="ingest-url-row" class="space-y-1.5 text-xs">
         <label class="text-slate-400 block font-medium">Website or Paper URL</label>
         <div class="flex gap-2">
-          <input type="url" id="ingest-url-input" placeholder="https://arxiv.org/abs/... or article URL" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-200 font-mono">
+          <input type="url" id="ingest-url-input" placeholder="https://arxiv.org/abs/... or yaqeeninstitute.org/..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-200 font-mono">
           <button type="button" id="ingest-fetch-btn" onclick="fetchUrlIntoIngest()" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl flex-shrink-0">Auto-Pull</button>
         </div>
         <p id="ingest-status-text" class="text-[11px] text-sky-300 hidden"></p>
       </div>
-
       <form onsubmit="handleSaveIngestedItem(event)" class="space-y-3 text-xs">
         <div class="grid grid-cols-2 gap-3">
           <div>
@@ -1825,17 +1770,14 @@
             </select>
           </div>
         </div>
-
         <div>
           <label class="text-slate-400 block mb-1">Auto-Extracted Thesis / Key Takeaway</label>
           <input type="text" id="ingest-takeaway-input" required placeholder="Auto-filled on PDF/URL pull or type your core objective" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200">
         </div>
-
         <div>
           <label class="text-slate-400 block mb-1">Excerpts / Extracted Text</label>
           <textarea id="ingest-content-input" rows="5" required placeholder="Upload a PDF, fetch a URL, or paste paper text here..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-slate-200 font-mono"></textarea>
         </div>
-
         <div class="flex justify-end gap-2 pt-2">
           <button type="button" onclick="closeIngestModal()" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl font-semibold">Cancel</button>
           <button type="submit" class="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl">Distill &amp; Build 3Q Quiz</button>
@@ -1884,7 +1826,6 @@
   <div id="brotherhood-password-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[99999] hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-emerald-900/40 rounded-2xl max-w-sm w-full p-6 space-y-5 shadow-2xl relative">
       <button type="button" onclick="closePasswordModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition text-xl leading-none">&times;</button>
-      
       <div id="pw-reset-request-view" class="space-y-4">
         <div class="text-center space-y-1">
           <h3 class="text-lg font-bold text-white tracking-tight">Reset Password</h3>
@@ -1896,15 +1837,10 @@
             <input type="email" id="reset-email-input" required placeholder="name@domain.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200">
           </div>
           <div id="reset-status-msg" class="hidden p-2.5 rounded-lg text-[11px] leading-tight"></div>
-          <button type="submit" id="reset-submit-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl transition">
-            Send Reset Instructions
-          </button>
-          <button type="button" onclick="returnToLoginModal()" class="w-full text-center text-slate-400 hover:text-white text-[11px] pt-1">
-            &larr; Back to Login
-          </button>
+          <button type="submit" id="reset-submit-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl transition">Send Reset Instructions</button>
+          <button type="button" onclick="returnToLoginModal()" class="w-full text-center text-slate-400 hover:text-white text-[11px] pt-1">&larr; Back to Login</button>
         </form>
       </div>
-
       <div id="pw-update-view" class="space-y-4 hidden">
         <div class="text-center space-y-1">
           <h3 class="text-lg font-bold text-white tracking-tight">Set New Password</h3>
@@ -1920,9 +1856,7 @@
             <input type="password" id="confirm-password-input" minlength="6" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200">
           </div>
           <div id="update-status-msg" class="hidden p-2.5 rounded-lg text-[11px] leading-tight"></div>
-          <button type="submit" id="update-submit-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl transition">
-            Save New Password
-          </button>
+          <button type="submit" id="update-submit-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl transition">Save New Password</button>
         </form>
       </div>
     </div>
@@ -2032,6 +1966,7 @@
     window.activePolymathDomain = 'All';
     window.pendingIncomingInvite = null;
     window.pendingWhoopAuthCode = null;
+    window.activeTheaterItemId = null;
 
     window.DEFAULT_PROTON_DRIVE_URL = 'https://drive.proton.me/u/1/pC4-NZ8H50HL9uc0AXs62lyyZHXWlu1ZD4zdKWtd2pPNsXykgBxOwE0ahcgrGo3g-SmqkaVNczhhMwNZ5TZfMQ==/folder/e0eLJ0PWkOuW4lJu3PTdCG5v-h-L8Qh5iaoGB1qBWDsS7xOKSE-uRnClcbaE2ZEULciuIWrV2ay0z-lvLTv8vA==';
 
@@ -2338,7 +2273,7 @@
       if (!Array.isArray(s.customWorkflows)) s.customWorkflows = [];
       if (!Array.isArray(s.brotherContacts)) s.brotherContacts = [];
       if (!s.checks || typeof s.checks !== 'object') s.checks = {};
-      if (!s.wearableTelemetry) s.wearableTelemetry = JSON.parse(JSON.stringify(window.DEFAULT_WEARABLE_TELEMETRY));
+      getWearableTelemetry();
     }
 
     window.enforceSeekerAccess = function() {
@@ -2935,9 +2870,9 @@
           tel.whoop.lastSync = `Imported Garmin FIT (${file.name})`;
         } else if (file.name.toLowerCase().endsWith('.json')) {
           const parsed = JSON.parse(await file.text());
-          if (parsed.whoop) Object.assign(tel.whoop, parsed.whoop);
-          if (parsed.garmin) Object.assign(tel.garmin, parsed.garmin);
-          if (parsed.scale) Object.assign(tel.scale, parsed.scale);
+          if (parsed.whoop) Object.assign(tel.whoop, cleanDefinedProps(parsed.whoop));
+          if (parsed.garmin) Object.assign(tel.garmin, cleanDefinedProps(parsed.garmin));
+          if (parsed.scale) Object.assign(tel.scale, cleanDefinedProps(parsed.scale));
           if (parsed.recovery_score != null) tel.whoop.recovery = Math.round(parsed.recovery_score);
           if (parsed.hrv != null) tel.whoop.hrv = Math.round(parsed.hrv);
           if (parsed.rhr != null) tel.whoop.rhr = Math.round(parsed.rhr);
@@ -3080,6 +3015,780 @@
       renderAllUI();
       await pushCloudUserData();
       closeWearableConnectModal();
+    };
+
+    // DOCTORAL BOOKS, PAPERS, QURAN & ISLAMIC SCHOLARS LIBRARY ENGINE
+    window.openLibraryResourceModal = function(presetFormat) {
+      const fmtSel = document.getElementById('lib-format-select');
+      const domSel = document.getElementById('lib-domain-select');
+      const msgEl = document.getElementById('lib-status-msg');
+      if (msgEl) msgEl.classList.add('hidden');
+      if (fmtSel && presetFormat) {
+        fmtSel.value = presetFormat;
+        if (presetFormat.includes('Quran') || presetFormat.includes('Islamic')) {
+          if (domSel) domSel.value = 'Faith';
+        } else if (presetFormat.includes('Doctoral') || presetFormat.includes('Paper')) {
+          if (domSel) domSel.value = 'Doctoral Studies';
+        }
+      }
+      document.getElementById('library-resource-modal').classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.closeLibraryResourceModal = function() {
+      document.getElementById('library-resource-modal').classList.add('hidden');
+    };
+
+    window.launchIslamicModuleAv = async function(modId, mode) {
+      const item = ensureIslamicModuleInVault(modId);
+      if (!item) return;
+      renderAllUI();
+      await pushCloudUserData();
+      window.launchAvPlayer(item.id, mode);
+    };
+
+    window.launchActiveVaultAv = function(mode) {
+      const vault = window.userAppState.knowledgeVault || [];
+      if (!vault.length) {
+        alert('Add a book, paper, Quran Surah, or study card to your Knowledge Vault first.');
+        return;
+      }
+      window.launchAvPlayer(vault[0].id, mode);
+    };
+
+    window.fetchQuranSurahIntoForm = async function() {
+      const surahNum = document.getElementById('lib-quran-surah-select').value;
+      const rangeStr = (document.getElementById('lib-quran-ayah-range').value || '').trim();
+      const btn = document.getElementById('lib-quran-fetch-btn');
+      const msgEl = document.getElementById('lib-status-msg');
+
+      btn.disabled = true;
+      btn.innerText = 'Pulling Surah...';
+      if (msgEl) {
+        msgEl.classList.remove('hidden');
+        msgEl.innerText = 'Fetching Uthmani Arabic & Sahih International English translation...';
+      }
+
+      try {
+        const res = await fetch(`https://api.alquran.cloud/v1/surah/${surahNum}/editions/quran-uthmani,en.sahih`);
+        if (!res.ok) throw new Error(`AlQuran API returned HTTP ${res.status}`);
+        const json = await res.json();
+        const arData = json?.data?.[0];
+        const enData = json?.data?.[1];
+        if (!arData || !enData) throw new Error('Could not parse Surah payload.');
+
+        let startAyah = 1;
+        let endAyah = enData.ayahs.length;
+        if (rangeStr) {
+          if (rangeStr.includes('-')) {
+            const parts = rangeStr.split('-').map(n => parseInt(n.trim(), 10));
+            if (!isNaN(parts[0])) startAyah = Math.max(1, parts[0]);
+            if (!isNaN(parts[1])) endAyah = Math.min(enData.ayahs.length, parts[1]);
+          } else {
+            const single = parseInt(rangeStr, 10);
+            if (!isNaN(single)) {
+              startAyah = Math.max(1, single);
+              endAyah = Math.min(enData.ayahs.length, single);
+            }
+          }
+        } else if (endAyah > 15) {
+          endAyah = 15;
+        }
+
+        const compiledLines = [];
+        for (let i = startAyah - 1; i < endAyah; i++) {
+          const enAyah = enData.ayahs[i];
+          const arAyah = arData.ayahs[i];
+          if (enAyah) {
+            compiledLines.push(`[${surahNum}:${enAyah.numberInSurah}] ${enAyah.text}`);
+            if (arAyah) compiledLines.push(`Arabic: ${arAyah.text}`);
+          }
+        }
+
+        document.getElementById('lib-format-select').value = 'Quran (Surah / Tafsir / Hifz)';
+        document.getElementById('lib-domain-select').value = 'Faith';
+        document.getElementById('lib-title-input').value = `Surah ${enData.englishName} (${enData.englishNameTranslation})`;
+        document.getElementById('lib-author-input').value = 'Al-Quran Al-Kareem • Sahih International';
+        document.getElementById('lib-section-input').value = `Surah ${surahNum}, Ayahs ${startAyah}–${endAyah}`;
+        document.getElementById('lib-content-input').value = compiledLines.join('\n');
+
+        if (msgEl) {
+          msgEl.innerText = `Pulled Surah ${enData.englishName} (Ayahs ${startAyah}–${endAyah})! Add any personal Tafsir reflections below and click Save to Vault.`;
+        }
+      } catch (err) {
+        if (msgEl) msgEl.innerText = `Quran fetch notice: ${err.message}. You can paste any Ayahs & Tafsir manually below.`;
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Pull Quran Text';
+      }
+    };
+
+    window.handleLibraryFileAttach = async function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const msgEl = document.getElementById('lib-status-msg');
+      if (msgEl) {
+        msgEl.classList.remove('hidden');
+        msgEl.innerText = `Extracting text from "${file.name}" locally in browser...`;
+      }
+
+      const cleanName = file.name.replace(/\.[^/.]+$/, '').replace(/[_-]+/g, ' ').trim();
+      const titleEl = document.getElementById('lib-title-input');
+      if (titleEl && !titleEl.value.trim()) titleEl.value = cleanName;
+
+      try {
+        if (file.name.toLowerCase().endsWith('.pdf')) {
+          const { text, pageCount } = await extractTextFromPdfBuffer(await file.arrayBuffer());
+          document.getElementById('lib-content-input').value = text.slice(0, 9000);
+          if (msgEl) msgEl.innerText = `Extracted ${pageCount} PDF page(s) into study notes! Ready for Audiobook, Visual Synth & 3Q Quiz.`;
+        } else if (file.name.toLowerCase().endsWith('.docx')) {
+          const txt = await extractTextFromDocxBuffer(await file.arrayBuffer());
+          document.getElementById('lib-content-input').value = txt.slice(0, 9000);
+          if (msgEl) msgEl.innerText = `Extracted Word document text! Ready for Audiobook, Visual Synth & 3Q Quiz.`;
+        } else {
+          const txt = await file.text();
+          document.getElementById('lib-content-input').value = txt.slice(0, 9000);
+          if (msgEl) msgEl.innerText = `Loaded "${file.name}" into study notes!`;
+        }
+      } catch (err) {
+        if (msgEl) msgEl.innerText = `File read notice: ${err.message}`;
+      }
+    };
+
+    window.handleSaveLibraryResource = async function(e) {
+      if (e) e.preventDefault();
+      const resourceFormat = document.getElementById('lib-format-select').value;
+      const domain = document.getElementById('lib-domain-select').value;
+      const title = document.getElementById('lib-title-input').value.trim();
+      const author = document.getElementById('lib-author-input').value.trim();
+      const sectionRef = document.getElementById('lib-section-input').value.trim();
+      const content = document.getElementById('lib-content-input').value.trim();
+
+      const distilled = distillTextToMicroSession(title, content);
+      const today = getTodayIsoDate();
+
+      window.userAppState.knowledgeVault = window.userAppState.knowledgeVault || [];
+      window.userAppState.knowledgeVault.unshift({
+        id: 'kv_lib_' + Date.now(),
+        title,
+        domain,
+        resourceFormat,
+        author,
+        sectionRef,
+        duration: resourceFormat.includes('Book') ? '30-Min Book Synthesis' : '20-Min Deep Sprint',
+        type: `${domain} • ${resourceFormat}`,
+        takeaway: distilled.takeaway,
+        content,
+        microSteps: distilled.microSteps,
+        quiz: distilled.quiz,
+        masteryLevel: 0,
+        nextReviewDate: today,
+        quizScore: null,
+        date: today
+      });
+
+      document.getElementById('lib-title-input').value = '';
+      document.getElementById('lib-author-input').value = '';
+      document.getElementById('lib-section-input').value = '';
+      document.getElementById('lib-content-input').value = '';
+
+      window.activePolymathDomain = 'All';
+      renderAllUI();
+      await pushCloudUserData();
+      closeLibraryResourceModal();
+    };
+
+    window.loadIslamicScholarsCanonPack = async function() {
+      const today = getTodayIsoDate();
+      const scholarsPack = [
+        {
+          id: 'kv_sch_ghazali_' + Date.now(),
+          title: "Ihya' Ulum al-Din (Revival of the Religious Sciences)",
+          domain: 'Faith',
+          resourceFormat: 'Book on Islamic Scholars',
+          author: 'Imam Abu Hamid Al-Ghazali (d. 1111 CE)',
+          sectionRef: 'Quarter III: Disciplining the Soul & Guarding the Tongue',
+          duration: '30-Min Book Synthesis',
+          type: 'Faith • Book on Islamic Scholars',
+          takeaway: 'True scholarly knowledge transforms the inward heart (Qalb) through Mujahadah (self-discipline), silence, and sincerity rather than outward debate.',
+          content: 'Imam Al-Ghazali demonstrates in Ihya Ulum al-Din that knowledge without inward purification breeds pride. Disciplining the soul requires auditing intentions before speaking, guarding the tongue from backbiting and ostentation, and anchoring daily habits in remembrance of Allah.',
+          microSteps: [
+            '1. Core Thesis: Knowledge must purify the heart (Qalb) and refine character, not feed ego.',
+            '2. Tactical Drill: Audit speech today against Al-Ghazali’s perils of the tongue (ostentation, argumentativeness, backbiting).',
+            '3. Active Recall: Contrast outward knowledge with transformative inward certainty.'
+          ],
+          quiz: [
+            { q: '1. According to Imam Al-Ghazali in Ihya Ulum al-Din, what is the true purpose of sacred knowledge?', a: 'Purifying the inward heart (Qalb) and transforming character into sincere devotion rather than seeking status or debate.' },
+            { q: '2. Name two major perils of the tongue warned against in Quarter III of the Ihya.', a: 'Ostentation (Riya), backbiting (Gheebah), and contentious arguing for ego.' },
+            { q: '3. Applied Synthesis: How will you apply Al-Ghazali’s self-accounting (Muhasabah) tonight?', a: 'Review today’s intentions before Isha and correct one reactive habit.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        },
+        {
+          id: 'kv_sch_khaldun_' + (Date.now() + 1),
+          title: 'Al-Muqaddimah (Prolegomena to Universal History)',
+          domain: 'Faith',
+          resourceFormat: 'Book on Islamic Scholars',
+          author: 'Ibn Khaldun (d. 1406 CE)',
+          sectionRef: 'Book I: Social Cohesion (Asabiyyah) & Philosophy of Science',
+          duration: '30-Min Book Synthesis',
+          type: 'Faith • Book on Islamic Scholars',
+          takeaway: 'Ibn Khaldun pioneered empirical sociology and historiography, showing how Asabiyyah (social solidarity), justice, and institutional discipline sustain civilizations.',
+          content: 'In Al-Muqaddimah, Ibn Khaldun critiques unverified historical reporting and introduces Ilm al-Umran (science of human civilization). Civilizations rise through strong group solidarity (Asabiyyah), moral discipline, and equitable governance, and decline when luxury erodes solidarity and injustice destroys productivity.',
+          microSteps: [
+            '1. Core Thesis: Group solidarity (Asabiyyah) and justice form the backbone of resilient communities and institutions.',
+            '2. Methodological Insight: Always verify primary causes and social conditions rather than accepting surface narratives.',
+            '3. Active Recall: Connect Ibn Khaldun’s concept of Asabiyyah to brotherhood and leadership.'
+          ],
+          quiz: [
+            { q: '1. What Arabic term did Ibn Khaldun coin for social cohesion and group solidarity?', a: 'Asabiyyah.' },
+            { q: '2. According to Al-Muqaddimah, what factors trigger the decline of a civilization or institution?', a: 'Erosion of solidarity through luxury/complacency and injustice that undermines productive effort.' },
+            { q: '3. Applied Synthesis: How does Ibn Khaldun’s critical verification method aid doctoral research?', a: 'It demands testing historical and empirical claims against underlying structural evidence.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        },
+        {
+          id: 'kv_sch_nawawi_' + (Date.now() + 2),
+          title: 'Imam Al-Nawawi: Life, Ascetic Scholarship & Al-Arba’in',
+          domain: 'Faith',
+          resourceFormat: 'Book on Islamic Scholars',
+          author: 'Imam Yahya ibn Sharaf Al-Nawawi (d. 1277 CE)',
+          sectionRef: 'Hadith Canon & Principles of Legal/Spiritual Precision',
+          duration: '20-Min Deep Sprint',
+          type: 'Faith • Book on Islamic Scholars',
+          takeaway: 'Imam Al-Nawawi exemplifies intense scholarly devotion—authoring foundational Hadith and Fiqh works in 45 years through disciplined time stewardship and sincerity.',
+          content: 'Imam Al-Nawawi studied up to twelve lessons a day in Damascus while living with complete simplicity and courage in speaking truth to rulers. His Forty Hadith (Al-Arba’in) distills the comprehensive foundations of Islamic belief, ethics, and jurisprudence.',
+          microSteps: [
+            '1. Scholarly Model: Focused, distraction-free study paired with humble practice produces enduring works.',
+            '2. Core Canon: Master Al-Arba’in al-Nawawiyyah and Riyad as-Salihin as daily ethical anchors.',
+            '3. Active Recall: Apply Al-Nawawi’s time-stewardship discipline to your Fajr doctoral block.'
+          ],
+          quiz: [
+            { q: '1. How many lessons per day did Imam Al-Nawawi famously study during his formative years in Damascus?', a: 'Up to twelve lessons per day across Hadith, Fiqh, and Arabic sciences.' },
+            { q: '2. Which two Hadith compilations by Imam Al-Nawawi serve as universal primers on Prophetic ethics?', a: 'Al-Arba’in al-Nawawiyyah (Forty Hadith) and Riyad as-Salihin (Gardens of the Righteous).' },
+            { q: '3. Applied Synthesis: What distraction can you eliminate this week to honor Al-Nawawi’s focus?', a: 'Protect your morning Fajr-to-Sunrise study window with zero phone interruptions.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        },
+        {
+          id: 'kv_sch_contemp_' + (Date.now() + 3),
+          title: 'Islam and the Blackamerican & The Cultural Imperative',
+          domain: 'Faith',
+          resourceFormat: 'Book on Islamic Scholars',
+          author: 'Dr. Sherman A. Jackson & Dr. Umar Faruq Abd-Allah',
+          sectionRef: 'Contemporary Western & African-American Islamic Scholarship',
+          duration: '30-Min Book Synthesis',
+          type: 'Faith • Book on Islamic Scholars',
+          takeaway: 'Authentic Islamic scholarship engages indigenous heritage with classical Sunni jurisprudence, cultivating a confident, rooted Muslim identity.',
+          content: 'Dr. Sherman Jackson examines the historical trajectory of Islam among Black Americans and the distinction between immigrant Islam and indigenous Blackamerican Muslim identity. Dr. Umar Faruq Abd-Allah shows how classical Islamic law honors healthy local culture (Urf) like clear crystal reflecting light.',
+          microSteps: [
+            '1. Core Thesis: Classical Islam affirms healthy cultural identity (Urf) while upholding universal sacred law.',
+            '2. Intellectual Bridge: Connect Black American historical resilience with classical Islamic scholarship.',
+            '3. Active Recall: Articulate how rooted identity strengthens community uplift.'
+          ],
+          quiz: [
+            { q: '1. What metaphor does Dr. Umar Faruq Abd-Allah use to describe how Islam relates to healthy local culture (Urf)?', a: 'Like clear crystal water taking on the color of the bedrock beneath it while remaining pure.' },
+            { q: '2. What central theme does Dr. Sherman Jackson analyze in "Islam and the Blackamerican"?', a: 'The historical formation and intellectual agency of Blackamerican Muslims within the broader Muslim community.' },
+            { q: '3. Applied Synthesis: How does this scholarship inform community leadership and uplift?', a: 'It unites sacred integrity with authentic cultural literacy and service.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        }
+      ];
+
+      window.userAppState.knowledgeVault = [...scholarsPack, ...(window.userAppState.knowledgeVault || [])];
+      window.activePolymathDomain = 'Islamic Scholars';
+      renderAllUI();
+      await pushCloudUserData();
+      closeLibraryResourceModal();
+      switchTab('tab-knowledge');
+      alert('Loaded 4 Islamic Scholars Books & Modules (Al-Ghazali, Ibn Khaldun, Al-Nawawi, Jackson & Abd-Allah) into your vault with Audiobook, Video & 3Q Quizzes!');
+    };
+
+    window.loadDoctoralCanonPack = async function() {
+      const today = getTodayIsoDate();
+      const docCanon = [
+        {
+          id: 'kv_doc_creswell_' + Date.now(),
+          title: 'Research Design: Qualitative, Quantitative, and Mixed Methods Approaches',
+          domain: 'Doctoral Studies',
+          resourceFormat: 'Doctoral Book / Textbook',
+          author: 'John W. Creswell & J. David Creswell',
+          sectionRef: 'Part I: Philosophical Worldviews & Research Design Selection',
+          duration: '30-Min Book Synthesis',
+          type: 'Doctoral Studies • Doctoral Book / Textbook',
+          takeaway: 'Every rigorous doctoral study aligns three components: philosophical worldview (postpositivist, constructivist, transformative, pragmatic), research design, and specific methods.',
+          content: 'Creswell establishes that research design flows from philosophical assumptions: postpositivism tests deterministic hypotheses quantitatively; constructivism explores subjective meanings qualitatively; pragmatism integrates both via mixed methods around the research problem.',
+          microSteps: [
+            '1. Core Alignment: Worldview -> Design -> Data Collection & Analysis Methods.',
+            '2. Doctoral Check: Explicitly name your philosophical worldview in Chapter 1 and Chapter 3.',
+            '3. Active Recall: Match postpositivism, constructivism, and pragmatism to their primary designs.'
+          ],
+          quiz: [
+            { q: '1. What three components must align in Creswell’s framework for research design?', a: 'Philosophical worldview, research design, and specific research methods.' },
+            { q: '2. Which philosophical worldview underpins mixed-methods research by focusing on what works for the problem?', a: 'Pragmatism.' },
+            { q: '3. Applied Synthesis: Which worldview best anchors your planned January 2027 doctoral inquiry?', a: 'Write a 2-sentence justification linking your worldview to your data strategy.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        },
+        {
+          id: 'kv_doc_kuhn_' + (Date.now() + 1),
+          title: 'The Structure of Scientific Revolutions',
+          domain: 'Doctoral Studies',
+          resourceFormat: 'Doctoral Book / Textbook',
+          author: 'Thomas S. Kuhn',
+          sectionRef: 'Chapters II–IX: Normal Science, Anomalies & Paradigm Shifts',
+          duration: '30-Min Book Synthesis',
+          type: 'Doctoral Studies • Doctoral Book / Textbook',
+          takeaway: 'Academic fields advance through periods of puzzle-solving "normal science" punctuated by anomalies that trigger revolutionary paradigm shifts.',
+          content: 'Thomas Kuhn argues that scientific disciplines operate within shared paradigms until persistent anomalies accumulate that existing frameworks cannot explain, leading to crisis and a paradigm shift that redefines foundational questions and standards of evidence.',
+          microSteps: [
+            '1. Core Thesis: Normal science refines an existing paradigm; anomalies drive paradigm shifts.',
+            '2. Literature Strategy: Look for persistent anomalies or contradictions in your field’s dominant paradigm.',
+            '3. Active Recall: Define normal science, anomaly, and incommensurability.'
+          ],
+          quiz: [
+            { q: '1. What does Thomas Kuhn call day-to-day puzzle-solving research conducted within an established framework?', a: 'Normal science.' },
+            { q: '2. What triggers a scientific crisis and eventual paradigm shift?', a: 'Persistent anomalies that the prevailing paradigm cannot explain or resolve.' },
+            { q: '3. Applied Synthesis: What anomaly or unresolved tension exists in your target doctoral field?', a: 'Note one theoretical contradiction in your Literature Matrix.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        },
+        {
+          id: 'kv_doc_prisma_' + (Date.now() + 2),
+          title: 'Systematic Literature Review & Thematic Synthesis Protocol',
+          domain: 'Doctoral Studies',
+          resourceFormat: 'Academic Paper (Peer-Reviewed)',
+          author: 'Doctoral Methodology Series',
+          sectionRef: 'PRISMA Screening & Concept-Centric Matrix',
+          duration: '20-Min Deep Sprint',
+          type: 'Doctoral Studies • Academic Paper (Peer-Reviewed)',
+          takeaway: 'A concept-centric literature review maps authors against key theoretical constructs rather than listing summaries paper-by-paper.',
+          content: 'Following Webster & Watson and PRISMA guidelines, document search databases, inclusion/exclusion criteria, and code every paper into a concept matrix (Construct A, Construct B, Method, Sample, Key Finding, Gap).',
+          microSteps: [
+            '1. Core Rule: Build a concept-centric matrix (rows = papers, columns = constructs & methods).',
+            '2. Reproducibility: Log search strings, databases, and inclusion/exclusion counts.',
+            '3. Active Recall: Convert your concept matrix columns directly into literature review subheadings.'
+          ],
+          quiz: [
+            { q: '1. Why is a concept-centric literature matrix superior to an author-centric summary?', a: 'It synthesizes findings across studies by theoretical construct and reveals empirical gaps directly.' },
+            { q: '2. What elements are required for a reproducible systematic literature search?', a: 'Explicit databases, Boolean search strings, and documented inclusion/exclusion criteria.' },
+            { q: '3. Applied Synthesis: Identify 3 core constructs that will form the columns of your Literature Matrix.', a: 'List your 3 target constructs in your Journal today.' }
+          ],
+          masteryLevel: 0,
+          nextReviewDate: today,
+          quizScore: null,
+          date: today
+        }
+      ];
+
+      window.userAppState.knowledgeVault = [...docCanon, ...(window.userAppState.knowledgeVault || [])];
+      window.activePolymathDomain = 'Doctoral Studies';
+      renderAllUI();
+      await pushCloudUserData();
+      closeLibraryResourceModal();
+      switchTab('tab-knowledge');
+      alert('Loaded 3 Doctoral Books & Seminal Methodology Papers (Creswell, Kuhn, Systematic Review Protocol) into your vault!');
+    };
+
+    // COGNITIVE AUDIOBOOK & VISUAL VIDEO SYNTHESIS ENGINE
+    window.avSynthQueue = [];
+    window.avCurrentIndex = 0;
+    window.avIsPlaying = false;
+    window.avMode = 'audio';
+    window.avRate = 1.0;
+    window.avVoices = [];
+    window.avUtterance = null;
+
+    function initVoices() {
+      if (!('speechSynthesis' in window)) return;
+      window.avVoices = speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
+      const sel = document.getElementById('av-voice-select');
+      if (sel && window.avVoices.length) {
+        sel.innerHTML = window.avVoices.map((v, i) => `<option value="${i}">${v.name.replace('Google', 'Synth').replace('Microsoft', 'Synth')}</option>`).join('');
+      }
+    }
+    if ('speechSynthesis' in window && speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = initVoices;
+    }
+
+    window.launchAvPlayer = function(itemId, mode) {
+      const vault = window.userAppState.knowledgeVault || [];
+      const omega = window.userAppState.omegaNotebooks || [];
+      const item = vault.find(v => v.id === itemId) || omega.find(o => o.id === itemId);
+      if (!item) return;
+
+      window.avMode = mode || 'audio';
+      document.getElementById('av-mode-badge').innerText = window.avMode === 'video' ? 'VISUAL SYNTH VIDEO' : 'AUDIOBOOK MODE';
+      const screen = document.getElementById('av-visual-screen');
+      const card = document.getElementById('av-synth-card');
+
+      if (window.avMode === 'video') {
+        screen.classList.remove('hidden');
+        screen.classList.add('flex');
+        if (card) card.className = 'bg-slate-900 border border-indigo-700/60 rounded-2xl w-full max-w-4xl overflow-hidden shadow-2xl flex flex-col h-[85vh] md:h-[600px] relative';
+      } else {
+        screen.classList.remove('hidden');
+        screen.classList.add('flex');
+        if (card) card.className = 'bg-slate-900 border border-indigo-700/60 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col h-auto min-h-[340px] relative';
+      }
+
+      document.getElementById('av-visual-topic').innerText = item.title;
+
+      const q = [];
+      q.push(item.title);
+      if (item.author) q.push(`By ${item.author}`);
+      if (item.takeaway) q.push(`Core Takeaway: ${item.takeaway}`);
+
+      const contentSentences = (item.content || '')
+        .replace(/--- Page \d+ ---/g, ' ')
+        .replace(/Arabic:[^\n]+/g, ' ')
+        .split(/(?<=[.!?])\s+|\n+/)
+        .map(s => s.trim())
+        .filter(s => s.length > 10);
+      contentSentences.forEach(s => q.push(s));
+
+      if (item.microSteps && item.microSteps.length) {
+        q.push('Distilled Micro-Steps.');
+        item.microSteps.forEach(s => q.push(s.replace(/^\d+\.\s*/, '')));
+      }
+
+      if (item.quiz && item.quiz.length) {
+        q.push('Active Recall Quiz.');
+        item.quiz.forEach((qz, idx) => {
+          q.push(`Question ${idx + 1}. ` + qz.q.replace(/^\d+\.\s*/, ''));
+          q.push(`Answer. ` + qz.a);
+        });
+      }
+
+      window.avSynthQueue = q.length ? q : [item.title];
+      window.avCurrentIndex = 0;
+      const modal = document.getElementById('av-synth-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+
+      if (!window.avVoices.length) initVoices();
+      if (window.lucide) lucide.createIcons();
+      setTimeout(() => { avPlayChunk(); }, 300);
+    };
+
+    window.avPlayChunk = function() {
+      if (window.avCurrentIndex >= window.avSynthQueue.length) {
+        window.avIsPlaying = false;
+        document.getElementById('av-visual-text').innerText = 'Session Complete.';
+        document.getElementById('av-progress-bar').style.width = '100%';
+        document.getElementById('av-visual-progress').innerText = '100%';
+        document.getElementById('av-btn-play').innerHTML = '<i data-lucide="play" class="w-6 h-6 fill-current"></i>';
+        if (window.lucide) lucide.createIcons();
+        return;
+      }
+
+      const text = window.avSynthQueue[window.avCurrentIndex];
+      document.getElementById('av-visual-text').innerText = text;
+      const pct = Math.round((window.avCurrentIndex / window.avSynthQueue.length) * 100);
+      document.getElementById('av-progress-bar').style.width = pct + '%';
+      document.getElementById('av-visual-progress').innerText = `${pct}% (${window.avCurrentIndex + 1}/${window.avSynthQueue.length})`;
+
+      const colors = ['#1e1b4b', '#064e3b', '#312e81', '#4a044e', '#172554', '#0f172a', '#3b0764'];
+      document.getElementById('av-visual-screen').style.backgroundColor = colors[window.avCurrentIndex % colors.length];
+
+      window.avIsPlaying = true;
+      document.getElementById('av-btn-play').innerHTML = '<i data-lucide="pause" class="w-6 h-6 fill-current"></i>';
+      if (window.lucide) lucide.createIcons();
+
+      if ('speechSynthesis' in window) {
+        window.avUtterance = new SpeechSynthesisUtterance(text);
+        window.avUtterance.rate = window.avRate;
+        const vIdx = document.getElementById('av-voice-select')?.value;
+        if (vIdx && window.avVoices[vIdx]) window.avUtterance.voice = window.avVoices[vIdx];
+
+        window.avUtterance.onend = () => {
+          if (window.avIsPlaying) {
+            window.avCurrentIndex++;
+            setTimeout(() => { avPlayChunk(); }, 220);
+          }
+        };
+        window.avUtterance.onerror = () => {};
+        speechSynthesis.cancel();
+        speechSynthesis.speak(window.avUtterance);
+      }
+    };
+
+    window.avTogglePlay = function() {
+      if (!('speechSynthesis' in window)) return;
+      if (window.avIsPlaying) {
+        speechSynthesis.pause();
+        window.avIsPlaying = false;
+        document.getElementById('av-btn-play').innerHTML = '<i data-lucide="play" class="w-6 h-6 fill-current"></i>';
+      } else {
+        if (speechSynthesis.paused) {
+          speechSynthesis.resume();
+          window.avIsPlaying = true;
+          document.getElementById('av-btn-play').innerHTML = '<i data-lucide="pause" class="w-6 h-6 fill-current"></i>';
+        } else {
+          avPlayChunk();
+        }
+      }
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.avPrevChunk = function() {
+      if ('speechSynthesis' in window) speechSynthesis.cancel();
+      window.avCurrentIndex = Math.max(0, window.avCurrentIndex - 1);
+      avPlayChunk();
+    };
+
+    window.avNextChunk = function() {
+      if ('speechSynthesis' in window) speechSynthesis.cancel();
+      window.avCurrentIndex = Math.min(window.avSynthQueue.length, window.avCurrentIndex + 1);
+      avPlayChunk();
+    };
+
+    window.avStop = function() {
+      if ('speechSynthesis' in window) speechSynthesis.cancel();
+      window.avIsPlaying = false;
+      window.avCurrentIndex = 0;
+      document.getElementById('av-btn-play').innerHTML = '<i data-lucide="play" class="w-6 h-6 fill-current"></i>';
+      document.getElementById('av-progress-bar').style.width = '0%';
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.closeAvPlayer = function() {
+      avStop();
+      const modal = document.getElementById('av-synth-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    };
+
+    window.avChangeVoice = function() {
+      if (window.avIsPlaying) {
+        if ('speechSynthesis' in window) speechSynthesis.cancel();
+        avPlayChunk();
+      }
+    };
+
+    window.avCycleSpeed = function() {
+      const speeds = [1.0, 1.25, 1.5, 1.75, 2.0];
+      const cur = speeds.indexOf(window.avRate);
+      window.avRate = speeds[(cur + 1) % speeds.length];
+      document.getElementById('av-btn-speed').innerText = window.avRate.toFixed(2) + 'x';
+      if (window.avIsPlaying) {
+        if ('speechSynthesis' in window) speechSynthesis.cancel();
+        avPlayChunk();
+      }
+    };
+
+    // YOUTUBE VISUAL LEARNING & VIDEO REFERENCE ENGINE
+    window.extractYouTubeVideoId = function(rawUrl) {
+      if (!rawUrl) return null;
+      const trimmed = rawUrl.trim();
+      if (/^[a-zA-Z0-9_-]{11}$/.test(trimmed)) return trimmed;
+      const patterns = [
+        /(?:youtube\.com\/watch\?(?:.*&)?v=)([a-zA-Z0-9_-]{11})/,
+        /(?:youtu\.be\/)([a-zA-Z0-9_-]{11})/,
+        /(?:youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+        /(?:youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/,
+        /(?:youtube\.com\/live\/)([a-zA-Z0-9_-]{11})/
+      ];
+      for (const re of patterns) {
+        const m = trimmed.match(re);
+        if (m && m[1]) return m[1];
+      }
+      return null;
+    };
+
+    window.openYouTubeModal = function(targetVault) {
+      document.getElementById('yt-target-vault').value = targetVault || 'knowledge';
+      if (targetVault === 'omega') {
+        document.getElementById('yt-domain-input').value = 'Omega';
+      }
+      document.getElementById('yt-fetch-status').classList.add('hidden');
+      document.getElementById('yt-preview-card').classList.add('hidden');
+      document.getElementById('youtube-ingest-modal').classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.closeYouTubeModal = function() {
+      document.getElementById('youtube-ingest-modal').classList.add('hidden');
+    };
+
+    window.previewYouTubeMetadata = async function(forceNotify) {
+      const urlVal = document.getElementById('yt-url-input').value.trim();
+      const videoId = window.extractYouTubeVideoId(urlVal);
+      const statusEl = document.getElementById('yt-fetch-status');
+      const cardEl = document.getElementById('yt-preview-card');
+
+      if (!videoId) {
+        if (forceNotify && statusEl) {
+          statusEl.classList.remove('hidden');
+          statusEl.innerText = 'Paste a valid YouTube link (e.g., https://www.youtube.com/watch?v=... or https://youtu.be/...).';
+        }
+        return;
+      }
+
+      document.getElementById('yt-preview-thumb').src = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+      document.getElementById('yt-preview-id-tag').innerText = `Video ID: ${videoId} • Ready for Theater Embed`;
+      cardEl.classList.remove('hidden');
+
+      try {
+        const oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent('https://www.youtube.com/watch?v=' + videoId)}&format=json`;
+        const res = await fetch(oembedUrl);
+        if (res.ok) {
+          const meta = await res.json();
+          if (meta.title) {
+            document.getElementById('yt-preview-title').innerText = meta.title;
+            const titleInput = document.getElementById('yt-title-input');
+            if (!titleInput.value.trim()) titleInput.value = meta.title;
+          }
+          if (meta.author_name) {
+            document.getElementById('yt-preview-channel').innerText = meta.author_name;
+            const chInput = document.getElementById('yt-channel-input');
+            if (!chInput.value.trim()) chInput.value = meta.author_name;
+          }
+          if (statusEl && forceNotify) {
+            statusEl.classList.remove('hidden');
+            statusEl.innerText = `Verified YouTube video "${meta.title}" by ${meta.author_name}!`;
+          }
+        }
+      } catch (e) {}
+    };
+
+    window.handleSaveYouTubeVideo = async function(e) {
+      if (e) e.preventDefault();
+      const rawUrl = document.getElementById('yt-url-input').value.trim();
+      const videoId = window.extractYouTubeVideoId(rawUrl);
+      if (!videoId) {
+        alert('Please enter a valid YouTube URL.');
+        return;
+      }
+
+      const title = document.getElementById('yt-title-input').value.trim();
+      const domain = document.getElementById('yt-domain-input').value;
+      const channelName = document.getElementById('yt-channel-input').value.trim() || 'YouTube Reference';
+      const timestampAnchor = document.getElementById('yt-timestamp-input').value.trim();
+      const notes = document.getElementById('yt-notes-input').value.trim();
+      const targetVault = document.getElementById('yt-target-vault').value;
+
+      const combinedNotes = timestampAnchor ? `Key Timestamps: ${timestampAnchor}. ${notes}` : notes;
+      const distilled = distillTextToMicroSession(title, combinedNotes);
+      const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+
+      const record = {
+        id: (targetVault === 'omega' ? 'om_yt_' : 'kv_yt_') + Date.now(),
+        title,
+        domain,
+        source: targetVault === 'omega' ? 'Video Lecture (YouTube)' : domain,
+        duration: 'YouTube Visual Sprint',
+        type: `${domain} • YouTube Video`,
+        videoId,
+        videoUrl,
+        channelName,
+        timestampAnchor,
+        takeaway: distilled.takeaway,
+        content: combinedNotes,
+        microSteps: distilled.microSteps,
+        quiz: distilled.quiz,
+        masteryLevel: 0,
+        nextReviewDate: getTodayIsoDate(),
+        quizScore: null,
+        date: getTodayIsoDate()
+      };
+
+      if (targetVault === 'omega') {
+        window.userAppState.omegaNotebooks = window.userAppState.omegaNotebooks || [];
+        window.userAppState.omegaNotebooks.unshift(record);
+      } else {
+        window.userAppState.knowledgeVault = window.userAppState.knowledgeVault || [];
+        window.userAppState.knowledgeVault.unshift(record);
+        window.activePolymathDomain = 'All';
+      }
+
+      document.getElementById('yt-url-input').value = '';
+      document.getElementById('yt-title-input').value = '';
+      document.getElementById('yt-channel-input').value = '';
+      document.getElementById('yt-timestamp-input').value = '';
+      document.getElementById('yt-notes-input').value = '';
+
+      renderAllUI();
+      await pushCloudUserData();
+      closeYouTubeModal();
+      window.openVideoTheater(record.id);
+    };
+
+    window.openActiveVideoTheater = function() {
+      const vault = window.userAppState.knowledgeVault || [];
+      const firstVid = vault.find(v => !!v.videoId);
+      if (firstVid) window.openVideoTheater(firstVid.id);
+    };
+
+    window.openVideoTheater = function(itemId) {
+      const vault = window.userAppState.knowledgeVault || [];
+      const omega = window.userAppState.omegaNotebooks || [];
+      const item = vault.find(v => v.id === itemId) || omega.find(o => o.id === itemId);
+      if (!item || !item.videoId) return;
+
+      window.activeTheaterItemId = item.id;
+      document.getElementById('theater-domain-badge').innerText = `${item.domain || item.source || 'Visual Learning'} • YouTube Theater`;
+      document.getElementById('theater-video-title').innerText = item.title;
+      document.getElementById('theater-external-link').href = item.videoUrl || `https://www.youtube.com/watch?v=${item.videoId}`;
+      document.getElementById('theater-channel-meta').innerText = `${item.channelName || 'YouTube'}${item.timestampAnchor ? ' • Timestamps: ' + item.timestampAnchor : ''}`;
+
+      const steps = item.microSteps || distillTextToMicroSession(item.title, item.content).microSteps;
+      document.getElementById('theater-micro-steps').innerHTML = steps.map(s => `<p>${s}</p>`).join('');
+      document.getElementById('theater-notes-editor').value = item.content || '';
+
+      document.getElementById('theater-youtube-iframe').src = `https://www.youtube-nocookie.com/embed/${item.videoId}?rel=0&modestbranding=1`;
+      document.getElementById('video-theater-modal').classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.closeVideoTheaterModal = function() {
+      document.getElementById('theater-youtube-iframe').src = '';
+      document.getElementById('video-theater-modal').classList.add('hidden');
+      window.activeTheaterItemId = null;
+    };
+
+    window.saveTheaterNotes = async function() {
+      if (!window.activeTheaterItemId) return;
+      const updatedNotes = document.getElementById('theater-notes-editor').value.trim();
+      const applyUpdate = (item) => {
+        if (item.id === window.activeTheaterItemId) {
+          item.content = updatedNotes;
+          const distilled = distillTextToMicroSession(item.title, updatedNotes);
+          item.takeaway = distilled.takeaway;
+          item.microSteps = distilled.microSteps;
+          item.quiz = distilled.quiz;
+        }
+        return item;
+      };
+      window.userAppState.knowledgeVault = (window.userAppState.knowledgeVault || []).map(applyUpdate);
+      window.userAppState.omegaNotebooks = (window.userAppState.omegaNotebooks || []).map(applyUpdate);
+      renderAllUI();
+      await pushCloudUserData();
+      alert('Visual study notes & 3Q recall questions updated and encrypted!');
+    };
+
+    window.launchQuizFromTheater = function() {
+      const id = window.activeTheaterItemId;
+      window.closeVideoTheaterModal();
+      if (id) window.openRecallQuiz(id);
     };
 
     // POLYMATH CUSTOM MICRO-LEARNING, PRE-JAN DOCTORAL SPRINT & SPACED REPETITION
@@ -3391,15 +4100,19 @@
       const dueSummary = document.getElementById('retention-due-summary');
       if (dueSummary) dueSummary.innerText = `${dueCount} Due Today • ${vault.length} Total Sessions`;
 
+      const isBook = (i) => (i.resourceFormat || i.type || '').toLowerCase().includes('book');
+      const isPaper = (i) => (i.resourceFormat || i.type || '').toLowerCase().includes('paper');
+      const isQuran = (i) => (i.resourceFormat || i.type || '').toLowerCase().includes('quran');
+      const isScholar = (i) => {
+        const t = (i.resourceFormat || i.type || '').toLowerCase();
+        return t.includes('scholar') || t.includes('turath');
+      };
+
       const domains = ['All', 'Due Today', 'Books', 'Papers', 'Quran', 'Islamic Scholars', 'Videos', 'Doctoral Studies', 'Faith', 'Health', 'Family', 'Omega', 'Polymath'];
       const filterBar = document.getElementById('polymath-domain-filters');
       if (filterBar) {
         filterBar.innerHTML = domains.map(dom => {
           let count = 0;
-          const isBook = (i) => (i.resourceFormat || i.type || '').toLowerCase().includes('book');
-          const isPaper = (i) => (i.resourceFormat || i.type || '').toLowerCase().includes('paper');
-          const isQuran = (i) => (i.resourceFormat || i.type || '').toLowerCase().includes('quran');
-          const isScholar = (i) => (i.resourceFormat || i.type || '').toLowerCase().includes('scholar') || (i.resourceFormat || i.type || '').toLowerCase().includes('turath');
           if (dom === 'All') count = vault.length;
           else if (dom === 'Due Today') count = dueCount;
           else if (dom === 'Books') count = vault.filter(isBook).length;
@@ -3420,10 +4133,10 @@
 
       let filtered = vault;
       if (window.activePolymathDomain === 'Due Today') filtered = vault.filter(isDue);
-      else if (window.activePolymathDomain === 'Books') filtered = vault.filter(i => (i.resourceFormat || i.type || '').toLowerCase().includes('book'));
-      else if (window.activePolymathDomain === 'Papers') filtered = vault.filter(i => (i.resourceFormat || i.type || '').toLowerCase().includes('paper'));
-      else if (window.activePolymathDomain === 'Quran') filtered = vault.filter(i => (i.resourceFormat || i.type || '').toLowerCase().includes('quran'));
-      else if (window.activePolymathDomain === 'Islamic Scholars') filtered = vault.filter(i => { const t = (i.resourceFormat || i.type || '').toLowerCase(); return t.includes('scholar') || t.includes('turath'); });
+      else if (window.activePolymathDomain === 'Books') filtered = vault.filter(isBook);
+      else if (window.activePolymathDomain === 'Papers') filtered = vault.filter(isPaper);
+      else if (window.activePolymathDomain === 'Quran') filtered = vault.filter(isQuran);
+      else if (window.activePolymathDomain === 'Islamic Scholars') filtered = vault.filter(isScholar);
       else if (window.activePolymathDomain === 'Videos') filtered = vault.filter(i => !!i.videoId);
       else if (window.activePolymathDomain !== 'All') filtered = vault.filter(i => getDomain(i) === window.activePolymathDomain);
 
@@ -3440,7 +4153,7 @@
                 <div class="flex justify-between items-center gap-2">
                   <div class="flex items-center gap-1.5 flex-wrap">
                     <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-800">${dom}</span>
-                    ${item.duration ? `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-950 text-slate-300 border border-slate-800">${item.duration}</span>` : ''}
+                    ${item.resourceFormat ? `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-800/60">${item.resourceFormat}</span>` : ''}
                     <span class="text-[10px] font-mono px-2 py-0.5 rounded ${due ? 'bg-amber-950 text-amber-300 border border-amber-700/70' : 'bg-emerald-950 text-emerald-300 border border-emerald-800'}">
                       ${due ? 'Due Today' : 'Next: ' + item.nextReviewDate}
                     </span>
@@ -3467,21 +4180,25 @@
                 </div>
               </div>
               <div class="flex flex-wrap justify-between items-center gap-1.5 pt-2 border-t border-slate-800/60">
-                <div class="flex items-center gap-1.5">
-                  ${item.videoId ? `<button type="button" onclick="openVideoTheater('${item.id}')" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-[11px] font-bold flex items-center gap-1"><i data-lucide="play" class="w-3 h-3"></i> Watch</button>` : ''}
-                  <button type="button" onclick="openRecallQuiz('${item.id}')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-slate-950 rounded-lg text-[11px] font-bold flex items-center gap-1">
-                    <i data-lucide="help-circle" class="w-3 h-3"></i> Quiz (3Q)
+                <div class="flex flex-wrap items-center gap-1">
+                  ${item.videoId ? `<button type="button" onclick="openVideoTheater('${item.id}')" class="px-2 py-1 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-[10px] font-bold flex items-center gap-1"><i data-lucide="play" class="w-3 h-3"></i> YT</button>` : ''}
+                  <button type="button" onclick="openRecallQuiz('${item.id}')" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-slate-950 rounded-lg text-[10px] font-bold flex items-center gap-1">
+                    <i data-lucide="help-circle" class="w-3 h-3"></i> 3Q
                   </button>
-                  <button type="button" onclick="launchAvPlayer('${item.id}', 'audio')" class="px-2.5 py-1 bg-indigo-950 hover:bg-indigo-900 text-indigo-300 border border-indigo-800 rounded-lg text-[11px] font-bold flex items-center gap-1 shadow-sm"><i data-lucide="headphones" class="w-3 h-3"></i> Audio</button>
-                  <button type="button" onclick="launchAvPlayer('${item.id}', 'video')" class="px-2.5 py-1 bg-purple-950 hover:bg-purple-900 text-purple-300 border border-purple-800 rounded-lg text-[11px] font-bold flex items-center gap-1 shadow-sm"><i data-lucide="monitor-play" class="w-3 h-3"></i> Video</button>
+                  <button type="button" onclick="launchAvPlayer('${item.id}', 'audio')" class="px-2 py-1 bg-indigo-950 hover:bg-indigo-900 text-indigo-300 border border-indigo-800 rounded-lg text-[10px] font-bold flex items-center gap-1">
+                    <i data-lucide="headphones" class="w-3 h-3"></i> Audio
+                  </button>
+                  <button type="button" onclick="launchAvPlayer('${item.id}', 'video')" class="px-2 py-1 bg-purple-950 hover:bg-purple-900 text-purple-300 border border-purple-800 rounded-lg text-[10px] font-bold flex items-center gap-1">
+                    <i data-lucide="monitor-play" class="w-3 h-3"></i> Video
+                  </button>
                 </div>
-                <button type="button" onclick="activateMicroSession('${item.id}')" class="px-2.5 py-1 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 rounded-lg text-[11px] font-semibold">
-                  ${isTopActive ? 'Active Sprint' : 'Set Active Sprint'}
+                <button type="button" onclick="activateMicroSession('${item.id}')" class="px-2 py-1 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 rounded-lg text-[10px] font-semibold">
+                  ${isTopActive ? 'Active' : 'Sprint'}
                 </button>
               </div>
             </div>
           `;
-        }).join('') || '<p class="text-xs text-slate-400 col-span-3">No sessions in this filter yet. Click "+ Custom Micro-Session" or "Build Pre-Jan Doctoral Sprint" above.</p>';
+        }).join('') || '<p class="text-xs text-slate-400 col-span-3">No sessions in this filter yet. Click "+ Book / Paper / Scholar" or "+ YouTube Video" above.</p>';
       }
     }
 
@@ -3568,18 +4285,18 @@
               </div>
             </div>
             <div class="flex flex-wrap justify-between items-center gap-1.5 pt-2 border-t border-slate-800/60">
-              <div class="flex items-center gap-1.5">
-                <button type="button" onclick="launchIslamicModuleQuiz('${mod.id}')" class="px-2.5 py-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-lg text-[11px] font-bold flex items-center gap-1">
-                  <i data-lucide="help-circle" class="w-3 h-3"></i> Quiz
+              <div class="flex items-center gap-1">
+                <button type="button" onclick="launchIslamicModuleQuiz('${mod.id}')" class="px-2 py-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-lg text-[10px] font-bold flex items-center gap-1">
+                  <i data-lucide="help-circle" class="w-3 h-3"></i> 3Q
                 </button>
-                <button type="button" onclick="launchIslamicModuleAv('${mod.id}', 'audio')" class="px-2 py-1 bg-indigo-950 hover:bg-indigo-900 text-indigo-300 border border-indigo-800 rounded-lg text-[11px] font-bold flex items-center gap-1">
+                <button type="button" onclick="launchIslamicModuleAv('${mod.id}', 'audio')" class="px-2 py-1 bg-indigo-950 hover:bg-indigo-900 text-indigo-300 border border-indigo-800 rounded-lg text-[10px] font-bold flex items-center gap-1">
                   <i data-lucide="headphones" class="w-3 h-3"></i> Audio
                 </button>
-                <button type="button" onclick="launchIslamicModuleAv('${mod.id}', 'video')" class="px-2 py-1 bg-purple-950 hover:bg-purple-900 text-purple-300 border border-purple-800 rounded-lg text-[11px] font-bold flex items-center gap-1">
+                <button type="button" onclick="launchIslamicModuleAv('${mod.id}', 'video')" class="px-2 py-1 bg-purple-950 hover:bg-purple-900 text-purple-300 border border-purple-800 rounded-lg text-[10px] font-bold flex items-center gap-1">
                   <i data-lucide="monitor-play" class="w-3 h-3"></i> Video
                 </button>
               </div>
-              <button type="button" onclick="activateIslamicModuleSprint('${mod.id}')" class="px-2.5 py-1 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 rounded-lg text-[11px] font-semibold">
+              <button type="button" onclick="activateIslamicModuleSprint('${mod.id}')" class="px-2.5 py-1 bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 rounded-lg text-[10px] font-semibold">
                 Sprint
               </button>
             </div>
@@ -4487,760 +5204,11 @@
       window.history.replaceState({}, document.title, window.location.pathname);
     };
 
-    // YOUTUBE VISUAL LEARNING & VIDEO REFERENCE ENGINE
-    window.activeTheaterItemId = null;
-
-    window.extractYouTubeVideoId = function(rawUrl) {
-      if (!rawUrl) return null;
-      const trimmed = rawUrl.trim();
-      if (/^[a-zA-Z0-9_-]{11}$/.test(trimmed)) return trimmed;
-      const patterns = [
-        /(?:youtube\.com\/watch\?(?:.*&)?v=)([a-zA-Z0-9_-]{11})/,
-        /(?:youtu\.be\/)([a-zA-Z0-9_-]{11})/,
-        /(?:youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
-        /(?:youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/,
-        /(?:youtube\.com\/live\/)([a-zA-Z0-9_-]{11})/
-      ];
-      for (const re of patterns) {
-        const m = trimmed.match(re);
-        if (m && m[1]) return m[1];
-      }
-      return null;
-    };
-
-    window.openYouTubeModal = function(targetVault) {
-      document.getElementById('yt-target-vault').value = targetVault || 'knowledge';
-      if (targetVault === 'omega') {
-        document.getElementById('yt-domain-input').value = 'Omega';
-      }
-      document.getElementById('yt-fetch-status').classList.add('hidden');
-      document.getElementById('yt-preview-card').classList.add('hidden');
-      document.getElementById('youtube-ingest-modal').classList.remove('hidden');
-      if (window.lucide) lucide.createIcons();
-    };
-
-    window.closeYouTubeModal = function() {
-      document.getElementById('youtube-ingest-modal').classList.add('hidden');
-    };
-
-    window.previewYouTubeMetadata = async function(forceNotify) {
-      const urlVal = document.getElementById('yt-url-input').value.trim();
-      const videoId = window.extractYouTubeVideoId(urlVal);
-      const statusEl = document.getElementById('yt-fetch-status');
-      const cardEl = document.getElementById('yt-preview-card');
-
-      if (!videoId) {
-        if (forceNotify && statusEl) {
-          statusEl.classList.remove('hidden');
-          statusEl.innerText = 'Paste a valid YouTube link (e.g., https://www.youtube.com/watch?v=... or https://youtu.be/...).';
-        }
-        return;
-      }
-
-      document.getElementById('yt-preview-thumb').src = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
-      document.getElementById('yt-preview-id-tag').innerText = `Video ID: ${videoId} • Ready for Theater Embed`;
-      cardEl.classList.remove('hidden');
-
-      try {
-        const oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent('https://www.youtube.com/watch?v=' + videoId)}&format=json`;
-        const res = await fetch(oembedUrl);
-        if (res.ok) {
-          const meta = await res.json();
-          if (meta.title) {
-            document.getElementById('yt-preview-title').innerText = meta.title;
-            const titleInput = document.getElementById('yt-title-input');
-            if (!titleInput.value.trim()) titleInput.value = meta.title;
-          }
-          if (meta.author_name) {
-            document.getElementById('yt-preview-channel').innerText = meta.author_name;
-            const chInput = document.getElementById('yt-channel-input');
-            if (!chInput.value.trim()) chInput.value = meta.author_name;
-          }
-          if (statusEl && forceNotify) {
-            statusEl.classList.remove('hidden');
-            statusEl.innerText = `Verified YouTube video "${meta.title}" by ${meta.author_name}!`;
-          }
-        }
-      } catch (e) {}
-    };
-
-    window.handleSaveYouTubeVideo = async function(e) {
-      if (e) e.preventDefault();
-      const rawUrl = document.getElementById('yt-url-input').value.trim();
-      const videoId = window.extractYouTubeVideoId(rawUrl);
-      if (!videoId) {
-        alert('Please enter a valid YouTube URL.');
-        return;
-      }
-
-      const title = document.getElementById('yt-title-input').value.trim();
-      const domain = document.getElementById('yt-domain-input').value;
-      const channelName = document.getElementById('yt-channel-input').value.trim() || 'YouTube Reference';
-      const timestampAnchor = document.getElementById('yt-timestamp-input').value.trim();
-      const notes = document.getElementById('yt-notes-input').value.trim();
-      const targetVault = document.getElementById('yt-target-vault').value;
-
-      const combinedNotes = timestampAnchor ? `Key Timestamps: ${timestampAnchor}. ${notes}` : notes;
-      const distilled = distillTextToMicroSession(title, combinedNotes);
-      const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
-
-      const record = {
-        id: (targetVault === 'omega' ? 'om_yt_' : 'kv_yt_') + Date.now(),
-        title,
-        domain,
-        source: targetVault === 'omega' ? 'Video Lecture (YouTube)' : domain,
-        duration: 'YouTube Visual Sprint',
-        type: `${domain} • YouTube Video`,
-        videoId,
-        videoUrl,
-        channelName,
-        timestampAnchor,
-        takeaway: distilled.takeaway,
-        content: combinedNotes,
-        microSteps: distilled.microSteps,
-        quiz: distilled.quiz,
-        masteryLevel: 0,
-        nextReviewDate: getTodayIsoDate(),
-        quizScore: null,
-        date: getTodayIsoDate()
-      };
-
-      if (targetVault === 'omega') {
-        window.userAppState.omegaNotebooks = window.userAppState.omegaNotebooks || [];
-        window.userAppState.omegaNotebooks.unshift(record);
-      } else {
-        window.userAppState.knowledgeVault = window.userAppState.knowledgeVault || [];
-        window.userAppState.knowledgeVault.unshift(record);
-        window.activePolymathDomain = 'All';
-      }
-
-      document.getElementById('yt-url-input').value = '';
-      document.getElementById('yt-title-input').value = '';
-      document.getElementById('yt-channel-input').value = '';
-      document.getElementById('yt-timestamp-input').value = '';
-      document.getElementById('yt-notes-input').value = '';
-
-      renderAllUI();
-      await pushCloudUserData();
-      closeYouTubeModal();
-      window.openVideoTheater(record.id);
-    };
-
-    window.openActiveVideoTheater = function() {
-      const vault = window.userAppState.knowledgeVault || [];
-      const firstVid = vault.find(v => !!v.videoId);
-      if (firstVid) window.openVideoTheater(firstVid.id);
-    };
-
-    window.openVideoTheater = function(itemId) {
-      const vault = window.userAppState.knowledgeVault || [];
-      const omega = window.userAppState.omegaNotebooks || [];
-      const item = vault.find(v => v.id === itemId) || omega.find(o => o.id === itemId);
-      if (!item || !item.videoId) return;
-
-      window.activeTheaterItemId = item.id;
-      document.getElementById('theater-domain-badge').innerText = `${item.domain || item.source || 'Visual Learning'} • YouTube Theater`;
-      document.getElementById('theater-video-title').innerText = item.title;
-      document.getElementById('theater-external-link').href = item.videoUrl || `https://www.youtube.com/watch?v=${item.videoId}`;
-      document.getElementById('theater-channel-meta').innerText = `${item.channelName || 'YouTube'}${item.timestampAnchor ? ' • Timestamps: ' + item.timestampAnchor : ''}`;
-
-      const steps = item.microSteps || distillTextToMicroSession(item.title, item.content).microSteps;
-      document.getElementById('theater-micro-steps').innerHTML = steps.map(s => `<p>${s}</p>`).join('');
-      document.getElementById('theater-notes-editor').value = item.content || '';
-
-      document.getElementById('theater-youtube-iframe').src = `https://www.youtube-nocookie.com/embed/${item.videoId}?rel=0&modestbranding=1`;
-      document.getElementById('video-theater-modal').classList.remove('hidden');
-      if (window.lucide) lucide.createIcons();
-    };
-
-    window.closeVideoTheaterModal = function() {
-      document.getElementById('theater-youtube-iframe').src = '';
-      document.getElementById('video-theater-modal').classList.add('hidden');
-      window.activeTheaterItemId = null;
-    };
-
-    window.saveTheaterNotes = async function() {
-      if (!window.activeTheaterItemId) return;
-      const updatedNotes = document.getElementById('theater-notes-editor').value.trim();
-      const applyUpdate = (item) => {
-        if (item.id === window.activeTheaterItemId) {
-          item.content = updatedNotes;
-          const distilled = distillTextToMicroSession(item.title, updatedNotes);
-          item.takeaway = distilled.takeaway;
-          item.microSteps = distilled.microSteps;
-          item.quiz = distilled.quiz;
-        }
-        return item;
-      };
-      window.userAppState.knowledgeVault = (window.userAppState.knowledgeVault || []).map(applyUpdate);
-      window.userAppState.omegaNotebooks = (window.userAppState.omegaNotebooks || []).map(applyUpdate);
-      renderAllUI();
-      await pushCloudUserData();
-      alert('Visual study notes & 3Q recall questions updated and encrypted!');
-    };
-
-    window.launchQuizFromTheater = function() {
-      const id = window.activeTheaterItemId;
-      window.closeVideoTheaterModal();
-      if (id) window.openRecallQuiz(id);
-    };
-
-    // COGNITIVE AUDIOBOOK & VISUAL VIDEO SYNTHESIS ENGINE
-    window.avSynthQueue = [];
-    window.avCurrentIndex = 0;
-    window.avIsPlaying = false;
-    window.avMode = 'audio';
-    window.avRate = 1.0;
-    window.avVoices = [];
-    window.avUtterance = null;
-
-    function initVoices() {
-      window.avVoices = speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
-      const sel = document.getElementById('av-voice-select');
-      if (sel && window.avVoices.length) {
-        sel.innerHTML = window.avVoices.map((v, i) => `<option value="${i}">${v.name.replace('Google', 'Synth').replace('Microsoft', 'Synth')}</option>`).join('');
-      }
-    }
-    if (speechSynthesis.onvoiceschanged !== undefined) {
-      speechSynthesis.onvoiceschanged = initVoices;
-    }
-
-    window.launchAvPlayer = function(itemId, mode) {
-      const vault = window.userAppState.knowledgeVault || [];
-      const omega = window.userAppState.omegaNotebooks || [];
-      const item = vault.find(v => v.id === itemId) || omega.find(o => o.id === itemId);
-      if (!item) return;
-
-      window.avMode = mode;
-      document.getElementById('av-mode-badge').innerText = mode === 'video' ? 'VISUAL SYNTH' : 'AUDIOBOOK';
-      const screen = document.getElementById('av-visual-screen');
-      if (mode === 'video') {
-        screen.classList.remove('hidden');
-        screen.classList.add('flex');
-      } else {
-        screen.classList.add('hidden');
-        screen.classList.remove('flex');
-        // keep min-height small for audio mode
-        document.querySelector('#av-synth-modal > div').style.height = 'auto';
-      }
-
-      document.getElementById('av-visual-topic').innerText = item.title;
-
-      const q = [];
-      q.push(item.title);
-      q.push("Core Takeaway: " + (item.takeaway || ''));
-      
-      const contentSentences = (item.content || '').replace(/--- Page \d+ ---/g, '').split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 10);
-      contentSentences.forEach(s => q.push(s.trim()));
-      
-      if (item.microSteps && item.microSteps.length) {
-        q.push("Distilled Micro-Steps.");
-        item.microSteps.forEach(s => q.push(s.replace(/^\d+\.\s*/, '')));
-      }
-
-      if (item.quiz && item.quiz.length) {
-        q.push("Active Recall Quiz.");
-        item.quiz.forEach((qz, idx) => {
-          q.push(`Question ${idx + 1}. ` + qz.q.replace(/^\d+\.\s*/, ''));
-          q.push(`Answer. ` + qz.a);
-        });
-      }
-
-      window.avSynthQueue = q;
-      window.avCurrentIndex = 0;
-      const modal = document.getElementById('av-synth-modal');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-      
-      if (!window.avVoices.length) initVoices();
-      
-      setTimeout(() => { avPlayChunk(); }, 500);
-    };
-
-    window.avPlayChunk = function() {
-      if (window.avCurrentIndex >= window.avSynthQueue.length) {
-        avStop();
-        document.getElementById('av-visual-text').innerText = "Session Complete.";
-        return;
-      }
-      
-      const text = window.avSynthQueue[window.avCurrentIndex];
-      window.avUtterance = new SpeechSynthesisUtterance(text);
-      window.avUtterance.rate = window.avRate;
-      
-      const vIdx = document.getElementById('av-voice-select')?.value;
-      if (vIdx && window.avVoices[vIdx]) window.avUtterance.voice = window.avVoices[vIdx];
-
-      document.getElementById('av-visual-text').innerText = text;
-      const pct = Math.round((window.avCurrentIndex / window.avSynthQueue.length) * 100);
-      document.getElementById('av-progress-bar').style.width = pct + '%';
-      document.getElementById('av-visual-progress').innerText = `${pct}%`;
-
-      if (window.avMode === 'video') {
-         const colors = ['#1e1b4b', '#312e81', '#064e3b', '#4a044e', '#450a0a', '#0f172a', '#3f3f46'];
-         document.getElementById('av-visual-screen').style.backgroundColor = colors[window.avCurrentIndex % colors.length];
-      }
-
-      window.avUtterance.onend = () => {
-        window.avCurrentIndex++;
-        if (window.avIsPlaying) setTimeout(() => { avPlayChunk(); }, 250);
-      };
-      
-      window.avUtterance.onerror = (e) => {
-        console.warn("Speech synth interupted", e);
-      };
-
-      window.avIsPlaying = true;
-      document.getElementById('av-btn-play').innerHTML = '<i data-lucide="pause" class="w-6 h-6 fill-current"></i>';
-      if (window.lucide) lucide.createIcons();
-      
-      speechSynthesis.cancel();
-      speechSynthesis.speak(window.avUtterance);
-    };
-
-    window.avTogglePlay = function() {
-      if (window.avIsPlaying) {
-        speechSynthesis.pause();
-        window.avIsPlaying = false;
-        document.getElementById('av-btn-play').innerHTML = '<i data-lucide="play" class="w-6 h-6 fill-current"></i>';
-      } else {
-        if (speechSynthesis.paused) {
-          speechSynthesis.resume();
-          window.avIsPlaying = true;
-          document.getElementById('av-btn-play').innerHTML = '<i data-lucide="pause" class="w-6 h-6 fill-current"></i>';
-        } else {
-          avPlayChunk();
-        }
-      }
-      if (window.lucide) lucide.createIcons();
-    };
-
-    window.avStop = function() {
-      speechSynthesis.cancel();
-      window.avIsPlaying = false;
-      window.avCurrentIndex = 0;
-      document.getElementById('av-btn-play').innerHTML = '<i data-lucide="play" class="w-6 h-6 fill-current"></i>';
-      document.getElementById('av-progress-bar').style.width = '0%';
-      if (window.lucide) lucide.createIcons();
-    };
-
-    window.closeAvPlayer = function() {
-      avStop();
-      const modal = document.getElementById('av-synth-modal');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-      document.querySelector('#av-synth-modal > div').style.height = '';
-    };
-
-    window.avChangeVoice = function() {
-      if (window.avIsPlaying) {
-        speechSynthesis.cancel();
-        avPlayChunk();
-      }
-    };
-
-    window.avCycleSpeed = function() {
-      const speeds = [1.0, 1.25, 1.5, 1.75, 2.0];
-      const cur = speeds.indexOf(window.avRate);
-      window.avRate = speeds[(cur + 1) % speeds.length];
-      document.getElementById('av-btn-speed').innerText = window.avRate.toFixed(2) + 'x';
-      if (window.avIsPlaying) {
-        speechSynthesis.cancel();
-        avPlayChunk();
-      }
-    };
-
-    // DOCTORAL BOOKS, PAPERS, QURAN & ISLAMIC SCHOLARS LIBRARY ENGINE
-    window.openLibraryResourceModal = function(presetFormat) {
-      const fmtSel = document.getElementById('lib-format-select');
-      const domSel = document.getElementById('lib-domain-select');
-      const msgEl = document.getElementById('lib-status-msg');
-      if (msgEl) msgEl.classList.add('hidden');
-      if (fmtSel && presetFormat) {
-        fmtSel.value = presetFormat;
-        if (presetFormat.includes('Quran') || presetFormat.includes('Islamic')) {
-          if (domSel) domSel.value = 'Faith';
-        } else if (presetFormat.includes('Doctoral') || presetFormat.includes('Paper')) {
-          if (domSel) domSel.value = 'Doctoral Studies';
-        }
-      }
-      document.getElementById('library-resource-modal').classList.remove('hidden');
-      if (window.lucide) lucide.createIcons();
-    };
-
-    window.closeLibraryResourceModal = function() {
-      document.getElementById('library-resource-modal').classList.add('hidden');
-    };
-
-    window.launchIslamicModuleAv = async function(modId, mode) {
-      const item = ensureIslamicModuleInVault(modId);
-      if (!item) return;
-      renderAllUI();
-      await pushCloudUserData();
-      if (typeof window.launchAvPlayer === 'function') {
-        window.launchAvPlayer(item.id, mode);
-      } else {
-        alert('Audio/Video synth player not loaded yet. Run patch_av_engine.py or open from Knowledge Vault.');
-      }
-    };
-
-    window.fetchQuranSurahIntoForm = async function() {
-      const surahNum = document.getElementById('lib-quran-surah-select').value;
-      const rangeStr = (document.getElementById('lib-quran-ayah-range').value || '').trim();
-      const btn = document.getElementById('lib-quran-fetch-btn');
-      const msgEl = document.getElementById('lib-status-msg');
-
-      btn.disabled = true;
-      btn.innerText = 'Pulling Surah...';
-      if (msgEl) {
-        msgEl.classList.remove('hidden');
-        msgEl.innerText = 'Fetching Uthmani Arabic & Sahih International English translation...';
-      }
-
-      try {
-        const res = await fetch(`https://api.alquran.cloud/v1/surah/${surahNum}/editions/quran-uthmani,en.sahih`);
-        if (!res.ok) throw new Error(`AlQuran API returned HTTP ${res.status}`);
-        const json = await res.json();
-        const arData = json?.data?.[0];
-        const enData = json?.data?.[1];
-        if (!arData || !enData) throw new Error('Could not parse Surah payload.');
-
-        let startAyah = 1;
-        let endAyah = enData.ayahs.length;
-        if (rangeStr) {
-          if (rangeStr.includes('-')) {
-            const parts = rangeStr.split('-').map(n => parseInt(n.trim(), 10));
-            if (!isNaN(parts[0])) startAyah = Math.max(1, parts[0]);
-            if (!isNaN(parts[1])) endAyah = Math.min(enData.ayahs.length, parts[1]);
-          } else {
-            const single = parseInt(rangeStr, 10);
-            if (!isNaN(single)) {
-              startAyah = Math.max(1, single);
-              endAyah = Math.min(enData.ayahs.length, single);
-            }
-          }
-        } else if (endAyah > 15) {
-          endAyah = 15;
-        }
-
-        const compiledLines = [];
-        for (let i = startAyah - 1; i < endAyah; i++) {
-          const enAyah = enData.ayahs[i];
-          const arAyah = arData.ayahs[i];
-          if (enAyah) {
-            compiledLines.push(`[${surahNum}:${enAyah.numberInSurah}] ${enAyah.text}`);
-            if (arAyah) compiledLines.push(`Arabic: ${arAyah.text}`);
-          }
-        }
-
-        document.getElementById('lib-format-select').value = 'Quran (Surah / Tafsir / Hifz)';
-        document.getElementById('lib-domain-select').value = 'Faith';
-        document.getElementById('lib-title-input').value = `Surah ${enData.englishName} (${enData.englishNameTranslation})`;
-        document.getElementById('lib-author-input').value = 'Al-Quran Al-Kareem • Sahih International';
-        document.getElementById('lib-section-input').value = `Surah ${surahNum}, Ayahs ${startAyah}–${endAyah}`;
-        document.getElementById('lib-content-input').value = compiledLines.join('
-');
-
-        if (msgEl) {
-          msgEl.innerText = `Pulled Surah ${enData.englishName} (Ayahs ${startAyah}–${endAyah})! Add any personal Tafsir reflections below and click Save to Vault.`;
-        }
-      } catch (err) {
-        if (msgEl) msgEl.innerText = `Quran fetch notice: ${err.message}. You can paste any Ayahs & Tafsir manually below.`;
-      } finally {
-        btn.disabled = false;
-        btn.innerText = 'Pull Quran Text';
-      }
-    };
-
-    window.handleLibraryFileAttach = async function(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const msgEl = document.getElementById('lib-status-msg');
-      if (msgEl) {
-        msgEl.classList.remove('hidden');
-        msgEl.innerText = `Extracting text from "${file.name}" locally in browser...`;
-      }
-
-      const cleanName = file.name.replace(/\.[^/.]+$/, '').replace(/[_-]+/g, ' ').trim();
-      const titleEl = document.getElementById('lib-title-input');
-      if (titleEl && !titleEl.value.trim()) titleEl.value = cleanName;
-
-      try {
-        if (file.name.toLowerCase().endsWith('.pdf')) {
-          const { text, pageCount } = await extractTextFromPdfBuffer(await file.arrayBuffer());
-          document.getElementById('lib-content-input').value = text.slice(0, 9000);
-          if (msgEl) msgEl.innerText = `Extracted ${pageCount} PDF page(s) into study notes! Ready for Audiobook, Visual Synth & 3Q Quiz.`;
-        } else if (file.name.toLowerCase().endsWith('.docx')) {
-          const txt = await extractTextFromDocxBuffer(await file.arrayBuffer());
-          document.getElementById('lib-content-input').value = txt.slice(0, 9000);
-          if (msgEl) msgEl.innerText = `Extracted Word document text! Ready for Audiobook, Visual Synth & 3Q Quiz.`;
-        } else {
-          const txt = await file.text();
-          document.getElementById('lib-content-input').value = txt.slice(0, 9000);
-          if (msgEl) msgEl.innerText = `Loaded "${file.name}" into study notes!`;
-        }
-      } catch (err) {
-        if (msgEl) msgEl.innerText = `File read notice: ${err.message}`;
-      }
-    };
-
-    window.handleSaveLibraryResource = async function(e) {
-      if (e) e.preventDefault();
-      const resourceFormat = document.getElementById('lib-format-select').value;
-      const domain = document.getElementById('lib-domain-select').value;
-      const title = document.getElementById('lib-title-input').value.trim();
-      const author = document.getElementById('lib-author-input').value.trim();
-      const sectionRef = document.getElementById('lib-section-input').value.trim();
-      const content = document.getElementById('lib-content-input').value.trim();
-
-      const distilled = distillTextToMicroSession(title, content);
-      const today = getTodayIsoDate();
-
-      window.userAppState.knowledgeVault = window.userAppState.knowledgeVault || [];
-      window.userAppState.knowledgeVault.unshift({
-        id: 'kv_lib_' + Date.now(),
-        title,
-        domain,
-        resourceFormat,
-        author,
-        sectionRef,
-        duration: resourceFormat.includes('Book') ? '30-Min Book Synthesis' : '20-Min Deep Sprint',
-        type: `${domain} • ${resourceFormat}`,
-        takeaway: distilled.takeaway,
-        content,
-        microSteps: distilled.microSteps,
-        quiz: distilled.quiz,
-        masteryLevel: 0,
-        nextReviewDate: today,
-        quizScore: null,
-        date: today
-      });
-
-      document.getElementById('lib-title-input').value = '';
-      document.getElementById('lib-author-input').value = '';
-      document.getElementById('lib-section-input').value = '';
-      document.getElementById('lib-content-input').value = '';
-
-      window.activePolymathDomain = 'All';
-      renderAllUI();
-      await pushCloudUserData();
-      closeLibraryResourceModal();
-    };
-
-    window.loadIslamicScholarsCanonPack = async function() {
-      const today = getTodayIsoDate();
-      const scholarsPack = [
-        {
-          id: 'kv_sch_ghazali_' + Date.now(),
-          title: "Ihya' Ulum al-Din (Revival of the Religious Sciences)",
-          domain: 'Faith',
-          resourceFormat: 'Book on Islamic Scholars',
-          author: 'Imam Abu Hamid Al-Ghazali (d. 1111 CE)',
-          sectionRef: 'Quarter III: Disciplining the Soul & Guarding the Tongue',
-          duration: '30-Min Book Synthesis',
-          type: 'Faith • Book on Islamic Scholars',
-          takeaway: 'True scholarly knowledge transforms the inward heart (Qalb) through Mujahadah (self-discipline), silence, and sincerity rather than outward debate.',
-          content: 'Imam Al-Ghazali demonstrates in Ihya Ulum al-Din that knowledge without inward purification breeds pride. Disciplining the soul requires auditing intentions before speaking, guarding the tongue from backbiting and ostentation, and anchoring daily habits in remembrance of Allah.',
-          microSteps: [
-            '1. Core Thesis: Knowledge must purify the heart (Qalb) and refine character, not feed ego.',
-            '2. Tactical Drill: Audit speech today against Al-Ghazali’s perils of the tongue (ostentation, argumentativeness, backbiting).',
-            '3. Active Recall: Contrast outward knowledge with transformative inward certainty.'
-          ],
-          quiz: [
-            { q: '1. According to Imam Al-Ghazali in Ihya Ulum al-Din, what is the true purpose of sacred knowledge?', a: 'Purifying the inward heart (Qalb) and transforming character into sincere devotion rather than seeking status or debate.' },
-            { q: '2. Name two major perils of the tongue warned against in Quarter III of the Ihya.', a: 'Ostentation (Riya), backbiting (Gheebah), and contentious arguing for ego.' },
-            { q: '3. Applied Synthesis: How will you apply Al-Ghazali’s self-accounting (Muhasabah) tonight?', a: 'Review today’s intentions before Isha and correct one reactive habit.' }
-          ],
-          masteryLevel: 0,
-          nextReviewDate: today,
-          quizScore: null,
-          date: today
-        },
-        {
-          id: 'kv_sch_khaldun_' + (Date.now() + 1),
-          title: 'Al-Muqaddimah (Prolegomena to Universal History)',
-          domain: 'Faith',
-          resourceFormat: 'Book on Islamic Scholars',
-          author: 'Ibn Khaldun (d. 1406 CE)',
-          sectionRef: 'Book I: Social Cohesion (Asabiyyah) & Philosophy of Science',
-          duration: '30-Min Book Synthesis',
-          type: 'Faith • Book on Islamic Scholars',
-          takeaway: 'Ibn Khaldun pioneered empirical sociology and historiography, showing how Asabiyyah (social solidarity), justice, and institutional discipline sustain civilizations.',
-          content: 'In Al-Muqaddimah, Ibn Khaldun critiques unverified historical reporting and introduces Ilm al-Umran (science of human civilization). Civilizations rise through strong group solidarity (Asabiyyah), moral discipline, and equitable governance, and decline when luxury erodes solidarity and injustice destroys productivity.',
-          microSteps: [
-            '1. Core Thesis: Group solidarity (Asabiyyah) and justice form the backbone of resilient communities and institutions.',
-            '2. Methodological Insight: Always verify primary causes and social conditions rather than accepting surface narratives.',
-            '3. Active Recall: Connect Ibn Khaldun’s concept of Asabiyyah to brotherhood and leadership.'
-          ],
-          quiz: [
-            { q: '1. What Arabic term did Ibn Khaldun coin for social cohesion and group solidarity?', a: 'Asabiyyah.' },
-            { q: '2. According to Al-Muqaddimah, what factors trigger the decline of a civilization or institution?', a: 'Erosion of solidarity through luxury/complacency and injustice that undermines productive effort.' },
-            { q: '3. Applied Synthesis: How does Ibn Khaldun’s critical verification method aid doctoral research?', a: 'It demands testing historical and empirical claims against underlying structural evidence.' }
-          ],
-          masteryLevel: 0,
-          nextReviewDate: today,
-          quizScore: null,
-          date: today
-        },
-        {
-          id: 'kv_sch_nawawi_' + (Date.now() + 2),
-          title: 'Imam Al-Nawawi: Life, Ascetic Scholarship & Al-Arba’in',
-          domain: 'Faith',
-          resourceFormat: 'Book on Islamic Scholars',
-          author: 'Imam Yahya ibn Sharaf Al-Nawawi (d. 1277 CE)',
-          sectionRef: 'Hadith Canon & Principles of Legal/Spiritual Precision',
-          duration: '20-Min Deep Sprint',
-          type: 'Faith • Book on Islamic Scholars',
-          takeaway: 'Imam Al-Nawawi exemplifies intense scholarly devotion—authoring foundational Hadith and Fiqh works in 45 years through disciplined time stewardship and sincerity.',
-          content: 'Imam Al-Nawawi studied up to twelve lessons a day in Damascus while living with complete simplicity and courage in speaking truth to rulers. His Forty Hadith (Al-Arba’in) distills the comprehensive foundations of Islamic belief, ethics, and jurisprudence.',
-          microSteps: [
-            '1. Scholarly Model: Focused, distraction-free study paired with humble practice produces enduring works.',
-            '2. Core Canon: Master Al-Arba’in al-Nawawiyyah and Riyad as-Salihin as daily ethical anchors.',
-            '3. Active Recall: Apply Al-Nawawi’s time-stewardship discipline to your Fajr doctoral block.'
-          ],
-          quiz: [
-            { q: '1. How many lessons per day did Imam Al-Nawawi famously study during his formative years in Damascus?', a: 'Up to twelve lessons per day across Hadith, Fiqh, and Arabic sciences.' },
-            { q: '2. Which two Hadith compilations by Imam Al-Nawawi serve as universal primers on Prophetic ethics?', a: 'Al-Arba’in al-Nawawiyyah (Forty Hadith) and Riyad as-Salihin (Gardens of the Righteous).' },
-            { q: '3. Applied Synthesis: What distraction can you eliminate this week to honor Al-Nawawi’s focus?', a: 'Protect your morning Fajr-to-Sunrise study window with zero phone interruptions.' }
-          ],
-          masteryLevel: 0,
-          nextReviewDate: today,
-          quizScore: null,
-          date: today
-        },
-        {
-          id: 'kv_sch_contemp_' + (Date.now() + 3),
-          title: 'Islam and the Blackamerican & The Cultural Imperative',
-          domain: 'Faith',
-          resourceFormat: 'Book on Islamic Scholars',
-          author: 'Dr. Sherman A. Jackson & Dr. Umar Faruq Abd-Allah',
-          sectionRef: 'Contemporary Western & African-American Islamic Scholarship',
-          duration: '30-Min Book Synthesis',
-          type: 'Faith • Book on Islamic Scholars',
-          takeaway: 'Authentic Islamic scholarship engages indigenous heritage with classical Sunni jurisprudence, cultivating a confident, rooted Muslim identity.',
-          content: 'Dr. Sherman Jackson examines the historical trajectory of Islam among Black Americans and the distinction between immigrant Islam and indigenous Blackamerican Muslim identity. Dr. Umar Faruq Abd-Allah shows how classical Islamic law honors healthy local culture (Urf) like clear crystal reflecting light.',
-          microSteps: [
-            '1. Core Thesis: Classical Islam affirms healthy cultural identity (Urf) while upholding universal sacred law.',
-            '2. Intellectual Bridge: Connect Black American historical resilience with classical Islamic scholarship.',
-            '3. Active Recall: Articulate how rooted identity strengthens community uplift.'
-          ],
-          quiz: [
-            { q: '1. What metaphor does Dr. Umar Faruq Abd-Allah use to describe how Islam relates to healthy local culture (Urf)?', a: 'Like clear crystal water taking on the color of the bedrock beneath it while remaining pure.' },
-            { q: '2. What central theme does Dr. Sherman Jackson analyze in "Islam and the Blackamerican"?', a: 'The historical formation and intellectual agency of Blackamerican Muslims within the broader Muslim community.' },
-            { q: '3. Applied Synthesis: How does this scholarship inform community leadership and uplift?', a: 'It unites sacred integrity with authentic cultural literacy and service.' }
-          ],
-          masteryLevel: 0,
-          nextReviewDate: today,
-          quizScore: null,
-          date: today
-        }
-      ];
-
-      window.userAppState.knowledgeVault = [...scholarsPack, ...(window.userAppState.knowledgeVault || [])];
-      window.activePolymathDomain = 'Islamic Scholars';
-      renderAllUI();
-      await pushCloudUserData();
-      switchTab('tab-knowledge');
-      alert('Loaded 4 Islamic Scholars Books & Modules (Al-Ghazali, Ibn Khaldun, Al-Nawawi, Jackson & Abd-Allah) into your vault with Audiobook, Video & 3Q Quizzes!');
-    };
-
-    window.loadDoctoralCanonPack = async function() {
-      const today = getTodayIsoDate();
-      const docCanon = [
-        {
-          id: 'kv_doc_creswell_' + Date.now(),
-          title: 'Research Design: Qualitative, Quantitative, and Mixed Methods Approaches',
-          domain: 'Doctoral Studies',
-          resourceFormat: 'Doctoral Book / Textbook',
-          author: 'John W. Creswell & J. David Creswell',
-          sectionRef: 'Part I: Philosophical Worldviews & Research Design Selection',
-          duration: '30-Min Book Synthesis',
-          type: 'Doctoral Studies • Doctoral Book / Textbook',
-          takeaway: 'Every rigorous doctoral study aligns three components: philosophical worldview (postpositivist, constructivist, transformative, pragmatic), research design, and specific methods.',
-          content: 'Creswell establishes that research design flows from philosophical assumptions: postpositivism tests deterministic hypotheses quantitatively; constructivism explores subjective meanings qualitatively; pragmatism integrates both via mixed methods around the research problem.',
-          microSteps: [
-            '1. Core Alignment: Worldview -> Design -> Data Collection & Analysis Methods.',
-            '2. Doctoral Check: Explicitly name your philosophical worldview in Chapter 1 and Chapter 3.',
-            '3. Active Recall: Match postpositivism, constructivism, and pragmatism to their primary designs.'
-          ],
-          quiz: [
-            { q: '1. What three components must align in Creswell’s framework for research design?', a: 'Philosophical worldview, research design, and specific research methods.' },
-            { q: '2. Which philosophical worldview underpins mixed-methods research by focusing on what works for the problem?', a: 'Pragmatism.' },
-            { q: '3. Applied Synthesis: Which worldview best anchors your planned January 2027 doctoral inquiry?', a: 'Write a 2-sentence justification linking your worldview to your data strategy.' }
-          ],
-          masteryLevel: 0,
-          nextReviewDate: today,
-          quizScore: null,
-          date: today
-        },
-        {
-          id: 'kv_doc_kuhn_' + (Date.now() + 1),
-          title: 'The Structure of Scientific Revolutions',
-          domain: 'Doctoral Studies',
-          resourceFormat: 'Doctoral Book / Textbook',
-          author: 'Thomas S. Kuhn',
-          sectionRef: 'Chapters II–IX: Normal Science, Anomalies & Paradigm Shifts',
-          duration: '30-Min Book Synthesis',
-          type: 'Doctoral Studies • Doctoral Book / Textbook',
-          takeaway: 'Academic fields advance through periods of puzzle-solving "normal science" punctuated by anomalies that trigger revolutionary paradigm shifts.',
-          content: 'Thomas Kuhn argues that scientific disciplines operate within shared paradigms until persistent anomalies accumulate that existing frameworks cannot explain, leading to crisis and a paradigm shift that redefines foundational questions and standards of evidence.',
-          microSteps: [
-            '1. Core Thesis: Normal science refines an existing paradigm; anomalies drive paradigm shifts.',
-            '2. Literature Strategy: Look for persistent anomalies or contradictions in your field’s dominant paradigm.',
-            '3. Active Recall: Define normal science, anomaly, and incommensurability.'
-          ],
-          quiz: [
-            { q: '1. What does Thomas Kuhn call day-to-day puzzle-solving research conducted within an established framework?', a: 'Normal science.' },
-            { q: '2. What triggers a scientific crisis and eventual paradigm shift?', a: 'Persistent anomalies that the prevailing paradigm cannot explain or resolve.' },
-            { q: '3. Applied Synthesis: What anomaly or unresolved tension exists in your target doctoral field?', a: 'Note one theoretical contradiction in your Literature Matrix.' }
-          ],
-          masteryLevel: 0,
-          nextReviewDate: today,
-          quizScore: null,
-          date: today
-        },
-        {
-          id: 'kv_doc_prisma_' + (Date.now() + 2),
-          title: 'Systematic Literature Review & Thematic Synthesis Protocol',
-          domain: 'Doctoral Studies',
-          resourceFormat: 'Academic Paper (Peer-Reviewed)',
-          author: 'Doctoral Methodology Series',
-          sectionRef: 'PRISMA Screening & Concept-Centric Matrix',
-          duration: '20-Min Deep Sprint',
-          type: 'Doctoral Studies • Academic Paper (Peer-Reviewed)',
-          takeaway: 'A concept-centric literature review maps authors against key theoretical constructs rather than listing summaries paper-by-paper.',
-          content: 'Following Webster & Watson and PRISMA guidelines, document search databases, inclusion/exclusion criteria, and code every paper into a concept matrix (Construct A, Construct B, Method, Sample, Key Finding, Gap).',
-          microSteps: [
-            '1. Core Rule: Build a concept-centric matrix (rows = papers, columns = constructs & methods).',
-            '2. Reproducibility: Log search strings, databases, and inclusion/exclusion counts.',
-            '3. Active Recall: Convert your concept matrix columns directly into literature review subheadings.'
-          ],
-          quiz: [
-            { q: '1. Why is a concept-centric literature matrix superior to an author-centric summary?', a: 'It synthesizes findings across studies by theoretical construct and reveals empirical gaps directly.' },
-            { q: '2. What elements are required for a reproducible systematic literature search?', a: 'Explicit databases, Boolean search strings, and documented inclusion/exclusion criteria.' },
-            { q: '3. Applied Synthesis: Identify 3 core constructs that will form the columns of your Literature Matrix.', a: 'List your 3 target constructs in your Journal today.' }
-          ],
-          masteryLevel: 0,
-          nextReviewDate: today,
-          quizScore: null,
-          date: today
-        }
-      ];
-
-      window.userAppState.knowledgeVault = [...docCanon, ...(window.userAppState.knowledgeVault || [])];
-      window.activePolymathDomain = 'Doctoral Studies';
-      renderAllUI();
-      await pushCloudUserData();
-      closeLibraryResourceModal();
-      switchTab('tab-knowledge');
-      alert('Loaded 3 Doctoral Books & Seminal Methodology Papers (Creswell, Kuhn, Systematic Review Protocol) into your vault!');
-    };
-
     // Interactive 3Q Active-Recall Quiz Handlers
     window.openActiveRecallQuiz = function() {
       const vault = window.userAppState.knowledgeVault || [];
       if (!vault.length) {
-        alert('Upload a PDF or auto-pull a study topic first to generate a quiz.');
+        alert('Upload a PDF or add a study topic first to generate a quiz.');
         return;
       }
       window.openRecallQuiz(vault[0].id);
@@ -5485,7 +5453,7 @@
         badge.classList.add('flex');
         document.getElementById('auth-user-name').innerText = email.split('@')[0];
 
-        await pullCloudUserData();
+        await pullCloudUserData(false);
         renderAllUI();
         window.toggleCockpit(true);
       } catch (err) {
@@ -5508,7 +5476,7 @@
       document.getElementById('brother-login-btn').classList.remove('hidden');
     };
 
-    // Cloud Sync (with automatic merge for GitHub Actions wearableTelemetry)
+    // Cloud Sync (with cleanDefinedProps merge for GitHub Actions wearableTelemetry)
     window.pullCloudUserData = async function(manualTrigger) {
       const setSyncFeedback = (msg, isErr) => {
         const topSync = document.getElementById('wearables-last-sync');
@@ -5569,17 +5537,17 @@
 
         const cloudTel = data.data?.wearableTelemetry || {};
         const defTel = JSON.parse(JSON.stringify(window.DEFAULT_WEARABLE_TELEMETRY));
-        const mergedTel = {
+        window.userAppState.wearableTelemetry = {
           syncedAt: cloudTel.syncedAt || prevTel.syncedAt,
           whoop: Object.assign({}, defTel.whoop, cleanDefinedProps(prevTel.whoop), cleanDefinedProps(cloudTel.whoop)),
           garmin: Object.assign({}, defTel.garmin, cleanDefinedProps(prevTel.garmin), cleanDefinedProps(cloudTel.garmin)),
           scale: Object.assign({}, defTel.scale, cleanDefinedProps(prevTel.scale), cleanDefinedProps(cloudTel.scale))
         };
-        window.userAppState.wearableTelemetry = mergedTel;
         const localTel = getWearableTelemetry();
         syncWearableModalInputsFromState();
         if (window.currentUserSession) await pushCloudUserData();
         renderAllUI();
+
         if (manualTrigger) {
           setSyncFeedback(`Cloud telemetry synced! Garmin Readiness: ${localTel.garmin?.readiness ?? '--'} • Steps: ${Number(localTel.garmin?.steps || 0).toLocaleString()} • ${localTel.whoop?.lastSync || 'Supabase'}`, false);
         }
@@ -5713,7 +5681,7 @@
         }
         if (tabBtn) {
           tabBtn.disabled = false;
-          tabBtn.innerHTML = '<i data-lucide="swords" class="w-3.5 h-3.5 text-rose-400"></i> Auto-Pull for Battles';
+          tabBtn.innerHTML = '<i data-lucide="swords" class="w-3.5 h-3.5 text-rose-400"></i> Battle Study';
         }
         if (window.lucide) lucide.createIcons();
       }
@@ -5759,11 +5727,10 @@
         window.userAppState.knowledgeVault = vault;
         renderAllUI();
         pushCloudUserData();
-        alert(`"${selected.title}" is now your active 20-minute micro-learning session!`);
+        alert(`"${selected.title}" is now your active micro-learning sprint!`);
       }
     };
 
-    // Knowledge Ingestion Modal
     window.openIngestModal = function(mode) {
       const modal = document.getElementById('ingest-knowledge-modal');
       const typeSel = document.getElementById('ingest-type-input');
@@ -5923,7 +5890,7 @@
     window.generateWorkflowFromVault = function() {
       const vault = window.userAppState.knowledgeVault || [];
       if (!vault.length) {
-        alert('Upload a PDF or auto-pull a topic into your Knowledge Vault first.');
+        alert('Upload a PDF or add a study item into your Knowledge Vault first.');
         return;
       }
       const latest = vault[0];
@@ -5975,13 +5942,13 @@
       const microTitleEl = document.getElementById('active-micro-title');
       const microDomEl = document.getElementById('active-micro-domain');
       const microStepsEl = document.getElementById('active-micro-steps');
+      const watchBtn = document.getElementById('active-micro-watch-btn');
       if (vault.length > 0 && microTitleEl && microDomEl && microStepsEl) {
         const activeStudy = vault[0];
         const steps = activeStudy.microSteps || distillTextToMicroSession(activeStudy.title, activeStudy.content).microSteps;
         microTitleEl.innerText = activeStudy.title;
         microDomEl.innerText = activeStudy.quizScore ? `${activeStudy.type} (${activeStudy.quizScore})` : activeStudy.type;
         microStepsEl.innerHTML = steps.map(s => `<p>${s}</p>`).join('');
-        const watchBtn = document.getElementById('active-micro-watch-btn');
         if (watchBtn) {
           watchBtn.classList.toggle('hidden', !activeStudy.videoId);
           watchBtn.classList.toggle('flex', !!activeStudy.videoId);
@@ -5990,6 +5957,7 @@
         microTitleEl.innerText = cfg.microLearning.title;
         microDomEl.innerText = cfg.microLearning.domain;
         microStepsEl.innerHTML = cfg.microLearning.steps.map(s => `<p>${s}</p>`).join('');
+        if (watchBtn) watchBtn.classList.add('hidden');
       }
 
       const twinPersonaEl = document.getElementById('active-twin-persona');
@@ -6101,17 +6069,26 @@
                   ${steps.map(st => `<p>${st}</p>`).join('')}
                 </div>
               </div>
-              <div class="flex justify-between items-center gap-2 pt-2 border-t border-slate-800/60">
-                <button type="button" onclick="openRecallQuiz('${item.id}')" class="px-2.5 py-1 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-lg text-[11px] font-bold flex items-center gap-1">
-                  <i data-lucide="help-circle" class="w-3 h-3"></i> Drill Quiz (3Q)
-                </button>
-                <button type="button" onclick="promoteOmegaToDailySprint('${item.id}')" class="px-2.5 py-1 bg-purple-950 hover:bg-purple-900 border border-purple-700 text-purple-200 rounded-lg text-[11px] font-semibold">
-                  Set Active Sprint
+              <div class="flex flex-wrap justify-between items-center gap-1.5 pt-2 border-t border-slate-800/60">
+                <div class="flex items-center gap-1">
+                  ${item.videoId ? `<button type="button" onclick="openVideoTheater('${item.id}')" class="px-2 py-1 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-[10px] font-bold flex items-center gap-1"><i data-lucide="play" class="w-3 h-3"></i> YT</button>` : ''}
+                  <button type="button" onclick="openRecallQuiz('${item.id}')" class="px-2 py-1 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-lg text-[10px] font-bold flex items-center gap-1">
+                    <i data-lucide="help-circle" class="w-3 h-3"></i> 3Q
+                  </button>
+                  <button type="button" onclick="launchAvPlayer('${item.id}', 'audio')" class="px-2 py-1 bg-indigo-950 hover:bg-indigo-900 text-indigo-300 border border-indigo-800 rounded-lg text-[10px] font-bold flex items-center gap-1">
+                    <i data-lucide="headphones" class="w-3 h-3"></i> Audio
+                  </button>
+                  <button type="button" onclick="launchAvPlayer('${item.id}', 'video')" class="px-2 py-1 bg-purple-950 hover:bg-purple-900 text-purple-300 border border-purple-800 rounded-lg text-[10px] font-bold flex items-center gap-1">
+                    <i data-lucide="monitor-play" class="w-3 h-3"></i> Video
+                  </button>
+                </div>
+                <button type="button" onclick="promoteOmegaToDailySprint('${item.id}')" class="px-2 py-1 bg-purple-950 hover:bg-purple-900 border border-purple-700 text-purple-200 rounded-lg text-[10px] font-semibold">
+                  Sprint
                 </button>
               </div>
             </div>
           `;
-        }).join('') || '<p class="text-xs text-slate-400 col-span-3">Click "Import Extracted Proton Folder" or "Pull All Official Omega & NPHC Sites" above to load Omega study cards.</p>';
+        }).join('') || '<p class="text-xs text-slate-400 col-span-3">Click "Import Extracted Proton Folder" or "+ YouTube Lecture" above to load Omega study cards.</p>';
       }
 
       if (window.lucide) lucide.createIcons();
@@ -6378,7 +6355,7 @@
             badge.classList.remove('hidden');
             badge.classList.add('flex');
             document.getElementById('auth-user-name').innerText = window.currentUserSession.email.split('@')[0];
-            await pullCloudUserData();
+            await pullCloudUserData(false);
             try { renderAllUI(); } catch (e) {}
           }
         }

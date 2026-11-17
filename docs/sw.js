@@ -1,5 +1,5 @@
-// Hive Alignment OTA Service Worker (Network-First App Shell + Instant Activation)
-const CACHE_NAME = 'hive-alignment-ota-v1';
+// Hive Alignment OTA Service Worker v2 (Network-First App Shell + Instant Activation)
+const CACHE_NAME = 'hive-alignment-ota-v2';
 const APP_SHELL = [
   './',
   './index.html',
@@ -45,20 +45,20 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(req.url);
 
-  // Never intercept Supabase, WHOOP, Garmin, Wikipedia, or Aladhan live API calls
   if (
     url.hostname.includes('supabase.co') ||
     url.hostname.includes('whoop.com') ||
     url.hostname.includes('garmin.com') ||
     url.hostname.includes('aladhan.com') ||
+    url.hostname.includes('alquran.cloud') ||
     url.hostname.includes('wikipedia.org') ||
+    url.hostname.includes('youtube.com') ||
     url.hostname.includes('jina.ai') ||
     url.hostname.includes('allorigins.win')
   ) {
     return;
   }
 
-  // Network-First with cache: 'no-store' for same-origin HTML/manifest so git pushes update OTA immediately
   if (url.origin === self.location.origin) {
     event.respondWith(
       fetch(req, { cache: 'no-store' })
@@ -74,7 +74,6 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Stale-While-Revalidate for external CDN scripts/icons
   event.respondWith(
     caches.match(req).then((cached) => {
       const fetchPromise = fetch(req)
