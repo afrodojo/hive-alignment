@@ -9,7 +9,6 @@ TARGET_EMAIL = os.environ.get("HIVE_USER_EMAIL", "cyberdojosensei@gmail.com").st
 
 GARMIN_EMAIL = os.environ.get("GARMIN_EMAIL", "").strip()
 GARMIN_PASSWORD = os.environ.get("GARMIN_PASSWORD", "").strip()
-GARMIN_PERSONAL_KEY = os.environ.get("GARMIN_PERSONAL_API_KEY", "").strip()
 
 WHOOP_CLIENT_ID = os.environ.get("WHOOP_CLIENT_ID", "").strip()
 WHOOP_CLIENT_SECRET = os.environ.get("WHOOP_CLIENT_SECRET", "").strip()
@@ -45,34 +44,34 @@ def sync_garmin(telemetry):
         garmin_block = telemetry.setdefault("garmin", {})
         scale_block = telemetry.setdefault("scale", {})
 
-        if stats.get("totalSteps") is not None:
-            garmin_block["steps"] = int(stats["totalSteps"])
-        if stats.get("bodyBatteryMostRecentValue") is not None:
-            garmin_block["bodyBattery"] = int(stats["bodyBatteryMostRecentValue"])
-        elif stats.get("bodyBatteryChargedValue") is not None:
-            garmin_block["bodyBattery"] = int(stats["bodyBatteryChargedValue"])
+        if isinstance(stats, dict):
+            if stats.get("totalSteps") is not None:
+                garmin_block["steps"] = int(stats["totalSteps"])
+            if stats.get("bodyBatteryMostRecentValue") is not None:
+                garmin_block["bodyBattery"] = int(stats["bodyBatteryMostRecentValue"])
+            elif stats.get("bodyBatteryChargedValue") is not None:
+                garmin_block["bodyBattery"] = int(stats["bodyBatteryChargedValue"])
 
-        # Training Readiness
         try:
             readiness = client.get_training_readiness(today)
             if isinstance(readiness, list) and readiness:
                 score = readiness[0].get("score")
                 if score is not None:
                     garmin_block["readiness"] = int(score)
-        except Exception:
-            pass
+            elif isinstance(readiness, dict) and readiness.get("score") is not None:
+                garmin_block["readiness"] = int(readiness["score"])
+        except Exception as e:
+            print(f"Garmin training readiness warning: {e}")
 
-        # Max Metrics (VO2 Max)
         try:
             max_met = client.get_max_metrics(today)
-            if isinstance(max_met, list) and max_met:
-                vo2 = max_met[0].get("generic", {}).get("vo2MaxPreciseValue")
-                if vo2:
-                    garmin_block["vo2Max"] = round(float(vo2), 1)
-        except Exception:
-            pass
+            entry = max_met[0] if isinstance(max_met, list) and max_met else (max_met if isinstance(max_met, dict) else {})
+            vo2 = entry.get("generic", {}).get("vo2MaxPreciseValue")
+            if vo2:
+                garmin_block["vo2Max"] = round(float(vo2), 1)
+        except Exception as e:
+            print(f"Garmin VO2 max warning: {e}")
 
-        # Activities & 7d/28d ACWR Calculation
         activities = client.get_activities(0, 40) or []
         if activities:
             latest = activities[0]
@@ -105,7 +104,6 @@ def sync_garmin(telemetry):
                 garmin_block["acuteLoad"] = round(acute_load)
                 garmin_block["chronicLoad"] = round(weekly_chronic)
 
-        # Smart Scale / Body Composition synced via Garmin Connect
         try:
             start_28 = (datetime.now(timezone.utc) - timedelta(days=28)).strftime("%Y-%m-%d")
             body = client.get_body_composition(start_28, today) or {}
@@ -120,8 +118,8 @@ def sync_garmin(telemetry):
                     scale_block["muscleMass"] = round(float(w_latest["muscleMass"]) / 453.59237, 1)
                 if w_latest.get("bodyWater"):
                     scale_block["hydration"] = round(float(w_latest["bodyWater"]), 1)
-        except Exception:
-            pass
+        except Exception as e:
+            print(f"Garmin body composition warning: {e}")
 
         print("Garmin Connect sync completed successfully.")
     except Exception as exc:
@@ -191,7 +189,6 @@ def sync_whoop(telemetry):
                 if slp_score.get("sleep_performance_percentage") is not None:
                     whoop_block["sleepPerf"] = round(float(slp_score["sleep_performance_percentage"]))
 
-        whoop_block["lastSync"] = f"Auto-Synced ({datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')})"
         print("WHOOP API v2 sync completed successfully.")
     except Exception as exc:
         print(f"WHOOP sync warning: {exc}")
@@ -199,7 +196,8 @@ def sync_whoop(telemetry):
 
 def main():
     if not SUPA_KEY:
-        raise RuntimeError("Missing SUPABASE_SERVICE_ROLE_KEY or SUPABASE_ANON_KEY environment variable.")
+        print("ERROR: Missing SUPABASE_SERVICE_ROLE_KEY or SUPABASE_ANON_KEY environment variable.")
+        return
 
     row = fetch_existing_state()
     state_data = row.get("data") or {}
@@ -224,8 +222,13 @@ def main():
         "data": state_data,
         "updated_at": now_iso,
     }
-    res = requests.post(f"{SUPA_URL}/rest/v1/brotherhood_status", headers=headers, data=json.dumps(payload), timeout=20)
-    print("Supabase upsert status:", res.status_code)
+    res = requests.post(
+        f"{SUPA_URL}/rest/v1/brotherhood_status?on_conflict=brother",
+        headers=headers,
+        data=json.dumps(payload),
+        timeout=20,
+    )
+    print("Supabase upsert status:", res.status_code, res.text[:200])
 
 
 if __name__ == "__main__":
