@@ -120,11 +120,14 @@ def sync_garmin(telemetry):
             print(f"Garmin training readiness warning: {e}")
 
         try:
-            max_met = client.get_max_metrics(today)
-            entry = max_met[0] if isinstance(max_met, list) and max_met else (max_met if isinstance(max_met, dict) else {})
-            vo2 = entry.get("generic", {}).get("vo2MaxPreciseValue")
-            if vo2:
-                garmin_block["vo2Max"] = round(float(vo2), 1)
+            for d_off in range(0, 14):
+                check_day = (datetime.now(timezone.utc) - timedelta(days=d_off)).strftime("%Y-%m-%d")
+                max_met = client.get_max_metrics(check_day)
+                entry = max_met[0] if isinstance(max_met, list) and max_met else (max_met if isinstance(max_met, dict) else {})
+                vo2 = (entry.get("generic") or {}).get("vo2MaxPreciseValue") or (entry.get("generic") or {}).get("vo2MaxValue")
+                if vo2:
+                    garmin_block["vo2Max"] = round(float(vo2), 1)
+                    break
         except Exception as e:
             print(f"Garmin VO2 max warning: {e}")
 

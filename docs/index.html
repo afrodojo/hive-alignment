@@ -2212,9 +2212,27 @@
       if (window.lucide) lucide.createIcons();
     };
 
+    function cleanDefinedProps(obj) {
+      const out = {};
+      if (!obj || typeof obj !== 'object') return out;
+      Object.keys(obj).forEach(k => {
+        if (obj[k] !== undefined && obj[k] !== null && obj[k] !== '') out[k] = obj[k];
+      });
+      return out;
+    }
+
     function getWearableTelemetry() {
-      if (!window.userAppState.wearableTelemetry) {
-        window.userAppState.wearableTelemetry = JSON.parse(JSON.stringify(window.DEFAULT_WEARABLE_TELEMETRY));
+      const def = JSON.parse(JSON.stringify(window.DEFAULT_WEARABLE_TELEMETRY));
+      const cur = window.userAppState.wearableTelemetry || {};
+      window.userAppState.wearableTelemetry = {
+        syncedAt: cur.syncedAt || def.syncedAt,
+        whoop: Object.assign({}, def.whoop, cleanDefinedProps(cur.whoop)),
+        garmin: Object.assign({}, def.garmin, cleanDefinedProps(cur.garmin)),
+        scale: Object.assign({}, def.scale, cleanDefinedProps(cur.scale))
+      };
+      if (!Array.isArray(window.userAppState.wearableTelemetry.whoop.trend7d) ||
+          window.userAppState.wearableTelemetry.whoop.trend7d.some(v => typeof v !== 'number' || isNaN(v))) {
+        window.userAppState.wearableTelemetry.whoop.trend7d = def.whoop.trend7d;
       }
       return window.userAppState.wearableTelemetry;
     }
@@ -4415,6 +4433,7 @@
           return;
         }
 
+        const prevTel = JSON.parse(JSON.stringify(getWearableTelemetry()));
         if (data.encrypted_payload && window.masterPassphrase) {
           try {
             const dec = await window.SanctuaryVaultCrypto.decryptPayload(data.encrypted_payload, window.masterPassphrase);
@@ -4426,17 +4445,18 @@
           window.userAppState = Object.assign(window.userAppState, data.data);
         }
 
-        const cloudTel = data.data?.wearableTelemetry;
+        const cloudTel = data.data?.wearableTelemetry || {};
+        const defTel = JSON.parse(JSON.stringify(window.DEFAULT_WEARABLE_TELEMETRY));
+        const mergedTel = {
+          syncedAt: cloudTel.syncedAt || prevTel.syncedAt,
+          whoop: Object.assign({}, defTel.whoop, cleanDefinedProps(prevTel.whoop), cleanDefinedProps(cloudTel.whoop)),
+          garmin: Object.assign({}, defTel.garmin, cleanDefinedProps(prevTel.garmin), cleanDefinedProps(cloudTel.garmin)),
+          scale: Object.assign({}, defTel.scale, cleanDefinedProps(prevTel.scale), cleanDefinedProps(cloudTel.scale))
+        };
+        window.userAppState.wearableTelemetry = mergedTel;
         const localTel = getWearableTelemetry();
-        if (cloudTel) {
-          localTel.whoop = Object.assign({}, localTel.whoop || {}, cloudTel.whoop || {});
-          localTel.garmin = Object.assign({}, localTel.garmin || {}, cloudTel.garmin || {});
-          localTel.scale = Object.assign({}, localTel.scale || {}, cloudTel.scale || {});
-          if (cloudTel.syncedAt) localTel.syncedAt = cloudTel.syncedAt;
-          window.userAppState.wearableTelemetry = localTel;
-          syncWearableModalInputsFromState();
-          if (window.currentUserSession) await pushCloudUserData();
-        }
+        syncWearableModalInputsFromState();
+        if (window.currentUserSession) await pushCloudUserData();
         renderAllUI();
         if (manualTrigger) {
           setSyncFeedback(`Cloud telemetry synced! Garmin Readiness: ${localTel.garmin?.readiness ?? '--'} • Steps: ${Number(localTel.garmin?.steps || 0).toLocaleString()} • ${localTel.whoop?.lastSync || 'Supabase'}`, false);
