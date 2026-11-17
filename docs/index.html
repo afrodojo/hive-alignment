@@ -245,6 +245,35 @@
       </div>
     </div>
 
+    <!-- LIVE WEARABLES & WHOOP TELEMETRY STRIP -->
+    <div class="p-4 rounded-2xl bg-gradient-to-r from-slate-900 via-emerald-950/20 to-slate-900 border border-slate-800 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 shadow-xl">
+      <div class="flex flex-wrap items-center gap-4">
+        <div class="flex items-center gap-3">
+          <div id="top-whoop-badge" class="w-11 h-11 rounded-xl bg-emerald-950 border border-emerald-700/70 flex flex-col items-center justify-center text-emerald-400 font-mono">
+            <span id="top-whoop-rec" class="text-sm font-extrabold leading-none">82%</span>
+            <span class="text-[8px] uppercase tracking-wider mt-0.5">WHOOP</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-white">WHOOP 5.0 & Garmin Tactix 7 Pro</span>
+              <span id="top-gate-pill" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-700/60">GREEN GATE</span>
+            </div>
+            <p id="top-telemetry-summary" class="text-[11px] text-slate-400 font-mono mt-0.5">
+              HRV: 48 ms • RHR: 52 bpm • Strain: 13.4 • Garmin Readiness: 84 • ACWR: 0.96
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <button type="button" onclick="openWearableConnectModal('manual')" class="px-3 py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-slate-200 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+          <i data-lucide="activity" class="w-3.5 h-3.5 text-emerald-400"></i> Sync / Connect Wearables
+        </button>
+        <button type="button" onclick="switchTab('tab-wearables')" class="px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+          Open Device Dashboards →
+        </button>
+      </div>
+    </div>
+
     <!-- DYNAMIC ALIGNMENT CARDS -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between space-y-4 shadow-lg">
@@ -311,6 +340,7 @@
     <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-2">
       <button type="button" onclick="switchTab('tab-briefings')" id="btn-tab-briefings" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold bg-emerald-500 text-slate-950 transition">Briefings</button>
       <button type="button" onclick="switchTab('tab-knowledge')" id="btn-tab-knowledge" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-sky-400 hover:text-sky-300 transition">Knowledge & Micro-Learning</button>
+      <button type="button" onclick="switchTab('tab-wearables')" id="btn-tab-wearables" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-rose-400 hover:text-rose-300 transition">WHOOP & Wearables</button>
       <button type="button" onclick="switchTab('tab-faith')" id="btn-tab-faith" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition">Faith & Salat Path</button>
       <button type="button" onclick="switchTab('tab-calendar')" id="btn-tab-calendar" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">Calendar Sync</button>
       <button type="button" onclick="switchTab('tab-duties')" id="btn-tab-duties" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">Duties & Tasks</button>
@@ -419,6 +449,243 @@
 
       <!-- Ingested & Distilled Cards Grid -->
       <div id="knowledge-vault-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+
+    <!-- TAB: WHOOP 5.0, GARMIN TACTIX 7 PRO & SMART SCALE DASHBOARDS -->
+    <div id="tab-wearables" class="tab-content space-y-6">
+      <!-- Top Control & Device View Switcher -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 shadow-xl">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+            <i data-lucide="watch" class="w-3.5 h-3.5"></i> Zero-Knowledge Biometric Command Center
+          </span>
+          <h3 class="text-lg font-extrabold text-white mt-0.5">WHOOP 5.0, Garmin & Smart Scale Dashboards</h3>
+          <p id="wearables-last-sync" class="text-xs text-slate-400">Encrypted locally with AES-GCM-256 • Auto-regulates Tactical S&C volume & daily schedule</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <div class="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-800 text-xs">
+            <button type="button" id="wview-all" onclick="setWearableDashboardView('all')" class="px-3 py-1.5 rounded-lg font-bold bg-emerald-500 text-slate-950 transition">All Devices</button>
+            <button type="button" id="wview-whoop" onclick="setWearableDashboardView('whoop')" class="px-3 py-1.5 rounded-lg font-semibold text-slate-400 hover:text-white transition">WHOOP 5.0</button>
+            <button type="button" id="wview-garmin" onclick="setWearableDashboardView('garmin')" class="px-3 py-1.5 rounded-lg font-semibold text-slate-400 hover:text-white transition">Garmin Tactix</button>
+            <button type="button" id="wview-scale" onclick="setWearableDashboardView('scale')" class="px-3 py-1.5 rounded-lg font-semibold text-slate-400 hover:text-white transition">Smart Scale</button>
+          </div>
+          <button type="button" onclick="openWearableConnectModal('whoop-api')" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow">
+            <i data-lucide="link" class="w-3.5 h-3.5"></i> Connect WHOOP / Import CSV
+          </button>
+        </div>
+      </div>
+
+      <!-- Adaptive Telemetry Auto-Regulator Banner -->
+      <div id="autoregulator-gate-card" class="p-5 rounded-2xl bg-gradient-to-r from-emerald-950/60 via-slate-900 to-slate-900 border border-emerald-700/60 space-y-2 shadow-lg">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+          <div class="flex items-center gap-2">
+            <span id="autoreg-badge" class="px-2.5 py-0.5 rounded-md bg-emerald-500 text-slate-950 font-extrabold text-[11px] uppercase">GREEN RECOVERY GATE (>66%)</span>
+            <h4 id="autoreg-headline" class="text-sm font-bold text-white">Full Tactical S&C Overload Cleared (+2.5% Load/Volume)</h4>
+          </div>
+          <span id="autoreg-acwr-tag" class="text-[11px] font-mono text-emerald-300 bg-slate-950 px-2.5 py-1 rounded-lg border border-slate-800">ACWR: 0.96 (Optimal 0.80–1.10)</span>
+        </div>
+        <p id="autoreg-prescription" class="text-xs text-slate-300 leading-relaxed">
+          Prescribed Protocol: 4 sets × 12–15 reps @ Target RPE 7–8. Apply +2.5% progressive overload on primary compound lifts today.
+        </p>
+      </div>
+
+      <!-- DEVICE DASHBOARDS GRID -->
+      <div id="wearable-devices-grid" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- 1. WHOOP 5.0 DEDICATED DASHBOARD -->
+        <div id="panel-dashboard-whoop" class="bg-slate-900 border border-emerald-800/50 rounded-2xl p-6 space-y-4 shadow-xl flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-emerald-950 border border-emerald-700/70 flex items-center justify-center text-emerald-400 font-extrabold text-xs">W5</div>
+                <div>
+                  <h4 class="font-bold text-white text-sm">WHOOP 5.0 Dashboard</h4>
+                  <span class="text-[10px] text-slate-400 font-mono">Recovery • HRV • Strain • Sleep</span>
+                </div>
+              </div>
+              <button type="button" onclick="openWearableConnectModal('whoop-api')" class="text-[11px] px-2.5 py-1 bg-emerald-950 hover:bg-emerald-900 border border-emerald-700/60 text-emerald-300 rounded-lg font-semibold">
+                Sync WHOOP
+              </button>
+            </div>
+
+            <!-- Primary WHOOP Metrics -->
+            <div class="grid grid-cols-2 gap-3 text-center">
+              <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800">
+                <span class="text-[10px] uppercase tracking-wider text-slate-400 block">Recovery Score</span>
+                <span id="w-dash-recovery" class="text-2xl font-extrabold font-mono text-emerald-400 mt-1 block">82%</span>
+                <span id="w-dash-zone-label" class="text-[10px] text-emerald-300 font-semibold">Peak Readiness</span>
+              </div>
+              <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800">
+                <span class="text-[10px] uppercase tracking-wider text-slate-400 block">HRV (rMSSD)</span>
+                <span id="w-dash-hrv" class="text-2xl font-extrabold font-mono text-sky-400 mt-1 block">48 ms</span>
+                <span class="text-[10px] text-slate-400">Baseline Gate >25ms</span>
+              </div>
+              <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                <span class="text-[10px] uppercase tracking-wider text-slate-400 block">Resting HR</span>
+                <span id="w-dash-rhr" class="text-lg font-bold font-mono text-white mt-0.5 block">52 bpm</span>
+              </div>
+              <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                <span class="text-[10px] uppercase tracking-wider text-slate-400 block">Day Strain</span>
+                <span id="w-dash-strain" class="text-lg font-bold font-mono text-amber-400 mt-0.5 block">13.4 / 21</span>
+              </div>
+            </div>
+
+            <!-- WHOOP Sleep & Physiology Breakdown -->
+            <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-2 text-xs">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-slate-200">Sleep Performance & Stages</span>
+                <span id="w-dash-sleep-perf" class="font-mono font-bold text-indigo-400">89% (7h 42m)</span>
+              </div>
+              <div class="grid grid-cols-4 gap-1.5 text-center text-[10px] pt-1">
+                <div class="p-1.5 rounded bg-slate-900 border border-slate-800">
+                  <span class="text-purple-400 font-bold block">REM</span>
+                  <span id="w-dash-rem" class="font-mono text-slate-200">1h 52m</span>
+                </div>
+                <div class="p-1.5 rounded bg-slate-900 border border-slate-800">
+                  <span class="text-indigo-400 font-bold block">Deep</span>
+                  <span id="w-dash-deep" class="font-mono text-slate-200">1h 38m</span>
+                </div>
+                <div class="p-1.5 rounded bg-slate-900 border border-slate-800">
+                  <span class="text-sky-400 font-bold block">Light</span>
+                  <span id="w-dash-light" class="font-mono text-slate-200">4h 12m</span>
+                </div>
+                <div class="p-1.5 rounded bg-slate-900 border border-slate-800">
+                  <span class="text-emerald-400 font-bold block">SpO2</span>
+                  <span id="w-dash-spo2" class="font-mono text-slate-200">98%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 7-Day Recovery Trend Bars -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-[10px] text-slate-400 font-mono">
+                <span>7-DAY RECOVERY TREND</span>
+                <span id="w-dash-avg-rec">7d Avg: 76%</span>
+              </div>
+              <div id="w-dash-trend-bars" class="grid grid-cols-7 gap-1.5 items-end h-16 bg-slate-950 p-2 rounded-xl border border-slate-800"></div>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-slate-800 flex justify-between items-center text-[11px]">
+            <span id="w-dash-skin-temp" class="text-slate-400 font-mono">Skin Temp: 33.6°C</span>
+            <button type="button" onclick="openWearableConnectModal('manual')" class="text-emerald-400 hover:text-emerald-300 font-semibold">Update WHOOP →</button>
+          </div>
+        </div>
+
+        <!-- 2. GARMIN TACTIX 7 PRO & WEARABLES DASHBOARD -->
+        <div id="panel-dashboard-garmin" class="bg-slate-900 border border-sky-800/50 rounded-2xl p-6 space-y-4 shadow-xl flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-sky-950 border border-sky-700/70 flex items-center justify-center text-sky-400 font-extrabold text-xs">GTX</div>
+                <div>
+                  <h4 class="font-bold text-white text-sm">Garmin Tactix 7 Pro</h4>
+                  <span class="text-[10px] text-slate-400 font-mono">Readiness • GPS Strain • ACWR</span>
+                </div>
+              </div>
+              <button type="button" onclick="openWearableConnectModal('csv-import')" class="text-[11px] px-2.5 py-1 bg-sky-950 hover:bg-sky-900 border border-sky-700/60 text-sky-300 rounded-lg font-semibold">
+                Import CSV
+              </button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-center">
+              <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800">
+                <span class="text-[10px] uppercase tracking-wider text-slate-400 block">Training Readiness</span>
+                <span id="g-dash-readiness" class="text-2xl font-extrabold font-mono text-sky-400 mt-1 block">84 / 100</span>
+                <span class="text-[10px] text-sky-300 font-semibold">Prime Capacity</span>
+              </div>
+              <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800">
+                <span class="text-[10px] uppercase tracking-wider text-slate-400 block">Body Battery</span>
+                <span id="g-dash-battery" class="text-2xl font-extrabold font-mono text-emerald-400 mt-1 block">88%</span>
+                <span class="text-[10px] text-slate-400">Charged Reserve</span>
+              </div>
+              <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                <span class="text-[10px] uppercase tracking-wider text-slate-400 block">VO2 Max</span>
+                <span id="g-dash-vo2" class="text-lg font-bold font-mono text-white mt-0.5 block">51 mL/kg</span>
+              </div>
+              <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                <span class="text-[10px] uppercase tracking-wider text-slate-400 block">Daily Steps</span>
+                <span id="g-dash-steps" class="text-lg font-bold font-mono text-amber-400 mt-0.5 block">10,450</span>
+              </div>
+            </div>
+
+            <!-- ACWR & GPS Strain Gauge -->
+            <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-2 text-xs">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-slate-200">Workload Ratio (ACWR)</span>
+                <span id="g-dash-acwr" class="font-mono font-bold text-emerald-400">0.96 (Target 0.80–1.10)</span>
+              </div>
+              <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden border border-slate-800">
+                <div id="g-dash-acwr-bar" class="h-full bg-emerald-500 rounded-full" style="width: 68%;"></div>
+              </div>
+              <div class="flex justify-between text-[10px] text-slate-400 pt-1">
+                <span>7d Acute Load: <strong id="g-dash-acute" class="text-slate-200">640</strong></span>
+                <span>28d Chronic: <strong id="g-dash-chronic" class="text-slate-200">665</strong></span>
+              </div>
+            </div>
+
+            <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 text-[11px] text-slate-300 space-y-1">
+              <span class="text-[10px] font-bold uppercase text-sky-400 block">Latest GPS / Tactical Session:</span>
+              <p id="g-dash-last-activity">Tactical S&C + Ruck Conditioning • 58 min • Avg HR 138 bpm</p>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-slate-800 flex justify-between items-center text-[11px]">
+            <span class="text-slate-400 font-mono">Garmin / Oura / Apple Ready</span>
+            <button type="button" onclick="openWearableConnectModal('manual')" class="text-sky-400 hover:text-sky-300 font-semibold">Update Garmin →</button>
+          </div>
+        </div>
+
+        <!-- 3. SMART SCALE & BIOMETRICS DASHBOARD -->
+        <div id="panel-dashboard-scale" class="bg-slate-900 border border-purple-800/50 rounded-2xl p-6 space-y-4 shadow-xl flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-purple-950 border border-purple-700/70 flex items-center justify-center text-purple-400 font-extrabold text-xs">BIO</div>
+                <div>
+                  <h4 class="font-bold text-white text-sm">Smart Scale Biometrics</h4>
+                  <span class="text-[10px] text-slate-400 font-mono">Composition • Lean Mass • Hydration</span>
+                </div>
+              </div>
+              <button type="button" onclick="openWearableConnectModal('manual')" class="text-[11px] px-2.5 py-1 bg-purple-950 hover:bg-purple-900 border border-purple-700/60 text-purple-200 rounded-lg font-semibold">
+                Log Weigh-In
+              </button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-center">
+              <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800">
+                <span class="text-[10px] uppercase tracking-wider text-slate-400 block">Body Weight</span>
+                <span id="s-dash-weight" class="text-2xl font-extrabold font-mono text-white mt-1 block">194.2 lbs</span>
+                <span id="s-dash-weight-delta" class="text-[10px] text-emerald-400 font-semibold">-0.8 lbs (7d)</span>
+              </div>
+              <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800">
+                <span class="text-[10px] uppercase tracking-wider text-slate-400 block">Body Fat %</span>
+                <span id="s-dash-bf" class="text-2xl font-extrabold font-mono text-purple-400 mt-1 block">14.6%</span>
+                <span class="text-[10px] text-slate-400">Athletic Range</span>
+              </div>
+              <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                <span class="text-[10px] uppercase tracking-wider text-slate-400 block">Lean Muscle</span>
+                <span id="s-dash-muscle" class="text-lg font-bold font-mono text-emerald-400 mt-0.5 block">165.8 lbs</span>
+              </div>
+              <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                <span class="text-[10px] uppercase tracking-wider text-slate-400 block">Hydration %</span>
+                <span id="s-dash-hydration" class="text-lg font-bold font-mono text-sky-400 mt-0.5 block">61.4%</span>
+              </div>
+            </div>
+
+            <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1.5 text-xs">
+              <span class="text-[10px] font-bold uppercase text-purple-400 block">Biometric & Metabolic Targets:</span>
+              <p class="text-[11px] text-slate-300">• Daily Hydration Floor: <strong>96–112 oz</strong> electrolyte-balanced water</p>
+              <p class="text-[11px] text-slate-300">• Protein Anchor: <strong>185–200g</strong> daily to preserve lean mass during doctoral & Omega prep</p>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-slate-800 flex justify-between items-center text-[11px]">
+            <span id="s-dash-bmr" class="text-slate-400 font-mono">Est. BMR: 1,940 kcal</span>
+            <button type="button" onclick="openWearableConnectModal('manual')" class="text-purple-400 hover:text-purple-300 font-semibold">Update Biometrics →</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- TAB: ISLAMIC FAITH LEARNING PATHS & LIVE PRAYER TIMES -->
@@ -649,6 +916,132 @@
   </footer>
 
   <!-- MODALS -->
+  <!-- WHOOP & Wearables Connect / Sync Modal -->
+  <div id="wearable-connect-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[1260] hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-emerald-700/60 rounded-2xl max-w-xl w-full p-6 space-y-4 shadow-2xl relative my-8">
+      <div class="flex justify-between items-start border-b border-slate-800 pb-3">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+            <i data-lucide="activity" class="w-3.5 h-3.5"></i> Zero-Knowledge Telemetry Gateway
+          </span>
+          <h3 class="text-base font-bold text-white mt-0.5">Connect WHOOP 5.0, Garmin & Smart Scale</h3>
+        </div>
+        <button type="button" onclick="closeWearableConnectModal()" class="text-slate-400 hover:text-white text-xl leading-none">×</button>
+      </div>
+
+      <!-- Mode Switcher -->
+      <div class="flex rounded-xl bg-slate-950 p-1 border border-slate-800 text-xs font-semibold">
+        <button type="button" id="wtab-whoop-api" onclick="switchWearableModalTab('whoop-api')" class="flex-1 py-1.5 rounded-lg bg-emerald-500 text-slate-950">WHOOP API v2 Live</button>
+        <button type="button" id="wtab-csv-import" onclick="switchWearableModalTab('csv-import')" class="flex-1 py-1.5 rounded-lg text-slate-400">Import CSV / JSON</button>
+        <button type="button" id="wtab-manual" onclick="switchWearableModalTab('manual')" class="flex-1 py-1.5 rounded-lg text-slate-400">Quick Telemetry Sync</button>
+      </div>
+
+      <!-- Panel 1: WHOOP API v2 OAuth / Bearer Sync -->
+      <div id="wpanel-whoop-api" class="space-y-3 text-xs">
+        <p class="text-slate-300 leading-relaxed">
+          Sync directly from <strong>WHOOP Developer API v2</strong> (<code class="text-emerald-300">api.prod.whoop.com/developer/v2</code>) using your OAuth2 Access Token or Client ID. Tokens and pulled recovery/sleep records are encrypted locally with AES-GCM-256.
+        </p>
+
+        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+          <label class="text-slate-400 block font-medium">Option A: Direct WHOOP Bearer Access Token Sync</label>
+          <div class="flex gap-2">
+            <input type="password" id="whoop-bearer-token" placeholder="Paste WHOOP OAuth2 Access Token..." class="flex-grow bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-slate-200 font-mono">
+            <button type="button" id="whoop-live-sync-btn" onclick="syncWhoopApiV2Direct()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl flex-shrink-0">
+              Pull WHOOP v2
+            </button>
+          </div>
+        </div>
+
+        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+          <label class="text-slate-400 block font-medium">Option B: WHOOP OAuth 2.0 Authorization Redirect</label>
+          <div class="flex gap-2">
+            <input type="text" id="whoop-client-id" placeholder="WHOOP App Client ID (from developer.whoop.com)" class="flex-grow bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-slate-200 font-mono">
+            <button type="button" onclick="startWhoopOAuthRedirect()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl flex-shrink-0">
+              Authorize WHOOP
+            </button>
+          </div>
+          <p class="text-[10px] text-slate-500">Redirect URI to register in WHOOP Developer Dashboard: <code class="text-slate-300">https://hive-align.eds-360.com/</code></p>
+        </div>
+      </div>
+
+      <!-- Panel 2: CSV / JSON File Upload (WHOOP, Garmin, Oura, Apple Health) -->
+      <div id="wpanel-csv-import" class="hidden space-y-3 text-xs">
+        <p class="text-slate-300 leading-relaxed">
+          Upload your exported <strong>WHOOP</strong> (<code class="text-emerald-300">physiological_cycles.csv</code>, <code class="text-emerald-300">sleeps.csv</code>), <strong>Garmin Connect</strong> (<code class="text-sky-300">Activities.csv</code>), or <strong>Oura / Apple Health</strong> <code class="text-purple-300">.json</code> file. Parsed 100% locally in your browser.
+        </p>
+        <label for="wearable-file-upload" class="cursor-pointer block p-6 bg-slate-950 hover:bg-slate-950/70 border-2 border-dashed border-emerald-700/60 rounded-2xl text-center space-y-2 transition">
+          <i data-lucide="upload-cloud" class="w-8 h-8 text-emerald-400 mx-auto"></i>
+          <span class="font-bold text-white block">Click to Select WHOOP / Garmin CSV or JSON File</span>
+          <span class="text-[11px] text-slate-400 block">Supports physiological_cycles.csv, sleeps.csv, Activities.csv, and JSON telemetry</span>
+        </label>
+        <input type="file" id="wearable-file-upload" accept=".csv,.json,text/csv,application/json" class="hidden" onchange="handleWearableFileImport(event)">
+      </div>
+
+      <!-- Panel 3: Manual / Morning Telemetry Entry -->
+      <form id="wpanel-manual" onsubmit="handleSaveManualWearableTelemetry(event)" class="hidden space-y-3 text-xs">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+          <div>
+            <label class="text-slate-400 block mb-1">WHOOP Rec %</label>
+            <input type="number" id="inp-w-rec" min="1" max="100" value="82" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200 font-mono">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">HRV (ms)</label>
+            <input type="number" id="inp-w-hrv" min="5" max="250" value="48" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200 font-mono">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">RHR (bpm)</label>
+            <input type="number" id="inp-w-rhr" min="30" max="120" value="52" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200 font-mono">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">Day Strain</label>
+            <input type="number" step="0.1" id="inp-w-strain" min="0" max="21" value="13.4" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200 font-mono">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+          <div>
+            <label class="text-slate-400 block mb-1">Sleep Perf %</label>
+            <input type="number" id="inp-w-sleep" min="1" max="100" value="89" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200 font-mono">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">Garmin Ready</label>
+            <input type="number" id="inp-g-ready" min="1" max="100" value="84" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200 font-mono">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">Garmin ACWR</label>
+            <input type="number" step="0.01" id="inp-g-acwr" min="0.2" max="2.5" value="0.96" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200 font-mono">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">Daily Steps</label>
+            <input type="number" id="inp-g-steps" min="0" max="60000" value="10450" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200 font-mono">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2.5">
+          <div>
+            <label class="text-slate-400 block mb-1">Weight (lbs)</label>
+            <input type="number" step="0.1" id="inp-s-weight" value="194.2" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200 font-mono">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">Body Fat %</label>
+            <input type="number" step="0.1" id="inp-s-bf" value="14.6" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200 font-mono">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">Lean Mass (lbs)</label>
+            <input type="number" step="0.1" id="inp-s-muscle" value="165.8" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-200 font-mono">
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeWearableConnectModal()" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl font-semibold">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl">Encrypt & Update Dashboards</button>
+        </div>
+      </form>
+
+      <p id="wearable-sync-status" class="hidden text-xs text-emerald-300 bg-emerald-950/60 border border-emerald-800/60 rounded-xl px-3.5 py-2 font-medium"></p>
+    </div>
+  </div>
+
   <!-- Custom Polymath Micro-Learning Session Modal -->
   <div id="custom-micro-session-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-sm z-[1160] hidden flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-slate-900 border border-emerald-800/60 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl relative my-8">
@@ -1870,8 +2263,420 @@
       }
     }
 
+    // WHOOP 5.0, GARMIN TACTIX 7 PRO, SMART SCALE & AUTO-REGULATOR ENGINE
+    window.DEFAULT_WEARABLE_TELEMETRY = {
+      whoop: {
+        recovery: 82,
+        hrv: 48,
+        rhr: 52,
+        strain: 13.4,
+        sleepPerf: 89,
+        sleepDuration: '7h 42m',
+        rem: '1h 52m',
+        deep: '1h 38m',
+        light: '4h 12m',
+        spo2: 98,
+        skinTemp: '33.6',
+        trend7d: [71, 64, 78, 84, 59, 79, 82],
+        lastSync: 'Ready for WHOOP API v2 or CSV Sync'
+      },
+      garmin: {
+        readiness: 84,
+        bodyBattery: 88,
+        vo2Max: 51,
+        steps: 10450,
+        acwr: 0.96,
+        acuteLoad: 640,
+        chronicLoad: 665,
+        lastActivity: 'Tactical S&C + Ruck Conditioning • 58 min • Avg HR 138 bpm'
+      },
+      scale: {
+        weight: 194.2,
+        weightDelta: '-0.8 lbs (7d)',
+        bodyFat: 14.6,
+        muscleMass: 165.8,
+        hydration: 61.4,
+        bmr: 1940
+      }
+    };
+
+    function getWearableTelemetry() {
+      if (!window.userAppState.wearableTelemetry) {
+        window.userAppState.wearableTelemetry = JSON.parse(JSON.stringify(window.DEFAULT_WEARABLE_TELEMETRY));
+      }
+      return window.userAppState.wearableTelemetry;
+    }
+
+    function evaluateAutoRegulatorGate(tel) {
+      const rec = Number(tel.whoop.recovery || 0);
+      const hrv = Number(tel.whoop.hrv || 0);
+      if (rec > 66 && hrv > 25) {
+        return {
+          zone: 'GREEN',
+          badge: 'GREEN RECOVERY GATE (>66%)',
+          pillClass: 'bg-emerald-950 text-emerald-300 border-emerald-700/60',
+          cardBorder: 'border-emerald-700/60 from-emerald-950/60',
+          badgeBg: 'bg-emerald-500 text-slate-950',
+          headline: 'Full Tactical S&C Overload Cleared (+2.5% Load/Volume)',
+          prescription: 'Prescribed Protocol: 4 sets × 12–15 reps @ Target RPE 7–8. Apply +2.5% progressive overload on primary lifts today.',
+          shortSummary: 'Full Tactical S&C (4x12-15 @ RPE 7-8, +2.5% Load)'
+        };
+      }
+      if (rec >= 34 || (hrv >= 18 && hrv <= 24)) {
+        return {
+          zone: 'YELLOW',
+          badge: 'YELLOW RECOVERY GATE (34%–65%)',
+          pillClass: 'bg-amber-950 text-amber-300 border-amber-700/60',
+          cardBorder: 'border-amber-700/60 from-amber-950/50',
+          badgeBg: 'bg-amber-400 text-slate-950',
+          headline: 'Moderated S&C Volume (-10% Load & 10-Rep Cap)',
+          prescription: 'Prescribed Protocol: Reduce working load by 10%, cap sets at 10 reps, hold Target RPE ≤ 7.0, and add +30s rest intervals.',
+          shortSummary: 'Moderated S&C (-10% Load, 10-Rep Cap, RPE ≤7)'
+        };
+      }
+      return {
+        zone: 'RED',
+        badge: 'RED RECOVERY GATE (<33%)',
+        pillClass: 'bg-rose-950 text-rose-300 border-rose-700/60',
+        cardBorder: 'border-rose-700/60 from-rose-950/50',
+        badgeBg: 'bg-rose-500 text-white',
+        headline: 'Restorative Swap: Zone 2 Cardio + Percussive Therapy',
+        prescription: 'Prescribed Protocol: Swap heavy S&C for Zone 2 Ergometer Rowing / Supported Incline Walk (<135 BPM) + 20m Therabody & 4-4-4-4 Box Breathing.',
+        shortSummary: 'Zone 2 Row / Incline Walk (<135 BPM) + 20m Therabody'
+      };
+    }
+
+    window.setWearableDashboardView = function(view) {
+      ['all', 'whoop', 'garmin', 'scale'].forEach(v => {
+        const btn = document.getElementById('wview-' + v);
+        if (btn) {
+          btn.className = (v === view)
+            ? 'px-3 py-1.5 rounded-lg font-bold bg-emerald-500 text-slate-950 transition'
+            : 'px-3 py-1.5 rounded-lg font-semibold text-slate-400 hover:text-white transition';
+        }
+      });
+
+      const grid = document.getElementById('wearable-devices-grid');
+      const pWhoop = document.getElementById('panel-dashboard-whoop');
+      const pGarmin = document.getElementById('panel-dashboard-garmin');
+      const pScale = document.getElementById('panel-dashboard-scale');
+      if (!grid || !pWhoop || !pGarmin || !pScale) return;
+
+      if (view === 'all') {
+        grid.className = 'grid grid-cols-1 lg:grid-cols-3 gap-6';
+        pWhoop.classList.remove('hidden');
+        pGarmin.classList.remove('hidden');
+        pScale.classList.remove('hidden');
+      } else {
+        grid.className = 'grid grid-cols-1 max-w-2xl mx-auto gap-6';
+        pWhoop.classList.toggle('hidden', view !== 'whoop');
+        pGarmin.classList.toggle('hidden', view !== 'garmin');
+        pScale.classList.toggle('hidden', view !== 'scale');
+      }
+    };
+
+    function renderWearablesDashboards() {
+      const tel = getWearableTelemetry();
+      const gate = evaluateAutoRegulatorGate(tel);
+
+      // Top Cockpit Strip
+      const topRec = document.getElementById('top-whoop-rec');
+      const topGate = document.getElementById('top-gate-pill');
+      const topSum = document.getElementById('top-telemetry-summary');
+      if (topRec) topRec.innerText = `${tel.whoop.recovery}%`;
+      if (topGate) {
+        topGate.innerText = `${gate.zone} GATE`;
+        topGate.className = `text-[10px] font-mono px-2 py-0.5 rounded border ${gate.pillClass}`;
+      }
+      if (topSum) {
+        topSum.innerText = `HRV: ${tel.whoop.hrv} ms • RHR: ${tel.whoop.rhr} bpm • Strain: ${tel.whoop.strain} • Garmin Readiness: ${tel.garmin.readiness} • ACWR: ${tel.garmin.acwr}`;
+      }
+
+      // Auto-Regulator Card
+      const syncLbl = document.getElementById('wearables-last-sync');
+      if (syncLbl) syncLbl.innerText = `Encrypted locally with AES-GCM-256 • ${tel.whoop.lastSync}`;
+      const arBadge = document.getElementById('autoreg-badge');
+      const arHead = document.getElementById('autoreg-headline');
+      const arPresc = document.getElementById('autoreg-prescription');
+      const arAcwr = document.getElementById('autoreg-acwr-tag');
+      if (arBadge) { arBadge.innerText = gate.badge; arBadge.className = `px-2.5 py-0.5 rounded-md font-extrabold text-[11px] uppercase ${gate.badgeBg}`; }
+      if (arHead) arHead.innerText = gate.headline;
+      if (arPresc) arPresc.innerText = gate.prescription;
+      if (arAcwr) arAcwr.innerText = `ACWR: ${tel.garmin.acwr} (${tel.garmin.acwr >= 0.8 && tel.garmin.acwr <= 1.1 ? 'Optimal 0.80–1.10' : 'Monitor Load'})`;
+
+      // WHOOP 5.0 Dashboard
+      const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+      setTxt('w-dash-recovery', `${tel.whoop.recovery}%`);
+      setTxt('w-dash-zone-label', gate.zone === 'GREEN' ? 'Peak Readiness' : (gate.zone === 'YELLOW' ? 'Moderate Readiness' : 'Recovery Needed'));
+      setTxt('w-dash-hrv', `${tel.whoop.hrv} ms`);
+      setTxt('w-dash-rhr', `${tel.whoop.rhr} bpm`);
+      setTxt('w-dash-strain', `${tel.whoop.strain} / 21`);
+      setTxt('w-dash-sleep-perf', `${tel.whoop.sleepPerf}% (${tel.whoop.sleepDuration})`);
+      setTxt('w-dash-rem', tel.whoop.rem);
+      setTxt('w-dash-deep', tel.whoop.deep);
+      setTxt('w-dash-light', tel.whoop.light);
+      setTxt('w-dash-spo2', `${tel.whoop.spo2}%`);
+      setTxt('w-dash-skin-temp', `Skin Temp: ${tel.whoop.skinTemp}°C`);
+
+      const barsEl = document.getElementById('w-dash-trend-bars');
+      const trend = tel.whoop.trend7d || [71, 64, 78, 84, 59, 79, tel.whoop.recovery];
+      if (barsEl) {
+        const avg = Math.round(trend.reduce((a, b) => a + b, 0) / trend.length);
+        setTxt('w-dash-avg-rec', `7d Avg: ${avg}%`);
+        barsEl.innerHTML = trend.map((val, idx) => {
+          const color = val > 66 ? 'bg-emerald-500' : (val >= 34 ? 'bg-amber-400' : 'bg-rose-500');
+          return `<div class="flex flex-col items-center gap-1 h-full justify-end" title="Day ${idx + 1}: ${val}%">
+            <div class="w-full ${color} rounded-t" style="height: ${Math.max(15, val)}%;"></div>
+          </div>`;
+        }).join('');
+      }
+
+      // Garmin Tactix 7 Pro Dashboard
+      setTxt('g-dash-readiness', `${tel.garmin.readiness} / 100`);
+      setTxt('g-dash-battery', `${tel.garmin.bodyBattery}%`);
+      setTxt('g-dash-vo2', `${tel.garmin.vo2Max} mL/kg`);
+      setTxt('g-dash-steps', Number(tel.garmin.steps || 0).toLocaleString());
+      setTxt('g-dash-acwr', `${tel.garmin.acwr} (Target 0.80–1.10)`);
+      setTxt('g-dash-acute', tel.garmin.acuteLoad);
+      setTxt('g-dash-chronic', tel.garmin.chronicLoad);
+      setTxt('g-dash-last-activity', tel.garmin.lastActivity);
+      const acwrBar = document.getElementById('g-dash-acwr-bar');
+      if (acwrBar) acwrBar.style.width = `${Math.min(100, Math.round((tel.garmin.acwr / 1.5) * 100))}%`;
+
+      // Smart Scale Dashboard
+      setTxt('s-dash-weight', `${tel.scale.weight} lbs`);
+      setTxt('s-dash-weight-delta', tel.scale.weightDelta);
+      setTxt('s-dash-bf', `${tel.scale.bodyFat}%`);
+      setTxt('s-dash-muscle', `${tel.scale.muscleMass} lbs`);
+      setTxt('s-dash-hydration', `${tel.scale.hydration}%`);
+      setTxt('s-dash-bmr', `Est. BMR: ${tel.scale.bmr.toLocaleString()} kcal`);
+    }
+
+    window.openWearableConnectModal = function(tabName) {
+      const tel = getWearableTelemetry();
+      document.getElementById('inp-w-rec').value = tel.whoop.recovery;
+      document.getElementById('inp-w-hrv').value = tel.whoop.hrv;
+      document.getElementById('inp-w-rhr').value = tel.whoop.rhr;
+      document.getElementById('inp-w-strain').value = tel.whoop.strain;
+      document.getElementById('inp-w-sleep').value = tel.whoop.sleepPerf;
+      document.getElementById('inp-g-ready').value = tel.garmin.readiness;
+      document.getElementById('inp-g-acwr').value = tel.garmin.acwr;
+      document.getElementById('inp-g-steps').value = tel.garmin.steps;
+      document.getElementById('inp-s-weight').value = tel.scale.weight;
+      document.getElementById('inp-s-bf').value = tel.scale.bodyFat;
+      document.getElementById('inp-s-muscle').value = tel.scale.muscleMass;
+
+      if (window.userAppState.whoopClientId) {
+        document.getElementById('whoop-client-id').value = window.userAppState.whoopClientId;
+      }
+      if (window.userAppState.whoopAccessToken) {
+        document.getElementById('whoop-bearer-token').value = window.userAppState.whoopAccessToken;
+      }
+
+      document.getElementById('wearable-sync-status').classList.add('hidden');
+      switchWearableModalTab(tabName || 'whoop-api');
+      document.getElementById('wearable-connect-modal').classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.closeWearableConnectModal = function() {
+      document.getElementById('wearable-connect-modal').classList.add('hidden');
+    };
+
+    window.switchWearableModalTab = function(tab) {
+      ['whoop-api', 'csv-import', 'manual'].forEach(t => {
+        const btn = document.getElementById('wtab-' + t);
+        const panel = document.getElementById('wpanel-' + t);
+        if (btn) {
+          btn.className = (t === tab)
+            ? 'flex-1 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-bold'
+            : 'flex-1 py-1.5 rounded-lg text-slate-400';
+        }
+        if (panel) panel.classList.toggle('hidden', t !== tab);
+      });
+    };
+
+    window.startWhoopOAuthRedirect = async function() {
+      const clientId = document.getElementById('whoop-client-id').value.trim();
+      if (!clientId) {
+        alert('Enter your WHOOP App Client ID first.');
+        return;
+      }
+      window.userAppState.whoopClientId = clientId;
+      await pushCloudUserData();
+      const redirectUri = encodeURIComponent(window.location.origin + window.location.pathname);
+      const scope = encodeURIComponent('offline read:recovery read:cycles read:sleep read:workout read:body_measurement read:profile');
+      const state = 'hive_' + Math.random().toString(36).substring(2, 10);
+      window.location.href = `https://api.prod.whoop.com/oauth/oauth2/auth?client_id=${encodeURIComponent(clientId)}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}&state=${state}`;
+    };
+
+    window.syncWhoopApiV2Direct = async function(overrideToken) {
+      const tokenInput = document.getElementById('whoop-bearer-token');
+      const token = (overrideToken || tokenInput?.value || window.userAppState.whoopAccessToken || '').trim();
+      const statusEl = document.getElementById('wearable-sync-status');
+      const btn = document.getElementById('whoop-live-sync-btn');
+      if (!token) {
+        alert('Paste a WHOOP OAuth2 Access Token first.');
+        return;
+      }
+
+      if (btn) { btn.disabled = true; btn.innerText = 'Syncing...'; }
+      if (statusEl) {
+        statusEl.classList.remove('hidden');
+        statusEl.innerText = 'Connecting to WHOOP Developer API v2 (recovery, cycles, sleep)...';
+      }
+
+      try {
+        const headers = { Authorization: `Bearer ${token}` };
+        const [recRes, cycRes, slpRes] = await Promise.all([
+          fetch('https://api.prod.whoop.com/developer/v2/recovery?limit=7', { headers }),
+          fetch('https://api.prod.whoop.com/developer/v2/cycle?limit=1', { headers }),
+          fetch('https://api.prod.whoop.com/developer/v2/activity/sleep?limit=1', { headers })
+        ]);
+
+        if (!recRes.ok) throw new Error(`WHOOP API returned HTTP ${recRes.status}. Verify token scopes.`);
+        const recJson = await recRes.json();
+        const cycJson = cycRes.ok ? await cycRes.json() : {};
+        const slpJson = slpRes.ok ? await slpRes.json() : {};
+
+        const tel = getWearableTelemetry();
+        const latestRec = recJson?.records?.[0]?.score;
+        if (latestRec) {
+          tel.whoop.recovery = Math.round(latestRec.recovery_score ?? tel.whoop.recovery);
+          tel.whoop.hrv = Math.round(latestRec.hrv_rmssd_milli ?? tel.whoop.hrv);
+          tel.whoop.rhr = Math.round(latestRec.resting_heart_rate ?? tel.whoop.rhr);
+          if (latestRec.spo2_percentage) tel.whoop.spo2 = Math.round(latestRec.spo2_percentage);
+          if (latestRec.skin_temp_celsius) tel.whoop.skinTemp = Number(latestRec.skin_temp_celsius).toFixed(1);
+          const hist = (recJson.records || []).map(r => Math.round(r?.score?.recovery_score || 0)).filter(n => n > 0).reverse();
+          if (hist.length) tel.whoop.trend7d = hist;
+        }
+
+        const latestCyc = cycJson?.records?.[0]?.score;
+        if (latestCyc && latestCyc.strain != null) {
+          tel.whoop.strain = Number(latestCyc.strain).toFixed(1);
+        }
+
+        const latestSlp = slpJson?.records?.[0]?.score;
+        if (latestSlp) {
+          if (latestSlp.sleep_performance_percentage) tel.whoop.sleepPerf = Math.round(latestSlp.sleep_performance_percentage);
+          const stages = latestSlp.stage_summary;
+          if (stages) {
+            const fmtMs = ms => {
+              const mins = Math.round((ms || 0) / 60000);
+              return `${Math.floor(mins / 60)}h ${mins % 60}m`;
+            };
+            tel.whoop.rem = fmtMs(stages.total_rem_sleep_time_milli);
+            tel.whoop.deep = fmtMs(stages.total_slow_wave_sleep_time_milli);
+            tel.whoop.light = fmtMs(stages.total_light_sleep_time_milli);
+            const totalBed = (stages.total_in_bed_time_milli || 0) - (stages.total_awake_time_milli || 0);
+            if (totalBed > 0) tel.whoop.sleepDuration = fmtMs(totalBed);
+          }
+        }
+
+        tel.whoop.lastSync = `WHOOP API v2 Synced at ${new Date().toLocaleTimeString()}`;
+        window.userAppState.whoopAccessToken = token;
+        renderAllUI();
+        await pushCloudUserData();
+
+        if (statusEl) statusEl.innerText = `WHOOP 5.0 synced live! Recovery: ${tel.whoop.recovery}%, HRV: ${tel.whoop.hrv} ms, Strain: ${tel.whoop.strain}.`;
+      } catch (err) {
+        if (statusEl) statusEl.innerText = `WHOOP sync notice: ${err.message}. You can also upload WHOOP CSV exports or use Quick Telemetry Sync.`;
+      } finally {
+        if (btn) { btn.disabled = false; btn.innerText = 'Pull WHOOP v2'; }
+      }
+    };
+
+    window.handleWearableFileImport = async function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const statusEl = document.getElementById('wearable-sync-status');
+      if (statusEl) {
+        statusEl.classList.remove('hidden');
+        statusEl.innerText = `Parsing "${file.name}" locally in browser...`;
+      }
+
+      try {
+        const text = await file.text();
+        const tel = getWearableTelemetry();
+
+        if (file.name.toLowerCase().endsWith('.json')) {
+          const parsed = JSON.parse(text);
+          if (parsed.whoop) Object.assign(tel.whoop, parsed.whoop);
+          if (parsed.garmin) Object.assign(tel.garmin, parsed.garmin);
+          if (parsed.scale) Object.assign(tel.scale, parsed.scale);
+          if (parsed.recovery_score != null) tel.whoop.recovery = Math.round(parsed.recovery_score);
+          if (parsed.hrv != null) tel.whoop.hrv = Math.round(parsed.hrv);
+          if (parsed.rhr != null) tel.whoop.rhr = Math.round(parsed.rhr);
+          tel.whoop.lastSync = `Imported JSON (${file.name})`;
+        } else {
+          // CSV Parser for WHOOP physiological_cycles.csv / sleeps.csv or Garmin Activities.csv
+          const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
+          if (lines.length < 2) throw new Error('CSV file has no data rows.');
+          const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim().toLowerCase());
+          const latestRow = lines[lines.length - 1].split(',').map(c => c.replace(/"/g, '').trim());
+          const firstDataRow = lines[1].split(',').map(c => c.replace(/"/g, '').trim());
+          // Use row 1 if newest-first, otherwise last row
+          const row = isNaN(Date.parse(firstDataRow[0])) || Date.parse(firstDataRow[0]) >= Date.parse(latestRow[0]) ? firstDataRow : latestRow;
+
+          const getCol = (names) => {
+            const idx = headers.findIndex(h => names.some(n => h.includes(n)));
+            return idx > -1 ? parseFloat(row[idx]) : NaN;
+          };
+
+          const rec = getCol(['recovery score', 'recovery']);
+          const hrv = getCol(['heart rate variability', 'hrv']);
+          const rhr = getCol(['resting heart rate', 'rhr']);
+          const strain = getCol(['day strain', 'strain']);
+          const sleepPerf = getCol(['sleep performance']);
+          const steps = getCol(['steps']);
+          const weight = getCol(['weight']);
+
+          if (!isNaN(rec)) tel.whoop.recovery = Math.round(rec);
+          if (!isNaN(hrv)) tel.whoop.hrv = Math.round(hrv);
+          if (!isNaN(rhr)) tel.whoop.rhr = Math.round(rhr);
+          if (!isNaN(strain)) tel.whoop.strain = Number(strain).toFixed(1);
+          if (!isNaN(sleepPerf)) tel.whoop.sleepPerf = Math.round(sleepPerf);
+          if (!isNaN(steps)) tel.garmin.steps = Math.round(steps);
+          if (!isNaN(weight)) tel.scale.weight = Number(weight).toFixed(1);
+          tel.whoop.lastSync = `Imported CSV (${file.name})`;
+        }
+
+        renderAllUI();
+        await pushCloudUserData();
+        if (statusEl) statusEl.innerText = `Imported "${file.name}" into your encrypted wearable dashboards & updated Auto-Regulator!`;
+      } catch (err) {
+        if (statusEl) statusEl.innerText = 'Import notice: ' + (err.message || 'Could not parse telemetry file.');
+      }
+      e.target.value = '';
+    };
+
+    window.handleSaveManualWearableTelemetry = async function(e) {
+      if (e) e.preventDefault();
+      const tel = getWearableTelemetry();
+      tel.whoop.recovery = Number(document.getElementById('inp-w-rec').value || 82);
+      tel.whoop.hrv = Number(document.getElementById('inp-w-hrv').value || 48);
+      tel.whoop.rhr = Number(document.getElementById('inp-w-rhr').value || 52);
+      tel.whoop.strain = Number(document.getElementById('inp-w-strain').value || 13.4);
+      tel.whoop.sleepPerf = Number(document.getElementById('inp-w-sleep').value || 89);
+      tel.whoop.trend7d = [...(tel.whoop.trend7d || [71, 64, 78, 84, 59, 79]).slice(-6), tel.whoop.recovery];
+      tel.whoop.lastSync = `Synced manually at ${new Date().toLocaleTimeString()}`;
+
+      tel.garmin.readiness = Number(document.getElementById('inp-g-ready').value || 84);
+      tel.garmin.acwr = Number(document.getElementById('inp-g-acwr').value || 0.96);
+      tel.garmin.steps = Number(document.getElementById('inp-g-steps').value || 10450);
+
+      tel.scale.weight = Number(document.getElementById('inp-s-weight').value || 194.2);
+      tel.scale.bodyFat = Number(document.getElementById('inp-s-bf').value || 14.6);
+      tel.scale.muscleMass = Number(document.getElementById('inp-s-muscle').value || 165.8);
+
+      renderAllUI();
+      await pushCloudUserData();
+      closeWearableConnectModal();
+    };
+
     // ISLAMIC FAITH LEARNING PATHS & LIVE PRAYER TIME ENGINE
     window.initIslamicFaithAndPrayerTimes = async function() {
+      renderWearablesDashboards();
       renderIslamicCurriculumCards();
       const savedCity = window.userAppState.salatCity || 'Fredericksburg, VA';
       const cityInput = document.getElementById('salat-city-input');
@@ -3573,6 +4378,7 @@
       if (j && window.userAppState.muhasabah) j.value = window.userAppState.muhasabah;
 
       renderPolymathVaultUI(vault);
+      renderWearablesDashboards();
       renderIslamicCurriculumCards();
 
       const tCont = document.getElementById('tasks-list-container');
@@ -3720,7 +4526,7 @@
           <div class="p-3 bg-slate-950 rounded-xl border border-amber-500/50 space-y-1">
             <span class="text-amber-400 font-mono text-[11px] font-bold">${asrMaghribLabel}</span>
             <p class="font-semibold text-white">Health Training & Family Adab</p>
-            <p class="text-[10px] text-slate-400">Evening Adhkar, physical conditioning, and device-free family dinner.</p>
+            <p class="text-[10px] text-slate-400">${evaluateAutoRegulatorGate(getWearableTelemetry()).shortSummary} + family dinner.</p>
           </div>
           <div class="p-3 bg-slate-950 rounded-xl border border-purple-500/50 space-y-1">
             <span class="text-purple-400 font-mono text-[11px] font-bold">${ishaLabel}</span>
@@ -3836,6 +4642,14 @@
       } catch (e) {}
 
       checkIncomingStudyInviteUrl();
+      if (window.location.hash.includes('access_token=') && !window.location.hash.includes('type=recovery')) {
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const whoopTok = hashParams.get('access_token');
+        if (whoopTok) {
+          window.history.replaceState({}, document.title, window.location.pathname);
+          setTimeout(() => window.syncWhoopApiV2Direct(whoopTok), 500);
+        }
+      }
       if (window.location.hash.includes('type=recovery')) {
         setTimeout(window.showChangePasswordModal, 400);
       }
