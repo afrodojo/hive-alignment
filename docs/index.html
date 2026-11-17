@@ -4369,7 +4369,7 @@
     };
 
     // Cloud Sync (with automatic merge for GitHub Actions wearableTelemetry)
-    window.pullCloudUserData = async function() {
+    window.pullCloudUserData = async function(manualTrigger) {
       const client = window.getSupaClient();
       if (!client || !window.currentUserSession) return;
       const key = window.currentUserSession.email.toLowerCase();
@@ -4388,16 +4388,24 @@
           }
 
           const cloudTel = data.data?.wearableTelemetry;
-          const localTel = window.userAppState.wearableTelemetry;
-          if (cloudTel && cloudTel.syncedAt) {
-            const cloudTs = Date.parse(cloudTel.syncedAt) || 0;
-            const localTs = Date.parse(localTel?.syncedAt || '') || 0;
-            if (cloudTs > localTs) {
-              window.userAppState.wearableTelemetry = Object.assign({}, localTel || {}, cloudTel);
-              await pushCloudUserData();
-            }
+          const localTel = getWearableTelemetry();
+          if (cloudTel) {
+            localTel.whoop = Object.assign({}, localTel.whoop || {}, cloudTel.whoop || {});
+            localTel.garmin = Object.assign({}, localTel.garmin || {}, cloudTel.garmin || {});
+            localTel.scale = Object.assign({}, localTel.scale || {}, cloudTel.scale || {});
+            if (cloudTel.syncedAt) localTel.syncedAt = cloudTel.syncedAt;
+            window.userAppState.wearableTelemetry = localTel;
+            syncWearableModalInputsFromState();
+            await pushCloudUserData();
           }
           renderAllUI();
+          if (manualTrigger) {
+            const st = document.getElementById('wearable-sync-status');
+            if (st) {
+              st.classList.remove('hidden');
+              st.innerText = `Cloud telemetry synced (${localTel.whoop?.lastSync || 'Supabase'})!`;
+            }
+          }
         }
       } catch (e) {}
     };
