@@ -2585,12 +2585,12 @@
       const code = (window.pendingWhoopAuthCode || document.getElementById('whoop-auth-code-input')?.value || '').trim();
       const clientId = (document.getElementById('whoop-client-id')?.value || 'ed2c0020-c5bf-4029-a911-08ebc514f097').trim();
       const clientSecret = (document.getElementById('whoop-client-secret')?.value || 'YOUR_CLIENT_SECRET').trim();
-      const psCmd = `$tok = Invoke-RestMethod -Method Post -Uri "https://api.prod.whoop.com/oauth/oauth2/token" -ContentType "application/x-www-form-urlencoded" -Body @{ grant_type="authorization_code"; code="${code}"; client_id="${clientId}"; client_secret="${clientSecret}"; redirect_uri="https://hive-align.eds-360.com/" }; $h = @{ Authorization = "Bearer $($tok.access_token)" }; $rec = Invoke-RestMethod -Uri "https://api.prod.whoop.com/developer/v2/recovery?limit=7" -Headers $h; $cyc = Invoke-RestMethod -Uri "https://api.prod.whoop.com/developer/v2/cycle?limit=1" -Headers $h; $slp = Invoke-RestMethod -Uri "https://api.prod.whoop.com/developer/v2/activity/sleep?limit=1" -Headers $h; $out = @{ whoop = @{ recovery = [math]::Round($rec.records[0].score.recovery_score); hrv = [math]::Round($rec.records[0].score.hrv_rmssd_milli); rhr = [math]::Round($rec.records[0].score.resting_heart_rate); strain = [math]::Round($cyc.records[0].score.strain, 1); sleepPerf = [math]::Round($slp.records[0].score.sleep_performance_percentage) } } | ConvertTo-Json -Depth 4; $out | Out-File "$env:USERPROFILE\\Downloads\\whoop-live.json" -Encoding utf8; "Saved whoop-live.json to Downloads! Access token: $($tok.access_token)"`;
-      await navigator.clipboard.writeText(psCmd);
+      const psCmd = `$tok = Invoke-RestMethod -Method Post -Uri "https://api.prod.whoop.com/oauth/oauth2/token" -ContentType "application/x-www-form-urlencoded" -Body @{ grant_type="authorization_code"; code="${code}"; client_id="${clientId}"; client_secret="${clientSecret}"; redirect_uri="https://hive-align.eds-360.com/" }; $h = @{ Authorization = "Bearer $($tok.access_token)" }; $rec = Invoke-RestMethod -Uri "https://api.prod.whoop.com/developer/v2/recovery?limit=7" -Headers $h; $cyc = Invoke-RestMethod -Uri "https://api.prod.whoop.com/developer/v2/cycle?limit=1" -Headers $h; $slp = Invoke-RestMethod -Uri "https://api.prod.whoop.com/developer/v2/activity/sleep?limit=1" -Headers $h; $bodyMeas = $null; try { $bodyMeas = Invoke-RestMethod -Uri "https://api.prod.whoop.com/developer/v2/user/measurement/body" -Headers $h } catch {}; $s0 = $rec.records[0].score; $st = $slp.records[0].score.stage_summary; $fmt = { param($ms) $m = [math]::Round(($ms)/60000); "$([math]::Floor($m/60))h $($m%60)m" }; $trend = @($rec.records | ForEach-Object { [math]::Round($_.score.recovery_score) }); [array]::Reverse($trend); $wObj = @{ recovery = [math]::Round($s0.recovery_score); hrv = [math]::Round($s0.hrv_rmssd_milli); rhr = [math]::Round($s0.resting_heart_rate); strain = [math]::Round($cyc.records[0].score.strain, 1); sleepPerf = [math]::Round($slp.records[0].score.sleep_performance_percentage); rem = (& $fmt $st.total_rem_sleep_time_milli); deep = (& $fmt $st.total_slow_wave_sleep_time_milli); light = (& $fmt $st.total_light_sleep_time_milli); sleepDuration = (& $fmt ($st.total_in_bed_time_milli - $st.total_awake_time_milli)); spo2 = [math]::Round($s0.spo2_percentage); skinTemp = [string][math]::Round($s0.skin_temp_celsius, 1); trend7d = $trend; lastSync = "WHOOP 5.0 Live Sync ($(Get-Date -Format 'MMM dd, h:mm tt'))" }; $payload = @{ whoop = $wObj }; if ($bodyMeas -and $bodyMeas.weight_kilogram) { $payload.scale = @{ weight = [math]::Round($bodyMeas.weight_kilogram * 2.20462, 1) } }; $payload | ConvertTo-Json -Depth 5 | Out-File "$env:USERPROFILE\\Downloads\\whoop-live.json" -Encoding utf8; "SUCCESS! Saved whoop-live.json to Downloads (Recovery: $($wObj.recovery)%, HRV: $($wObj.hrv) ms)"`;
+      try { await navigator.clipboard.writeText(psCmd); } catch (e) {}
       const statusEl = document.getElementById('wearable-sync-status');
       if (statusEl) {
         statusEl.classList.remove('hidden');
-        statusEl.innerText = 'Copied PowerShell WHOOP sync command! Run it in PowerShell to save whoop-live.json in Downloads, then upload it in the "Import CSV / JSON" tab.';
+        statusEl.innerText = 'Fresh WHOOP code received & PowerShell sync command copied! Paste into PowerShell to save whoop-live.json, then upload it in "Import CSV / JSON".';
       }
     };
 
@@ -4736,9 +4736,7 @@
           window.toggleCockpit(true);
           window.switchTab('tab-wearables');
           window.openWearableConnectModal('whoop-api');
-          if (window.userAppState.whoopClientSecret) {
-            window.exchangeWhoopAuthCode(returnedWhoopCode);
-          }
+          window.copyWhoopPowerShellSync();
         }, 500);
       }
       if (window.location.hash.includes('type=recovery')) {
