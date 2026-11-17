@@ -1,5 +1,6 @@
 import os
 import json
+import uuid
 from datetime import datetime, timedelta, timezone
 import requests
 
@@ -36,13 +37,11 @@ def fetch_existing_row():
     return None
 
 
-def get_required_column_defaults():
-    defaults = {
+def build_schema_safe_insert_payload(state_data, now_iso):
+    payload = {
         "brother": TARGET_EMAIL,
-        "fellowship_circle": "brothers",
-        "spiritual_path": "islam",
-        "status": "ACTIVE",
-        "gate": "GREEN",
+        "data": state_data,
+        "updated_at": now_iso,
     }
     try:
         spec_res = requests.get(f"{SUPA_URL}/rest/v1/", headers=supa_headers(), timeout=15)
@@ -52,21 +51,38 @@ def get_required_column_defaults():
                 spec.get("definitions", {}).get("brotherhood_status")
                 or spec.get("components", {}).get("schemas", {}).get("brotherhood_status", {})
             )
-            required_cols = defs.get("required") or []
             props = defs.get("properties") or {}
+            required_cols = defs.get("required") or []
+
+            if "fellowship_circle" in props:
+                payload["fellowship_circle"] = "brothers"
+            if "spiritual_path" in props:
+                payload["spiritual_path"] = "islam"
+
             for col in required_cols:
-                if col in defaults or col in ("created_at", "updated_at", "data"):
+                if col in payload:
                     continue
-                col_type = props.get(col, {}).get("type", "string")
-                if col_type in ("integer", "number"):
-                    defaults[col] = 0
-                elif col_type == "boolean":
-                    defaults[col] = False
+                prop = props.get(col, {})
+                fmt = str(prop.get("format", "")).lower()
+                typ = str(prop.get("type", "string")).lower()
+                if "uuid" in fmt:
+                    payload[col] = str(uuid.uuid4())
+                elif "email" in col.lower():
+                    payload[col] = TARGET_EMAIL
+                elif "date" in fmt or "time" in fmt:
+                    payload[col] = now_iso
+                elif typ in ("integer", "number"):
+                    payload[col] = 0
+                elif typ == "boolean":
+                    payload[col] = False
                 else:
-                    defaults[col] = "default"
-    except Exception:
-        pass
-    return defaults
+                    payload[col] = "default"
+
+            if props:
+                payload = {k: v for k, v in payload.items() if k in props}
+    except Exception as exc:
+        print(f"Schema inspection notice: {exc}")
+    return payload
 
 
 def sync_garmin(telemetry):
@@ -263,10 +279,7 @@ def main():
         )
         print("Supabase PATCH status:", res.status_code, res.text[:200])
     else:
-        payload = get_required_column_defaults()
-        payload["brother"] = TARGET_EMAIL
-        payload["data"] = state_data
-        payload["updated_at"] = now_iso
+        payload = build_schema_safe_insert_payload(state_data, now_iso)
         res = requests.post(
             f"{SUPA_URL}/rest/v1/brotherhood_status",
             headers=supa_headers({"Prefer": "return=minimal"}),
