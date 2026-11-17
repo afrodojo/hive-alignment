@@ -468,7 +468,7 @@
             <button type="button" id="wview-garmin" onclick="setWearableDashboardView('garmin')" class="px-3 py-1.5 rounded-lg font-semibold text-slate-400 hover:text-white transition">Garmin Connect+ / IQ</button>
             <button type="button" id="wview-scale" onclick="setWearableDashboardView('scale')" class="px-3 py-1.5 rounded-lg font-semibold text-slate-400 hover:text-white transition">Smart Scale</button>
           </div>
-          <button type="button" onclick="pullCloudUserData()" class="px-3 py-2 bg-slate-950 hover:bg-slate-800 border border-emerald-700/60 text-emerald-300 font-bold rounded-xl text-xs transition flex items-center gap-1.5">
+          <button type="button" onclick="pullCloudUserData(true)" class="px-3 py-2 bg-slate-950 hover:bg-slate-800 border border-emerald-700/60 text-emerald-300 font-bold rounded-xl text-xs transition flex items-center gap-1.5">
             <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Pull Cloud Sync
           </button>
           <button type="button" onclick="openWearableConnectModal('whoop-api')" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow">
@@ -4370,44 +4370,80 @@
 
     // Cloud Sync (with automatic merge for GitHub Actions wearableTelemetry)
     window.pullCloudUserData = async function(manualTrigger) {
-      const client = window.getSupaClient();
-      if (!client || !window.currentUserSession) return;
-      const key = window.currentUserSession.email.toLowerCase();
-      try {
-        const { data } = await client.from('brotherhood_status').select('*').eq('brother', key).maybeSingle();
-        if (data) {
-          if (data.encrypted_payload && window.masterPassphrase) {
-            try {
-              const dec = await window.SanctuaryVaultCrypto.decryptPayload(data.encrypted_payload, window.masterPassphrase);
-              window.userAppState = Object.assign(window.userAppState, dec);
-            } catch (e) {
-              if (data.data) window.userAppState = Object.assign(window.userAppState, data.data);
-            }
-          } else if (data.data) {
-            window.userAppState = Object.assign(window.userAppState, data.data);
-          }
-
-          const cloudTel = data.data?.wearableTelemetry;
-          const localTel = getWearableTelemetry();
-          if (cloudTel) {
-            localTel.whoop = Object.assign({}, localTel.whoop || {}, cloudTel.whoop || {});
-            localTel.garmin = Object.assign({}, localTel.garmin || {}, cloudTel.garmin || {});
-            localTel.scale = Object.assign({}, localTel.scale || {}, cloudTel.scale || {});
-            if (cloudTel.syncedAt) localTel.syncedAt = cloudTel.syncedAt;
-            window.userAppState.wearableTelemetry = localTel;
-            syncWearableModalInputsFromState();
-            await pushCloudUserData();
-          }
-          renderAllUI();
-          if (manualTrigger) {
-            const st = document.getElementById('wearable-sync-status');
-            if (st) {
-              st.classList.remove('hidden');
-              st.innerText = `Cloud telemetry synced (${localTel.whoop?.lastSync || 'Supabase'})!`;
-            }
-          }
+      const setSyncFeedback = (msg, isErr) => {
+        const topSync = document.getElementById('wearables-last-sync');
+        if (topSync) {
+          topSync.innerText = msg;
+          topSync.className = isErr ? 'text-xs text-rose-400 font-semibold' : 'text-xs text-emerald-300 font-semibold';
         }
-      } catch (e) {}
+        const st = document.getElementById('wearable-sync-status');
+        if (st && manualTrigger) {
+          st.classList.remove('hidden');
+          st.innerText = msg;
+        }
+      };
+
+      if (manualTrigger) setSyncFeedback('Pulling latest Garmin & WHOOP telemetry from Supabase...', false);
+
+      const client = window.getSupaClient();
+      if (!client) {
+        if (manualTrigger) setSyncFeedback('Supabase client not initialized. Press Ctrl+F5 to reload.', true);
+        return;
+      }
+
+      if (!window.currentUserSession) {
+        try {
+          const { data: sessData } = await client.auth.getSession();
+          if (sessData?.session?.user) window.currentUserSession = sessData.session.user;
+        } catch (e) {}
+      }
+
+      const key = (
+        window.currentUserSession?.email ||
+        localStorage.getItem('hive_active_profile_key') ||
+        'cyberdojosensei@gmail.com'
+      ).trim().toLowerCase();
+
+      try {
+        const { data, error } = await client.from('brotherhood_status').select('*').eq('brother', key).maybeSingle();
+        if (error) {
+          setSyncFeedback(`Supabase read notice (${error.code || 'RLS'}): ${error.message}`, true);
+          return;
+        }
+        if (!data) {
+          setSyncFeedback(`No cloud record found yet for ${key}. Run GitHub Actions or click Encrypt & Save.`, true);
+          return;
+        }
+
+        if (data.encrypted_payload && window.masterPassphrase) {
+          try {
+            const dec = await window.SanctuaryVaultCrypto.decryptPayload(data.encrypted_payload, window.masterPassphrase);
+            window.userAppState = Object.assign(window.userAppState, dec);
+          } catch (e) {
+            if (data.data) window.userAppState = Object.assign(window.userAppState, data.data);
+          }
+        } else if (data.data) {
+          window.userAppState = Object.assign(window.userAppState, data.data);
+        }
+
+        const cloudTel = data.data?.wearableTelemetry;
+        const localTel = getWearableTelemetry();
+        if (cloudTel) {
+          localTel.whoop = Object.assign({}, localTel.whoop || {}, cloudTel.whoop || {});
+          localTel.garmin = Object.assign({}, localTel.garmin || {}, cloudTel.garmin || {});
+          localTel.scale = Object.assign({}, localTel.scale || {}, cloudTel.scale || {});
+          if (cloudTel.syncedAt) localTel.syncedAt = cloudTel.syncedAt;
+          window.userAppState.wearableTelemetry = localTel;
+          syncWearableModalInputsFromState();
+          if (window.currentUserSession) await pushCloudUserData();
+        }
+        renderAllUI();
+        if (manualTrigger) {
+          setSyncFeedback(`Cloud telemetry synced! Garmin Readiness: ${localTel.garmin?.readiness ?? '--'} • Steps: ${Number(localTel.garmin?.steps || 0).toLocaleString()} • ${localTel.whoop?.lastSync || 'Supabase'}`, false);
+        }
+      } catch (err) {
+        if (manualTrigger) setSyncFeedback(`Cloud sync error: ${err.message || err}`, true);
+      }
     };
 
     async function pushCloudUserData() {
