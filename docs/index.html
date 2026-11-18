@@ -6606,10 +6606,14 @@
           return;
         }
 
-        const prevTel = JSON.parse(JSON.stringify(getWearableTelemetry()));
+        const localBeforePull = JSON.parse(JSON.stringify(getWearableTelemetry()));
+        let decryptedTel = {};
         if (data.encrypted_payload && window.masterPassphrase) {
           try {
             const dec = await window.SanctuaryVaultCrypto.decryptPayload(data.encrypted_payload, window.masterPassphrase);
+            if (dec && dec.wearableTelemetry) {
+              decryptedTel = JSON.parse(JSON.stringify(dec.wearableTelemetry));
+            }
             window.userAppState = Object.assign(window.userAppState, dec);
           } catch (e) {
             if (data.data) window.userAppState = Object.assign(window.userAppState, data.data);
@@ -6618,14 +6622,32 @@
           window.userAppState = Object.assign(window.userAppState, data.data);
         }
 
-        // Deep-merge wearableTelemetry
+        // Deep-merge: Defaults -> Local before pull -> Decrypted cross-device vault -> Live Cloud Worker telemetry
         const cloudTel = data.data?.wearableTelemetry || {};
         const defTel = JSON.parse(JSON.stringify(window.DEFAULT_WEARABLE_TELEMETRY));
         window.userAppState.wearableTelemetry = {
-          syncedAt: cloudTel.syncedAt || prevTel.syncedAt,
-          whoop: Object.assign({}, defTel.whoop, cleanDefinedProps(prevTel.whoop), cleanDefinedProps(cloudTel.whoop)),
-          garmin: Object.assign({}, defTel.garmin, cleanDefinedProps(prevTel.garmin), cleanDefinedProps(cloudTel.garmin)),
-          scale: Object.assign({}, defTel.scale, cleanDefinedProps(prevTel.scale), cleanDefinedProps(cloudTel.scale))
+          syncedAt: cloudTel.syncedAt || decryptedTel.syncedAt || localBeforePull.syncedAt,
+          whoop: Object.assign(
+            {},
+            defTel.whoop,
+            cleanDefinedProps(localBeforePull.whoop),
+            cleanDefinedProps(decryptedTel.whoop),
+            cleanDefinedProps(cloudTel.whoop)
+          ),
+          garmin: Object.assign(
+            {},
+            defTel.garmin,
+            cleanDefinedProps(localBeforePull.garmin),
+            cleanDefinedProps(decryptedTel.garmin),
+            cleanDefinedProps(cloudTel.garmin)
+          ),
+          scale: Object.assign(
+            {},
+            defTel.scale,
+            cleanDefinedProps(localBeforePull.scale),
+            cleanDefinedProps(decryptedTel.scale),
+            cleanDefinedProps(cloudTel.scale)
+          )
         };
 
         // Merge any weekly scouted papers queued by GitHub Actions
@@ -6650,8 +6672,9 @@
         renderAllUI();
 
         if (manualTrigger) {
+          setWearableDashboardView('all');
           const scoutMsg = addedScouted > 0 ? ` • +${addedScouted} New Scouted Paper(s)` : '';
-          setSyncFeedback(`Cloud synced! Garmin Readiness: ${localTel.garmin?.readiness ?? '--'} • Steps: ${Number(localTel.garmin?.steps || 0).toLocaleString()}${scoutMsg}`, false);
+          setSyncFeedback(`Cloud synced! WHOOP: ${localTel.whoop?.recovery ?? '--'}% • Garmin Readiness: ${localTel.garmin?.readiness ?? '--'} • Steps: ${Number(localTel.garmin?.steps || 0).toLocaleString()}${scoutMsg}`, false);
         }
       } catch (err) {
         if (manualTrigger) setSyncFeedback(`Cloud sync error: ${err.message || err}`, true);

@@ -236,6 +236,7 @@ def sync_whoop(telemetry):
                     "refresh_token": WHOOP_REFRESH_TOKEN,
                     "client_id": WHOOP_CLIENT_ID,
                     "client_secret": WHOOP_CLIENT_SECRET,
+                    "scope": "offline",
                 },
                 timeout=20,
             )
