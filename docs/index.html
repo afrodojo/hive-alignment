@@ -272,7 +272,7 @@
           <i data-lucide="activity" class="w-3.5 h-3.5 text-emerald-400"></i> Gateway
         </button>
         <button type="button" onclick="switchTab('tab-workouts')" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
-          <i data-lucide="dumbbell" class="w-3.5 h-3.5"></i> Shoulder &amp; Back Routine
+          <i data-lucide="dumbbell" class="w-3.5 h-3.5"></i> Full Body Hypertrophy
         </button>
         <button type="button" onclick="switchTab('tab-wearables')" class="px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
           Device Dashboards &rarr;
@@ -355,7 +355,7 @@
       <button type="button" onclick="switchTab('tab-briefings')" id="btn-tab-briefings" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold bg-emerald-500 text-slate-950 transition">Briefings</button>
       <button type="button" onclick="switchTab('tab-knowledge')" id="btn-tab-knowledge" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-sky-400 hover:text-sky-300 transition">Knowledge &amp; Literature Matrix</button>
       <button type="button" onclick="switchTab('tab-wearables')" id="btn-tab-wearables" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-rose-400 hover:text-rose-300 transition">WHOOP &amp; Wearables</button>
-      <button type="button" onclick="switchTab('tab-workouts')" id="btn-tab-workouts" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition">Adaptive Workouts (Shoulder &amp; Back)</button>
+      <button type="button" onclick="switchTab('tab-workouts')" id="btn-tab-workouts" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition">Adaptive Hypertrophy (Upper/Lower Split)</button>
       <button type="button" onclick="switchTab('tab-faith')" id="btn-tab-faith" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition">Faith &amp; Salat Path</button>
       <button type="button" onclick="switchTab('tab-calendar')" id="btn-tab-calendar" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">Calendar Sync</button>
       <button type="button" onclick="switchTab('tab-duties')" id="btn-tab-duties" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition">Duties &amp; Tasks</button>
@@ -856,10 +856,10 @@
         <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 border-b border-slate-800 pb-4">
           <div>
             <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
-              <i data-lucide="dumbbell" class="w-3.5 h-3.5"></i> Telemetry-Gated Shoulder &amp; Posterior Chain Architect
+              <i data-lucide="dumbbell" class="w-3.5 h-3.5"></i> Telemetry-Gated 4-Day Hypertrophy Architect
             </span>
-            <h3 class="text-lg font-extrabold text-white mt-0.5">Adaptive Shoulder &amp; Back Strength + Flexibility Engine</h3>
-            <p class="text-xs text-slate-400 mt-0.5">Auto-calibrates sets, reps, load, and thoracic/scapular mobility to your live WHOOP Recovery Gate, HRV, and Garmin ACWR.</p>
+            <h3 class="text-lg font-extrabold text-white mt-0.5">Upper / Lower Split (Chest, Back, Arms, Legs, Abs)</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Auto-calibrates a 4-Day PHUL-style split to your live WHOOP Recovery Gate, HRV, and Garmin ACWR.</p>
           </div>
           <div class="flex flex-wrap items-center gap-2">
             <select id="wo-equipment-select" onchange="setWorkoutEquipmentProfile(this.value)" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
@@ -6370,208 +6370,262 @@
 
     window.SHOULDER_BACK_WEEKLY_TEMPLATE = [
       {
-        dayLabel: 'Monday • Session A',
-        title: 'Rotator Cuff Stabilization & Scapular Retraction',
-        focus: 'External Rotators, Lower Traps, Rhomboids & Thoracic Extension',
+        dayLabel: 'Monday • Upper Power',
+        title: 'Upper Body (Chest, Back, Arms, Shoulders)',
+        focus: 'Compound Strength Focus: Bench Press, Rows, Overhead Press, Arm Hypertrophy',
         exercises: [
           {
-            name: 'Thoracic Foam Roller Extension + Open-Book Rotation',
-            category: 'Flexibility & T-Spine',
-            cue: 'Keep ribs down; exhale at end-range thoracic rotation to unlock overhead shoulder clearance.',
-            baseSets: 3, baseReps: '8/side (3s hold)', rest: '30s',
-            redMod: '3 sets × 8/side slow breath-paced mobility',
-            yellowMod: '3 sets × 8/side (3s end-range pause)',
-            greenMod: '3 sets × 10/side + Overhead Reach'
+            name: 'Barbell or Dumbbell Bench Press',
+            category: 'Chest & Triceps',
+            cue: 'Grip slightly outside shoulder-width, keep chest up, lower bar to level of nipples, avoid flaring elbows out.',
+            baseSets: 4, baseReps: '5–8', rest: '2-3 min',
+            redMod: '3 sets × 8–10 (Light Band Press or DB Floor Press, RPE 6)',
+            yellowMod: '4 sets × 6–8 (-10% weight, smooth eccentric)',
+            greenMod: '4 sets × 5–8 (+2.5% load, RPE 8-9)'
           },
           {
-            name: 'Side-Lying or Band 90° External Rotation',
-            category: 'Rotator Cuff (Infraspinatus/Teres Minor)',
-            cue: 'Tuck a rolled towel between elbow and ribs; rotate forearm outward slowly (3s eccentric) without shrugging.',
-            baseSets: 4, baseReps: '12–15/arm', rest: '45s',
-            redMod: '3 sets × 12/arm (Light band / Isometric 5s holds, RPE 5)',
-            yellowMod: '3 sets × 10/arm (-10% load, 3s eccentric, RPE 6.5)',
-            greenMod: '4 sets × 12–15/arm (+2.5% load/band tension, RPE 7.5)'
+            name: 'Incline Dumbbell Press',
+            category: 'Upper Chest',
+            cue: 'Set bench 1-2 notches up. Control the weight down dropping elbows to 45 degree angle.',
+            baseSets: 3, baseReps: '8–12', rest: '2 min',
+            redMod: '2 sets × 10 (Light load)',
+            yellowMod: '3 sets × 10 (-10% weight)',
+            greenMod: '3 sets × 8–12 (+2.5% load, RPE 8)'
           },
           {
-            name: 'Chest-Supported Dumbbell Row / Seated Cable Row',
-            category: 'Mid-Back (Rhomboids & Mid-Traps)',
-            cue: 'Initiate pull by gliding shoulder blades back and down; pause 1s at ribcage; zero lumbar arch.',
-            baseSets: 4, baseReps: '12', rest: '60s',
-            redMod: '2 sets × 12 Light Band Scapular Rows + 15m Zone 2 Row (<135 BPM)',
-            yellowMod: '3 sets × 10 (-10% weight, 2s isometric squeeze, +30s rest)',
-            greenMod: '4 sets × 12–15 (+2.5% progressive overload, RPE 7.5)'
+            name: 'Chest-Supported Row or Seated Cable Row',
+            category: 'Back (Rhomboids/Lats)',
+            cue: 'Initiate pull by gliding shoulder blades back and down; pause 1s at ribcage.',
+            baseSets: 4, baseReps: '8–10', rest: '2 min',
+            redMod: '2 sets × 12 Light Band Scapular Rows',
+            yellowMod: '3 sets × 10 (-10% weight, 2s isometric squeeze)',
+            greenMod: '4 sets × 8–10 (+2.5% load, RPE 8)'
           },
           {
-            name: 'Wall Slides with Lift-Off (Serratus Anterior)',
-            category: 'Scapular Upward Rotation & Flexibility',
-            cue: 'Forearms parallel on wall; slide up into Y while keeping lower ribs tucked; gently lift hands 1 inch off wall at top.',
-            baseSets: 3, baseReps: '10', rest: '45s',
-            redMod: '3 sets × 8 slow pain-free wall slides',
-            yellowMod: '3 sets × 10 controlled tempo',
-            greenMod: '3 sets × 12 with 2s top lift-off hold'
+            name: 'Pull-Ups or Lat Pulldowns',
+            category: 'Vertical Back (Lats)',
+            cue: 'Grip outside shoulder-width, pull until chin over bar. Pull elbows down and back.',
+            baseSets: 3, baseReps: '6–12', rest: '2 min',
+            redMod: '2 sets × 12 Light Band Pulldowns',
+            yellowMod: '3 sets × 10 (-10% load)',
+            greenMod: '3 sets × 6–12 (Weighted if easy)'
+          },
+          {
+            name: 'Dumbbell Overhead Press & Lateral Raises',
+            category: 'Shoulders (Anterior/Lateral Delts)',
+            cue: 'Press dumbbells overhead; superset with lateral raises keeping slight bend in elbows.',
+            baseSets: 3, baseReps: '8–12 (OHP) + 15 (Raises)', rest: '2 min',
+            redMod: '2 sets × 12 light raises only',
+            yellowMod: '3 sets × 10 (OHP) + 12 raises',
+            greenMod: '3 sets × 8–12 (OHP) + 15 raises'
+          },
+          {
+            name: 'Incline Dumbbell Curl & Overhead Triceps Extension',
+            category: 'Biceps & Triceps (Arms)',
+            cue: 'Superset. Full stretch at bottom of curls; lock elbows in place for triceps.',
+            baseSets: 3, baseReps: '10–12 each', rest: '90s',
+            redMod: '2 sets × 12 each (Blood flow focus)',
+            yellowMod: '3 sets × 12 each (-10% weight)',
+            greenMod: '3 sets × 10–12 each (Push to near failure)'
           }
         ]
       },
       {
-        dayLabel: 'Tuesday • Mobility & Zone 2',
-        title: 'Posterior Capsule Flexibility & Aerobic Recovery',
-        focus: 'Pec Minor Release, Sleeper/Cross-Body Stretch & Parasympathetic Flush',
+        dayLabel: 'Tuesday • Lower Power',
+        title: 'Lower Body (Quads, Hams, Glutes, Calves, Abs)',
+        focus: 'Compound Leg Strength: Squats, Deadlifts, Core Stability',
         exercises: [
           {
-            name: 'Doorway Pec Minor & Anterior Deltoid Stretch (3 Angles)',
-            category: 'Anterior Shoulder Flexibility',
-            cue: 'Place forearm at 90°, 120°, and 145°; step through gently until mild chest stretch without front-shoulder pinch.',
-            baseSets: 3, baseReps: '30s/angle', rest: '20s',
-            redMod: '3 sets × 30s/angle + 4-4-4-4 Box Breathing',
-            yellowMod: '3 sets × 30s/angle',
-            greenMod: '3 sets × 35s/angle'
+            name: 'Barbell Back Squat or Goblet Squat',
+            category: 'Quads & Glutes',
+            cue: 'Keep chest up, break at hips and knees simultaneously. Hit parallel or below.',
+            baseSets: 4, baseReps: '5–8', rest: '3-4 min',
+            redMod: '3 sets × 10 (Bodyweight or Light Goblet Squat)',
+            yellowMod: '3 sets × 6–8 (-10% weight)',
+            greenMod: '4 sets × 5–8 (+2.5% load, RPE 8)'
           },
           {
-            name: 'Cross-Body Posterior Shoulder & Lat Prayer Stretch',
-            category: 'Posterior Capsule & Lat Flexibility',
-            cue: 'Keep shoulder blade pinned down while drawing arm across chest; follow with bench lat prayer stretch.',
-            baseSets: 3, baseReps: '30s/side', rest: '20s',
-            redMod: '3 sets × 30s/side gentle tension',
-            yellowMod: '3 sets × 30s/side',
-            greenMod: '3 sets × 35s/side'
+            name: 'Romanian Deadlift (RDL)',
+            category: 'Hamstrings & Glutes',
+            cue: 'Hinge at the hips, keeping the bar close to the legs. Squeeze glutes at the top.',
+            baseSets: 3, baseReps: '8–10', rest: '2-3 min',
+            redMod: '2 sets × 12 (Very light DB RDLs)',
+            yellowMod: '3 sets × 10 (-10% weight)',
+            greenMod: '3 sets × 8–10 (+2.5% load)'
           },
           {
-            name: 'Banded Face Pulls with External Rotation',
-            category: 'Rear Delts & Cuff Endurance',
-            cue: 'Pull band toward forehead with thumbs pointing backward; finish in a double-bicep external rotation pose.',
-            baseSets: 3, baseReps: '15', rest: '45s',
-            redMod: '2 sets × 15 ultra-light band blood-flow flush',
-            yellowMod: '3 sets × 12 moderate band',
-            greenMod: '3 sets × 15–18 crisp tempo'
+            name: 'Leg Press or Bulgarian Split Squat',
+            category: 'Quads & Unilateral Strength',
+            cue: 'Control the eccentric. For split squats, keep torso upright to target quads.',
+            baseSets: 3, baseReps: '8–12', rest: '2 min',
+            redMod: '2 sets × 10 (Bodyweight split squats)',
+            yellowMod: '3 sets × 10 (-10% weight)',
+            greenMod: '3 sets × 8–12 (Push intensity)'
           },
+          {
+            name: 'Leg Curl (Lying or Seated)',
+            category: 'Hamstring Isolation',
+            cue: 'Full range of motion, squeeze hamstrings hard at the contracted position.',
+            baseSets: 3, baseReps: '10–15', rest: '90s',
+            redMod: '2 sets × 15 (Light band leg curls)',
+            yellowMod: '3 sets × 12 (-10% load)',
+            greenMod: '3 sets × 10–15 (Hold peak contraction)'
+          },
+          {
+            name: 'Standing Calf Raises',
+            category: 'Calves',
+            cue: 'Elevate toes on weight plate, press up on big toes, full stretch at the bottom.',
+            baseSets: 4, baseReps: '10–15', rest: '90s',
+            redMod: '3 sets × 15 (Bodyweight only)',
+            yellowMod: '4 sets × 15 (Moderate weight)',
+            greenMod: '4 sets × 10–15 (Heavy with pause)'
+          },
+          {
+            name: 'Hanging Knee Raises or Ab-Wheel Rollouts',
+            category: 'Core (Abs)',
+            cue: 'Control the movement, focus on contracting the abdominals, avoid swinging.',
+            baseSets: 3, baseReps: '10–15', rest: '60s',
+            redMod: '2 sets × 10 (Plank 30s instead)',
+            yellowMod: '3 sets × 12',
+            greenMod: '3 sets × 15 (Slow eccentric)'
+          }
+        ]
+      },
+      {
+        dayLabel: 'Wednesday • Active Recovery',
+        title: 'Zone 2 Cardio & Full Body Mobility',
+        focus: 'Aerobic Base & Autonomic Recovery',
+        exercises: [
           {
             name: 'Zone 2 Ergometer Rowing or Incline Treadmill Walk',
             category: 'Aerobic Base & Autonomic Recovery',
             cue: 'Nasal breathing cadence; maintain heart rate strictly in Zone 2 (<135 BPM) to boost HRV.',
-            baseSets: 1, baseReps: '25–35 min', rest: '—',
-            redMod: '25 min Zone 2 (<130 BPM) + 20m Therabody on upper traps/lats',
-            yellowMod: '30 min Zone 2 (<135 BPM)',
-            greenMod: '35 min Zone 2 + 4 × 15s crisp rowing strokes'
+            baseSets: 1, baseReps: '30–45 min', rest: '—',
+            redMod: '30 min Zone 2 (<130 BPM) + 15m Therabody',
+            yellowMod: '35 min Zone 2 (<135 BPM)',
+            greenMod: '45 min Zone 2 + Core stretching'
           }
         ]
       },
       {
-        dayLabel: 'Wednesday • Session B',
-        title: 'Vertical Pulling, Lower Trap Y-Raises & Overhead Stability',
-        focus: 'Latissimus Dorsi, Lower Trapezius & Pain-Free Overhead Mechanics',
+        dayLabel: 'Thursday • Upper Hypertrophy',
+        title: 'Upper Body (Chest, Back, Arms, Shoulders)',
+        focus: 'Hypertrophy Focus: Higher Reps, Isolation, and Pump',
         exercises: [
           {
-            name: 'Quadruped Thread-the-Needle & Cat-Cow',
-            category: 'Thoracic & Scapular Mobility',
-            cue: 'Press supporting palm firmly into floor to protract scapula while threading opposite arm underneath.',
-            baseSets: 3, baseReps: '8/side', rest: '30s',
-            redMod: '3 sets × 8/side slow restorative flow',
-            yellowMod: '3 sets × 8/side',
-            greenMod: '3 sets × 10/side'
+            name: 'Incline Barbell or Dumbbell Press',
+            category: 'Upper Chest & Triceps',
+            cue: 'Smooth eccentric, explosive concentric. Stop just shy of lockout to keep tension on pecs.',
+            baseSets: 4, baseReps: '8–12', rest: '2 min',
+            redMod: '3 sets × 12 (Light DB Press)',
+            yellowMod: '4 sets × 10 (-10% weight)',
+            greenMod: '4 sets × 8–12 (RPE 8-9)'
           },
           {
-            name: 'Prone or Incline Bench Y-T-W Raises',
-            category: 'Lower & Middle Trapezius',
-            cue: 'Thumbs up on Y, palms down on T, elbows tucked on W; lift using shoulder blades rather than upper neck traps.',
-            baseSets: 3, baseReps: '8 each (Y/T/W)', rest: '60s',
-            redMod: '2 sets × 6 each (bodyweight only, 2s hold)',
-            yellowMod: '3 sets × 8 each (light 2.5–5 lb DBs)',
-            greenMod: '3 sets × 10 each (5–10 lb DBs, RPE 7.5)'
+            name: 'Cable Crossover or Machine Fly',
+            category: 'Chest Isolation',
+            cue: 'Squeeze pecs together at the top, slight bend in elbows.',
+            baseSets: 3, baseReps: '12–15', rest: '90s',
+            redMod: '2 sets × 15 (Light band flyes)',
+            yellowMod: '3 sets × 15 (-10% weight)',
+            greenMod: '3 sets × 12–15 (Hold peak contraction)'
           },
           {
-            name: 'Neutral-Grip Lat Pulldown or Assisted Pull-Up',
-            category: 'Vertical Back Strength (Lats & Teres Major)',
-            cue: 'Keep chest proud and elbows driving straight down toward hips; stop if shoulder rounds forward at bottom.',
-            baseSets: 4, baseReps: '12', rest: '60s',
-            redMod: '2 sets × 12 Light Band Lat Pulldowns (control focus)',
-            yellowMod: '3 sets × 10 (-10% load, 3s eccentric, +30s rest)',
-            greenMod: '4 sets × 12–15 (+2.5% load/volume, RPE 8)'
+            name: 'Seated Cable Row',
+            category: 'Mid-Back (Rhomboids/Traps)',
+            cue: 'Pull to lower chest, retract scapula hard.',
+            baseSets: 4, baseReps: '8–12', rest: '2 min',
+            redMod: '3 sets × 12 (Light band rows)',
+            yellowMod: '4 sets × 12 (-10% weight)',
+            greenMod: '4 sets × 8–12'
           },
           {
-            name: 'Bottoms-Up Kettlebell / Dumbbell Overhead Carry or Press',
-            category: 'Dynamic Cuff Centration & Core',
-            cue: 'Pack shoulder down into socket; walk slowly with ribs stacked over pelvis to train reflexive cuff stability.',
-            baseSets: 3, baseReps: '30 sec / side', rest: '45s',
-            redMod: '3 sets × 20s Farmer Carry (arms at sides, tall posture)',
-            yellowMod: '3 sets × 25s/side light 90° waiter carry',
-            greenMod: '4 sets × 35s/side bottoms-up carry or landmine press'
+            name: 'One Arm Dumbbell Row',
+            category: 'Lats & Unilateral Back',
+            cue: 'Pull towards the hip, stretch fully at the bottom.',
+            baseSets: 3, baseReps: '10–12 per arm', rest: '90s',
+            redMod: '2 sets × 12 (Very light weight)',
+            yellowMod: '3 sets × 12 (-10% weight)',
+            greenMod: '3 sets × 10–12 (Heavy)'
+          },
+          {
+            name: 'Upright Cable Row or Dumbbell Lateral Raise',
+            category: 'Shoulders (Lateral Delts)',
+            cue: 'Pull elbows high for upright rows, lead with elbows for lateral raises.',
+            baseSets: 3, baseReps: '12–15', rest: '90s',
+            redMod: '2 sets × 15 (Light band raises)',
+            yellowMod: '3 sets × 15 (-10% weight)',
+            greenMod: '3 sets × 12–15'
+          },
+          {
+            name: 'Cable Curl & Skullcrusher (EZ Bar)',
+            category: 'Biceps & Triceps (Arms)',
+            cue: 'Superset. Constant tension on cable curls; flare elbows slightly for skullcrushers to hit long head.',
+            baseSets: 3, baseReps: '12–15 each', rest: '90s',
+            redMod: '2 sets × 15 each (Light pump)',
+            yellowMod: '3 sets × 15 each (-10% weight)',
+            greenMod: '3 sets × 12–15 each (Take near failure)'
           }
         ]
       },
       {
-        dayLabel: 'Thursday • Mobility & Posture',
-        title: 'Desk-Decompression, Hang Mobility & Core Stability',
-        focus: 'Subacromial Space Decompression & Spinal Alignment',
+        dayLabel: 'Friday • Lower Hypertrophy',
+        title: 'Lower Body (Quads, Hams, Glutes, Calves, Abs)',
+        focus: 'Hypertrophy Focus: Volume, Isolation, and Burn',
         exercises: [
           {
-            name: 'Supported Dead Hang or Lat Bench Traction Stretch',
-            category: 'Shoulder Joint & Lat Flexibility',
-            cue: 'Keep feet lightly supported on floor/box if needed; breathe deeply into ribcage to decompress shoulder capsule.',
-            baseSets: 3, baseReps: '20–30 sec', rest: '40s',
-            redMod: '3 sets × 20s foot-supported gentle traction',
-            yellowMod: '3 sets × 25s supported hang',
-            greenMod: '3 sets × 30–40s active/passive scapular hang'
+            name: 'Front Squat or Leg Press',
+            category: 'Quads Focus',
+            cue: 'Deep range of motion, focus on pushing through the mid-foot to engage quads.',
+            baseSets: 4, baseReps: '8–12', rest: '2-3 min',
+            redMod: '3 sets × 12 (Light leg press)',
+            yellowMod: '4 sets × 10 (-10% weight)',
+            greenMod: '4 sets × 8–12'
           },
           {
-            name: 'Band Pull-Aparts (Supinated & Pronated Grip)',
-            category: 'Rear Delts & Postural Endurance',
-            cue: 'Keep ribs down and elbows soft; pull band to sternum while squeezing shoulder blades together.',
-            baseSets: 3, baseReps: '15', rest: '45s',
-            redMod: '2 sets × 15 light band',
-            yellowMod: '3 sets × 15 moderate band',
-            greenMod: '4 sets × 15–20 crisp tempo'
+            name: 'Barbell Lunge or Walking Lunge',
+            category: 'Quads & Glutes',
+            cue: 'Long strides for glute focus, short strides for quad focus. Keep torso upright.',
+            baseSets: 3, baseReps: '10-12 per leg', rest: '2 min',
+            redMod: '2 sets × 10 (Bodyweight lunges)',
+            yellowMod: '3 sets × 10 per leg (Light DBs)',
+            greenMod: '3 sets × 10-12 per leg'
           },
           {
-            name: 'Bird-Dog with 3-Second Isometric Pause',
-            category: 'Contralateral Back & Core Stability',
-            cue: 'Reach heel back and thumb up without rotating hips; builds deep spinal erector and lower-trap coordination.',
-            baseSets: 3, baseReps: '8/side', rest: '45s',
-            redMod: '3 sets × 6/side slow breath control',
-            yellowMod: '3 sets × 8/side',
-            greenMod: '3 sets × 10/side (3s hold)'
-          }
-        ]
-      },
-      {
-        dayLabel: 'Friday • Session C',
-        title: 'Posterior Chain, Unilateral Row & Rotator Cuff Balance',
-        focus: 'Anti-Rotation Back Strength, Posterior Delts & Full-Range Mobility',
-        exercises: [
-          {
-            name: 'Scapular Push-Ups + Shoulder CARs (Controlled Articular Rotations)',
-            category: 'Joint Capsule Lubrication',
-            cue: 'Move shoulder through largest pain-free circle slowly (6s per circle); follow with protraction/retraction push-ups.',
-            baseSets: 3, baseReps: '5 CARs + 10 Push-Ups', rest: '30s',
-            redMod: '3 sets × 5 slow CARs/side + wall scapular push-ups',
-            yellowMod: '3 sets × 5 CARs + 10 floor/incline scapular push-ups',
-            greenMod: '3 sets × 6 CARs + 12 floor scapular push-ups'
+            name: 'Leg Extension',
+            category: 'Quad Isolation',
+            cue: 'Pause at the top, control the negative. Burn out the quads.',
+            baseSets: 3, baseReps: '12–15', rest: '90s',
+            redMod: '2 sets × 15 (Light weight)',
+            yellowMod: '3 sets × 15 (-10% load)',
+            greenMod: '3 sets × 12–15'
           },
           {
-            name: 'Single-Arm Dumbbell Row (3-Point Stance)',
-            category: 'Unilateral Lat & Rhomboid Strength',
-            cue: 'Brace free hand on bench; pull dumbbell toward hip pocket while keeping shoulders square to floor.',
-            baseSets: 4, baseReps: '12/arm', rest: '60s',
-            redMod: '2 sets × 12/arm light band single-arm row',
-            yellowMod: '3 sets × 10/arm (-10% load, +30s rest)',
-            greenMod: '4 sets × 12–15/arm (+2.5% overload, RPE 8)'
+            name: 'Leg Curl',
+            category: 'Hamstring Isolation',
+            cue: 'Keep hips down on the pad, curl weight smoothly.',
+            baseSets: 3, baseReps: '12–15', rest: '90s',
+            redMod: '2 sets × 15 (Light weight)',
+            yellowMod: '3 sets × 15 (-10% load)',
+            greenMod: '3 sets × 12–15'
           },
           {
-            name: 'Incline Reverse Dumbbell Flyes or Rear-Delt Cable Fly',
-            category: 'Posterior Deltoid & Infraspinatus',
-            cue: 'Sweep arms wide with slight elbow bend; focus on rear shoulder and upper back without neck tension.',
-            baseSets: 3, baseReps: '15', rest: '45s',
-            redMod: '2 sets × 15 ultra-light DBs/band',
-            yellowMod: '3 sets × 12 (-10% load)',
-            greenMod: '4 sets × 15 (+2.5% load/reps)'
+            name: 'Seated Calf Raises',
+            category: 'Soleus (Calves)',
+            cue: 'Slow eccentric, deep stretch, pause at top.',
+            baseSets: 4, baseReps: '15–20', rest: '90s',
+            redMod: '3 sets × 20 (Light)',
+            yellowMod: '4 sets × 20 (-10% load)',
+            greenMod: '4 sets × 15–20 (Heavy)'
           },
           {
-            name: 'Behind-the-Back Stick/Towel Internal & External Rotation Stretch',
-            category: 'Full-Range Shoulder Flexibility',
-            cue: 'Gently guide top hand upward and bottom hand downward for 25s per side; zero sharp pinching.',
-            baseSets: 3, baseReps: '25s/side', rest: '20s',
-            redMod: '3 sets × 25s/side gentle mobility + 20m Therabody',
-            yellowMod: '3 sets × 25s/side',
-            greenMod: '3 sets × 30s/side'
+            name: 'Cable Crunches or Weighted Plank',
+            category: 'Core (Abs)',
+            cue: 'Round the back for cable crunches to engage abs fully.',
+            baseSets: 3, baseReps: '15-20 (or 60s hold)', rest: '60s',
+            redMod: '2 sets × 45s plank',
+            yellowMod: '3 sets × 15 crunches',
+            greenMod: '3 sets × 20 crunches (Heavy)'
           }
         ]
       }
