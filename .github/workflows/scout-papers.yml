@@ -1,0 +1,29 @@
+name: Weekly Doctoral Paper Scout (arXiv & PubMed Central)
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  scout-papers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install --upgrade requests
+
+      - name: Scout Open-Access Doctoral Papers into Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          HIVE_USER_EMAIL: ${{ secrets.HIVE_USER_EMAIL }}
+          DOCTORAL_SCOUT_QUERY: ${{ vars.DOCTORAL_SCOUT_QUERY || 'heart rate variability cognitive self-regulation executive function' }}
+        run: python scripts/scout_papers.py

@@ -1,6 +1,7 @@
 import os
 import json
 import uuid
+import base64
 from datetime import datetime, timedelta, timezone
 import requests
 
@@ -16,6 +17,9 @@ WHOOP_CLIENT_SECRET = os.environ.get("WHOOP_CLIENT_SECRET", "").strip()
 WHOOP_REFRESH_TOKEN = os.environ.get("WHOOP_REFRESH_TOKEN", "").strip()
 WHOOP_ACCESS_TOKEN = os.environ.get("WHOOP_ACCESS_TOKEN", "").strip()
 
+GH_PAT = os.environ.get("GH_PAT", "").strip()
+GITHUB_REPOSITORY = os.environ.get("GITHUB_REPOSITORY", "afrodojo/hive-alignment").strip()
+
 
 def supa_headers(extra=None):
     h = {
@@ -27,6 +31,42 @@ def supa_headers(extra=None):
     if extra:
         h.update(extra)
     return h
+
+
+def rotate_github_secret(secret_name: str, new_value: str):
+    if not (GH_PAT and GITHUB_REPOSITORY and new_value):
+        return False
+    try:
+        from nacl import encoding, public
+        gh_headers = {
+            "Authorization": f"Bearer {GH_PAT}",
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+        }
+        pk_url = f"https://api.github.com/repos/{GITHUB_REPOSITORY}/actions/secrets/public-key"
+        pk_res = requests.get(pk_url, headers=gh_headers, timeout=15)
+        if not pk_res.ok:
+            print(f"GitHub secret public-key status: {pk_res.status_code}")
+            return False
+        pk_data = pk_res.json()
+        pub_key = public.PublicKey(pk_data["key"].encode("utf-8"), encoding.Base64Encoder())
+        sealed_box = public.SealedBox(pub_key)
+        encrypted_b64 = base64.b64encode(sealed_box.encrypt(new_value.encode("utf-8"))).decode("utf-8")
+
+        put_url = f"https://api.github.com/repos/{GITHUB_REPOSITORY}/actions/secrets/{secret_name}"
+        put_res = requests.put(
+            put_url,
+            headers=gh_headers,
+            json={"encrypted_value": encrypted_b64, "key_id": pk_data["key_id"]},
+            timeout=15,
+        )
+        if put_res.status_code in (201, 204):
+            print(f"Rotated GitHub Secret {secret_name} successfully.")
+            return True
+        print(f"GitHub secret PUT status: {put_res.status_code}")
+    except Exception as exc:
+        print(f"Secret rotation notice: {exc}")
+    return False
 
 
 def fetch_existing_row():
@@ -200,7 +240,13 @@ def sync_whoop(telemetry):
                 timeout=20,
             )
             if tok_res.ok:
-                token = tok_res.json().get("access_token", token)
+                tok_json = tok_res.json()
+                token = tok_json.get("access_token", token)
+                new_refresh = tok_json.get("refresh_token")
+                if new_refresh and new_refresh != WHOOP_REFRESH_TOKEN:
+                    rotate_github_secret("WHOOP_REFRESH_TOKEN", new_refresh)
+            else:
+                print(f"WHOOP token refresh status: {tok_res.status_code}")
         except Exception as exc:
             print(f"WHOOP refresh warning: {exc}")
 
