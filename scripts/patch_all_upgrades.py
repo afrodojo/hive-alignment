@@ -163,11 +163,11 @@ def main():
         html = f.read()
 
     # 1. Add On-Device Browser AI Status Badge + OpenAlex Citation Explorer Button in Knowledge Toolbar
-    old_matrix_toolbar = """            <button type="button" id="btn-toggle-matrix-view" onclick="toggleKnowledgeMatrixView()" class="px-3.5 py-2 bg-slate-950 hover:bg-slate-800 border border-indigo-600/70 text-indigo-300 font-bold rounded-xl text-xs transition flex items-center gap-1.5">
+    old_matrix_toolbar = r"""            <button type="button" id="btn-toggle-matrix-view" onclick="toggleKnowledgeMatrixView()" class="px-3.5 py-2 bg-slate-950 hover:bg-slate-800 border border-indigo-600/70 text-indigo-300 font-bold rounded-xl text-xs transition flex items-center gap-1.5">
               <i data-lucide="table" class="w-3.5 h-3.5"></i> <span id="matrix-view-label">Literature Matrix View</span>
             </button>"""
 
-    new_matrix_toolbar = """            <button type="button" id="btn-toggle-matrix-view" onclick="toggleKnowledgeMatrixView()" class="px-3.5 py-2 bg-slate-950 hover:bg-slate-800 border border-indigo-600/70 text-indigo-300 font-bold rounded-xl text-xs transition flex items-center gap-1.5">
+    new_matrix_toolbar = r"""            <button type="button" id="btn-toggle-matrix-view" onclick="toggleKnowledgeMatrixView()" class="px-3.5 py-2 bg-slate-950 hover:bg-slate-800 border border-indigo-600/70 text-indigo-300 font-bold rounded-xl text-xs transition flex items-center gap-1.5">
               <i data-lucide="table" class="w-3.5 h-3.5"></i> <span id="matrix-view-label">Literature Matrix View</span>
             </button>
             <button type="button" onclick="openOpenAlexExplorerModal()" class="px-3.5 py-2 bg-indigo-950 hover:bg-indigo-900 border border-indigo-600/70 text-indigo-200 font-bold rounded-xl text-xs transition flex items-center gap-1.5">
@@ -181,7 +181,7 @@ def main():
         html = html.replace(old_matrix_toolbar, new_matrix_toolbar, 1)
 
     # 2. Add HRV-to-Mastery Biometric-Cognitive Analytics Card at the bottom of tab-wearables
-    old_wearables_end = """          <div class="pt-3 border-t border-slate-800 flex justify-between items-center text-[11px]">
+    old_wearables_end = r"""          <div class="pt-3 border-t border-slate-800 flex justify-between items-center text-[11px]">
             <span id="s-dash-bmr" class="text-slate-400 font-mono">Est. BMR: 1,940 kcal</span>
             <button type="button" onclick="openWearableConnectModal('manual')" class="text-purple-400 hover:text-purple-300 font-semibold">Update Biometrics &rarr;</button>
           </div>
@@ -189,7 +189,7 @@ def main():
       </div>
     </div>"""
 
-    new_wearables_end = """          <div class="pt-3 border-t border-slate-800 flex justify-between items-center text-[11px]">
+    new_wearables_end = r"""          <div class="pt-3 border-t border-slate-800 flex justify-between items-center text-[11px]">
             <span id="s-dash-bmr" class="text-slate-400 font-mono">Est. BMR: 1,940 kcal</span>
             <button type="button" onclick="openWearableConnectModal('manual')" class="text-purple-400 hover:text-purple-300 font-semibold">Update Biometrics &rarr;</button>
           </div>
@@ -239,10 +239,10 @@ def main():
         html = html.replace(old_wearables_end, new_wearables_end, 1)
 
     # 3. Add Native Qari Recitation Streamer Bar inside Faith & Salat Path tab
-    old_salat_grid = """        <div id="salat-times-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 text-xs"></div>
+    old_salat_grid = r"""        <div id="salat-times-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 text-xs"></div>
       </div>"""
 
-    new_salat_grid = """        <div id="salat-times-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 text-xs"></div>
+    new_salat_grid = r"""        <div id="salat-times-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 text-xs"></div>
 
         <!-- Authentic Qari Quran Recitation Player (AlQuran Cloud CDN) -->
         <div class="p-3.5 bg-slate-950 rounded-xl border border-emerald-800/50 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 text-xs">
@@ -281,11 +281,11 @@ def main():
         html = html.replace(old_salat_grid, new_salat_grid, 1)
 
     # 4. Add "3-Min Rapid-Fire Drill" button in Seeker Study (Omega) toolbar
-    old_omega_4phase = """            <button type="button" onclick="buildFullOmegaLinePlan()" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-lg">
+    old_omega_4phase = r"""            <button type="button" onclick="buildFullOmegaLinePlan()" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-lg">
               <i data-lucide="map" class="w-3.5 h-3.5"></i> 4-Phase Plan
             </button>"""
 
-    new_omega_4phase = """            <button type="button" onclick="openOmegaTimedDrill()" class="px-3.5 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold rounded-xl text-xs transition flex items-center gap-1.5 shadow-lg">
+    new_omega_4phase = r"""            <button type="button" onclick="openOmegaTimedDrill()" class="px-3.5 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold rounded-xl text-xs transition flex items-center gap-1.5 shadow-lg">
               <i data-lucide="timer" class="w-3.5 h-3.5"></i> 3-Min Line Drill
             </button>
             <button type="button" onclick="buildFullOmegaLinePlan()" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-lg">
@@ -296,9 +296,9 @@ def main():
         html = html.replace(old_omega_4phase, new_omega_4phase, 1)
 
     # 5. Add Psycuro Move 2 Blank-Page Generation Scratchpad inside Recall Quiz Modal
-    old_quiz_container = """      <div id="quiz-questions-container" class="space-y-4 text-xs"></div>"""
+    old_quiz_container = r"""      <div id="quiz-questions-container" class="space-y-4 text-xs"></div>"""
 
-    new_quiz_container = """      <!-- Psycuro Move 2: Blank-Page Generation Effect Scratchpad -->
+    new_quiz_container = r"""      <!-- Psycuro Move 2: Blank-Page Generation Effect Scratchpad -->
       <div id="generation-scratchpad-box" class="p-3.5 bg-indigo-950/30 border border-indigo-800/60 rounded-xl space-y-2 text-xs">
         <div class="flex justify-between items-center">
           <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-300 flex items-center gap-1.5">
@@ -320,7 +320,7 @@ def main():
         html = html.replace(old_quiz_container, new_quiz_container, 1)
 
     # 6. Inject OpenAlex Citation-Graph Explorer Modal & Timed Omega Line-Drill Simulator Modal
-    new_modals_html = """  <!-- OPENALEX CITATION-GRAPH & RELATED WORKS EXPLORER MODAL -->
+    new_modals_html = r"""  <!-- OPENALEX CITATION-GRAPH & RELATED WORKS EXPLORER MODAL -->
   <div id="openalex-explorer-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[1240] hidden flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-slate-900 border border-indigo-700/60 rounded-2xl max-w-3xl w-full p-6 space-y-4 shadow-2xl relative my-8">
       <div class="flex justify-between items-start border-b border-slate-800 pb-3">
@@ -392,25 +392,25 @@ def main():
         html = html.replace("  <!-- MODALS -->", "  <!-- MODALS -->\n" + new_modals_html, 1)
 
     # 7. Add "Cited-By" quick button to Literature Matrix rows
-    old_matrix_row_btns = """              <div class="inline-flex gap-1">
+    old_matrix_row_btns = r"""              <div class="inline-flex gap-1">
                 <button type="button" onclick="openRecallQuiz('${item.id}')" class="px-2 py-1 bg-emerald-600 text-slate-950 font-bold rounded text-[10px]">3Q</button>"""
 
-    new_matrix_row_btns = """              <div class="inline-flex gap-1">
+    new_matrix_row_btns = r"""              <div class="inline-flex gap-1">
                 <button type="button" onclick="openOpenAlexExplorerModal('${item.title.replace(/'/g, "\\'")}')" class="px-2 py-1 bg-sky-950 text-sky-300 border border-sky-800 font-bold rounded text-[10px]" title="Find Cited-By & Related Works in OpenAlex">Cite+</button>
                 <button type="button" onclick="openRecallQuiz('${item.id}')" class="px-2 py-1 bg-emerald-600 text-slate-950 font-bold rounded text-[10px]">3Q</button>"""
 
     if "openOpenAlexExplorerModal('${item.title" not in html and old_matrix_row_btns in html:
         html = html.replace(old_matrix_row_btns, new_matrix_row_btns, 1)
 
-    # 8. Enhance fetchQuranSurahIntoForm to also pull Classical Tafsir (ar.muyassar / en.jalalayn) and load Qari audio
-    old_quran_fetch = """        const res = await fetch(`https://api.alquran.cloud/v1/surah/${surahNum}/editions/quran-uthmani,en.sahih`);
+    # 8. Enhance fetchQuranSurahIntoForm to also pull Classical Tafsir (ar.muyassar)
+    old_quran_fetch = r"""        const res = await fetch(`https://api.alquran.cloud/v1/surah/${surahNum}/editions/quran-uthmani,en.sahih`);
         if (!res.ok) throw new Error(`AlQuran API returned HTTP ${res.status}`);
         const json = await res.json();
         const arData = json?.data?.[0];
         const enData = json?.data?.[1];
         if (!arData || !enData) throw new Error('Could not parse Surah payload.');"""
 
-    new_quran_fetch = """        const res = await fetch(`https://api.alquran.cloud/v1/surah/${surahNum}/editions/quran-uthmani,en.sahih,ar.muyassar`);
+    new_quran_fetch = r"""        const res = await fetch(`https://api.alquran.cloud/v1/surah/${surahNum}/editions/quran-uthmani,en.sahih,ar.muyassar`);
         if (!res.ok) throw new Error(`AlQuran API returned HTTP ${res.status}`);
         const json = await res.json();
         const arData = json?.data?.[0];
@@ -421,12 +421,12 @@ def main():
     if "ar.muyassar" not in html and old_quran_fetch in html:
         html = html.replace(old_quran_fetch, new_quran_fetch, 1)
 
-    old_quran_loop = """          if (enAyah) {
+    old_quran_loop = r"""          if (enAyah) {
             compiledLines.push(`[${surahNum}:${enAyah.numberInSurah}] ${enAyah.text}`);
             if (arAyah) compiledLines.push(`Arabic: ${arAyah.text}`);
           }"""
 
-    new_quran_loop = """          const tafsirAyah = tafsirData?.ayahs?.[i];
+    new_quran_loop = r"""          const tafsirAyah = tafsirData?.ayahs?.[i];
           if (enAyah) {
             compiledLines.push(`[${surahNum}:${enAyah.numberInSurah}] ${enAyah.text}`);
             if (arAyah) compiledLines.push(`Arabic: ${arAyah.text}`);
@@ -436,14 +436,8 @@ def main():
     if "Tafsir Al-Muyassar:" not in html and old_quran_loop in html:
         html = html.replace(old_quran_loop, new_quran_loop, 1)
 
-    # 9. Inject JavaScript Engines for:
-    #    - On-Device Browser AI (Summarizer & LanguageModel APIs with deterministic fallback)
-    #    - Authentic Qari Recitation Streamer
-    #    - OpenAlex Citation-Graph Explorer
-    #    - Psycuro Move 2 Blank-Page Generation Scratchpad
-    #    - 3-Minute Timed Omega Rapid-Fire Line-Drill Simulator
-    #    - HRV-to-Mastery Biometric-Cognitive Analytics Renderer
-    advanced_js = """    // 1. ZERO-KNOWLEDGE ON-DEVICE BROWSER AI (GEMINI NANO / PHI SUMMARIZER & PROMPT API)
+    # 9. Inject JavaScript Engines (MUST be raw r"""...""" so regexes like /\n+/ stay escaped!)
+    advanced_js = r"""    // 1. ZERO-KNOWLEDGE ON-DEVICE BROWSER AI (GEMINI NANO / PHI SUMMARIZER & PROMPT API)
     window.localAiCapability = 'checking';
 
     window.checkLocalBrowserAiStatus = async function() {
@@ -532,7 +526,7 @@ def main():
       } catch (e) {}
     };
 
-    // 2. AUTHENTIC QARI QURAN RECITATION PLAYER (ALQURAN CLOUD CDN)
+    // 2. AUTHENTIC QARI QURAN RECITATION PLAYER (ALQURAN CLOUD CDN WITH FALLBACK)
     window.playSelectedQariSurah = function() {
       const surahSel = document.getElementById('qari-surah-select');
       const reciterSel = document.getElementById('qari-reciter-select');
@@ -544,6 +538,15 @@ def main():
       const surahLabel = surahSel.options[surahSel.selectedIndex].text;
       const qariId = reciterSel.value;
       const qariName = reciterSel.options[reciterSel.selectedIndex].text;
+      const fallbackUrl = `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${surahNum}.mp3`;
+
+      audioEl.onerror = function() {
+        if (audioEl.src !== fallbackUrl) {
+          audioEl.src = fallbackUrl;
+          if (nowEl) nowEl.innerText = `Streaming ${surahLabel} • Reciter: Mishary Rashid Alafasy`;
+          audioEl.play().catch(() => {});
+        }
+      };
 
       audioEl.src = `https://cdn.islamic.network/quran/audio-surah/128/${qariId}/${surahNum}.mp3`;
       if (nowEl) nowEl.innerText = `Streaming ${surahLabel} • Reciter: ${qariName}`;
@@ -716,7 +719,6 @@ def main():
         });
       });
 
-      // Fisher-Yates shuffle
       for (let i = cards.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [cards[i], cards[j]] = [cards[j], cards[i]];
@@ -834,10 +836,10 @@ def main():
         )
 
     # 10. Wire Blank-Page Generation Scratchpad reset inside openRecallQuiz
-    old_open_quiz_tail = """      document.getElementById('quiz-modal-title').innerText = item.title;
+    old_open_quiz_tail = r"""      document.getElementById('quiz-modal-title').innerText = item.title;
       document.getElementById('quiz-score-banner').classList.add('hidden');"""
 
-    new_open_quiz_tail = """      document.getElementById('quiz-modal-title').innerText = item.title;
+    new_open_quiz_tail = r"""      document.getElementById('quiz-modal-title').innerText = item.title;
       document.getElementById('quiz-score-banner').classList.add('hidden');
       const scratchInput = document.getElementById('generation-scratchpad-input');
       const qContEl = document.getElementById('quiz-questions-container');
