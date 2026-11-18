@@ -1,7 +1,10 @@
 import os
+import io
 import json
 import uuid
 import base64
+import tarfile
+import tempfile
 from datetime import datetime, timedelta, timezone
 import requests
 
@@ -11,6 +14,7 @@ TARGET_EMAIL = os.environ.get("HIVE_USER_EMAIL", "cyberdojosensei@gmail.com").st
 
 GARMIN_EMAIL = os.environ.get("GARMIN_EMAIL", "").strip()
 GARMIN_PASSWORD = os.environ.get("GARMIN_PASSWORD", "").strip()
+GARMIN_TOKENSTORE = os.environ.get("GARMIN_TOKENSTORE", "").strip()
 
 WHOOP_CLIENT_ID = os.environ.get("WHOOP_CLIENT_ID", "").strip()
 WHOOP_CLIENT_SECRET = os.environ.get("WHOOP_CLIENT_SECRET", "").strip()
@@ -63,10 +67,40 @@ def rotate_github_secret(secret_name: str, new_value: str):
         if put_res.status_code in (201, 204):
             print(f"Rotated GitHub Secret {secret_name} successfully.")
             return True
-        print(f"GitHub secret PUT status: {put_res.status_code}")
+        print(f"GitHub secret PUT status for {secret_name}: {put_res.status_code}")
     except Exception as exc:
-        print(f"Secret rotation notice: {exc}")
+        print(f"Secret rotation notice ({secret_name}): {exc}")
     return False
+
+
+def unpack_garmin_tokenstore(b64_blob: str, target_dir: str) -> bool:
+    if not b64_blob:
+        return False
+    try:
+        raw_bytes = base64.b64decode(b64_blob)
+        with tarfile.open(fileobj=io.BytesIO(raw_bytes), mode="r:gz") as tf:
+            tf.extractall(path=target_dir)
+        return any(os.scandir(target_dir))
+    except Exception as exc:
+        print(f"Garmin tokenstore unpack notice: {exc}")
+        return False
+
+
+def pack_garmin_tokenstore(source_dir: str) -> str:
+    if not os.path.isdir(source_dir):
+        return ""
+    files = [f for f in os.listdir(source_dir) if os.path.isfile(os.path.join(source_dir, f))]
+    if not files:
+        return ""
+    buf = io.BytesIO()
+    with tarfile.open(fileobj=buf, mode="w:gz") as tf:
+        for fname in sorted(files):
+            fpath = os.path.join(source_dir, fname)
+            info = tf.gettarinfo(fpath, arcname=fname)
+            info.mtime = 0
+            with open(fpath, "rb") as fh:
+                tf.addfile(info, fh)
+    return base64.b64encode(buf.getvalue()).decode("utf-8")
 
 
 def fetch_existing_row():
@@ -125,102 +159,134 @@ def build_schema_safe_insert_payload(state_data, now_iso):
     return payload
 
 
-def sync_garmin(telemetry):
+def authenticate_garmin_with_tokenstore(token_dir: str):
+    from garminconnect import Garmin
+
+    has_cached = unpack_garmin_tokenstore(GARMIN_TOKENSTORE, token_dir)
+    if has_cached:
+        try:
+            client = Garmin()
+            client.login(tokenstore=token_dir)
+            print("Garmin Connect resumed directly from GARMIN_TOKENSTORE (SSO skipped).")
+            return client
+        except Exception as exc:
+            print(f"Stored Garmin token expired or invalid ({exc}); falling back to credential login...")
+
     if not (GARMIN_EMAIL and GARMIN_PASSWORD):
-        print("Skipping Garmin sync (GARMIN_EMAIL / GARMIN_PASSWORD not set).")
+        return None
+
+    client = Garmin(GARMIN_EMAIL, GARMIN_PASSWORD)
+    client.login(tokenstore=token_dir)
+    if not any(os.scandir(token_dir)) and hasattr(client, "garth"):
+        try:
+            client.garth.dump(token_dir)
+        except Exception:
+            pass
+    return client
+
+
+def sync_garmin(telemetry):
+    if not (GARMIN_TOKENSTORE or (GARMIN_EMAIL and GARMIN_PASSWORD)):
+        print("Skipping Garmin sync (neither GARMIN_TOKENSTORE nor GARMIN_EMAIL/GARMIN_PASSWORD set).")
         return
 
     try:
-        from garminconnect import Garmin
-        client = Garmin(GARMIN_EMAIL, GARMIN_PASSWORD)
-        client.login()
+        with tempfile.TemporaryDirectory(prefix="garmin_tokens_") as token_dir:
+            client = authenticate_garmin_with_tokenstore(token_dir)
+            if not client:
+                print("Skipping Garmin sync (credentials not available).")
+                return
 
-        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        stats = client.get_stats(today) or {}
-        garmin_block = telemetry.setdefault("garmin", {})
-        scale_block = telemetry.setdefault("scale", {})
+            packed_tokens = pack_garmin_tokenstore(token_dir)
+            if packed_tokens and packed_tokens != GARMIN_TOKENSTORE:
+                rotate_github_secret("GARMIN_TOKENSTORE", packed_tokens)
 
-        if isinstance(stats, dict):
-            if stats.get("totalSteps") is not None:
-                garmin_block["steps"] = int(stats["totalSteps"])
-            if stats.get("bodyBatteryMostRecentValue") is not None:
-                garmin_block["bodyBattery"] = int(stats["bodyBatteryMostRecentValue"])
-            elif stats.get("bodyBatteryChargedValue") is not None:
-                garmin_block["bodyBattery"] = int(stats["bodyBatteryChargedValue"])
+            today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+            stats = client.get_stats(today) or {}
+            garmin_block = telemetry.setdefault("garmin", {})
+            scale_block = telemetry.setdefault("scale", {})
 
-        try:
-            readiness = client.get_training_readiness(today)
-            if isinstance(readiness, list) and readiness:
-                score = readiness[0].get("score")
-                if score is not None:
-                    garmin_block["readiness"] = int(score)
-            elif isinstance(readiness, dict) and readiness.get("score") is not None:
-                garmin_block["readiness"] = int(readiness["score"])
-        except Exception as e:
-            print(f"Garmin training readiness warning: {e}")
+            if isinstance(stats, dict):
+                if stats.get("totalSteps") is not None:
+                    garmin_block["steps"] = int(stats["totalSteps"])
+                if stats.get("bodyBatteryMostRecentValue") is not None:
+                    garmin_block["bodyBattery"] = int(stats["bodyBatteryMostRecentValue"])
+                elif stats.get("bodyBatteryChargedValue") is not None:
+                    garmin_block["bodyBattery"] = int(stats["bodyBatteryChargedValue"])
 
-        try:
-            for d_off in range(0, 14):
-                check_day = (datetime.now(timezone.utc) - timedelta(days=d_off)).strftime("%Y-%m-%d")
-                max_met = client.get_max_metrics(check_day)
-                entry = max_met[0] if isinstance(max_met, list) and max_met else (max_met if isinstance(max_met, dict) else {})
-                vo2 = (entry.get("generic") or {}).get("vo2MaxPreciseValue") or (entry.get("generic") or {}).get("vo2MaxValue")
-                if vo2:
-                    garmin_block["vo2Max"] = round(float(vo2), 1)
-                    break
-        except Exception as e:
-            print(f"Garmin VO2 max warning: {e}")
+            try:
+                readiness = client.get_training_readiness(today)
+                if isinstance(readiness, list) and readiness:
+                    score = readiness[0].get("score")
+                    if score is not None:
+                        garmin_block["readiness"] = int(score)
+                elif isinstance(readiness, dict) and readiness.get("score") is not None:
+                    garmin_block["readiness"] = int(readiness["score"])
+            except Exception as e:
+                print(f"Garmin training readiness warning: {e}")
 
-        activities = client.get_activities(0, 40) or []
-        if activities:
-            latest = activities[0]
-            act_name = latest.get("activityName", "GPS Session")
-            dur_min = round((latest.get("duration") or 0) / 60)
-            avg_hr = round(latest.get("averageHR") or 0)
-            garmin_block["lastActivity"] = f"{act_name} • {dur_min} min • Avg HR {avg_hr} bpm"
+            try:
+                for d_off in range(0, 14):
+                    check_day = (datetime.now(timezone.utc) - timedelta(days=d_off)).strftime("%Y-%m-%d")
+                    max_met = client.get_max_metrics(check_day)
+                    entry = max_met[0] if isinstance(max_met, list) and max_met else (max_met if isinstance(max_met, dict) else {})
+                    vo2 = (entry.get("generic") or {}).get("vo2MaxPreciseValue") or (entry.get("generic") or {}).get("vo2MaxValue")
+                    if vo2:
+                        garmin_block["vo2Max"] = round(float(vo2), 1)
+                        break
+            except Exception as e:
+                print(f"Garmin VO2 max warning: {e}")
 
-            now_dt = datetime.now(timezone.utc)
-            acute_load = 0.0
-            chronic_load = 0.0
-            for act in activities:
-                start_str = act.get("startTimeGMT") or act.get("startTimeLocal")
-                if not start_str:
-                    continue
-                try:
-                    act_dt = datetime.fromisoformat(start_str.replace(" ", "T")).replace(tzinfo=timezone.utc)
-                except Exception:
-                    continue
-                age_days = (now_dt - act_dt).total_seconds() / 86400.0
-                load = float(act.get("activityTrainingLoad") or ((act.get("duration") or 0) / 60.0) * 1.4)
-                if age_days <= 7:
-                    acute_load += load
-                if age_days <= 28:
-                    chronic_load += load
+            activities = client.get_activities(0, 40) or []
+            if activities:
+                latest = activities[0]
+                act_name = latest.get("activityName", "GPS Session")
+                dur_min = round((latest.get("duration") or 0) / 60)
+                avg_hr = round(latest.get("averageHR") or 0)
+                garmin_block["lastActivity"] = f"{act_name} • {dur_min} min • Avg HR {avg_hr} bpm"
 
-            weekly_chronic = chronic_load / 4.0 if chronic_load > 0 else 0.0
-            if weekly_chronic > 0:
-                garmin_block["acwr"] = round(acute_load / weekly_chronic, 2)
-                garmin_block["acuteLoad"] = round(acute_load)
-                garmin_block["chronicLoad"] = round(weekly_chronic)
+                now_dt = datetime.now(timezone.utc)
+                acute_load = 0.0
+                chronic_load = 0.0
+                for act in activities:
+                    start_str = act.get("startTimeGMT") or act.get("startTimeLocal")
+                    if not start_str:
+                        continue
+                    try:
+                        act_dt = datetime.fromisoformat(start_str.replace(" ", "T")).replace(tzinfo=timezone.utc)
+                    except Exception:
+                        continue
+                    age_days = (now_dt - act_dt).total_seconds() / 86400.0
+                    load = float(act.get("activityTrainingLoad") or ((act.get("duration") or 0) / 60.0) * 1.4)
+                    if age_days <= 7:
+                        acute_load += load
+                    if age_days <= 28:
+                        chronic_load += load
 
-        try:
-            start_28 = (datetime.now(timezone.utc) - timedelta(days=28)).strftime("%Y-%m-%d")
-            body = client.get_body_composition(start_28, today) or {}
-            weight_list = body.get("dateWeightList") or []
-            if weight_list:
-                w_latest = weight_list[-1]
-                if w_latest.get("weight"):
-                    scale_block["weight"] = round(float(w_latest["weight"]) / 453.59237, 1)
-                if w_latest.get("bodyFat"):
-                    scale_block["bodyFat"] = round(float(w_latest["bodyFat"]), 1)
-                if w_latest.get("muscleMass"):
-                    scale_block["muscleMass"] = round(float(w_latest["muscleMass"]) / 453.59237, 1)
-                if w_latest.get("bodyWater"):
-                    scale_block["hydration"] = round(float(w_latest["bodyWater"]), 1)
-        except Exception as e:
-            print(f"Garmin body composition warning: {e}")
+                weekly_chronic = chronic_load / 4.0 if chronic_load > 0 else 0.0
+                if weekly_chronic > 0:
+                    garmin_block["acwr"] = round(acute_load / weekly_chronic, 2)
+                    garmin_block["acuteLoad"] = round(acute_load)
+                    garmin_block["chronicLoad"] = round(weekly_chronic)
 
-        print("Garmin Connect sync completed successfully.")
+            try:
+                start_28 = (datetime.now(timezone.utc) - timedelta(days=28)).strftime("%Y-%m-%d")
+                body = client.get_body_composition(start_28, today) or {}
+                weight_list = body.get("dateWeightList") or []
+                if weight_list:
+                    w_latest = weight_list[-1]
+                    if w_latest.get("weight"):
+                        scale_block["weight"] = round(float(w_latest["weight"]) / 453.59237, 1)
+                    if w_latest.get("bodyFat"):
+                        scale_block["bodyFat"] = round(float(w_latest["bodyFat"]), 1)
+                    if w_latest.get("muscleMass"):
+                        scale_block["muscleMass"] = round(float(w_latest["muscleMass"]) / 453.59237, 1)
+                    if w_latest.get("bodyWater"):
+                        scale_block["hydration"] = round(float(w_latest["bodyWater"]), 1)
+            except Exception as e:
+                print(f"Garmin body composition warning: {e}")
+
+            print("Garmin Connect sync completed successfully.")
     except Exception as exc:
         print(f"Garmin sync warning: {exc}")
 
