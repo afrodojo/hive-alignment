@@ -1,5 +1,5 @@
 // Hive Alignment OTA Service Worker v3 (Network-First App Shell + Salat Notification Click Handler)
-const CACHE_NAME = 'hive-alignment-ota-v7';
+const CACHE_NAME = 'hive-alignment-ota-v8';
 const APP_SHELL = [
   './',
   './index.html',
