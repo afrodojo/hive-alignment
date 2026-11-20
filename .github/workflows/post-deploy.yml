@@ -1,0 +1,27 @@
+name: Post-Deploy AI Pen-Test
+on:
+  deployment_status:
+
+jobs:
+  dast-scans:
+    if: github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract Deployment URL
+        id: url
+        run: echo "TARGET_URL=${{ github.event.deployment_status.target_url }}" >> $GITHUB_ENV
+
+      - name: Run Nuclei (Template Scans)
+        uses: projectdiscovery/nuclei-action@main
+        with:
+          target: ${{ env.TARGET_URL }}
+
+      - name: Run Strix (AI Hacker)
+        run: |
+          echo "Targeting ${TARGET_URL} with Strix autonomous pen-test..."
+          # docker run usestrix/strix attack --target ${{ env.TARGET_URL }}
+          
+      - name: Run PyRIT (AI Chatbot Red-Teaming)
+        run: |
+          echo "Testing AI endpoints for jailbreaks..."
+          # python -m pyrit target ${{ env.TARGET_URL }}
