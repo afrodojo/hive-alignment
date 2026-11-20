@@ -1,0 +1,28 @@
+name: Pre-Ship Security PR Gate
+on: [pull_request]
+
+jobs:
+  security-scans:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Run Trivy Vulnerability Scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGH'
+
+      # AI Security Code Review Triggers
+      - name: Claude Code Security Review
+        run: |
+          echo "Sending PR diff to Claude Code Security Review..."
+          # Replace with your actual Claude/Codex webhook or CLI integration
+          
+      - name: OpenAI Codex Security Patching
+        run: |
+          echo "Verifying exploitability and generating fixes..."
+          # Replace with your Codex Security trigger
