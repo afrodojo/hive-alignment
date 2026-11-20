@@ -1,9 +1,12 @@
-# Coding Agent Security Rules
+# Security Audit & Secure Coding Rules
 
-1. **Active Security Review (Cloudflare Skill)**
-   Before generating or modifying any code related to authentication, database queries, file uploads, or user input, you MUST review the logic for OWASP Top 10 vulnerabilities (e.g., SQLi, XSS, broken access control).
+Before generating or modifying code touching authentication, authorization, database queries, API routes, file uploads, or external integrations, apply these checks:
 
-2. **Secure by Default**
-   - NEVER hardcode secrets, API keys, or passwords. Always use environment variables.
-   - Always sanitize and validate user input at the boundaries.
-   - Default to the principle of least privilege for any IAM roles or database permissions.
+1. **OWASP & Logic Review (Cloudflare Security Audit)**
+   - Enforce server-side authorization checks on every endpoint and resource lookup (prevent IDOR/BOLA).
+   - Use parameterized queries or ORM bindings exclusively; never concatenate raw user input into SQL, shell commands, or templates.
+   - Validate and sanitize all request payloads, headers, and file uploads at the boundary.
+
+2. **Secrets & Least Privilege**
+   - Never hardcode API keys, tokens, database URLs, or credentials. Reference environment variables only.
+   - Scope IAM roles, OAuth tokens, and database permissions to the minimum required privileges.
