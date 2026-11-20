@@ -1,0 +1,14 @@
+repos:
+  - repo: https://github.com/returntocorp/semgrep
+    rev: v1.64.0
+    hooks:
+      - id: semgrep
+        name: Semgrep (Code Patterns)
+        args: ['--config=auto', '--error']
+
+  - repo: https://github.com/trufflesecurity/trufflehog
+    rev: v3.70.0
+    hooks:
+      - id: trufflehog
+        name: TruffleHog (Secrets)
+        entry: bash -c 'trufflehog git file://. --since-commit HEAD --only-verified --fail'
