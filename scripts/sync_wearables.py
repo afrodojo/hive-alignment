@@ -37,6 +37,13 @@ def supa_headers(extra=None):
     return h
 
 
+def fmt_millis_hm(ms_val) -> str:
+    total_mins = round(float(ms_val or 0) / 60000.0)
+    hours = total_mins // 60
+    mins = total_mins % 60
+    return f"{hours}h {mins:02d}m"
+
+
 def rotate_github_secret(secret_name: str, new_value: str):
     if not (GH_PAT and GITHUB_REPOSITORY and new_value):
         return False
@@ -185,7 +192,38 @@ def authenticate_garmin_with_tokenstore(token_dir: str):
     return client
 
 
+def preserve_fitdays_scale(scale_block: dict):
+    """Ensure Fitdays smart scale measurements remain authoritative and are never overwritten by Garmin."""
+    if not isinstance(scale_block, dict):
+        return
+    # If Garmin previously overwrote the 4 main tiles on top of the Nov 20, 2026 Fitdays record, restore them
+    if scale_block.get("fatMass") == 59.5 and scale_block.get("weight") == 235:
+        scale_block.update(
+            {
+                "source": "Fitdays • Nov 20, 2026",
+                "weight": 233.0,
+                "weightDelta": "-5.5 lbs (Target 100%)",
+                "bodyFat": 25.5,
+                "fatMass": 59.5,
+                "fatFreeMass": 173.5,
+                "muscleMass": 161.8,
+                "skeletalMusclePct": 43.1,
+                "hydration": 54.6,
+                "waterWeight": 127.2,
+                "visceralFat": 10.0,
+                "bmi": 31.6,
+                "whr": 0.89,
+                "bmr": 2072,
+            }
+        )
+    elif scale_block.get("weight") and not scale_block.get("source"):
+        scale_block["source"] = "Fitdays Smart Scale"
+
+
 def sync_garmin(telemetry):
+    scale_block = telemetry.setdefault("scale", {})
+    preserve_fitdays_scale(scale_block)
+
     if not (GARMIN_TOKENSTORE or (GARMIN_EMAIL and GARMIN_PASSWORD)):
         print("Skipping Garmin sync (neither GARMIN_TOKENSTORE nor GARMIN_EMAIL/GARMIN_PASSWORD set).")
         return
@@ -204,7 +242,6 @@ def sync_garmin(telemetry):
             today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
             stats = client.get_stats(today) or {}
             garmin_block = telemetry.setdefault("garmin", {})
-            scale_block = telemetry.setdefault("scale", {})
 
             if isinstance(stats, dict):
                 if stats.get("totalSteps") is not None:
@@ -269,24 +306,32 @@ def sync_garmin(telemetry):
                     garmin_block["acuteLoad"] = round(acute_load)
                     garmin_block["chronicLoad"] = round(weekly_chronic)
 
-            try:
-                start_28 = (datetime.now(timezone.utc) - timedelta(days=28)).strftime("%Y-%m-%d")
-                body = client.get_body_composition(start_28, today) or {}
-                weight_list = body.get("dateWeightList") or []
-                if weight_list:
-                    w_latest = weight_list[-1]
-                    if w_latest.get("weight"):
-                        scale_block["weight"] = round(float(w_latest["weight"]) / 453.59237, 1)
-                    if w_latest.get("bodyFat"):
-                        scale_block["bodyFat"] = round(float(w_latest["bodyFat"]), 1)
-                    if w_latest.get("muscleMass"):
-                        scale_block["muscleMass"] = round(float(w_latest["muscleMass"]) / 453.59237, 1)
-                    if w_latest.get("bodyWater"):
-                        scale_block["hydration"] = round(float(w_latest["bodyWater"]), 1)
-            except Exception as e:
-                print(f"Garmin body composition warning: {e}")
+            # Only fall back to Garmin body composition if Fitdays smart scale data is not present
+            has_fitdays = (
+                "fitdays" in str(scale_block.get("source", "")).lower()
+                or scale_block.get("fatMass") is not None
+                or scale_block.get("visceralFat") is not None
+                or scale_block.get("weight") is not None
+            )
+            if not has_fitdays:
+                try:
+                    start_28 = (datetime.now(timezone.utc) - timedelta(days=28)).strftime("%Y-%m-%d")
+                    body = client.get_body_composition(start_28, today) or {}
+                    weight_list = body.get("dateWeightList") or []
+                    if weight_list:
+                        w_latest = weight_list[-1]
+                        if w_latest.get("weight"):
+                            scale_block["weight"] = round(float(w_latest["weight"]) / 453.59237, 1)
+                        if w_latest.get("bodyFat"):
+                            scale_block["bodyFat"] = round(float(w_latest["bodyFat"]), 1)
+                        if w_latest.get("muscleMass"):
+                            scale_block["muscleMass"] = round(float(w_latest["muscleMass"]) / 453.59237, 1)
+                        if w_latest.get("bodyWater"):
+                            scale_block["hydration"] = round(float(w_latest["bodyWater"]), 1)
+                except Exception as e:
+                    print(f"Garmin body composition warning: {e}")
 
-            print("Garmin Connect sync completed successfully.")
+            print("Garmin Connect sync completed successfully (Fitdays scale preserved).")
     except Exception as exc:
         print(f"Garmin sync warning: {exc}")
 
@@ -325,7 +370,7 @@ def sync_whoop(telemetry):
         headers = {"Authorization": f"Bearer {token}"}
         rec_res = requests.get("https://api.prod.whoop.com/developer/v2/recovery?limit=7", headers=headers, timeout=20)
         cyc_res = requests.get("https://api.prod.whoop.com/developer/v2/cycle?limit=1", headers=headers, timeout=20)
-        slp_res = requests.get("https://api.prod.whoop.com/developer/v2/activity/sleep?limit=1", headers=headers, timeout=20)
+        slp_res = requests.get("https://api.prod.whoop.com/developer/v2/activity/sleep?limit=3", headers=headers, timeout=20)
 
         if not rec_res.ok:
             print(f"WHOOP API status {rec_res.status_code}")
@@ -356,12 +401,38 @@ def sync_whoop(telemetry):
 
         if slp_res.ok:
             slp_records = slp_res.json().get("records") or []
-            if slp_records:
-                slp_score = slp_records[0].get("score") or {}
+            # Prefer the latest scored primary sleep session (non-nap)
+            primary_sleeps = [
+                r for r in slp_records
+                if not r.get("nap") and (r.get("score_state") == "SCORED" or r.get("score"))
+            ]
+            chosen_sleep = primary_sleeps[0] if primary_sleeps else (slp_records[0] if slp_records else None)
+            if chosen_sleep:
+                slp_score = chosen_sleep.get("score") or {}
                 if slp_score.get("sleep_performance_percentage") is not None:
                     whoop_block["sleepPerf"] = round(float(slp_score["sleep_performance_percentage"]))
 
-        print("WHOOP API v2 sync completed successfully.")
+                stages = slp_score.get("stage_summary") or {}
+                rem_ms = stages.get("total_rem_sleep_time_milli")
+                deep_ms = stages.get("total_slow_wave_sleep_time_milli")
+                light_ms = stages.get("total_light_sleep_time_milli")
+
+                if rem_ms is not None:
+                    whoop_block["rem"] = fmt_millis_hm(rem_ms)
+                if deep_ms is not None:
+                    whoop_block["deep"] = fmt_millis_hm(deep_ms)
+                if light_ms is not None:
+                    whoop_block["light"] = fmt_millis_hm(light_ms)
+
+                if any(v is not None for v in (rem_ms, deep_ms, light_ms)):
+                    total_asleep_ms = float(rem_ms or 0) + float(deep_ms or 0) + float(light_ms or 0)
+                    whoop_block["sleepDuration"] = fmt_millis_hm(total_asleep_ms)
+                elif stages.get("total_in_bed_time_milli") is not None:
+                    in_bed_ms = float(stages.get("total_in_bed_time_milli") or 0)
+                    awake_ms = float(stages.get("total_awake_time_milli") or 0)
+                    whoop_block["sleepDuration"] = fmt_millis_hm(max(0.0, in_bed_ms - awake_ms))
+
+        print("WHOOP API v2 sync (recovery, strain & sleep stages) completed successfully.")
     except Exception as exc:
         print(f"WHOOP sync warning: {exc}")
 
