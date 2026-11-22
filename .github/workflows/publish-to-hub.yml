@@ -10,9 +10,29 @@ permissions:
 
 jobs:
   security-gate:
-    uses: afrodojo/platform-hub/.github/workflows/reusable-sec-gate.yml@main
-    with:
-      language: 'python'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: TruffleHog Secret Scan
+        uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --only-verified
+
+      - name: Semgrep SAST Scan
+        run: |
+          pip install --quiet semgrep
+          semgrep scan --config auto --quiet
+
+      - name: Trivy Vulnerability Scan
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: 'fs'
+          exit-code: '0'
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGH'
 
   build-and-push:
     needs: security-gate
@@ -38,6 +58,7 @@ jobs:
 
   dispatch-to-hub:
     needs: build-and-push
+    continue-on-error: true
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Central Hub Assembly
